@@ -1,12 +1,12 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="Dental.Application/Dental.Application.csproj" Id="aba6c91e-34df-4af8-9224-c687d7a96a41" />
-    <Project Path="Dental.Domain/Dental.Domain.csproj" Id="b550b819-6bf5-4e03-a389-b88b94ba6758" />
-    <Project Path="Dental.Infrastructure/Dental.Infrastructure.csproj" />
-    <Project Path="Dental.WinForms/Dental.WinForms.csproj" Id="16051263-cab6-46c8-9992-208ce29cb21d" />
-    <Project Path="Shared.Shared/Shared.Shared.csproj" Id="2ae770cb-5b27-472c-be5c-e3b35ca114d6" />
+    <Project Path="src/Dental.Application/Dental.Application.csproj" Id="aba6c91e-34df-4af8-9224-c687d7a96a41" />
+    <Project Path="src/Dental.Domain/Dental.Domain.csproj" Id="b550b819-6bf5-4e03-a389-b88b94ba6758" />
+    <Project Path="src/Dental.Infrastructure/Dental.Infrastructure.csproj" />
+    <Project Path="src/Dental.WinForms/Dental.WinForms.csproj" Id="16051263-cab6-46c8-9992-208ce29cb21d" />
+    <Project Path="src/Shared.Shared/Shared.Shared.csproj" Id="2ae770cb-5b27-472c-be5c-e3b35ca114d6" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="Dental.UnitTests/Dental.UnitTests.csproj" Id="a3cec749-7288-478d-b528-b57ed71b2666" />
+    <Project Path="tests/Dental.UnitTests/Dental.UnitTests.csproj" Id="a3cec749-7288-478d-b528-b57ed71b2666" />
   </Folder>
 </Solution>
