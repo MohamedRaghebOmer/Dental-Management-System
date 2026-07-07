@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Gaurds\" />
-    <Folder Include="Results\" />
     <Folder Include="Constants\" />
   </ItemGroup>
 
