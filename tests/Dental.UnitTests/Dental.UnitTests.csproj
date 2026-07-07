@@ -23,15 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\" />
-    <Folder Include="Domain\" />
-    <Folder Include="Shared\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Dental.Application\Dental.Application.csproj" />
-    <ProjectReference Include="..\Dental.Domain\Dental.Domain.csproj" />
-    <ProjectReference Include="..\Shared.Shared\Shared.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Dental.Application\Dental.Application.csproj" />
+    <ProjectReference Include="..\..\src\Dental.Domain\Dental.Domain.csproj" />
   </ItemGroup>
 
 </Project>
