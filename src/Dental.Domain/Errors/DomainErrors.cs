@@ -75,6 +75,11 @@ public static class DomainErrors
 
         public static class PhoneNumber
         {
+            public static readonly Error Empty = new(
+                "PhoneNumber.Empty",
+                "The phone number cannot be empty."
+            );
+
             public static readonly Error Invalid = new(
                 "PhoneNumber.Invalid",
                 $"The phone number must be {Entities.Patient.Constants.PhoneNumberLength} characters long."

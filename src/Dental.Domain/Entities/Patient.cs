@@ -5,7 +5,7 @@ using Dental.Domain.ValueObjects;
 
 namespace Dental.Domain.Entities;
 
-public class Patient : Entity
+public sealed class Patient : Entity
 {
     public static class Constants
     {

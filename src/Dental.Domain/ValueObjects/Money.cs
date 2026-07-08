@@ -6,7 +6,7 @@ namespace Dental.Domain.ValueObjects;
 
 public record Money : ValueObject
 {
-    public Decimal Value { get; private set; } = 0m;
+    public decimal Value { get; private set; } = 0m;
 
     private Money(decimal value)
     {

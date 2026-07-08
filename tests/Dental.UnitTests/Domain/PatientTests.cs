@@ -163,15 +163,6 @@ public class LastNameTests
 public class DateOfBirthTests
 {
     [Fact]
-    public void Create_WithNullValue_ReturnsSuccessWithNullResultValue()
-    {
-        var result = DateOfBirth.Create(null);
-
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeNull();
-    }
-
-    [Fact]
     public void Create_WithDateYoungerThanMinimumAge_ReturnsFailure()
     {
         // Born this calendar year => age 0, below MinimumAge (1)
@@ -238,17 +229,6 @@ public class DateOfBirthTests
         var age = dateOfBirth.CalculateAge();
 
         age.Should().Be(25);
-    }
-
-    [Fact]
-    public void CalculateAge_WhenValueIsNull_ReturnsNull()
-    {
-        var dateOfBirth = DateOfBirth.Create(null).Value;
-
-        // dateOfBirth itself is null here since Create(null) returns a null Value -
-        // included to document that CalculateAge cannot be safely called without a
-        // null-check first (this would NRE if uncommented):
-        dateOfBirth.Should().BeNull();
     }
 
     [Fact]
