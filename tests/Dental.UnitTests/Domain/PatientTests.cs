@@ -203,7 +203,7 @@ public class DateOfBirthTests
             .AddYears(-DateOfBirth.MaximumAge);
 
         var result = DateOfBirth.Create(value);
-        
+
         result.IsSuccess.Should().BeTrue();
     }
 

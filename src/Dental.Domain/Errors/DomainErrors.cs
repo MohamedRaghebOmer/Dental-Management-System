@@ -141,4 +141,38 @@ public static class DomainErrors
             );
         }
     }
+
+    public static class Visit
+    {
+        public static class DiscountAmount
+        {
+            public static readonly Error AmountCannotBeGreaterThanTotalAmount = new(
+                "VisitDiscountAmount.AmountCannotBeGreaterThanTotalAmount",
+                "The discount amount cannot be greater than the total amount."
+            );
+        }
+
+        public static class Date
+        {
+            public static readonly Error CannotBeInTheFuture = new(
+                "VisitDate.CannotBeInTheFuture",
+                "The visit date cannot be in the future."
+            );
+        }
+
+        public static class Notes
+        {
+            public static readonly Error TooLong = new(
+                "VisitNotes.TooLong",
+                $"Visit notes cannot exceed {Entities.Visit.Constants.NotesMaxLength} characters length.");
+        }
+
+        public static class PaidAmount
+        {
+            public static readonly Error AmountMustLessThanTotalAmount = new(
+                "VisitPaidAmount.AmountMustLessThanTotalAmount",
+                "The paid amount must be less than or equal to the total amount."
+            );
+        }
+    }
 }

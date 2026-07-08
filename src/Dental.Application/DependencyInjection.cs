@@ -1,4 +1,5 @@
 ﻿using Dental.Application.Abstractions;
+using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Responses;
 using Dental.Application.Services;
 using Dental.Domain.Entities;
@@ -11,6 +12,10 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<ServiceBase<Service, ServiceResponseDto>, ServiceService>();
+        services.AddScoped<IAppointmentService, AppointmentService>();
+        services.AddScoped<IPatientService, PatientService>();
+        services.AddScoped<IServiceService, ServiceService>();
+        services.AddScoped<IVisitService, VisitService>();
 
         return services;
     }

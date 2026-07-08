@@ -79,7 +79,7 @@ public class ServiceServiceTests
     public async Task CreateServiceAsync_WithNullDto_ReturnsFailureAndDoesNotPersist()
     {
         // Act
-        var result = await _sut.CreateServiceAsync(null);
+        var result = await _sut.CreateAsync(null);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -103,7 +103,7 @@ public class ServiceServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -128,7 +128,7 @@ public class ServiceServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -145,7 +145,7 @@ public class ServiceServiceTests
         var dto = ValidCreateDto(name: name!);
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -162,7 +162,7 @@ public class ServiceServiceTests
         var dto = ValidCreateDto(name: new string('a', ServiceName.MaxLength + 1));
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -181,7 +181,7 @@ public class ServiceServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -194,7 +194,7 @@ public class ServiceServiceTests
         var dto = ValidCreateDto(price: -0.01m);
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -213,7 +213,7 @@ public class ServiceServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -226,7 +226,7 @@ public class ServiceServiceTests
         var dto = ValidCreateDto(description: new string('d', Service.DescriptionMaxLength + 1));
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -245,7 +245,7 @@ public class ServiceServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -261,7 +261,7 @@ public class ServiceServiceTests
             description: new string('x', Service.DescriptionMaxLength + 1));
 
         // Act
-        var result = await _sut.CreateServiceAsync(dto);
+        var result = await _sut.CreateAsync(dto);
 
         // Assert
         result.Error.Should().Be(DomainErrors.Services.ServiceName.Empty);
@@ -279,7 +279,7 @@ public class ServiceServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        await _sut.CreateServiceAsync(dto, cts.Token);
+        await _sut.CreateAsync(dto, cts.Token);
 
         // Assert
         _repoMock.Verify(r => r.AddAsync(It.IsAny<Service>(), cts.Token), Times.Once);
@@ -297,7 +297,7 @@ public class ServiceServiceTests
     public async Task UpdateServiceAsync_WithInvalidId_ReturnsFailureAndNeverQueriesRepository(int invalidId)
     {
         // Act
-        var result = await _sut.UpdateServiceAsync(invalidId, ValidUpdateDto());
+        var result = await _sut.UpdateAsync(invalidId, ValidUpdateDto());
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -318,7 +318,7 @@ public class ServiceServiceTests
             .ReturnsAsync((Service?)null);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, ValidUpdateDto());
+        var result = await _sut.UpdateAsync(id, ValidUpdateDto());
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -340,7 +340,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, dto);
+        var result = await _sut.UpdateAsync(id, dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -372,7 +372,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, dto);
+        var result = await _sut.UpdateAsync(id, dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -395,7 +395,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, dto);
+        var result = await _sut.UpdateAsync(id, dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -418,7 +418,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, dto);
+        var result = await _sut.UpdateAsync(id, dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -441,7 +441,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, dto);
+        var result = await _sut.UpdateAsync(id, dto);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -463,7 +463,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, dto);
+        var result = await _sut.UpdateAsync(id, dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -489,7 +489,7 @@ public class ServiceServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.UpdateServiceAsync(id, dto);
+        var result = await _sut.UpdateAsync(id, dto);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -509,7 +509,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         // Act
-        await _sut.UpdateServiceAsync(id, ValidUpdateDto(), cts.Token);
+        await _sut.UpdateAsync(id, ValidUpdateDto(), cts.Token);
 
         // Assert
         _repoMock.Verify(r => r.GetByIdAsync(id, cts.Token), Times.Once);

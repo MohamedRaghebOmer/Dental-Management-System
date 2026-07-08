@@ -13,8 +13,16 @@ public sealed class AppointmentConfiguration
     public void Configure(EntityTypeBuilder<Appointment> builder)
     {
         ConfigureProperties(builder);
-        AddColumnsComments(builder);
         ConfigureForeignKeys(builder);
+        ConfigureIndexes(builder);
+        AddColumnsComments(builder);
+    }
+
+    private void ConfigureIndexes(EntityTypeBuilder<Appointment> builder)
+    {
+        builder.HasIndex(p => p.PatientId)
+            .HasDatabaseName("IX_Appointment_PatientId")
+            .IsUnique(false);
     }
 
     private static void AddColumnsComments(EntityTypeBuilder<Appointment> builder)

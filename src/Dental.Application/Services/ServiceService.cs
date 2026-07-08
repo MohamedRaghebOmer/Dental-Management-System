@@ -1,4 +1,5 @@
 ﻿using Dental.Application.Abstractions;
+using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Responses;
 using Dental.Application.DTOs.Service;
 using Dental.Application.Errors;
@@ -15,8 +16,9 @@ public class ServiceService(
     IUnitOfWork unitOfWork,
     ILogger<ServiceService> logger)
     : ServiceBase<Service, ServiceResponseDto>(repo, unitOfWork, logger)
+    , IServiceService
 {
-    public async Task<Result<int>> CreateServiceAsync(
+    public async Task<Result<int>> CreateAsync(
         CreateServiceDto? dto,
         CancellationToken cancellationToken = default)
     {
@@ -59,7 +61,7 @@ public class ServiceService(
         return Result.Success(serviceResult.Value.Id);
     }
 
-    public async Task<Result<ServiceResponseDto>> UpdateServiceAsync(
+    public async Task<Result<ServiceResponseDto>> UpdateAsync(
         int id,
         UpdateServiceDto dto,
         CancellationToken cancellationToken = default)
