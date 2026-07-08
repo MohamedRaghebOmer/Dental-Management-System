@@ -92,7 +92,7 @@ public class PatientServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -121,7 +121,7 @@ public class PatientServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -139,7 +139,7 @@ public class PatientServiceTests
         var dto = ValidCreateDto(firstName: firstName!);
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -156,7 +156,7 @@ public class PatientServiceTests
         var dto = ValidCreateDto(firstName: new string('a', FirstName.MaxLength + 1));
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -175,7 +175,7 @@ public class PatientServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -191,7 +191,7 @@ public class PatientServiceTests
         var dto = ValidCreateDto(lastName: lastName!);
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -206,7 +206,7 @@ public class PatientServiceTests
         var dto = ValidCreateDto(lastName: new string('b', LastName.MaxLength + 1));
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -221,7 +221,7 @@ public class PatientServiceTests
         var dto = ValidCreateDto(dateOfBirth: new DateOnly(DateTime.UtcNow.Year, 1, 1));
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -237,7 +237,7 @@ public class PatientServiceTests
             dateOfBirth: new DateOnly(DateTime.UtcNow.Year - DateOfBirth.MaximumAge - 1, 1, 1));
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -257,7 +257,7 @@ public class PatientServiceTests
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -273,7 +273,7 @@ public class PatientServiceTests
         var dto = ValidCreateDto(phoneNumber: invalidPhoneNumber);
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -292,7 +292,7 @@ public class PatientServiceTests
             phoneNumber: "1");
 
         // Act
-        var result = await _sut.CreatePatient(dto);
+        var result = await _sut.CreateAsync(dto, CancellationToken.None);
 
         // Assert
         result.Error.Should().Be(DomainErrors.Patients.FirstName.Empty);
@@ -309,7 +309,7 @@ public class PatientServiceTests
     public async Task UpdatePatient_WithInvalidId_ReturnsFailureAndNeverQueriesRepository(int invalidId)
     {
         // Act
-        var result = await _sut.UpdatePatient(invalidId, ValidUpdateDto());
+        var result = await _sut.UpdateAsync(invalidId, ValidUpdateDto(), CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -328,7 +328,7 @@ public class PatientServiceTests
             .ReturnsAsync((Patient?)null);
 
         // Act
-        var result = await _sut.UpdatePatient(id, ValidUpdateDto());
+        var result = await _sut.UpdateAsync(id, ValidUpdateDto(), CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -348,7 +348,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -377,7 +377,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        await _sut.UpdatePatient(id, dto);
+        await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
@@ -406,7 +406,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -429,7 +429,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -452,7 +452,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -476,7 +476,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -501,7 +501,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsFailure.Should().BeTrue();
@@ -523,7 +523,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();
@@ -545,7 +545,7 @@ public class PatientServiceTests
             .ReturnsAsync(existingPatient);
 
         // Act
-        var result = await _sut.UpdatePatient(id, dto);
+        var result = await _sut.UpdateAsync(id, dto, CancellationToken.None);
 
         // Assert
         result.IsSuccess.Should().BeTrue();

@@ -20,6 +20,7 @@ public sealed class Appointment : Entity
     public string? Notes { get; private set; }
 
     public Patient Patient { get; private set; }
+    public Visit? Visit { get; private set; }
 
     private Appointment() { } // EF Core
 

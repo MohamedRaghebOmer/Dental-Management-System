@@ -1,4 +1,5 @@
 ﻿using Dental.Application.Abstractions;
+using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Patient;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
@@ -14,8 +15,11 @@ public class PatientService(
     IUnitOfWork unitOfWork,
     ILogger<PatientService> logger) :
     ServiceBase<Patient, PatientResponseDto>(repo, unitOfWork, logger)
+    , IPatientService
 {
-    public async Task<Result<int>> CreatePatient(CreatePatientDto dto)
+    public async Task<Result<int>> CreateAsync(
+        CreatePatientDto dto,
+        CancellationToken cancellationToken)
     {
         var firstNameResult = FirstName.Create(dto.FirstName);
         if (firstNameResult.IsFailure)
@@ -58,20 +62,21 @@ public class PatientService(
         if (patientResult.IsFailure)
             return Result.Failure<int>(patientResult.Error);
 
-        await repo.AddAsync(patientResult.Value);
-        await unitOfWork.CommitAsync();
+        await repo.AddAsync(patientResult.Value, cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
 
         return Result.Success(patientResult.Value.Id);
     }
 
-    public async Task<Result> UpdatePatient(
+    public async Task<Result> UpdateAsync(
         int id,
-        UpdatePatientDto dto)
+        UpdatePatientDto dto,
+        CancellationToken cancellationToken)
     {
         if (id <= 0)
             return Result.Failure(ServiceErrors.InvalidId);
 
-        var patient = await repo.GetByIdAsync(id);
+        var patient = await repo.GetByIdAsync(id, cancellationToken);
         if (patient is null)
             return Result.Failure(ServiceErrors.NotFound);
 
@@ -118,7 +123,7 @@ public class PatientService(
         if (updateResult.IsFailure)
             return Result.Failure(updateResult.Error);
 
-        await unitOfWork.CommitAsync();
+        await unitOfWork.CommitAsync(cancellationToken);
 
         return Result.Success();
     }
