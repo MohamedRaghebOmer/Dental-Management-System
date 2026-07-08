@@ -5,19 +5,19 @@ using Dental.Domain.ValueObjects;
 
 namespace Dental.Domain.Entities;
 
-public class Patient : Entity
+public sealed class Patient : Entity
 {
     public static class Constants
     {
         public const int FirstNameMaxLength = FirstName.MaxLength;
         public const int LastNameMaxLength = LastName.MaxLength;
-        public const int MinimumAllowedAge = DateOfBirth.MaximumAge;
-        public const int MaximumAllowedAge = DateOfBirth.MinimumAge;
+        public const int MinimumAllowedAge = DateOfBirth.MinimumAge;
+        public const int MaximumAllowedAge = DateOfBirth.MaximumAge;
         public const int PhoneNumberLength = PhoneNumber.Length;
         public const int AddressMaxLength = 500;
     }
 
-    public Patient() { }
+    private Patient() { } // EF Core
 
     private Patient(
         FirstName firstName,
@@ -43,6 +43,8 @@ public class Patient : Entity
     public Gender Gender { get; private set; }
     public PhoneNumber? PhoneNumber { get; private set; }
     public string? Address { get; private set; }
+
+    public ICollection<Appointment> Appointments { get; private set; } = [];
 
     public static Result<Patient> Create(
         FirstName firstName,

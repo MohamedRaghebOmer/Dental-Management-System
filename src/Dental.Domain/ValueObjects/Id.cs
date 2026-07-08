@@ -4,23 +4,23 @@ using Dental.Domain.Shared;
 
 namespace Dental.Domain.ValueObjects;
 
-public record Money : ValueObject
+public sealed record Id : ValueObject
 {
-    public decimal Value { get; private set; } = 0m;
+    public int Value { get; private set; }
 
-    private Money(decimal value)
+    private Id(int value)
     {
         Value = value;
     }
 
-    public static Result<Money> Create(decimal value)
+    public static Result<Id> Create(int value)
     {
-        if (value < 0)
+        if (value <= 0)
         {
-            return Result.Failure<Money>(DomainErrors.Services.Money.NonPositiveValue);
+            return Result.Failure<Id>(DomainErrors.Appointment.Id.InvalidId);
         }
 
-        return new Money(value);
+        return Result.Success(new Id(value));
     }
 
     /// <summary>
@@ -31,8 +31,8 @@ public record Money : ValueObject
     /// value is valid and has been previously validated.
     /// </summary>
     /// <param name="value"></param>
-    public static Money FromDatabase(decimal value)
+    public static Id FromDatabase(int value)
     {
-        return new Money(value);
+        return new Id(value);
     }
 }

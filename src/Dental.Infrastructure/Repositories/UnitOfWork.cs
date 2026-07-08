@@ -5,7 +5,7 @@ namespace Dental.Infrastructure.Repositories;
 
 public class UnitOfWork(DentalDbContext dbContext) : IUnitOfWork
 {
-    public Task SaveChangesAsync(CancellationToken cancellationToken = default)
+    public Task CommitAsync(CancellationToken cancellationToken = default)
     {
         return dbContext.SaveChangesAsync(cancellationToken);
     }

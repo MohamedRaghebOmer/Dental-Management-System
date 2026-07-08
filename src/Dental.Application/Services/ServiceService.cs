@@ -52,7 +52,7 @@ public class ServiceService(
         }
 
         await repo.AddAsync(serviceResult.Value, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
 
         logger.LogInformation("Service created successfully.");
 
@@ -99,7 +99,7 @@ public class ServiceService(
         }
 
         // Save changes
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
         logger.LogInformation("Service updated successfully.");
 
         return new ServiceResponseDto(service);

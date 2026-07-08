@@ -9,27 +9,24 @@ public sealed record DateOfBirth : ValueObject
     public const int MinimumAge = 1;
     public const int MaximumAge = 100;
 
-    public DateOnly? Value { get; private set; }
+    public DateOnly Value { get; private set; }
 
-    private DateOfBirth(DateOnly? value)
+    private DateOfBirth(DateOnly value)
     {
         Value = value;
     }
 
-    public static Result<DateOfBirth> Create(DateOnly? value)
+    public static Result<DateOfBirth> Create(DateOnly value)
     {
-        if (value is null)
-        {
-            return Result.Success<DateOfBirth>(null);
-        }
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
 
-        if (value?.Year > DateTime.UtcNow.Year - MinimumAge)
+        if (value > today.AddYears(-MinimumAge))
         {
             return Result.Failure<DateOfBirth>
                 (DomainErrors.Patients.DateOfBirth.LessThanMinimumAllowedAge);
         }
 
-        if (value?.Year < DateTime.UtcNow.Year - MaximumAge)
+        if (value < today.AddYears(-MaximumAge))
         {
             return Result.Failure<DateOfBirth>(DomainErrors.Patients.DateOfBirth.OlderThanMaximumAllowedAge);
         }
@@ -45,13 +42,22 @@ public sealed record DateOfBirth : ValueObject
     /// value is valid and has been previously validated.
     /// </summary>
     /// <param name="value"></param>
-    public static DateOfBirth FromDatabase(DateOnly? value)
+    public static DateOfBirth FromDatabase(DateOnly value)
     {
         return new DateOfBirth(value);
     }
 
-    public int? CalculateAge()
+    public int CalculateAge()
     {
-        return DateTime.UtcNow.Year - Value?.Year;
+        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+
+        var age = today.Year - Value.Year;
+
+        if (Value > today.AddYears(-age))
+        {
+            age--;
+        }
+
+        return age;
     }
 }

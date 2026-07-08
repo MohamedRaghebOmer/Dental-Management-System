@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dental.Infrastructure.Persistence.Configurations;
 
-public class PatientConfiguration
+public sealed class PatientConfiguration
     : ConfigurationBase<Patient>
     , IEntityTypeConfiguration<Patient>
 {
@@ -61,8 +61,8 @@ public class PatientConfiguration
 
         builder.Property(x => x.DateOfBirth)
             .HasConversion(
-                value => value!.Value,
-                value => DateOfBirth.FromDatabase(value))
+                value => value == null ? (DateOnly?)null : value.Value,
+                value => value == null ? null : DateOfBirth.FromDatabase(value.Value))
             .HasColumnName(nameof(Patient.DateOfBirth))
             .IsRequired(false);
 
@@ -74,8 +74,8 @@ public class PatientConfiguration
 
         builder.Property(x => x.PhoneNumber)
             .HasConversion(
-                value => value.Value,
-                value => PhoneNumber.FromDatabase(value))
+                value => value == null ? null : value.Value,
+                value => value == null ? null : PhoneNumber.FromDatabase(value))
             .HasColumnName(nameof(Patient.PhoneNumber))
             .HasMaxLength(Patient.Constants.PhoneNumberLength)
             .IsRequired(false);

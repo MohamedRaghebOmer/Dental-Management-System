@@ -25,29 +25,43 @@ public class PatientService(
         if (lastNameResult.IsFailure)
             return Result.Failure<int>(lastNameResult.Error);
 
-        var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth);
-        if (dateOfBirthResult.IsFailure)
-            return Result.Failure<int>(dateOfBirthResult.Error);
+        DateOfBirth? dateOfBirth = null;
 
-        var phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
-        if (phoneNumberResult.IsFailure)
-            return Result.Failure<int>(phoneNumberResult.Error);
+        if (dto.DateOfBirth is not null)
+        {
+            var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth.Value);
+            if (dateOfBirthResult.IsFailure)
+                return Result.Failure<int>(dateOfBirthResult.Error);
 
-        var patient = Patient.Create(
+            dateOfBirth = dateOfBirthResult.Value;
+        }
+
+        PhoneNumber? phoneNumber = null;
+
+        if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+        {
+            var phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
+            if (phoneNumberResult.IsFailure)
+                return Result.Failure<int>(phoneNumberResult.Error);
+
+            phoneNumber = phoneNumberResult.Value;
+        }
+
+        var patientResult = Patient.Create(
             firstNameResult.Value,
             lastNameResult.Value,
-            dateOfBirthResult.Value,
+            dateOfBirth,
             dto.Gender,
-            phoneNumberResult.Value,
+            phoneNumber,
             dto.Address);
 
-        if (patient.IsFailure)
-            return Result.Failure<int>(patient.Error);
+        if (patientResult.IsFailure)
+            return Result.Failure<int>(patientResult.Error);
 
-        await repo.AddAsync(patient.Value);
-        await unitOfWork.SaveChangesAsync();
+        await repo.AddAsync(patientResult.Value);
+        await unitOfWork.CommitAsync();
 
-        return Result.Success(patient.Value.Id);
+        return Result.Success(patientResult.Value.Id);
     }
 
     public async Task<Result> UpdatePatient(
@@ -69,26 +83,42 @@ public class PatientService(
         if (lastNameResult.IsFailure)
             return Result.Failure(lastNameResult.Error);
 
-        var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth);
-        if (dateOfBirthResult.IsFailure)
-            return Result.Failure(dateOfBirthResult.Error);
+        DateOfBirth? dateOfBirth = null;
 
-        var phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
-        if (phoneNumberResult.IsFailure)
-            return Result.Failure(phoneNumberResult.Error);
+        if (dto.DateOfBirth is not null)
+        {
+            var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth.Value);
+
+            if (dateOfBirthResult.IsFailure)
+                return Result.Failure(dateOfBirthResult.Error);
+
+            dateOfBirth = dateOfBirthResult.Value;
+        }
+
+        PhoneNumber? phoneNumber = null;
+
+        if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
+        {
+            var phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
+
+            if (phoneNumberResult.IsFailure)
+                return Result.Failure(phoneNumberResult.Error);
+
+            phoneNumber = phoneNumberResult.Value;
+        }
 
         var updateResult = patient.Update(
             firstNameResult.Value,
             lastNameResult.Value,
-            dateOfBirthResult.Value,
+            dateOfBirth,
             dto.Gender,
-            phoneNumberResult.Value,
+            phoneNumber,
             dto.Address);
 
         if (updateResult.IsFailure)
             return Result.Failure(updateResult.Error);
 
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.CommitAsync();
 
         return Result.Success();
     }

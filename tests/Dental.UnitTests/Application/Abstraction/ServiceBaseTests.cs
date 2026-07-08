@@ -240,7 +240,7 @@ public class ServiceBaseTests
 
         _repoMock.Verify(r => r.GetByIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
         _repoMock.Verify(r => r.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
 
         VerifyLogWarningCalled(Times.Once());
     }
@@ -262,7 +262,7 @@ public class ServiceBaseTests
         result.Error.Should().Be(ServiceErrors.NotFound);
 
         _repoMock.Verify(r => r.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -283,7 +283,7 @@ public class ServiceBaseTests
         result.IsSuccess.Should().BeTrue();
 
         _repoMock.Verify(r => r.DeleteAsync(id, It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -304,8 +304,8 @@ public class ServiceBaseTests
             .Returns(Task.CompletedTask);
 
         _unitOfWorkMock
-            .Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .Callback(() => callOrder.Add(nameof(IUnitOfWork.SaveChangesAsync)))
+            .Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
+            .Callback(() => callOrder.Add(nameof(IUnitOfWork.CommitAsync)))
             .Returns(Task.CompletedTask);
 
         // Act
@@ -314,7 +314,7 @@ public class ServiceBaseTests
         // Assert
         callOrder.Should().ContainInOrder(
             nameof(IRepository<TestEntity>.DeleteAsync),
-            nameof(IUnitOfWork.SaveChangesAsync));
+            nameof(IUnitOfWork.CommitAsync));
     }
 
     [Fact]

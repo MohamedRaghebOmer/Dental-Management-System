@@ -80,7 +80,7 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
         }
 
         await repo.DeleteAsync(id, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
 
         return Result.Success();
     }

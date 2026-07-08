@@ -33,12 +33,13 @@ public sealed class Service : Entity
         Money price,
         string? description = null)
     {
-        if (description is not null && description.Length > DescriptionMaxLength)
+        if (!string.IsNullOrWhiteSpace(description)
+            && description.Length > DescriptionMaxLength)
         {
             return Result.Failure<Service>(DomainErrors.Services.Description.TooLong);
         }
 
-        return new Service(name, price, description);
+        return new Service(name, price, description?.Trim());
     }
 
     public Result Update(
@@ -54,7 +55,7 @@ public sealed class Service : Entity
 
         Name = name;
         Price = price;
-        Description = description;
+        Description = description?.Trim();
 
         return Result.Success();
     }
