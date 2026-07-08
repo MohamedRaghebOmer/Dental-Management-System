@@ -1,6 +1,7 @@
-﻿using Dental.Application.DTOs.Responses;
+﻿using Dental.Application.Abstractions;
+using Dental.Application.DTOs.Responses;
 using Dental.Application.DTOs.Service;
-using Dental.Application.Interfaces;
+using Dental.Application.Errors;
 using Dental.Domain.Entities;
 using Dental.Domain.Interfaces.Repositories;
 using Dental.Domain.Shared;
@@ -9,31 +10,21 @@ using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
-public class ServiceService : IServiceService
+public class ServiceService(
+    IRepository<Service> repo,
+    IUnitOfWork unitOfWork,
+    ILogger<ServiceService> logger)
+    : ServiceBase<Service, ServiceResponseDto>(repo, unitOfWork, logger)
 {
-    private readonly IServiceRepository _repo;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ServiceService> _logger;
-
-    public ServiceService(
-        IServiceRepository repo,
-        IUnitOfWork unitOfWork,
-        ILogger<ServiceService> logger)
-    {
-        _repo = repo;
-        _unitOfWork = unitOfWork;
-        _logger = logger;
-    }
-
     public async Task<Result<int>> CreateServiceAsync(
         CreateServiceDto? dto,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Creating new service.");
+        logger.LogInformation("Creating new service.");
 
         if (dto is null)
         {
-            _logger.LogWarning("Attempted to create a service with null data.");
+            logger.LogWarning("Attempted to create a service with null data.");
             return Result.Failure<int>(ServiceErrors.ParameterNullReference);
         }
 
@@ -60,70 +51,32 @@ public class ServiceService : IServiceService
             return Result.Failure<int>(serviceResult.Error);
         }
 
-        await _repo.AddServiceAsync(serviceResult.Value, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await repo.AddAsync(serviceResult.Value, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Service created successfully.");
+        logger.LogInformation("Service created successfully.");
 
         return Result.Success(serviceResult.Value.Id);
     }
 
-    public async Task<Result<ServiceResponseDto?>> GetServiceByIdAsync(
-        int id,
-        CancellationToken cancellationToken = default)
-    {
-        if (id <= 0)
-        {
-            _logger.LogWarning("Attempted to retrieve a service with an invalid ID.");
-            return Result.Failure<ServiceResponseDto?>(ServiceErrors.InvalidId);
-        }
-
-        var service = await _repo.GetServiceByIdAsync(id, cancellationToken);
-
-        if (service is null)
-        {
-            _logger.LogWarning("Service not found.");
-            return Result.Failure<ServiceResponseDto?>(ServiceErrors.NotFound);
-        }
-
-        return new ServiceResponseDto(service);
-    }
-
-    public async Task<Result<IEnumerable<ServiceResponseDto>>> ListServicesAsync(
-        CancellationToken cancellationToken = default)
-    {
-        var services = await _repo.ListServicesAsync(cancellationToken);
-
-        var serviceDos =
-            services.Select(s => new ServiceResponseDto(s));
-
-        if (serviceDos is null || !serviceDos.Any())
-        {
-            _logger.LogWarning("No services found in the database.");
-            return Result.Failure<IEnumerable<ServiceResponseDto>>
-                (ServiceErrors.EmptyDataset);
-        }
-
-        return Result.Success(serviceDos!);
-    }
-
     public async Task<Result<ServiceResponseDto>> UpdateServiceAsync(
+        int id,
         UpdateServiceDto dto,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Updating service.");
+        logger.LogInformation("Updating service.");
 
-        if (dto.Id <= 0)
+        if (id <= 0)
         {
-            _logger.LogWarning("Attempted to update a service with an invalid ID.");
+            logger.LogWarning("Attempted to update a service with an invalid ID.");
             return Result.Failure<ServiceResponseDto>(ServiceErrors.InvalidId);
         }
 
-        var service = await _repo.GetServiceByIdAsync(dto.Id, cancellationToken);
+        var service = await repo.GetByIdAsync(id, cancellationToken);
 
         if (service is null)
         {
-            _logger.LogWarning("Service not found.");
+            logger.LogWarning("Service not found.");
             return Result.Failure<ServiceResponseDto>(ServiceErrors.NotFound);
         }
 
@@ -146,36 +99,9 @@ public class ServiceService : IServiceService
         }
 
         // Save changes
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        _logger.LogInformation("Service updated successfully.");
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        logger.LogInformation("Service updated successfully.");
 
         return new ServiceResponseDto(service);
-    }
-
-    public async Task<Result> DeleteServiceAsync(
-        int id,
-        CancellationToken cancellationToken = default)
-    {
-        _logger.LogInformation("Deleting service.");
-
-        if (id <= 0)
-        {
-            _logger.LogWarning("Attempted to delete a service with an invalid ID.");
-            return Result.Failure(ServiceErrors.InvalidId);
-        }
-
-        var service = await _repo.GetServiceByIdAsync(id, cancellationToken);
-
-        if (service is null)
-        {
-            _logger.LogWarning("Service not found.");
-            return Result.Failure(ServiceErrors.NotFound);
-        }
-
-        await _repo.DeleteServiceAsync(service.Id, cancellationToken);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        _logger.LogInformation("Service deleted successfully.");
-
-        return Result.Success();
     }
 }

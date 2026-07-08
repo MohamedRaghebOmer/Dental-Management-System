@@ -34,4 +34,51 @@ public static class DomainErrors
             );
         }
     }
+
+    public static class Patients
+    {
+        public static class FirstName
+        {
+            public static readonly Error Empty = new(
+                "FirstName.Empty",
+                "The first name cannot be empty.");
+
+            public static readonly Error TooLong = new(
+                "FirstName.TooLong",
+                $"The first name cannot be longer than {Entities.Patient.Constants.FirstNameMaxLength} characters."
+            );
+        }
+
+        public static class LastName
+        {
+            public static readonly Error Empty = new(
+                "LastName.Empty",
+                "The last name cannot be empty.");
+
+            public static readonly Error TooLong = new(
+                "LastName.TooLong",
+                $"The last name cannot be longer than {Entities.Patient.Constants.LastNameMaxLength} characters."
+            );
+        }
+
+        public static class DateOfBirth
+        {
+            public static readonly Error LessThanMinimumAllowedAge = new(
+                "DateOfBirth.LessThanMinimumAllowedAge",
+                $"The date of birth cannot be less than {ValueObjects.DateOfBirth.MinimumAge} years.");
+
+            public static readonly Error OlderThanMaximumAllowedAge = new(
+                "DateOfBirth.OlderThanMaximumAllowedAge",
+                $"The date of birth cannot be longer than {ValueObjects.DateOfBirth.MaximumAge} years."
+            );
+        }
+
+        public static class PhoneNumber
+        {
+            public static readonly Error Invalid = new(
+                "PhoneNumber.Invalid",
+                $"The phone number must be {Entities.Patient.Constants.PhoneNumberLength} characters long."
+            );
+        }
+    }
 }

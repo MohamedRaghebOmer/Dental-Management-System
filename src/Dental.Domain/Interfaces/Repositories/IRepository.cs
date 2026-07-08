@@ -1,21 +1,22 @@
-﻿using Dental.Domain.Entities;
+﻿using Dental.Domain.Primitives;
 
 namespace Dental.Domain.Interfaces.Repositories;
 
-public interface IServiceRepository
+public interface IRepository<TEntity>
+    where TEntity : Entity
 {
-    Task AddServiceAsync(
-        Service service,
+    Task AddAsync(
+        TEntity entity,
         CancellationToken cancellationToken = default);
 
-    Task<Service?> GetServiceByIdAsync(
+    Task<TEntity?> GetByIdAsync(
         int id,
         CancellationToken cancellationToken = default);
 
-    Task DeleteServiceAsync(
+    Task DeleteAsync(
         int id,
         CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<Service>> ListServicesAsync(
+    Task<IEnumerable<TEntity>> GetAllAsync(
         CancellationToken cancellationToken);
 }

@@ -1,51 +1,53 @@
 ﻿using Dental.Domain.Entities;
-using Dental.Infrastructure.Persistence.Extensions;
+using Dental.Domain.ValueObjects;
+using Dental.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dental.Infrastructure.Persistence.Configurations;
 
-public class ServiceConfiguration : IEntityTypeConfiguration<Service>
+public class ServiceConfiguration
+    : ConfigurationBase<Service>
+    , IEntityTypeConfiguration<Service>
+
 {
     public void Configure(EntityTypeBuilder<Service> builder)
     {
-        ConfigureTable(builder);
-        ConfigureKey(builder);
         ConfigureProperties(builder);
+        AddCheckConstraints(builder);
         ConfigureIndexes(builder);
     }
 
-    private static void ConfigureTable(EntityTypeBuilder<Service> builder)
+    private void AddCheckConstraints(EntityTypeBuilder<Service> builder)
     {
-        builder.ToTable("Services");
+        builder.ToTable(table =>
+        {
+            table.HasCheckConstraint(
+                "CK_Services_Price",
+                @"Price >= 0"
+            );
+        });
     }
 
-    private static void ConfigureKey(EntityTypeBuilder<Service> builder)
+    protected override void ConfigureProperties(EntityTypeBuilder<Service> builder)
     {
-        builder.ConfigurePrimaryKey();
-    }
+        builder.Property(x => x.Name)
+            .HasConversion(
+                x => x.Value,
+                x => ServiceName.FromDatabase(x)
+            )
+            .HasColumnName(nameof(Service.Name))
+            .HasMaxLength(Service.NameMaxLength)
+            .IsRequired();
 
-    private static void ConfigureProperties(EntityTypeBuilder<Service> builder)
-    {
-        builder.OwnsOne(
-            x => x.Name,
-            navigationBuilder =>
-            {
-                navigationBuilder.Property(x => x.Value)
-                    .HasColumnName(nameof(Service.Name))
-                    .HasMaxLength(Service.NameMaxLength)
-                    .IsRequired();
-            });
-
-        builder.OwnsOne(
-            x => x.Price,
-            navigationBuilder =>
-            {
-                navigationBuilder.Property(x => x.Value)
-                    .HasColumnName(nameof(Service.Price))
-                    .HasPrecision(18, 2)
-                    .IsRequired();
-            });
+        builder.Property(x => x.Price)
+            .HasConversion(
+                x => x.Value,
+                x => Money.FromDatabase(x)
+            )
+            .HasColumnName(nameof(Service.Price))
+            .HasPrecision(18, 2)
+            .IsRequired();
 
         builder.Property(x => x.Description)
             .HasColumnName(nameof(Service.Description))
