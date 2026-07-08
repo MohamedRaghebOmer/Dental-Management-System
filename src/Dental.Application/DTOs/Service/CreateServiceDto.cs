@@ -8,7 +8,7 @@ public sealed record CreateServiceDto
     public required string Name { get; init; }
 
     [Range(0, double.MaxValue)]
-    public decimal Price { get; init; }
+    public required decimal Price { get; init; }
 
     [StringLength(Domain.Entities.Service.DescriptionMaxLength)]
     public string? Description { get; init; }

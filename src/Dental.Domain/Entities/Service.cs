@@ -8,7 +8,7 @@ namespace Dental.Domain.Entities;
 public sealed class Service : Entity
 {
     public const int DescriptionMaxLength = 500;
-    public const int NameMaxLength = 50;
+    public const int NameMaxLength = ServiceName.MaxLength;
 
     private Service(
         ServiceName name,

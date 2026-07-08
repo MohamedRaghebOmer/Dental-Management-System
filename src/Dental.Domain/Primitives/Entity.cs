@@ -4,7 +4,12 @@ public abstract class Entity : IEquatable<Entity>
 {
     protected Entity() { }
 
-    public int Id { get; private init; }
+    protected Entity(int id)
+    {
+        Id = id;
+    }
+
+    public int Id { get; private set; }
 
     public bool Equals(Entity? other)
     {

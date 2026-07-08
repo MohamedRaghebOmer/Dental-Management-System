@@ -4,30 +4,31 @@ using Dental.Domain.Shared;
 
 namespace Dental.Domain.ValueObjects;
 
-public record ServiceName : ValueObject
+public sealed record PhoneNumber : ValueObject
 {
-    public const int MaxLength = 50;
+    public string? Value { get; private set; }
+    public const int Length = 11;
 
-    public string Value { get; private set; } = string.Empty;
-
-    private ServiceName(string value)
+    private PhoneNumber(string? value)
     {
         Value = value;
     }
 
-    public static Result<ServiceName> Create(string value)
+    public static Result<PhoneNumber?> Create(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return Result.Failure<ServiceName>(DomainErrors.Services.ServiceName.Empty);
+            return Result.Success<PhoneNumber?>(null);
         }
 
-        if (value.Length > MaxLength)
+        value = value.Trim();
+
+        if (value.Length != Length)
         {
-            return Result.Failure<ServiceName>(DomainErrors.Services.ServiceName.TooLong);
+            return Result.Failure<PhoneNumber?>(DomainErrors.Patients.PhoneNumber.Invalid);
         }
 
-        return new ServiceName(value);
+        return new PhoneNumber(value);
     }
 
     /// <summary>
@@ -38,8 +39,9 @@ public record ServiceName : ValueObject
     /// value is valid and has been previously validated.
     /// </summary>
     /// <param name="value"></param>
-    public static ServiceName FromDatabase(string value)
+    public static PhoneNumber FromDatabase(string? value)
     {
-        return new ServiceName(value);
+        return new PhoneNumber(value);
     }
+
 }

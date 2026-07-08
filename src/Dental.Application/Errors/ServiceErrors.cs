@@ -1,6 +1,6 @@
 ﻿using Dental.Domain.Shared;
 
-namespace Dental.Application;
+namespace Dental.Application.Errors;
 
 public static class ServiceErrors
 {
