@@ -8,6 +8,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+ <PropertyGroup>
+      <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="appsettings.json" />
   </ItemGroup>
