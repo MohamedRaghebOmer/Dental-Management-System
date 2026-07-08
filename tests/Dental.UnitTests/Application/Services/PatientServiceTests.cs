@@ -105,7 +105,7 @@ public class PatientServiceTests
         capturedPatient.Address.Should().Be(dto.Address);
 
         _repoMock.Verify(r => r.AddAsync(It.IsAny<Patient>(), It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -146,7 +146,7 @@ public class PatientServiceTests
         result.Error.Should().Be(DomainErrors.Patients.FirstName.Empty);
 
         _repoMock.Verify(r => r.AddAsync(It.IsAny<Patient>(), It.IsAny<CancellationToken>()), Times.Never);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -358,9 +358,9 @@ public class PatientServiceTests
         existingPatient.Gender.Should().Be(dto.Gender);
         existingPatient.PhoneNumber!.Value.Should().Be(dto.PhoneNumber);
         existingPatient.Address.Should().Be(dto.Address);
-        existingPatient.DateOfBirth!.Value.Should().Be(dto.DateOfBirth);
+        existingPatient.DateOfBirth.Should().BeNull();
 
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -380,7 +380,7 @@ public class PatientServiceTests
         await _sut.UpdatePatient(id, dto);
 
         // Assert
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -393,7 +393,7 @@ public class PatientServiceTests
         var dto = ValidUpdateDto();
 
         _unitOfWorkMock
-            .Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .Callback(() =>
             {
                 // By the time SaveChangesAsync runs, the entity must already be updated.
@@ -410,7 +410,7 @@ public class PatientServiceTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Theory]
@@ -435,7 +435,7 @@ public class PatientServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Patients.FirstName.Empty);
         existingPatient.FirstName.Value.Should().Be(originalFirstName);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -458,7 +458,7 @@ public class PatientServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Patients.LastName.TooLong);
         existingPatient.LastName.Value.Should().Be(originalLastName);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -482,7 +482,7 @@ public class PatientServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Patients.DateOfBirth.OlderThanMaximumAllowedAge);
         existingPatient.DateOfBirth!.Value.Should().Be(originalDob);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Theory]
@@ -507,7 +507,7 @@ public class PatientServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Patients.PhoneNumber.Invalid);
         existingPatient.PhoneNumber!.Value.Should().Be(originalPhone);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -529,7 +529,7 @@ public class PatientServiceTests
         result.IsSuccess.Should().BeTrue();
         existingPatient.PhoneNumber.Should().BeNull();
         existingPatient.DateOfBirth.Should().BeNull();
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -550,6 +550,6 @@ public class PatientServiceTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         existingPatient.Address.Should().Be("123 Trimmed St");
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

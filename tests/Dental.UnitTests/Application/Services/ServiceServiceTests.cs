@@ -86,7 +86,7 @@ public class ServiceServiceTests
         result.Error.Should().Be(ServiceErrors.ParameterNullReference);
 
         _repoMock.Verify(r => r.AddAsync(It.IsAny<Service>(), It.IsAny<CancellationToken>()), Times.Never);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
         VerifyLogWarningCalled(Times.Once());
     }
 
@@ -114,7 +114,7 @@ public class ServiceServiceTests
         capturedService.Description.Should().Be(dto.Description);
 
         _repoMock.Verify(r => r.AddAsync(It.IsAny<Service>(), It.IsAny<CancellationToken>()), Times.Once);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class ServiceServiceTests
         result.Error.Should().Be(DomainErrors.Services.ServiceName.Empty);
 
         _repoMock.Verify(r => r.AddAsync(It.IsAny<Service>(), It.IsAny<CancellationToken>()), Times.Never);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -283,7 +283,7 @@ public class ServiceServiceTests
 
         // Assert
         _repoMock.Verify(r => r.AddAsync(It.IsAny<Service>(), cts.Token), Times.Once);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(cts.Token), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(cts.Token), Times.Once);
     }
 
     // ====================================================================
@@ -304,7 +304,7 @@ public class ServiceServiceTests
         result.Error.Should().Be(ServiceErrors.InvalidId);
 
         _repoMock.Verify(r => r.GetByIdAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
         VerifyLogWarningCalled(Times.Once());
     }
 
@@ -323,7 +323,7 @@ public class ServiceServiceTests
         // Assert
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(ServiceErrors.NotFound);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
         VerifyLogWarningCalled(Times.Once());
     }
 
@@ -352,7 +352,7 @@ public class ServiceServiceTests
         existingService.Price.Value.Should().Be(dto.Price);
         existingService.Description.Should().Be(dto.Description);
 
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Theory]
@@ -378,7 +378,7 @@ public class ServiceServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Services.ServiceName.Empty);
         existingService.Name.Value.Should().Be(originalName);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -401,7 +401,7 @@ public class ServiceServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Services.ServiceName.TooLong);
         existingService.Name.Value.Should().Be(originalName);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -424,7 +424,7 @@ public class ServiceServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Services.Money.NonPositiveValue);
         existingService.Price.Value.Should().Be(originalPrice);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -447,7 +447,7 @@ public class ServiceServiceTests
         result.IsFailure.Should().BeTrue();
         result.Error.Should().Be(DomainErrors.Services.Description.TooLong);
         existingService.Description.Should().Be(originalDescription);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -484,7 +484,7 @@ public class ServiceServiceTests
             .ReturnsAsync(existingService);
 
         _unitOfWorkMock
-            .Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .Setup(u => u.CommitAsync(It.IsAny<CancellationToken>()))
             .Callback(() => existingService.Name.Value.Should().Be(dto.Name))
             .Returns(Task.CompletedTask);
 
@@ -493,7 +493,7 @@ public class ServiceServiceTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -513,6 +513,6 @@ public class ServiceServiceTests
 
         // Assert
         _repoMock.Verify(r => r.GetByIdAsync(id, cts.Token), Times.Once);
-        _unitOfWorkMock.Verify(u => u.SaveChangesAsync(cts.Token), Times.Once);
+        _unitOfWorkMock.Verify(u => u.CommitAsync(cts.Token), Times.Once);
     }
 }

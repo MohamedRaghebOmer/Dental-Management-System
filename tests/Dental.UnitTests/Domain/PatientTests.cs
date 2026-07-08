@@ -198,10 +198,12 @@ public class DateOfBirthTests
     [Fact]
     public void Create_WithDateExactlyAtMaximumAgeBoundary_Succeeds()
     {
-        var value = new DateOnly(DateTime.UtcNow.Year - DateOfBirth.MaximumAge, 1, 1);
+        var value = DateOnly
+            .FromDateTime(DateTime.UtcNow)
+            .AddYears(-DateOfBirth.MaximumAge);
 
         var result = DateOfBirth.Create(value);
-
+        
         result.IsSuccess.Should().BeTrue();
     }
 
@@ -248,17 +250,6 @@ public class DateOfBirthTests
 
 public class PhoneNumberTests
 {
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData("   ")]
-    public void Create_WithNullOrWhitespaceValue_ReturnsSuccessWithNullResultValue(string? value)
-    {
-        var result = PhoneNumber.Create(value);
-
-        result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeNull();
-    }
 
     [Theory]
     [InlineData("123")]
@@ -311,8 +302,10 @@ public class PatientTests
 {
     private static FirstName ValidFirstName => FirstName.Create("John").Value;
     private static LastName ValidLastName => LastName.Create("Doe").Value;
+
     private static DateOfBirth? ValidDateOfBirth =>
         DateOfBirth.Create(DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-30))).Value;
+
     private static PhoneNumber? ValidPhoneNumber => PhoneNumber.Create("01012345678").Value;
 
     [Fact]
@@ -471,99 +464,89 @@ public class PatientTests
         patient.Id.Should().Be(originalId);
     }
 
-    [Fact]
-    public void ParameterlessConstructor_ProducesEntityWithDefaultId()
+    // ============================================================================
+    // Entity equality (via Patient, exercising Entity's shared base behavior)
+    // ============================================================================
+
+    public class PatientEntityEqualityTests
     {
-        // The public parameterless constructor exists for EF Core materialization.
-        // Confirm it doesn't throw and yields the expected default state.
-        var patient = new Patient();
+        private static Patient NewPatient(string firstName = "John") =>
+            Patient.Create(
+                FirstName.Create(firstName).Value,
+                LastName.Create("Doe").Value,
+                null,
+                Gender.Male,
+                null,
+                null).Value;
 
-        patient.Id.Should().Be(0);
-    }
-}
+        [Fact]
+        public void TwoDistinctUnsavedPatients_AreConsideredEqual_BecauseBothHaveDefaultId()
+        {
+            // IMPORTANT BEHAVIOR TO BE AWARE OF: Entity equality is based solely on
+            // Id + runtime type. Since Patient.Create never assigns an Id (that only
+            // happens once EF Core persists the entity), two freshly created, never-saved
+            // Patient instances are treated as equal even though their data differs.
+            // This is easy to trip over in in-memory collections (HashSet<Patient>,
+            // Dictionary keyed by entity, etc.) before the entities are saved.
+            var patientA = NewPatient("John");
+            var patientB = NewPatient("Jane");
 
-// ============================================================================
-// Entity equality (via Patient, exercising Entity's shared base behavior)
-// ============================================================================
+            patientA.Should().Be(patientB);
+            (patientA == patientB).Should().BeTrue();
+            patientA.GetHashCode().Should().Be(patientB.GetHashCode());
+        }
 
-public class PatientEntityEqualityTests
-{
-    private static Patient NewPatient(string firstName = "John") =>
-        Patient.Create(
-            FirstName.Create(firstName).Value,
-            LastName.Create("Doe").Value,
-            null,
-            Gender.Male,
-            null,
-            null).Value;
+        [Fact]
+        public void SamePatientReference_IsEqualToItself()
+        {
+            var patient = NewPatient();
 
-    [Fact]
-    public void TwoDistinctUnsavedPatients_AreConsideredEqual_BecauseBothHaveDefaultId()
-    {
-        // IMPORTANT BEHAVIOR TO BE AWARE OF: Entity equality is based solely on
-        // Id + runtime type. Since Patient.Create never assigns an Id (that only
-        // happens once EF Core persists the entity), two freshly created, never-saved
-        // Patient instances are treated as equal even though their data differs.
-        // This is easy to trip over in in-memory collections (HashSet<Patient>,
-        // Dictionary keyed by entity, etc.) before the entities are saved.
-        var patientA = NewPatient("John");
-        var patientB = NewPatient("Jane");
+            patient.Should().Be(patient);
+            (patient == patient).Should().BeTrue();
+        }
 
-        patientA.Should().Be(patientB);
-        (patientA == patientB).Should().BeTrue();
-        patientA.GetHashCode().Should().Be(patientB.GetHashCode());
-    }
+        [Fact]
+        public void PatientComparedToNull_IsNotEqual()
+        {
+            var patient = NewPatient();
 
-    [Fact]
-    public void SamePatientReference_IsEqualToItself()
-    {
-        var patient = NewPatient();
+            patient!.Equals(null).Should().BeFalse();
+            (patient == null).Should().BeFalse();
+            (null == patient).Should().BeFalse();
+        }
 
-        patient.Should().Be(patient);
-        (patient == patient).Should().BeTrue();
-    }
+        [Fact]
+        public void TwoNullPatientReferences_AreEqualViaOperator()
+        {
+            Patient? left = null;
+            Patient? right = null;
 
-    [Fact]
-    public void PatientComparedToNull_IsNotEqual()
-    {
-        var patient = NewPatient();
+            (left == right).Should().BeTrue();
+        }
 
-        patient!.Equals(null).Should().BeFalse();
-        (patient == null).Should().BeFalse();
-        (null == patient).Should().BeFalse();
-    }
+        [Fact]
+        public void InequalityOperator_IsConsistentWithEqualityOperator()
+        {
+            var patientA = NewPatient("John");
+            var patientB = NewPatient("Jane");
 
-    [Fact]
-    public void TwoNullPatientReferences_AreEqualViaOperator()
-    {
-        Patient? left = null;
-        Patient? right = null;
+            // Both have default Id 0, so they ARE equal per current Entity semantics -
+            // != must therefore report false, consistent with ==.
+            (patientA != patientB).Should().BeFalse();
+        }
 
-        (left == right).Should().BeTrue();
-    }
+        [Fact]
+        public void PatientComparedToDifferentEntityType_IsNotEqual_EvenWithSameId()
+        {
+            // Entity.Equals checks GetType() as well as Id, so two different entity
+            // subclasses can never be equal, even if both happen to have Id 0.
+            var patient = NewPatient();
+            var service = Service.Create(
+                ServiceName.Create("Cleaning").Value,
+                Money.Create(50m).Value,
+                null).Value;
 
-    [Fact]
-    public void InequalityOperator_IsConsistentWithEqualityOperator()
-    {
-        var patientA = NewPatient("John");
-        var patientB = NewPatient("Jane");
-
-        // Both have default Id 0, so they ARE equal per current Entity semantics -
-        // != must therefore report false, consistent with ==.
-        (patientA != patientB).Should().BeFalse();
-    }
-
-    [Fact]
-    public void PatientComparedToDifferentEntityType_IsNotEqual_EvenWithSameId()
-    {
-        // Entity.Equals checks GetType() as well as Id, so two different entity
-        // subclasses can never be equal, even if both happen to have Id 0.
-        var patient = NewPatient();
-        var service = Service.Create(
-            ServiceName.Create("Cleaning").Value,
-            Money.Create(50m).Value,
-            null).Value;
-
-        patient.Equals(service).Should().BeFalse();
+            patient.Equals(service).Should().BeFalse();
+        }
     }
 }

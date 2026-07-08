@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dental.Infrastructure.Persistence.Configurations;
 
-public class PatientConfiguration
+public sealed class PatientConfiguration
     : ConfigurationBase<Patient>
     , IEntityTypeConfiguration<Patient>
 {

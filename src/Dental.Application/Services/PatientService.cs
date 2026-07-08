@@ -59,7 +59,7 @@ public class PatientService(
             return Result.Failure<int>(patientResult.Error);
 
         await repo.AddAsync(patientResult.Value);
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.CommitAsync();
 
         return Result.Success(patientResult.Value.Id);
     }
@@ -118,7 +118,7 @@ public class PatientService(
         if (updateResult.IsFailure)
             return Result.Failure(updateResult.Error);
 
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.CommitAsync();
 
         return Result.Success();
     }
