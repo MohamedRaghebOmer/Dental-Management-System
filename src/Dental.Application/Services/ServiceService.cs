@@ -12,10 +12,10 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public class ServiceService(
-    IRepository<Service> repo,
+    IRepository<Service> prescriptionRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceService> logger)
-    : ServiceBase<Service, ServiceResponseDto>(repo, unitOfWork, logger)
+    : ServiceBase<Service, ServiceResponseDto>(prescriptionRepo, unitOfWork, logger)
     , IServiceService
 {
     public async Task<Result<int>> CreateAsync(
@@ -53,8 +53,8 @@ public class ServiceService(
             return Result.Failure<int>(serviceResult.Error);
         }
 
-        await repo.AddAsync(serviceResult.Value, cancellationToken);
-        await unitOfWork.CommitAsync(cancellationToken);
+        await prescriptionRepo.AddAsync(serviceResult.Value, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Service created successfully.");
 
@@ -74,7 +74,7 @@ public class ServiceService(
             return Result.Failure<ServiceResponseDto>(ServiceErrors.InvalidId);
         }
 
-        var service = await repo.GetByIdAsync(id, cancellationToken);
+        var service = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
 
         if (service is null)
         {
@@ -101,7 +101,7 @@ public class ServiceService(
         }
 
         // Save changes
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Service updated successfully.");
 
         return new ServiceResponseDto(service);

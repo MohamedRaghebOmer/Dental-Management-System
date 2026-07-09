@@ -12,13 +12,13 @@ using Id = Dental.Domain.ValueObjects.Id;
 namespace Dental.Application.Services;
 
 public sealed class VisitToothTreatmentService(
-    IVisitToothTreatmentRepository visitToothTreatmentRepo,
+    IVisitToothTreatmentRepository visitToothTreatmentPrescriptionRepo,
     IRepository<Visit> visitRepo,
     IRepository<Service> serviceRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<VisitToothTreatment, VisitToothTreatmentResponseDto>> logger)
     : ServiceBase<VisitToothTreatment, VisitToothTreatmentResponseDto>(
-            visitToothTreatmentRepo,
+            visitToothTreatmentPrescriptionRepo,
             unitOfWork,
             logger)
     , IVisitToothTreatmentService
@@ -43,8 +43,8 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure<int>(ensureForeignKeysResult.Error);
         }
 
-        await visitToothTreatmentRepo.AddAsync(validationResult.Value, cancellationToken);
-        await unitOfWork.CommitAsync(cancellationToken);
+        await visitToothTreatmentPrescriptionRepo.AddAsync(validationResult.Value, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Visit tooth treatment created successfully with ID {Id}", validationResult.Value.Id);
 
@@ -74,7 +74,7 @@ public sealed class VisitToothTreatmentService(
         }
 
         var entity =
-            await visitToothTreatmentRepo.GetByIdAsync(id, cancellationToken);
+            await visitToothTreatmentPrescriptionRepo.GetByIdAsync(id, cancellationToken);
 
         if (entity is null)
         {
@@ -95,7 +95,7 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure(updateResult.Error);
         }
 
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Visit tooth treatment updated successfully. {Id}", id);
 
         return Result.Success();
@@ -179,7 +179,7 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure(ServiceErrors.VisitToothTreatmentErrors.ServiceNotFound);
         }
 
-        if (await visitToothTreatmentRepo.AreServiceIdAndVisitIdExists(
+        if (await visitToothTreatmentPrescriptionRepo.AreServiceIdAndVisitIdExists(
                 dto.ServiceId,
                 dto.VisitId))
         {

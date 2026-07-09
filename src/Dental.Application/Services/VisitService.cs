@@ -11,12 +11,12 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public sealed class VisitService(
-    IRepository<Visit> repo,
+    IRepository<Visit> prescriptionRepo,
     IRepository<Appointment> appointmentRepo,
     IVisitToothTreatmentRepository visitToothTreatmentRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Visit, VisitResponseDto>> logger)
-    : ServiceBase<Visit, VisitResponseDto>(repo, unitOfWork, logger)
+    : ServiceBase<Visit, VisitResponseDto>(prescriptionRepo, unitOfWork, logger)
     , IVisitService
 {
     public async Task<Result<int>> CreateAsync(
@@ -75,8 +75,8 @@ public sealed class VisitService(
             return Result.Failure<int>(ServiceErrors.AppointmentErrors.PatientNotFound);
         }
 
-        await repo.AddAsync(visitResult.Value, cancellationToken);
-        await unitOfWork.CommitAsync(cancellationToken);
+        await prescriptionRepo.AddAsync(visitResult.Value, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Visit created successfully with ID {id}.", visitResult.Value.Id);
         return Result.Success(visitResult.Value.Id);
@@ -122,7 +122,7 @@ public sealed class VisitService(
             return Result.Failure<int>(ServiceErrors.InvalidId);
         }
 
-        var visit = await repo.GetByIdAsync(visitId, cancellationToken);
+        var visit = await prescriptionRepo.GetByIdAsync(visitId, cancellationToken);
 
         if (visit == null)
         {
@@ -143,7 +143,7 @@ public sealed class VisitService(
             return Result.Failure<int>(ServiceErrors.InvalidId);
         }
 
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Visit updated successfully. {VisitId}", visitId);
 
         return Result.Success();

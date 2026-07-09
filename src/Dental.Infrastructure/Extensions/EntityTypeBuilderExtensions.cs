@@ -1,7 +1,7 @@
 ﻿using Dental.Domain.Primitives;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Dental.Infrastructure.Persistence.Extensions;
+namespace Dental.Infrastructure.Extensions;
 
 public static class EntityTypeBuilderExtensions
 {

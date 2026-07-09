@@ -12,11 +12,11 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public class AppointmentService(
-    IRepository<Appointment> repo,
+    IRepository<Appointment> prescriptionRepo,
     IRepository<Patient> patientRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger)
-    : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger)
+    : ServiceBase<Appointment, AppointmentResponseDto>(prescriptionRepo, unitOfWork, logger)
     , IAppointmentService
 {
     public async Task<Result<int>> CreateAsync(
@@ -50,7 +50,7 @@ public class AppointmentService(
             return Result.Failure<int>(appointmentResult.Error);
         }
 
-        await repo.AddAsync(appointmentResult.Value, cancellationToken);
+        await prescriptionRepo.AddAsync(appointmentResult.Value, cancellationToken);
 
         logger.LogInformation("Appointment created successfully.", cancellationToken);
 
@@ -72,7 +72,7 @@ public class AppointmentService(
         }
 
 
-        var appointment = await repo.GetByIdAsync(appointmentId, cancellationToken);
+        var appointment = await prescriptionRepo.GetByIdAsync(appointmentId, cancellationToken);
         if (appointment == null)
         {
             logger.LogWarning("Failed to update appointment: Appointment not found.", cancellationToken);
@@ -98,7 +98,7 @@ public class AppointmentService(
             return Result.Failure(updateResult.Error);
         }
 
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Appointment updated successfully.", cancellationToken);
 
         return Result.Success(cancellationToken);
@@ -116,7 +116,7 @@ public class AppointmentService(
         }
 
 
-        var appointment = await repo.GetByIdAsync(id, cancellationToken);
+        var appointment = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
         {
             logger.LogWarning("Failed to cancel appointment: Appointment not found.", cancellationToken);
@@ -131,7 +131,7 @@ public class AppointmentService(
         }
 
 
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Appointment canceled successfully.", cancellationToken);
 
         return Result.Success(cancellationToken);
@@ -149,7 +149,7 @@ public class AppointmentService(
         }
 
 
-        var appointment = await repo.GetByIdAsync(id, cancellationToken);
+        var appointment = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
         {
             logger.LogWarning("Failed to complete appointment: Appointment not found.", cancellationToken);
@@ -163,7 +163,7 @@ public class AppointmentService(
             return Result.Failure(completeResult.Error);
         }
 
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Appointment completed successfully.", cancellationToken);
 
         return Result.Success(cancellationToken);
@@ -180,7 +180,7 @@ public class AppointmentService(
             return Result.Failure<bool>(ServiceErrors.InvalidId);
         }
 
-        var appointment = await repo.GetByIdAsync(id, cancellationToken);
+        var appointment = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
         {
             logger.LogWarning("Failed to check if appointment is missed: Appointment not found.", cancellationToken);

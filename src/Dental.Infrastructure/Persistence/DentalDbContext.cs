@@ -12,6 +12,7 @@ public sealed class DentalDbContext(
     public DbSet<VisitToothTreatment> VisitToothTreatments => Set<VisitToothTreatment>();
     public DbSet<Appointment> Appointments => Set<Appointment>();
     public DbSet<Patient> Patients => Set<Patient>();
+    public DbSet<Prescription> Prescriptions => Set<Prescription>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

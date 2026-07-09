@@ -193,4 +193,14 @@ public static class DomainErrors
                 $"Visit tooth treatment notes cannot exceed {Entities.VisitToothTreatment.Constants.NotesMaxLength} characters length.");
         }
     }
+
+    public static class Precription
+    {
+        public static class Notes
+        {
+            public static readonly Error TooLong = new(
+                "PrescriptionNotes.TooLong",
+                $"The prescription notes cannot be longer than {Entities.Prescription.Constants.NotesMaxLength} characters.");
+        }
+    }
 }
