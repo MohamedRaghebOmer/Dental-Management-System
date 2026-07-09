@@ -6,11 +6,11 @@ namespace Dental.Application.Abstractions.ServicesInterfaces;
 public interface IPatientService
 {
     Task<Result<int>> CreateAsync(
-        CreatePatientDto dto,
+        PatientRequestDto requestDto,
         CancellationToken cancellationToken = default);
 
     Task<Result> UpdateAsync(
         int patientId,
-        UpdatePatientDto dto,
+        PatientRequestDto dto,
         CancellationToken cancellationToken = default);
 }

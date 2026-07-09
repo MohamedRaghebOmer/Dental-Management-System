@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dental.Application.DTOs.Patient;
 
-public sealed record UpdatePatientDto
+public sealed record PatientRequestDto()
 {
     [StringLength(Domain.ValueObjects.FirstName.MaxLength)]
     public required string FirstName { get; init; }
