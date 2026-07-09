@@ -7,11 +7,14 @@ namespace Dental.Domain.Entities;
 
 public sealed class Service : Entity
 {
-    public const int DescriptionMaxLength = 500;
-    public const int NameMaxLength = ServiceName.MaxLength;
+    public static class Constants
+    {
+        public const int DescriptionMaxLength = 500;
+        public const int NameMaxLength = 100;
+    }
 
     private Service(
-        ServiceName name,
+        string name,
         Money price,
         string? description = null)
     {
@@ -22,7 +25,7 @@ public sealed class Service : Entity
 
     private Service() { } // EF Core
 
-    public ServiceName Name { get; private set; } = default!;
+    public string Name { get; private set; }
 
     public Money Price { get; private set; } = default!;
 
@@ -30,28 +33,28 @@ public sealed class Service : Entity
     public ICollection<VisitToothTreatment> VisitToothTreatments { get; private set; } = [];
 
     public static Result<Service> Create(
-        ServiceName name,
+        string name,
         Money price,
         string? description = null)
     {
         if (!string.IsNullOrWhiteSpace(description)
-            && description.Length > DescriptionMaxLength)
+            && description.Length > Constants.DescriptionMaxLength)
         {
-            return Result.Failure<Service>(DomainErrors.Services.Description.TooLong);
+            return Result.Failure<Service>(DomainErrors.Entities.Services.Description.TooLong);
         }
 
         return new Service(name, price, description?.Trim());
     }
 
     public Result Update(
-        ServiceName name,
+        string name,
         Money price,
         string? description = null)
     {
         if (!string.IsNullOrWhiteSpace(description)
-            && description.Length > DescriptionMaxLength)
+            && description.Length > Constants.DescriptionMaxLength)
         {
-            return Result.Failure(DomainErrors.Services.Description.TooLong);
+            return Result.Failure(DomainErrors.Entities.Services.Description.TooLong);
         }
 
         Name = name;

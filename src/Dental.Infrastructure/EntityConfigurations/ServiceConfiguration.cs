@@ -32,12 +32,8 @@ public sealed class ServiceConfiguration
     protected override void ConfigureProperties(EntityTypeBuilder<Service> builder)
     {
         builder.Property(x => x.Name)
-            .HasConversion(
-                x => x.Value,
-                x => ServiceName.FromDatabase(x)
-            )
             .HasColumnName(nameof(Service.Name))
-            .HasMaxLength(Service.NameMaxLength)
+            .HasMaxLength(Service.Constants.NameMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Price)
@@ -50,7 +46,7 @@ public sealed class ServiceConfiguration
 
         builder.Property(x => x.Description)
             .HasColumnName(nameof(Service.Description))
-            .HasMaxLength(Service.DescriptionMaxLength)
+            .HasMaxLength(Service.Constants.DescriptionMaxLength)
             .IsRequired(false);
     }
 

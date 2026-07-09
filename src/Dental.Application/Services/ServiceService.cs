@@ -30,12 +30,6 @@ public class ServiceService(
             return Result.Failure<int>(ServiceErrors.ParameterNullReference);
         }
 
-        var nameResult = ServiceName.Create(dto.Name);
-        if (!nameResult.IsSuccess)
-        {
-            return Result.Failure<int>(nameResult.Error);
-        }
-
         var priceResult = Money.Create(dto.Price);
         if (!priceResult.IsSuccess)
         {
@@ -44,7 +38,7 @@ public class ServiceService(
 
         var serviceResult =
             Service.Create(
-                nameResult.Value,
+                dto.Name,
                 priceResult.Value,
                 dto.Description);
 
@@ -82,19 +76,13 @@ public class ServiceService(
             return Result.Failure<ServiceResponseDto>(ServiceErrors.NotFound);
         }
 
-        var name = ServiceName.Create(dto.Name);
-        if (!name.IsSuccess)
-        {
-            return Result.Failure<ServiceResponseDto>(name.Error);
-        }
-
         var price = Money.Create(dto.Price);
         if (!price.IsSuccess)
         {
             return Result.Failure<ServiceResponseDto>(price.Error);
         }
 
-        var updateResult = service.Update(name.Value, price.Value, dto.Description);
+        var updateResult = service.Update(dto.Name, price.Value, dto.Description);
         if (!updateResult.IsSuccess)
         {
             return Result.Failure<ServiceResponseDto>(updateResult.Error);

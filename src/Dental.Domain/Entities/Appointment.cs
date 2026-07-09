@@ -46,14 +46,14 @@ public sealed class Appointment : Entity
     {
         if (appointmentDate < DateTime.Now)
         {
-            return Result.Failure<Appointment>(DomainErrors.Appointment.Date.InThePast);
+            return Result.Failure<Appointment>(DomainErrors.Entities.Appointment.Date.InThePast);
         }
 
         notes = notes?.Trim();
 
         if (notes?.Length > Constants.NotesMaxLength)
         {
-            return Result.Failure<Appointment>(DomainErrors.Appointment.Notes.TooLong);
+            return Result.Failure<Appointment>(DomainErrors.Entities.Appointment.Notes.TooLong);
         }
 
         return new Appointment(
@@ -71,19 +71,19 @@ public sealed class Appointment : Entity
     {
         if (appointmentDate < DateTime.Now)
         {
-            return Result.Failure(DomainErrors.Appointment.Date.InThePast);
+            return Result.Failure(DomainErrors.Entities.Appointment.Date.InThePast);
         }
 
         if (Status != AppointmentStatus.Pending)
         {
             if (appointmentDate != this.AppointmentDate)
             {
-                return Result.Failure(DomainErrors.Appointment.Date.CannotBeChangedWhenStatusIsNotPending);
+                return Result.Failure(DomainErrors.Entities.Appointment.Date.CannotBeChangedWhenStatusIsNotPending);
             }
 
             if (patientId != this.PatientId)
             {
-                return Result.Failure(DomainErrors.Appointment.PatientId.CannotBeChangedWhenStatusIsNotPending);
+                return Result.Failure(DomainErrors.Entities.Appointment.PatientId.CannotBeChangedWhenStatusIsNotPending);
             }
         }
 
@@ -91,7 +91,7 @@ public sealed class Appointment : Entity
 
         if (notes?.Length > Constants.NotesMaxLength)
         {
-            return Result.Failure(DomainErrors.Appointment.Notes.TooLong);
+            return Result.Failure(DomainErrors.Entities.Appointment.Notes.TooLong);
         }
 
         this.PatientId = patientId;
@@ -107,7 +107,7 @@ public sealed class Appointment : Entity
             || Status == AppointmentStatus.Completed)
         {
             return Result.Failure(
-                DomainErrors
+                DomainErrors.Entities
                 .Appointment
                 .Status
                 .CannotBeCanceledWhenCompletedOrCanceled);
@@ -122,7 +122,7 @@ public sealed class Appointment : Entity
         if (Status == AppointmentStatus.Completed
             || Status == AppointmentStatus.Canceled)
         {
-            return Result.Failure(DomainErrors
+            return Result.Failure(DomainErrors.Entities
                     .Appointment
                     .Status
                     .CannotBeCompletedWhenCanceledOrCompleted);
