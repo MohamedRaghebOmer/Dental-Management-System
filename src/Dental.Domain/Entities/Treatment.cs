@@ -5,7 +5,7 @@ using Dental.Domain.ValueObjects;
 
 namespace Dental.Domain.Entities;
 
-public sealed class Service : Entity
+public sealed class Treatment : Entity
 {
     public static class Constants
     {
@@ -13,7 +13,7 @@ public sealed class Service : Entity
         public const int NameMaxLength = 100;
     }
 
-    private Service(
+    private Treatment(
         string name,
         Money price,
         string? description = null)
@@ -23,7 +23,7 @@ public sealed class Service : Entity
         Description = description;
     }
 
-    private Service() { } // EF Core
+    private Treatment() { } // EF Core
 
     public string Name { get; private set; }
 
@@ -32,7 +32,7 @@ public sealed class Service : Entity
     public string? Description { get; private set; }
     public ICollection<VisitToothTreatment> VisitToothTreatments { get; private set; } = [];
 
-    public static Result<Service> Create(
+    public static Result<Treatment> Create(
         string name,
         Money price,
         string? description = null)
@@ -40,10 +40,10 @@ public sealed class Service : Entity
         if (!string.IsNullOrWhiteSpace(description)
             && description.Length > Constants.DescriptionMaxLength)
         {
-            return Result.Failure<Service>(DomainErrors.Entities.Services.Description.TooLong);
+            return Result.Failure<Treatment>(DomainErrors.Entities.Treatment.Description.TooLong);
         }
 
-        return new Service(name, price, description?.Trim());
+        return new Treatment(name, price, description?.Trim());
     }
 
     public Result Update(
@@ -54,7 +54,7 @@ public sealed class Service : Entity
         if (!string.IsNullOrWhiteSpace(description)
             && description.Length > Constants.DescriptionMaxLength)
         {
-            return Result.Failure(DomainErrors.Entities.Services.Description.TooLong);
+            return Result.Failure(DomainErrors.Entities.Treatment.Description.TooLong);
         }
 
         Name = name;

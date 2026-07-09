@@ -12,13 +12,13 @@ using Id = Dental.Domain.ValueObjects.Id;
 namespace Dental.Application.Services;
 
 public sealed class VisitToothTreatmentService(
-    IVisitToothTreatmentRepository visitToothTreatmentPrescriptionItemRepo,
+    IVisitToothTreatmentRepository visitToothTreatmentRepo,
     IRepository<Visit> visitRepo,
-    IRepository<Service> serviceRepo,
+    IRepository<Treatment> serviceRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<VisitToothTreatment, VisitToothTreatmentResponseDto>> logger)
     : ServiceBase<VisitToothTreatment, VisitToothTreatmentResponseDto>(
-            visitToothTreatmentPrescriptionItemRepo,
+            visitToothTreatmentRepo,
             unitOfWork,
             logger)
     , IVisitToothTreatmentService
@@ -29,21 +29,13 @@ public sealed class VisitToothTreatmentService(
     {
         logger.LogInformation("VisitToothTreatmentService.CreateAsync is called. {dto}", dto);
 
-        var validationResult = ValidateAndGetValidEntity(dto);
+        var validationResult = await BuildEntityAndEnsureForeignKeys(dto, cancellationToken);
         if (validationResult.IsFailure)
         {
-            logger.LogWarning("Failed to create visit tooth treatment: {Error}", validationResult.Error);
             return Result.Failure<int>(validationResult.Error);
         }
 
-        var ensureForeignKeysResult = await EnsureForeignKeys(dto, cancellationToken);
-        if (ensureForeignKeysResult.IsFailure)
-        {
-            logger.LogWarning("Failed to create visit tooth treatment: {Error}", ensureForeignKeysResult.Error);
-            return Result.Failure<int>(ensureForeignKeysResult.Error);
-        }
-
-        await visitToothTreatmentPrescriptionItemRepo.AddAsync(validationResult.Value, cancellationToken);
+        await visitToothTreatmentRepo.AddAsync(validationResult.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Visit tooth treatment created successfully with ID {Id}", validationResult.Value.Id);
@@ -58,23 +50,14 @@ public sealed class VisitToothTreatmentService(
     {
         logger.LogInformation("VisitToothTreatmentService.UpdateAsync is called. {Id} {VisitToothTreatmentRequestDto}", id, dto);
 
-        var validationResult = ValidateAndGetValidEntity(dto, id);
+        var validationResult = await BuildEntityAndEnsureForeignKeys(dto, cancellationToken, id);
         if (validationResult.IsFailure)
         {
-            logger.LogWarning("Failed to update visit tooth treatment: {Error}", validationResult.Error);
             return Result.Failure(validationResult.Error);
         }
 
-        var ensureForeignKeysResult =
-            await EnsureForeignKeys(dto, cancellationToken);
-        if (ensureForeignKeysResult.IsFailure)
-        {
-            logger.LogWarning("Failed to update visit tooth treatment: {Error}", ensureForeignKeysResult.Error);
-            return Result.Failure(ensureForeignKeysResult.Error);
-        }
-
         var entity =
-            await visitToothTreatmentPrescriptionItemRepo.GetByIdAsync(id, cancellationToken);
+            await visitToothTreatmentRepo.GetByIdAsync(id, cancellationToken);
 
         if (entity is null)
         {
@@ -101,9 +84,9 @@ public sealed class VisitToothTreatmentService(
         return Result.Success();
     }
 
-
-    private Result<VisitToothTreatment> ValidateAndGetValidEntity(
+    private async Task<Result<VisitToothTreatment>> BuildEntityAndEnsureForeignKeys(
         VisitToothTreatmentRequestDto dto,
+        CancellationToken cancellationToken,
         int? id = null)
     {
         if (id <= 0)
@@ -155,6 +138,15 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure<VisitToothTreatment>(visitToothTreatmentResult.Error);
         }
 
+        var ensureForeignKeysResult = await EnsureForeignKeys(
+            dto,
+            cancellationToken);
+        
+        if (ensureForeignKeysResult.IsFailure)
+        {
+            return Result.Failure<VisitToothTreatment>(ensureForeignKeysResult.Error);
+        }
+
         return visitToothTreatmentResult.Value;
     }
 
@@ -179,7 +171,7 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure(ServiceErrors.VisitToothTreatmentErrors.ServiceNotFound);
         }
 
-        if (await visitToothTreatmentPrescriptionItemRepo.AreServiceIdAndVisitIdExists(
+        if (await visitToothTreatmentRepo.AreServiceIdAndVisitIdExists(
                 dto.ServiceId,
                 dto.VisitId))
         {

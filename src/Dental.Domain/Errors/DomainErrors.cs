@@ -7,25 +7,25 @@ public static class DomainErrors
 {
     public static class Entities
     {
-        public static class Services
+        public static class Treatment
         {
             public static class Name
             {
                 public static readonly Error Empty = new(
-                    "ServiceName.Empty",
-                    "The service name cannot be empty.");
+                    "TreatmentName.Empty",
+                    "The treatment name cannot be empty.");
 
                 public static readonly Error TooLong = new(
-                    "ServiceName.TooLong",
-                    $"The service name cannot be longer than {Service.Constants.NameMaxLength} characters."
+                    "TreatmentName.TooLong",
+                    $"The treatment name cannot be longer than {Domain.Entities.Treatment.Constants.NameMaxLength} characters."
                 );
             }
 
             public static class Description
             {
                 public static readonly Error TooLong = new(
-                    "Description.TooLong",
-                    $@"The description cannot be longer than {Service.Constants.DescriptionMaxLength} characters."
+                    "TreatmentDescription.TooLong",
+                    $@"The description cannot be longer than {Domain.Entities.Treatment.Constants.DescriptionMaxLength} characters."
                 );
             }
         }
@@ -219,7 +219,7 @@ public static class DomainErrors
         }
     }
 
-    public static class Precription
+    public static class Prescription
     {
         public static class Notes
         {

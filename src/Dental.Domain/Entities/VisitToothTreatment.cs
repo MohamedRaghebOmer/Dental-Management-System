@@ -19,7 +19,7 @@ public sealed class VisitToothTreatment : Entity
     public string? Notes { get; private set; }
 
     public Visit Visit { get; private set; } = default!;
-    public Service Service { get; private set; } = default!;
+    public Treatment Treatment { get; private set; } = default!;
 
     private VisitToothTreatment() { } // EF Core
 

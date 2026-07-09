@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Abstractions;
 
 public abstract class ServiceBase<TEntity, TResponseDto>(
-    IRepository<TEntity> prescriptionItemRepo,
+    IRepository<TEntity> repo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<TEntity, TResponseDto>> logger)
     where TEntity : Entity
@@ -26,7 +26,7 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
             return Result.Failure<TResponseDto>(ServiceErrors.InvalidId);
         }
 
-        var entity = await prescriptionItemRepo.GetByIdAsync(id, cancellationToken);
+        var entity = await repo.GetByIdAsync(id, cancellationToken);
 
         if (entity is null)
         {
@@ -40,20 +40,9 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
     public async Task<Result<IEnumerable<TResponseDto>>> GetAllAsync(
         CancellationToken cancellationToken = default)
     {
-        var services = await prescriptionItemRepo.GetAllAsync(cancellationToken);
+        var all = await repo.GetAllAsync(cancellationToken);
 
-        var dtos =
-            services.Select(TResponseDto.ToResponseDto);
-
-        if (dtos is null || !dtos.Any())
-        {
-            logger.LogWarning(
-                "No data found in the database table of type {EntityType}.",
-                typeof(TEntity).Name);
-
-            return Result.Failure<IEnumerable<TResponseDto>>
-                (ServiceErrors.EmptyDataset);
-        }
+        var dtos = all.Select(TResponseDto.ToResponseDto);
 
         return Result.Success(dtos);
     }
@@ -72,14 +61,14 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
             return Result.Failure(ServiceErrors.InvalidId);
         }
 
-        var entity = await prescriptionItemRepo.GetByIdAsync(id, cancellationToken);
+        var entity = await repo.GetByIdAsync(id, cancellationToken);
 
         if (entity is null)
         {
             return Result.Failure(ServiceErrors.NotFound);
         }
 
-        await prescriptionItemRepo.DeleteAsync(id, cancellationToken);
+        await repo.DeleteAsync(id, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

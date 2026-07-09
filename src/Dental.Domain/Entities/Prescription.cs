@@ -84,7 +84,7 @@ public sealed class Prescription : Entity
     {
         if (notes?.Trim().Length > Constants.NotesMaxLength)
         {
-            return Result.Failure(DomainErrors.Precription.Notes.TooLong);
+            return Result.Failure(DomainErrors.Prescription.Notes.TooLong);
         }
 
         return Result.Success();

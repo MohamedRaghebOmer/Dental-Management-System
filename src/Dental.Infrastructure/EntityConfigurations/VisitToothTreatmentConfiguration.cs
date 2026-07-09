@@ -52,7 +52,7 @@ public sealed class VisitToothTreatmentConfiguration
             .HasForeignKey(x => x.VisitId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.Service)
+        builder.HasOne(x => x.Treatment)
             .WithMany(x => x.VisitToothTreatments)
             .HasForeignKey(x => x.ServiceId)
             .OnDelete(DeleteBehavior.Restrict);

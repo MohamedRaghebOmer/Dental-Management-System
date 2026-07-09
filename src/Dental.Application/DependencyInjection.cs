@@ -11,10 +11,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<ServiceBase<Service, ServiceResponseDto>, ServiceService>();
+        services.AddScoped<ServiceBase<Treatment, ServiceResponseDto>, TreatmentService>();
         services.AddScoped<IAppointmentService, AppointmentService>();
         services.AddScoped<IPatientService, PatientService>();
-        services.AddScoped<IServiceService, ServiceService>();
+        services.AddScoped<ITreatmentService, TreatmentService>();
         services.AddScoped<IVisitService, VisitService>();
 
         return services;

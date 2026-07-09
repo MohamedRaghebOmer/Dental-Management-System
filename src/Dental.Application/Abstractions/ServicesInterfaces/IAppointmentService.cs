@@ -5,12 +5,12 @@ namespace Dental.Application.Abstractions.ServicesInterfaces;
 
 public interface IAppointmentService
 {
-    Task<Result<int>> CreateAsync(CreateAppointmentDto dto,
+    Task<Result<int>> CreateAsync(AppointmentRequestDto requestDto,
         CancellationToken cancellationToken = default);
 
     Task<Result> UpdateAsync(
         int appointmentId,
-        UpdateAppointmentDto dto,
+        AppointmentRequestDto dto,
         CancellationToken cancellationToken = default);
 
     Task<Result> CancelAsync(
