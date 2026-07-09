@@ -1,17 +1,16 @@
-﻿using Dental.Application.DTOs.Responses;
-using Dental.Application.DTOs.Service;
+﻿using Dental.Application.DTOs.Treatment;
 using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;
 
-public interface IServiceService
+public interface ITreatmentService
 {
     Task<Result<int>> CreateAsync(
-        CreateServiceDto? dto,
+        TreatmentRequestDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<Result<ServiceResponseDto>> UpdateAsync(
+    Task<Result> UpdateAsync(
         int id,
-        UpdateServiceDto dto,
+        TreatmentRequestDto dto,
         CancellationToken cancellationToken = default);
 }

@@ -12,13 +12,13 @@ using Id = Dental.Domain.ValueObjects.Id;
 namespace Dental.Application.Services;
 
 public sealed class VisitToothTreatmentService(
-    IVisitToothTreatmentRepository visitToothTreatmentPrescriptionItemRepo,
+    IVisitToothTreatmentRepository visitToothTreatmentRepo,
     IRepository<Visit> visitRepo,
-    IRepository<Service> serviceRepo,
+    IRepository<Treatment> serviceRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<VisitToothTreatment, VisitToothTreatmentResponseDto>> logger)
     : ServiceBase<VisitToothTreatment, VisitToothTreatmentResponseDto>(
-            visitToothTreatmentPrescriptionItemRepo,
+            visitToothTreatmentRepo,
             unitOfWork,
             logger)
     , IVisitToothTreatmentService
@@ -43,7 +43,7 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure<int>(ensureForeignKeysResult.Error);
         }
 
-        await visitToothTreatmentPrescriptionItemRepo.AddAsync(validationResult.Value, cancellationToken);
+        await visitToothTreatmentRepo.AddAsync(validationResult.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Visit tooth treatment created successfully with ID {Id}", validationResult.Value.Id);
@@ -74,7 +74,7 @@ public sealed class VisitToothTreatmentService(
         }
 
         var entity =
-            await visitToothTreatmentPrescriptionItemRepo.GetByIdAsync(id, cancellationToken);
+            await visitToothTreatmentRepo.GetByIdAsync(id, cancellationToken);
 
         if (entity is null)
         {
@@ -179,7 +179,7 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure(ServiceErrors.VisitToothTreatmentErrors.ServiceNotFound);
         }
 
-        if (await visitToothTreatmentPrescriptionItemRepo.AreServiceIdAndVisitIdExists(
+        if (await visitToothTreatmentRepo.AreServiceIdAndVisitIdExists(
                 dto.ServiceId,
                 dto.VisitId))
         {

@@ -6,54 +6,54 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dental.Infrastructure.EntityConfigurations;
 
-public sealed class ServiceConfiguration
-    : BaseEntityConfiguration<Service>
-    , IEntityTypeConfiguration<Service>
+public sealed class TreatmentConfiguration
+    : BaseEntityConfiguration<Treatment>
+    , IEntityTypeConfiguration<Treatment>
 
 {
-    public void Configure(EntityTypeBuilder<Service> builder)
+    public void Configure(EntityTypeBuilder<Treatment> builder)
     {
         ConfigureProperties(builder);
         AddCheckConstraints(builder);
         ConfigureIndexes(builder);
     }
 
-    private void AddCheckConstraints(EntityTypeBuilder<Service> builder)
+    private void AddCheckConstraints(EntityTypeBuilder<Treatment> builder)
     {
         builder.ToTable(table =>
         {
             table.HasCheckConstraint(
-                "CK_Services_Price",
+                "CK_Treatments_Price",
                 @"Price >= 0"
             );
         });
     }
 
-    protected override void ConfigureProperties(EntityTypeBuilder<Service> builder)
+    protected override void ConfigureProperties(EntityTypeBuilder<Treatment> builder)
     {
         builder.Property(x => x.Name)
-            .HasColumnName(nameof(Service.Name))
-            .HasMaxLength(Service.Constants.NameMaxLength)
+            .HasColumnName(nameof(Treatment.Name))
+            .HasMaxLength(Treatment.Constants.NameMaxLength)
             .IsRequired();
 
         builder.Property(x => x.Price)
             .HasConversion(
                 x => x.Value,
                 x => Money.FromDatabase(x))
-            .HasColumnName(nameof(Service.Price))
+            .HasColumnName(nameof(Treatment.Price))
             .HasPrecision(18, 2)
             .IsRequired();
 
         builder.Property(x => x.Description)
-            .HasColumnName(nameof(Service.Description))
-            .HasMaxLength(Service.Constants.DescriptionMaxLength)
+            .HasColumnName(nameof(Treatment.Description))
+            .HasMaxLength(Treatment.Constants.DescriptionMaxLength)
             .IsRequired(false);
     }
 
-    private static void ConfigureIndexes(EntityTypeBuilder<Service> builder)
+    private static void ConfigureIndexes(EntityTypeBuilder<Treatment> builder)
     {
         builder.HasIndex(x => x.Name)
-            .HasDatabaseName("UX_Services_Name")
+            .HasDatabaseName("UX_Treatments_Name")
             .IsUnique();
     }
 }
