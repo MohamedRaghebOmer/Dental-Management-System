@@ -92,7 +92,7 @@ public class AppointmentService(
     {
         if (id is <= 0)
         {
-            logger.LogWarning("Failed to update appointment: Invalid appointment ID.", cancellationToken);
+            logger.LogWarning("Failed to update appointment: Invalid appointment ID. {Id}", id);
             return Result.Failure<Appointment>(ServiceErrors.InvalidId);
         }
 

@@ -29,18 +29,10 @@ public sealed class VisitToothTreatmentService(
     {
         logger.LogInformation("VisitToothTreatmentService.CreateAsync is called. {dto}", dto);
 
-        var validationResult = ValidateAndGetValidEntity(dto);
+        var validationResult = await BuildEntityAndEnsureForeignKeys(dto, cancellationToken);
         if (validationResult.IsFailure)
         {
-            logger.LogWarning("Failed to create visit tooth treatment: {Error}", validationResult.Error);
             return Result.Failure<int>(validationResult.Error);
-        }
-
-        var ensureForeignKeysResult = await EnsureForeignKeys(dto, cancellationToken);
-        if (ensureForeignKeysResult.IsFailure)
-        {
-            logger.LogWarning("Failed to create visit tooth treatment: {Error}", ensureForeignKeysResult.Error);
-            return Result.Failure<int>(ensureForeignKeysResult.Error);
         }
 
         await visitToothTreatmentRepo.AddAsync(validationResult.Value, cancellationToken);
@@ -58,19 +50,10 @@ public sealed class VisitToothTreatmentService(
     {
         logger.LogInformation("VisitToothTreatmentService.UpdateAsync is called. {Id} {VisitToothTreatmentRequestDto}", id, dto);
 
-        var validationResult = ValidateAndGetValidEntity(dto, id);
+        var validationResult = await BuildEntityAndEnsureForeignKeys(dto, cancellationToken, id);
         if (validationResult.IsFailure)
         {
-            logger.LogWarning("Failed to update visit tooth treatment: {Error}", validationResult.Error);
             return Result.Failure(validationResult.Error);
-        }
-
-        var ensureForeignKeysResult =
-            await EnsureForeignKeys(dto, cancellationToken);
-        if (ensureForeignKeysResult.IsFailure)
-        {
-            logger.LogWarning("Failed to update visit tooth treatment: {Error}", ensureForeignKeysResult.Error);
-            return Result.Failure(ensureForeignKeysResult.Error);
         }
 
         var entity =
@@ -101,9 +84,9 @@ public sealed class VisitToothTreatmentService(
         return Result.Success();
     }
 
-
-    private Result<VisitToothTreatment> ValidateAndGetValidEntity(
+    private async Task<Result<VisitToothTreatment>> BuildEntityAndEnsureForeignKeys(
         VisitToothTreatmentRequestDto dto,
+        CancellationToken cancellationToken,
         int? id = null)
     {
         if (id <= 0)
@@ -153,6 +136,15 @@ public sealed class VisitToothTreatmentService(
             logger.LogWarning("Failed to create visit tooth treatment." +
                               "{VisitToothTreatmentResult}", visitToothTreatmentResult);
             return Result.Failure<VisitToothTreatment>(visitToothTreatmentResult.Error);
+        }
+
+        var ensureForeignKeysResult = await EnsureForeignKeys(
+            dto,
+            cancellationToken);
+        
+        if (ensureForeignKeysResult.IsFailure)
+        {
+            return Result.Failure<VisitToothTreatment>(ensureForeignKeysResult.Error);
         }
 
         return visitToothTreatmentResult.Value;
