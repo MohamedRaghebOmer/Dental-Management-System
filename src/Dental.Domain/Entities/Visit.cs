@@ -20,6 +20,7 @@ public sealed class Visit : Entity
 
     public Appointment? Appointment { get; private set; }
     public ICollection<VisitToothTreatment> VisitToothTreatments { get; private set; } = [];
+    public ICollection<Prescription> Prescriptions { get; private set; } = [];
 
     private Visit() { } // EF Core
 

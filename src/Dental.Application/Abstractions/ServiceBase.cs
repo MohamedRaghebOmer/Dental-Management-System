@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Abstractions;
 
 public abstract class ServiceBase<TEntity, TResponseDto>(
-    IRepository<TEntity> repo,
+    IRepository<TEntity> prescriptionRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<TEntity, TResponseDto>> logger)
     where TEntity : Entity
@@ -26,7 +26,7 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
             return Result.Failure<TResponseDto>(ServiceErrors.InvalidId);
         }
 
-        var entity = await repo.GetByIdAsync(id, cancellationToken);
+        var entity = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
 
         if (entity is null)
         {
@@ -40,7 +40,7 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
     public async Task<Result<IEnumerable<TResponseDto>>> GetAllAsync(
         CancellationToken cancellationToken = default)
     {
-        var services = await repo.GetAllAsync(cancellationToken);
+        var services = await prescriptionRepo.GetAllAsync(cancellationToken);
 
         var dtos =
             services.Select(TResponseDto.ToResponseDto);
@@ -72,15 +72,15 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
             return Result.Failure(ServiceErrors.InvalidId);
         }
 
-        var entity = await repo.GetByIdAsync(id, cancellationToken);
+        var entity = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
 
         if (entity is null)
         {
             return Result.Failure(ServiceErrors.NotFound);
         }
 
-        await repo.DeleteAsync(id, cancellationToken);
-        await unitOfWork.CommitAsync(cancellationToken);
+        await prescriptionRepo.DeleteAsync(id, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }

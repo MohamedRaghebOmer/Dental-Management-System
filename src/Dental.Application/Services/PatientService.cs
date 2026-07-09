@@ -11,10 +11,10 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public class PatientService(
-    IRepository<Patient> repo,
+    IRepository<Patient> prescriptionRepo,
     IUnitOfWork unitOfWork,
     ILogger<PatientService> logger) :
-    ServiceBase<Patient, PatientResponseDto>(repo, unitOfWork, logger)
+    ServiceBase<Patient, PatientResponseDto>(prescriptionRepo, unitOfWork, logger)
     , IPatientService
 {
     public async Task<Result<int>> CreateAsync(
@@ -82,8 +82,8 @@ public class PatientService(
         }
             
 
-        await repo.AddAsync(patientResult.Value, cancellationToken);
-        await unitOfWork.CommitAsync(cancellationToken);
+        await prescriptionRepo.AddAsync(patientResult.Value, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Patient created successfully. {PatientId}", patientResult.Value.Id);
 
         return Result.Success(patientResult.Value.Id);
@@ -103,7 +103,7 @@ public class PatientService(
         }
             
 
-        var patient = await repo.GetByIdAsync(id, cancellationToken);
+        var patient = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
         if (patient is null)
         {
             logger.LogWarning("Patient not found. {Id}", id);
@@ -171,7 +171,7 @@ public class PatientService(
             return Result.Failure(updateResult.Error);
         }
 
-        await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Patient updated successfully. {PatientId}", patient.Id);
 
         return Result.Success();

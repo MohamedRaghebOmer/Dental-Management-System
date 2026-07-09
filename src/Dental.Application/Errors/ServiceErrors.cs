@@ -35,4 +35,12 @@ public static class ServiceErrors
         public static readonly Error PatientNotFound =
             new("PatientNotFound", "Patient not found.");
     }
+
+    public static class Prescription
+    {
+        public static readonly Error PatientNotFound =
+            new("PatientNotFound", "Patient not found.");
+        public static readonly Error VisitNotFound =
+            new("VisitNotFound", "Visit not found.");
+    }
 }

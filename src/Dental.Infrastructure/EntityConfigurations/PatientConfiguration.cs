@@ -4,10 +4,10 @@ using Dental.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Dental.Infrastructure.Persistence.Configurations;
+namespace Dental.Infrastructure.Configurations;
 
 public sealed class PatientConfiguration
-    : ConfigurationBase<Patient>
+    : BaseEntityConfiguration<Patient>
     , IEntityTypeConfiguration<Patient>
 {
     public void Configure(EntityTypeBuilder<Patient> builder)

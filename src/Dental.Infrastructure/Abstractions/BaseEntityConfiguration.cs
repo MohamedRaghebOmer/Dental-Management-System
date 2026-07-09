@@ -1,12 +1,12 @@
 ﻿using Dental.Domain.Entities;
 using Dental.Domain.Primitives;
-using Dental.Infrastructure.Persistence.Extensions;
+using Dental.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dental.Infrastructure.Abstractions;
 
-public abstract class ConfigurationBase<TEntity>
+public abstract class BaseEntityConfiguration<TEntity>
     where TEntity : Entity
 {
     protected void ConfigureTable(EntityTypeBuilder<TEntity> builder) =>
