@@ -27,6 +27,7 @@ public sealed class Service : Entity
     public Money Price { get; private set; } = default!;
 
     public string? Description { get; private set; }
+    public ICollection<VisitToothTreatment> VisitToothTreatments { get; private set; } = [];
 
     public static Result<Service> Create(
         ServiceName name,

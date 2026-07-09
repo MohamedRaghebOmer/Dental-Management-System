@@ -35,13 +35,13 @@ public sealed class Patient : Entity
         Address = address;
     }
 
-    public FirstName FirstName { get; private set; }
-    public LastName LastName { get; private set; }
+    public FirstName FirstName { get; private set; } = default!;
+    public LastName LastName { get; private set; } = default!;
     public string FullName => $"{FirstName.Value} {LastName.Value}";
     public DateOfBirth? DateOfBirth { get; private set; }
     public int? Age => DateOfBirth?.CalculateAge();
     public Gender Gender { get; private set; }
-    public PhoneNumber? PhoneNumber { get; private set; }
+    public PhoneNumber? PhoneNumber { get; private set; } = default!;
     public string? Address { get; private set; }
 
     public ICollection<Appointment> Appointments { get; private set; } = [];

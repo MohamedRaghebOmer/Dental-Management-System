@@ -22,7 +22,7 @@ public class ServiceService(
         CreateServiceDto? dto,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Creating new service.");
+        logger.LogInformation("ServiceService.CreateAsync is called. {CreateServiceDto}", dto);
 
         if (dto is null)
         {
@@ -66,7 +66,7 @@ public class ServiceService(
         UpdateServiceDto dto,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Updating service.");
+        logger.LogInformation("ServiceService.UpdateAsync is called. {ServiceId} {UpdateServiceDto}", id, dto);
 
         if (id <= 0)
         {

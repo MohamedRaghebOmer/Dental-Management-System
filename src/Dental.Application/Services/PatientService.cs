@@ -21,13 +21,22 @@ public class PatientService(
         CreatePatientDto dto,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("PatientService.CreateAsync is called. {dto}", dto);
+
         var firstNameResult = FirstName.Create(dto.FirstName);
         if (firstNameResult.IsFailure)
+        {
+            logger.LogWarning("Failed to create patient due to invalid first name. {FirstName}", dto.FirstName);
             return Result.Failure<int>(firstNameResult.Error);
+        }
+            
 
         var lastNameResult = LastName.Create(dto.LastName);
         if (lastNameResult.IsFailure)
+        {
+            logger.LogWarning("Failed to create patient due to invalid last name. {LastName}", dto.LastName);
             return Result.Failure<int>(lastNameResult.Error);
+        }
 
         DateOfBirth? dateOfBirth = null;
 
@@ -35,7 +44,10 @@ public class PatientService(
         {
             var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth.Value);
             if (dateOfBirthResult.IsFailure)
+            {
+                logger.LogWarning("Failed to create patient due to invalid date of birth. {DateOfBirth}", dto.DateOfBirth);
                 return Result.Failure<int>(dateOfBirthResult.Error);
+            }
 
             dateOfBirth = dateOfBirthResult.Value;
         }
@@ -46,7 +58,11 @@ public class PatientService(
         {
             var phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
             if (phoneNumberResult.IsFailure)
+            {
+                logger.LogWarning("Failed to create patient due to invalid phone number. {PhoneNumber}", dto.PhoneNumber);
                 return Result.Failure<int>(phoneNumberResult.Error);
+            }
+                
 
             phoneNumber = phoneNumberResult.Value;
         }
@@ -60,10 +76,15 @@ public class PatientService(
             dto.Address);
 
         if (patientResult.IsFailure)
+        {
+            logger.LogWarning("Failed to create patient due to invalid patient data. {Error}", patientResult.Error);
             return Result.Failure<int>(patientResult.Error);
+        }
+            
 
         await repo.AddAsync(patientResult.Value, cancellationToken);
         await unitOfWork.CommitAsync(cancellationToken);
+        logger.LogInformation("Patient created successfully. {PatientId}", patientResult.Value.Id);
 
         return Result.Success(patientResult.Value.Id);
     }
@@ -73,20 +94,38 @@ public class PatientService(
         UpdatePatientDto dto,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("PatientService.UpdateAsync is called. {PatientId} {UpdatePatientDto}", id, dto);
+
         if (id <= 0)
+        {
+            logger.LogWarning("Invalid patient ID. {Id}", id);
             return Result.Failure(ServiceErrors.InvalidId);
+        }
+            
 
         var patient = await repo.GetByIdAsync(id, cancellationToken);
         if (patient is null)
+        {
+            logger.LogWarning("Patient not found. {Id}", id);
             return Result.Failure(ServiceErrors.NotFound);
+        }
+            
 
         var firstNameResult = FirstName.Create(dto.FirstName);
         if (firstNameResult.IsFailure)
+        {
+            logger.LogWarning("Failed to update patient due to invalid first name. {FirstName}", dto.FirstName);
             return Result.Failure(firstNameResult.Error);
+        }
+            
 
         var lastNameResult = LastName.Create(dto.LastName);
         if (lastNameResult.IsFailure)
+        {
+            logger.LogWarning("Failed to update patient due to invalid last name. {LastName}", dto.LastName);
             return Result.Failure(lastNameResult.Error);
+        }
+            
 
         DateOfBirth? dateOfBirth = null;
 
@@ -95,7 +134,10 @@ public class PatientService(
             var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth.Value);
 
             if (dateOfBirthResult.IsFailure)
+            {
+                logger.LogWarning("Failed to update patient due to invalid date of birth. {DateOfBirth}", dto.DateOfBirth);
                 return Result.Failure(dateOfBirthResult.Error);
+            }
 
             dateOfBirth = dateOfBirthResult.Value;
         }
@@ -107,7 +149,10 @@ public class PatientService(
             var phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
 
             if (phoneNumberResult.IsFailure)
+            {
+                logger.LogWarning("Failed to update patient due to invalid phone number. {PhoneNumber}", dto.PhoneNumber);
                 return Result.Failure(phoneNumberResult.Error);
+            }
 
             phoneNumber = phoneNumberResult.Value;
         }
@@ -121,9 +166,13 @@ public class PatientService(
             dto.Address);
 
         if (updateResult.IsFailure)
+        {
+            logger.LogWarning("Failed to update patient due to invalid patient data. {Error}", updateResult.Error);
             return Result.Failure(updateResult.Error);
+        }
 
         await unitOfWork.CommitAsync(cancellationToken);
+        logger.LogInformation("Patient updated successfully. {PatientId}", patient.Id);
 
         return Result.Success();
     }

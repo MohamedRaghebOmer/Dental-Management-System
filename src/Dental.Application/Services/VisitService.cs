@@ -12,6 +12,8 @@ namespace Dental.Application.Services;
 
 public sealed class VisitService(
     IRepository<Visit> repo,
+    IRepository<Appointment> appointmentRepo,
+    IVisitToothTreatmentRepository visitToothTreatmentRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Visit, VisitResponseDto>> logger)
     : ServiceBase<Visit, VisitResponseDto>(repo, unitOfWork, logger)
@@ -21,6 +23,7 @@ public sealed class VisitService(
         CreateVisitDto dto,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("VisitService.CreateAsync is called. {CreateVisitDto}", dto);
         Result<Id> appointmentIdResult = null!;
 
         if (dto.AppointmentId is not null)
@@ -28,7 +31,7 @@ public sealed class VisitService(
             appointmentIdResult = Id.Create((int)dto.AppointmentId);
             if (appointmentIdResult.IsFailure)
             {
-                logger.LogWarning("Failed to create visit: Invalid appointment ID.");
+                logger.LogWarning("Failed to create visit: Invalid appointment ID. {AppointmentId}", dto.AppointmentId);
                 return Result.Failure<int>(ServiceErrors.InvalidId);
             }
         }
@@ -36,7 +39,7 @@ public sealed class VisitService(
         var paidAmountResult = Money.Create(dto.PaidAmount);
         if (paidAmountResult.IsFailure)
         {
-            logger.LogWarning("Failed to create visit: Invalid paid amount. {0} {1}",
+            logger.LogWarning("Failed to create visit: Invalid paid amount. {PaidAmount} {PaidAmountResult}",
                 dto.PaidAmount, paidAmountResult);
 
             return Result.Failure<int>(ServiceErrors.InvalidId);
@@ -45,26 +48,16 @@ public sealed class VisitService(
         var discountAmountResult = Money.Create(dto.DiscountAmount);
         if (discountAmountResult.IsFailure)
         {
-            logger.LogWarning("Failed to create visit: Invalid discount amount. {0} {1}",
+            logger.LogWarning("Failed to create visit: Invalid discount amount. {DiscountAmount} {DiscountAmountResult}",
                 dto.DiscountAmount, discountAmountResult);
             return Result.Failure<int>(ServiceErrors.InvalidId);
         }
 
-        var totalAmountResult = Money.Create(dto.TotalAmount);
-        if (totalAmountResult.IsFailure)
-        {
-            logger.LogWarning(
-                "Failed to create visit: Invalid total amount. {0} {1}",
-                dto.TotalAmount, totalAmountResult);
-
-            return Result.Failure<int>(ServiceErrors.InvalidId);
-        }
 
         var visitResult = Visit.Create(
             appointmentIdResult?.Value,
             paidAmountResult.Value,
             discountAmountResult.Value,
-            totalAmountResult.Value,
             dto.Date,
             dto.Notes);
 
@@ -72,6 +65,14 @@ public sealed class VisitService(
         {
             logger.LogWarning("Failed to create visit: {visitResult}", visitResult);
             return Result.Failure<int>(ServiceErrors.InvalidId);
+        }
+
+        if (! await appointmentRepo.ExistsAsync(
+                (int)(appointmentIdResult?.Value?.Value)!, 
+                cancellationToken))
+        {
+            logger.LogWarning("Failed to create visit: Appointment not found. {AppointmentId}", appointmentIdResult?.Value);
+            return Result.Failure<int>(ServiceErrors.AppointmentErrors.PatientNotFound);
         }
 
         await repo.AddAsync(visitResult.Value, cancellationToken);
@@ -88,7 +89,7 @@ public sealed class VisitService(
     {
         if (visitId <= 0)
         {
-            logger.LogWarning("Failed to update visit: Invalid visit ID. {0}", visitId);
+            logger.LogWarning("Failed to update visit: Invalid visit ID. {VisitId}", visitId);
             return Result.Failure<int>(ServiceErrors.InvalidId);
         }
 
@@ -99,7 +100,7 @@ public sealed class VisitService(
             appointmentIdResult = Id.Create((int)dto.AppointmentId);
             if (appointmentIdResult.IsFailure)
             {
-                logger.LogWarning("Failed to create visit: Invalid appointment ID.");
+                logger.LogWarning("Failed to create visit: Invalid appointment ID. {AppointmentId}", dto.AppointmentId);
                 return Result.Failure<int>(ServiceErrors.InvalidId);
             }
         }
@@ -107,7 +108,7 @@ public sealed class VisitService(
         var paidAmountResult = Money.Create(dto.PaidAmount);
         if (paidAmountResult.IsFailure)
         {
-            logger.LogWarning("Failed to create visit: Invalid paid amount. {0} {1}",
+            logger.LogWarning("Failed to create visit: Invalid paid amount. {PaidAmount} {PaidAmountResult}",
                 dto.PaidAmount, paidAmountResult);
 
             return Result.Failure<int>(ServiceErrors.InvalidId);
@@ -116,18 +117,8 @@ public sealed class VisitService(
         var discountAmountResult = Money.Create(dto.DiscountAmount);
         if (discountAmountResult.IsFailure)
         {
-            logger.LogWarning("Failed to create visit: Invalid discount amount. {0} {1}",
+            logger.LogWarning("Failed to create visit: Invalid discount amount. {DiscountAmount} {DiscountAmountResult}",
                 dto.DiscountAmount, discountAmountResult);
-            return Result.Failure<int>(ServiceErrors.InvalidId);
-        }
-
-        var totalAmountResult = Money.Create(dto.TotalAmount);
-        if (totalAmountResult.IsFailure)
-        {
-            logger.LogWarning(
-                "Failed to create visit: Invalid total amount. {0} {1}",
-                dto.TotalAmount, totalAmountResult);
-
             return Result.Failure<int>(ServiceErrors.InvalidId);
         }
 
@@ -135,7 +126,7 @@ public sealed class VisitService(
 
         if (visit == null)
         {
-            logger.LogWarning("Failed to update visit: Visit not found. {0}", visitId);
+            logger.LogWarning("Failed to update visit: Visit not found. {VisitId}", visitId);
             return Result.Failure<int>(ServiceErrors.NotFound);
         }
 
@@ -143,7 +134,6 @@ public sealed class VisitService(
             appointmentIdResult?.Value,
             paidAmountResult.Value,
             discountAmountResult.Value,
-            totalAmountResult.Value,
             dto.Date,
             dto.Notes);
 
@@ -154,8 +144,19 @@ public sealed class VisitService(
         }
 
         await unitOfWork.CommitAsync(cancellationToken);
-        logger.LogInformation("Visit updated successfully. {0}", visitId);
+        logger.LogInformation("Visit updated successfully. {VisitId}", visitId);
 
         return Result.Success();
+    }
+
+    public async Task<decimal> GetTotalAmountAsync(
+        int visitId,
+        CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("VisitService.GetTotalAmountAsync is called. {VisitId}", visitId);
+        var result = 
+            await visitToothTreatmentRepo.GetTotalCostAsync(visitId, cancellationToken);
+        logger.LogInformation("Total amount for visit {VisitId}: {TotalAmount}", visitId, result);
+        return result;
     }
 }

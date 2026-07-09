@@ -13,9 +13,6 @@ public record UpdateVisitDto
     [Range(0, double.MaxValue)]
     public required decimal DiscountAmount { get; init; }
 
-    [Range(0, double.MaxValue)]
-    public required decimal TotalAmount { get; init; }
-
     public required DateTime Date { get; init; }
 
     [StringLength(Domain.Entities.Visit.Constants.NotesMaxLength)]

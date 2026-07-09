@@ -6,8 +6,8 @@ namespace Dental.Application.DTOs.Appointment;
 public sealed record AppointmentResponseDto(
     int id,
     int patientId,
-    DateTime scheduledAt,
-    DateTime? completedAt,
+    DateTimeOffset scheduledAt,
+    DateTimeOffset? completedAt,
     AppointmentStatus status,
     string? notes) :
     IResponseDto<Domain.Entities.Appointment, AppointmentResponseDto>

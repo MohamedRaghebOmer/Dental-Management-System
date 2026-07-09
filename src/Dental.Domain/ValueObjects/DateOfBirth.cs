@@ -18,7 +18,7 @@ public sealed record DateOfBirth : ValueObject
 
     public static Result<DateOfBirth> Create(DateOnly value)
     {
-        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var today = DateOnly.FromDateTime(DateTime.Now);
 
         if (value > today.AddYears(-MinimumAge))
         {
@@ -49,7 +49,7 @@ public sealed record DateOfBirth : ValueObject
 
     public int CalculateAge()
     {
-        var today = DateOnly.FromDateTime(DateTime.UtcNow);
+        var today = DateOnly.FromDateTime(DateTime.Now);
 
         var age = today.Year - Value.Year;
 

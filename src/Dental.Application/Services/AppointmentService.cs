@@ -6,12 +6,14 @@ using Dental.Domain.Entities;
 using Dental.Domain.Interfaces.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
 public class AppointmentService(
     IRepository<Appointment> repo,
+    IRepository<Patient> patientRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger)
     : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger)
@@ -21,13 +23,20 @@ public class AppointmentService(
         CreateAppointmentDto dto,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Creating a new appointment.", cancellationToken);
+        logger.LogInformation(
+            "AppointmentService.CreateAsync is called. {CreateAppointmentDto}", dto);
 
         var patientIdResult = Id.Create(dto.PatientId);
         if (patientIdResult.IsFailure)
         {
             logger.LogWarning("Failed to create appointment: Invalid patient ID. {error}", patientIdResult.Error);
             return Result.Failure<int>(patientIdResult.Error);
+        }
+
+        if (! await patientRepo.ExistsAsync(dto.PatientId, cancellationToken))
+        {
+            logger.LogWarning("Failed to create appointment: Patient not found. {PatientId}", dto.PatientId);
+            return Result.Failure<int>(ServiceErrors.AppointmentErrors.PatientNotFound);
         }
 
         var appointmentResult = Appointment.Create(
@@ -42,7 +51,7 @@ public class AppointmentService(
         }
 
         await repo.AddAsync(appointmentResult.Value, cancellationToken);
-        await unitOfWork.CommitAsync(cancellationToken);
+
         logger.LogInformation("Appointment created successfully.", cancellationToken);
 
         return Result.Success(appointmentResult.Value.Id);
@@ -54,8 +63,7 @@ public class AppointmentService(
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
-            "Updating appointment with ID {appointmentId}.",
-            appointmentId);
+            "AppointmentService.UpdateAsync is called. {AppointmentId} {UpdateAppointmentDto}", appointmentId, dto);
 
         if (appointmentId <= 0)
         {
@@ -99,7 +107,7 @@ public class AppointmentService(
     public async Task<Result> CancelAsync(int id,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Canceling appointment with ID {id}.", id);
+        logger.LogInformation("AppointmentService.CancelAsync is called. {AppointmentId}", id);
 
         if (id <= 0)
         {
@@ -132,7 +140,7 @@ public class AppointmentService(
     public async Task<Result> CompleteAsync(int id,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Completing appointment with ID {id}.", id);
+        logger.LogInformation("AppointmentService.CompleteAsync is called. {AppointmentId}", id);
 
         if (id <= 0)
         {
@@ -164,7 +172,7 @@ public class AppointmentService(
     public async Task<Result<bool>> IsMissed(int id,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("Checking if appointment with ID {id} is missed.", id);
+        logger.LogInformation("AppointmentService.IsMissed is called. {AppointmentId}", id);
 
         if (id <= 0)
         {

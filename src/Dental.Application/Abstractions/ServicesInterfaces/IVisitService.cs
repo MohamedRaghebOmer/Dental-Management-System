@@ -13,4 +13,8 @@ public interface IVisitService
         int visitId,
         UpdateVisitDto dto,
         CancellationToken cancellationToken);
+
+    Task<decimal> GetTotalAmountAsync(
+        int visitId,
+        CancellationToken cancellationToken);
 }

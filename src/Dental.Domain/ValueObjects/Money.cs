@@ -15,12 +15,34 @@ public record Money : ValueObject
 
     public static Result<Money> Create(decimal value)
     {
-        if (value < 0)
+        var validateResult = Validate(value);
+        if (validateResult.IsFailure)
         {
-            return Result.Failure<Money>(DomainErrors.Services.Money.NonPositiveValue);
+            return Result.Failure<Money>(validateResult.Error);
         }
 
         return new Money(value);
+    }
+
+    public Result Update(decimal value)
+    {
+        var validateResult = Validate(value);
+        if (validateResult.IsFailure)
+        {
+            return Result.Failure(validateResult.Error);
+        }
+
+        Value = value;
+        return Result.Success();
+    }
+
+    private static Result Validate(decimal value)
+    {
+        if (value < 0)
+        {
+            return Result.Failure(DomainErrors.Services.Money.NonPositiveValue);
+        }
+        return Result.Success();
     }
 
     /// <summary>
