@@ -123,7 +123,7 @@ public static class DomainErrors
 
                 public static readonly Error TooLong = new(
                     "PrescriptionItems.MedicineNameTooLong",
-                    $"The medicine name cannot be longer than {Domain.Entities.PrescriptionItems.Constants.MedicineNameMaxLength} characters."
+                    $"The medicine name cannot be longer than {Domain.Entities.PrescriptionItem.Constants.MedicineNameMaxLength} characters."
                 );
             }
 
@@ -138,7 +138,7 @@ public static class DomainErrors
             {
                 public static Error TooLong = new(
                     "PrescriptionItems.InstructionsTooLong",
-                    $"The instructions cannot be longer than {Domain.Entities.PrescriptionItems.Constants.InstructionsMaxLength} characters."
+                    $"The instructions cannot be longer than {Domain.Entities.PrescriptionItem.Constants.InstructionsMaxLength} characters."
                 );
             }
         }
@@ -225,7 +225,7 @@ public static class DomainErrors
         {
             public static readonly Error TooLong = new(
                 "PrescriptionNotes.TooLong",
-                $"The prescription notes cannot be longer than {Entities.Prescription.Constants.NotesMaxLength} characters.");
+                $"The prescription notes cannot be longer than{Domain.Entities.Prescription.Constants.NotesMaxLength} characters.");
         }
     }
 }

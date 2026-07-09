@@ -3,7 +3,6 @@ using Dental.Domain.Errors;
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
-using Microsoft.Extensions.Time.Testing;
 
 namespace Dental.Domain.Entities;
 

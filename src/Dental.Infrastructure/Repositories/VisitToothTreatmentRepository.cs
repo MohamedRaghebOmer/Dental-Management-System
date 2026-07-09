@@ -23,7 +23,7 @@ public sealed class VisitToothTreatmentRepository(DentalDbContext _dbContext)
         int visitId)
     {
         return await _dbContext.VisitToothTreatments
-            .AnyAsync(vtt => vtt.ServiceId.Value == serviceId 
+            .AnyAsync(vtt => vtt.ServiceId.Value == serviceId
                              && vtt.VisitId.Value == visitId);
     }
 }

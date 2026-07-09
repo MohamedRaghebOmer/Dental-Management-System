@@ -20,7 +20,7 @@ public sealed record Id : ValueObject
             return Result.Failure<Id>(DomainErrors.Entities.Appointment.Id.InvalidId);
         }
 
-        return Result.Success(new Id(value));
+        return new Id(value);
     }
 
     /// <summary>

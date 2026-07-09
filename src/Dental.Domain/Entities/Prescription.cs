@@ -20,14 +20,14 @@ public sealed class Prescription : Entity
         this.Notes = notes;
     }
 
-    
+
     // ========================= Constants ========================
     public static class Constants
     {
         public const int NotesMaxLength = 500;
     }
 
-    
+
     // ========================= Proprieties ========================
     public Id PatientId { get; private set; } = default!;
     public Id VisitId { get; private set; } = default!;
@@ -37,12 +37,14 @@ public sealed class Prescription : Entity
     // ========================= Navigation Properties ========================
     public Patient Patient { get; private set; } = default!;
     public Visit Visit { get; private set; } = default!;
+    public ICollection<PrescriptionItem> PrescriptionItems { get; private set; } = [];
+
 
 
     // ========================= Methods ========================
     public static Result<Prescription> Create(
-        Id patientId, 
-        Id visitId, 
+        Id patientId,
+        Id visitId,
         string? notes)
     {
         var validateResult = Validate(notes);

@@ -4,7 +4,7 @@ using Dental.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Dental.Infrastructure.Configurations;
+namespace Dental.Infrastructure.EntityConfigurations;
 
 public sealed class VisitConfiguration
     : BaseEntityConfiguration<Visit>

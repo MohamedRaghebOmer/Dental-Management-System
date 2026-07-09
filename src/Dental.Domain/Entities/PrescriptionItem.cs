@@ -1,18 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dental.Domain.Errors;
+﻿using Dental.Domain.Errors;
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
 
 namespace Dental.Domain.Entities;
 
-public sealed class PrescriptionItems : Entity
+public sealed class PrescriptionItem : Entity
 {
-    private PrescriptionItems() // EF Core
+    private PrescriptionItem() // EF Core
     {
     }
 
-    private PrescriptionItems(
+    private PrescriptionItem(
         Id prescriptionId,
         string medicineName,
         decimal dosage,
@@ -33,16 +32,16 @@ public sealed class PrescriptionItems : Entity
         public const int InstructionsMaxLength = 500;
     }
 
-    public Id PrescriptionId { get; private set; }
+    public Id PrescriptionId { get; private set; } = default!;
     public string MedicineName { get; private set; }
     public decimal Dosage { get; private set; }
     public MedicineFrequency MedicineFrequency { get; private set; }
     public string? Instructions { get; private set; }
 
-    public Prescription Prescription { get; private set; }
+    public Prescription Prescription { get; private set; } = default!;
 
 
-    public static Result<PrescriptionItems> Create(
+    public static Result<PrescriptionItem> Create(
         Id prescriptionId,
         string medicineName,
         decimal dosage,
@@ -56,11 +55,11 @@ public sealed class PrescriptionItems : Entity
 
         if (validateResult.IsFailure)
         {
-            return Result.Failure<PrescriptionItems>(validateResult.Error);
+            return Result.Failure<PrescriptionItem>(validateResult.Error);
         }
 
-        return new PrescriptionItems(
-            prescriptionId, medicineName, dosage, medicineFrequency, instructions);
+        return new PrescriptionItem(
+            prescriptionId, medicineName.Trim(), dosage, medicineFrequency, instructions?.Trim());
     }
 
     public Result Update(
@@ -77,14 +76,14 @@ public sealed class PrescriptionItems : Entity
 
         if (validateResult.IsFailure)
         {
-            return Result.Failure<PrescriptionItems>(validateResult.Error);
+            return Result.Failure<PrescriptionItem>(validateResult.Error);
         }
 
         PrescriptionId = prescriptionId;
-        MedicineName = medicineName;
+        MedicineName = medicineName.Trim();
         Dosage = dosage;
         MedicineFrequency = medicineFrequency;
-        Instructions = instructions;
+        Instructions = instructions?.Trim();
 
         return Result.Success();
     }

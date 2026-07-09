@@ -2,7 +2,7 @@
 
 public enum MedicinePeriodFrequency
 {
-    Hourly,
-    Daily,
-    Weekly,
+    Hourly = 1,
+    Daily = 2,
+    Weekly = 3,
 }
