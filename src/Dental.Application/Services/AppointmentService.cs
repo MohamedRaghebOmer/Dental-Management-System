@@ -19,57 +19,46 @@ public class AppointmentService(
     , IAppointmentService
 {
     public async Task<Result<int>> CreateAsync(
-        CreateAppointmentDto dto,
+        AppointmentRequestDto dto,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
             "AppointmentService.CreateAsync is called. {CreateAppointmentDto}", dto);
 
-        var patientIdResult = Id.Create(dto.PatientId);
-        if (patientIdResult.IsFailure)
+        var entityResult = await BuildEntityAndValidateForeignKeys(
+            dto,
+            cancellationToken);
+
+        if (entityResult.IsFailure)
         {
-            logger.LogWarning("Failed to create appointment: Invalid patient ID. {error}", patientIdResult.Error);
-            return Result.Failure<int>(patientIdResult.Error);
+            return Result.Failure<int>(entityResult.Error);
         }
 
-        if (!await patientRepo.ExistsAsync(dto.PatientId, cancellationToken))
-        {
-            logger.LogWarning("Failed to create appointment: Patient not found. {PatientId}", dto.PatientId);
-            return Result.Failure<int>(ServiceErrors.AppointmentErrors.PatientNotFound);
-        }
+        await repo.AddAsync(entityResult.Value, cancellationToken);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        var appointmentResult = Appointment.Create(
-            patientIdResult.Value,
-            dto.AppointmentDate,
-            dto.Notes);
+        logger.LogInformation("Appointment created successfully. {Id}", entityResult.Value.Id);
 
-        if (appointmentResult.IsFailure)
-        {
-            logger.LogWarning("Failed to create appointment: Invalid appointment data. {error}", appointmentResult.Error);
-            return Result.Failure<int>(appointmentResult.Error);
-        }
-
-        await repo.AddAsync(appointmentResult.Value, cancellationToken);
-
-        logger.LogInformation("Appointment created successfully.", cancellationToken);
-
-        return Result.Success(appointmentResult.Value.Id);
+        return Result.Success(entityResult.Value.Id);
     }
 
     public async Task<Result> UpdateAsync(
         int appointmentId,
-        UpdateAppointmentDto dto,
+        AppointmentRequestDto dto,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation(
             "AppointmentService.UpdateAsync is called. {AppointmentId} {UpdateAppointmentDto}", appointmentId, dto);
 
-        if (appointmentId <= 0)
-        {
-            logger.LogWarning("Failed to update appointment: Invalid appointment ID.", cancellationToken);
-            return Result.Failure(ServiceErrors.InvalidId);
-        }
+        var validEntity = await BuildEntityAndValidateForeignKeys(
+            dto, 
+            cancellationToken, 
+            appointmentId);
 
+        if (validEntity.IsFailure)
+        {
+            return Result.Failure(validEntity.Error);
+        }
 
         var appointment = await repo.GetByIdAsync(appointmentId, cancellationToken);
         if (appointment == null)
@@ -78,16 +67,9 @@ public class AppointmentService(
             return Result.Failure(ServiceErrors.NotFound);
         }
 
-        var patientIdResult = Id.Create(dto.PatientId);
-        if (patientIdResult.IsFailure)
-        {
-            logger.LogWarning("Failed to update appointment: Invalid patient ID. {error}", patientIdResult.Error);
-            return Result.Failure(patientIdResult.Error);
-        }
-
         // Update the appointment properties
         var updateResult = appointment.Update(
-            patientIdResult.Value,
+            validEntity.Value.PatientId,
             dto.AppointmentDate,
             dto.Notes);
 
@@ -101,6 +83,44 @@ public class AppointmentService(
         logger.LogInformation("Appointment updated successfully.", cancellationToken);
 
         return Result.Success(cancellationToken);
+    }
+
+    private async Task<Result<Appointment>> BuildEntityAndValidateForeignKeys(
+        AppointmentRequestDto requestDto,
+        CancellationToken cancellationToken = default,
+        int? id = null)
+    {
+        if (id is <= 0)
+        {
+            logger.LogWarning("Failed to update appointment: Invalid appointment ID.", cancellationToken);
+            return Result.Failure<Appointment>(ServiceErrors.InvalidId);
+        }
+
+        var patientIdResult = Id.Create(requestDto.PatientId);
+        if (patientIdResult.IsFailure)
+        {
+            logger.LogWarning("Failed to create appointment: Invalid patient ID. {error}", patientIdResult.Error);
+            return Result.Failure<Appointment>(patientIdResult.Error);
+        }
+
+        if (!await patientRepo.ExistsAsync(requestDto.PatientId, cancellationToken))
+        {
+            logger.LogWarning("Failed to create appointment: Patient not found. {PatientId}", requestDto.PatientId);
+            return Result.Failure<Appointment>(ServiceErrors.AppointmentErrors.PatientNotFound);
+        }
+
+        var appointmentResult = Appointment.Create(
+            patientIdResult.Value,
+            requestDto.AppointmentDate,
+            requestDto.Notes);
+
+        if (appointmentResult.IsFailure)
+        {
+            logger.LogWarning("Failed to create appointment: Invalid appointment data. {error}", appointmentResult.Error);
+            return Result.Failure<Appointment>(appointmentResult.Error);
+        }
+
+        return appointmentResult.Value;
     }
 
     public async Task<Result> CancelAsync(int id,

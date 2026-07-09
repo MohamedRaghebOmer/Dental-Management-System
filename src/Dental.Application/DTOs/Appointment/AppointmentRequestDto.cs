@@ -2,7 +2,7 @@
 
 namespace Dental.Application.DTOs.Appointment;
 
-public sealed record CreateAppointmentDto()
+public sealed record AppointmentRequestDto()
 {
     [Range(1, int.MaxValue)]
     public required int PatientId { get; init; }
