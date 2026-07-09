@@ -9,6 +9,10 @@ public interface IRepository<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default);
 
+    Task<bool> ExistsAsync(
+        int id,
+        CancellationToken cancellationToken = default);
+
     Task<TEntity?> GetByIdAsync(
         int id,
         CancellationToken cancellationToken = default);

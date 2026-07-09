@@ -43,8 +43,7 @@ public sealed class ServiceConfiguration
         builder.Property(x => x.Price)
             .HasConversion(
                 x => x.Value,
-                x => Money.FromDatabase(x)
-            )
+                x => Money.FromDatabase(x))
             .HasColumnName(nameof(Service.Price))
             .HasPrecision(18, 2)
             .IsRequired();

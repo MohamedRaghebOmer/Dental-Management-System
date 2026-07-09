@@ -4,7 +4,7 @@ using Dental.Domain.Shared;
 
 namespace Dental.Domain.ValueObjects;
 
-public record ServiceName : ValueObject
+public sealed record ServiceName : ValueObject
 {
     public const int MaxLength = 50;
 

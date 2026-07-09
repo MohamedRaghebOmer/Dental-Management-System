@@ -12,14 +12,14 @@ public sealed class Visit : Entity
         public const int NotesMaxLength = 500;
     }
 
-    public Id? AppointmentId { get; private set; }
-    public Money PaidAmount { get; private set; }
-    public Money DiscountAmount { get; private set; }
-    public Money TotalAmount { get; private set; }
+    public Id? AppointmentId { get; private set; } = default!;
+    public Money PaidAmount { get; private set; } = default!;
+    public Money DiscountAmount { get; private set; } = default!;
     public DateTime Date { get; private set; }
     public string? Notes { get; private set; }
 
     public Appointment? Appointment { get; private set; }
+    public ICollection<VisitToothTreatment> VisitToothTreatments { get; private set; } = [];
 
     private Visit() { } // EF Core
 
@@ -27,14 +27,12 @@ public sealed class Visit : Entity
         Id? appointmentId,
         Money paidAmount,
         Money discountAmount,
-        Money totalAmount,
         DateTime date,
         string? notes)
     {
         AppointmentId = appointmentId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        TotalAmount = totalAmount;
         Date = date;
         Notes = notes;
     }
@@ -43,14 +41,12 @@ public sealed class Visit : Entity
         Id? appointmentId,
         Money paidAmount,
         Money discountAmount,
-        Money totalAmount,
         DateTime date,
         string? notes)
     {
         var validateResult = Validate(
             paidAmount,
             discountAmount,
-            totalAmount,
             date,
             notes);
 
@@ -64,7 +60,6 @@ public sealed class Visit : Entity
             AppointmentId = appointmentId,
             PaidAmount = paidAmount,
             DiscountAmount = discountAmount,
-            TotalAmount = totalAmount,
             Date = date,
             Notes = notes?.Trim()
         };
@@ -74,14 +69,12 @@ public sealed class Visit : Entity
         Id? appointmentId,
         Money paidAmount,
         Money discountAmount,
-        Money totalAmount,
         DateTime date,
         string? notes)
     {
         var validateResult = Validate(
             paidAmount,
             discountAmount,
-            totalAmount,
             date,
             notes);
 
@@ -93,7 +86,6 @@ public sealed class Visit : Entity
         AppointmentId = appointmentId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        TotalAmount = totalAmount;
         Date = date;
         Notes = notes?.Trim();
 
@@ -104,19 +96,10 @@ public sealed class Visit : Entity
     private static Result Validate(
         Money paidAmount,
         Money discountAmount,
-        Money totalAmount,
         DateTime date,
         string? notes)
     {
-        if (paidAmount.Value > totalAmount.Value)
-        {
-            return Result.Failure(DomainErrors.Visit.PaidAmount.AmountMustLessThanTotalAmount);
-        }
-        if (discountAmount.Value > totalAmount.Value)
-        {
-            return Result.Failure(DomainErrors.Visit.DiscountAmount.AmountCannotBeGreaterThanTotalAmount);
-        }
-        if (date > DateTime.UtcNow)
+        if (date > DateTime.Now)
         {
             return Result.Failure(DomainErrors.Visit.Date.CannotBeInTheFuture);
         }

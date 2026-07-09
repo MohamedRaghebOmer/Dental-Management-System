@@ -3,6 +3,7 @@ using Dental.Domain.Errors;
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
+using Microsoft.Extensions.Time.Testing;
 
 namespace Dental.Domain.Entities;
 
@@ -13,14 +14,14 @@ public sealed class Appointment : Entity
         public const int NotesMaxLength = 500;
     }
 
-    public Id PatientId { get; private set; }
+    public Id PatientId { get; private set; } = default!;
     public DateTime AppointmentDate { get; private set; }
     public DateTime? CompletedAt { get; private set; }
     public AppointmentStatus Status { get; private set; }
     public string? Notes { get; private set; }
 
-    public Patient Patient { get; private set; }
-    public Visit? Visit { get; private set; }
+    public Patient Patient { get; private set; } = default!;
+    public Visit? Visit { get; private set; } = default!;
 
     private Appointment() { } // EF Core
 
@@ -43,7 +44,7 @@ public sealed class Appointment : Entity
         DateTime appointmentDate,
         string? notes)
     {
-        if (appointmentDate < DateTime.UtcNow)
+        if (appointmentDate < DateTime.Now)
         {
             return Result.Failure<Appointment>(DomainErrors.Appointment.Date.InThePast);
         }
@@ -68,7 +69,7 @@ public sealed class Appointment : Entity
         DateTime appointmentDate,
         string? notes)
     {
-        if (appointmentDate < DateTime.UtcNow)
+        if (appointmentDate < DateTime.Now)
         {
             return Result.Failure(DomainErrors.Appointment.Date.InThePast);
         }
@@ -128,12 +129,12 @@ public sealed class Appointment : Entity
         }
 
         Status = AppointmentStatus.Completed;
-        CompletedAt = DateTime.UtcNow;
+        CompletedAt = DateTime.Now;
 
         return Result.Success();
     }
 
     public bool IsMissed() =>
         Status == AppointmentStatus.Pending &&
-        AppointmentDate < DateTime.UtcNow;
+        AppointmentDate < DateTime.Now;
 }

@@ -5,14 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public sealed class Repository<TEntity>(DentalDbContext _dbContext)
-    : IRepository<TEntity> where TEntity : Entity
+public abstract class Repository<TEntity>(DentalDbContext _dbContext)
+    : IRepository<TEntity>
+    where TEntity : Entity
 {
     public async Task AddAsync(
         TEntity entity,
         CancellationToken cancellationToken = default)
     {
         await _dbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+    }
+
+    public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Set<TEntity>()
+            .AsNoTracking()
+            .AnyAsync(e => e.Id == id, cancellationToken);
     }
 
     public async Task<TEntity?> GetByIdAsync(
@@ -36,6 +44,8 @@ public sealed class Repository<TEntity>(DentalDbContext _dbContext)
     public async Task<IEnumerable<TEntity>> GetAllAsync(
         CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<TEntity>().ToListAsync(cancellationToken);
+        return await _dbContext.Set<TEntity>()
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
     }
 }

@@ -5,7 +5,4 @@
     <Project Path="src/Dental.Infrastructure/Dental.Infrastructure.csproj" />
     <Project Path="src/Dental.WinForms/Dental.WinForms.csproj" Id="16051263-cab6-46c8-9992-208ce29cb21d" />
   </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/Dental.UnitTests/Dental.UnitTests.csproj" Id="a3cec749-7288-478d-b528-b57ed71b2666" />
-  </Folder>
 </Solution>

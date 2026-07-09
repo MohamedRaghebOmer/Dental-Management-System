@@ -175,4 +175,22 @@ public static class DomainErrors
             );
         }
     }
+
+    public static class VisitToothTreatment
+    {
+        public static class ToothNumber
+        {
+            public static readonly Error OutOfRange = new(
+                "VisitToothTreatmentToothNumber.OutOfRange",
+                "The tooth number must be between 1 and 32."
+            );
+        }
+
+        public static class Notes
+        {
+            public static readonly Error TooLong = new(
+                "VisitToothTreatmentNotes.TooLong",
+                $"Visit tooth treatment notes cannot exceed {Entities.VisitToothTreatment.Constants.NotesMaxLength} characters length.");
+        }
+    }
 }

@@ -23,16 +23,12 @@ public sealed class VisitConfiguration
         builder.ToTable(table =>
         {
             table.HasCheckConstraint(
-                "CK_Visits_PaidAmount_NotNegativeAndLessThanTotalAmount",
-                "[PaidAmount] >= 0 AND [PaidAmount] <= [TotalAmount]");
+                "CK_Visits_DiscountAmount_NotNegative",
+                "[DiscountAmount] >= 0");
 
             table.HasCheckConstraint(
-                "CK_Visits_TotalAmount_GreaterThanZero",
-                "[TotalAmount] > 0");
-
-            table.HasCheckConstraint(
-                "CK_Visits_DiscountAmount_NotGreaterThanTotalAmount",
-                "[DiscountAmount] <= [TotalAmount]");
+                "CK_Visits_PaidAmount_NotNegative",
+                "[PaidAmount] >= 0");
         });
     }
 
@@ -77,13 +73,6 @@ public sealed class VisitConfiguration
                 value => value.Value,
                 value => Money.FromDatabase(value))
             .HasColumnName(nameof(Visit.DiscountAmount))
-            .IsRequired();
-
-        builder.Property(p => p.TotalAmount)
-            .HasConversion(
-                value => value.Value,
-                value => Money.FromDatabase(value))
-            .HasColumnName(nameof(Visit.TotalAmount))
             .IsRequired();
 
         builder.Property(p => p.Date)
