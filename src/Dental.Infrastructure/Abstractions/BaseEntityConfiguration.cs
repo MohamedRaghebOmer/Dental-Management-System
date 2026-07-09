@@ -1,5 +1,4 @@
-﻿using Dental.Domain.Entities;
-using Dental.Domain.Primitives;
+﻿using Dental.Domain.Primitives;
 using Dental.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,7 +11,7 @@ public abstract class BaseEntityConfiguration<TEntity>
     protected void ConfigureTable(EntityTypeBuilder<TEntity> builder) =>
         builder.ToTable(string.Concat(typeof(TEntity).Name, 's'));
 
-    private void ConfigureKey(EntityTypeBuilder<Patient> builder) =>
+    private void ConfigureKey(EntityTypeBuilder<TEntity> builder) =>
         builder.ConfigurePrimaryKey();
 
     protected abstract void ConfigureProperties(EntityTypeBuilder<TEntity> builder);

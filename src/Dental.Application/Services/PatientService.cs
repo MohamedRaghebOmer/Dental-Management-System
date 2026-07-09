@@ -11,10 +11,10 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public class PatientService(
-    IRepository<Patient> prescriptionRepo,
+    IRepository<Patient> repo,
     IUnitOfWork unitOfWork,
     ILogger<PatientService> logger) :
-    ServiceBase<Patient, PatientResponseDto>(prescriptionRepo, unitOfWork, logger)
+    ServiceBase<Patient, PatientResponseDto>(repo, unitOfWork, logger)
     , IPatientService
 {
     public async Task<Result<int>> CreateAsync(
@@ -29,7 +29,7 @@ public class PatientService(
             logger.LogWarning("Failed to create patient due to invalid first name. {FirstName}", dto.FirstName);
             return Result.Failure<int>(firstNameResult.Error);
         }
-            
+
 
         var lastNameResult = LastName.Create(dto.LastName);
         if (lastNameResult.IsFailure)
@@ -62,7 +62,7 @@ public class PatientService(
                 logger.LogWarning("Failed to create patient due to invalid phone number. {PhoneNumber}", dto.PhoneNumber);
                 return Result.Failure<int>(phoneNumberResult.Error);
             }
-                
+
 
             phoneNumber = phoneNumberResult.Value;
         }
@@ -80,9 +80,9 @@ public class PatientService(
             logger.LogWarning("Failed to create patient due to invalid patient data. {Error}", patientResult.Error);
             return Result.Failure<int>(patientResult.Error);
         }
-            
 
-        await prescriptionRepo.AddAsync(patientResult.Value, cancellationToken);
+
+        await repo.AddAsync(patientResult.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Patient created successfully. {PatientId}", patientResult.Value.Id);
 
@@ -101,15 +101,15 @@ public class PatientService(
             logger.LogWarning("Invalid patient ID. {Id}", id);
             return Result.Failure(ServiceErrors.InvalidId);
         }
-            
 
-        var patient = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
+
+        var patient = await repo.GetByIdAsync(id, cancellationToken);
         if (patient is null)
         {
             logger.LogWarning("Patient not found. {Id}", id);
             return Result.Failure(ServiceErrors.NotFound);
         }
-            
+
 
         var firstNameResult = FirstName.Create(dto.FirstName);
         if (firstNameResult.IsFailure)
@@ -117,7 +117,7 @@ public class PatientService(
             logger.LogWarning("Failed to update patient due to invalid first name. {FirstName}", dto.FirstName);
             return Result.Failure(firstNameResult.Error);
         }
-            
+
 
         var lastNameResult = LastName.Create(dto.LastName);
         if (lastNameResult.IsFailure)
@@ -125,7 +125,7 @@ public class PatientService(
             logger.LogWarning("Failed to update patient due to invalid last name. {LastName}", dto.LastName);
             return Result.Failure(lastNameResult.Error);
         }
-            
+
 
         DateOfBirth? dateOfBirth = null;
 

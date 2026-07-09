@@ -11,12 +11,12 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public sealed class VisitService(
-    IRepository<Visit> prescriptionRepo,
+    IRepository<Visit> repo,
     IRepository<Appointment> appointmentRepo,
     IVisitToothTreatmentRepository visitToothTreatmentRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Visit, VisitResponseDto>> logger)
-    : ServiceBase<Visit, VisitResponseDto>(prescriptionRepo, unitOfWork, logger)
+    : ServiceBase<Visit, VisitResponseDto>(repo, unitOfWork, logger)
     , IVisitService
 {
     public async Task<Result<int>> CreateAsync(
@@ -67,15 +67,15 @@ public sealed class VisitService(
             return Result.Failure<int>(ServiceErrors.InvalidId);
         }
 
-        if (! await appointmentRepo.ExistsAsync(
-                (int)(appointmentIdResult?.Value?.Value)!, 
+        if (!await appointmentRepo.ExistsAsync(
+                (int)(appointmentIdResult?.Value?.Value)!,
                 cancellationToken))
         {
             logger.LogWarning("Failed to create visit: Appointment not found. {AppointmentId}", appointmentIdResult?.Value);
             return Result.Failure<int>(ServiceErrors.AppointmentErrors.PatientNotFound);
         }
 
-        await prescriptionRepo.AddAsync(visitResult.Value, cancellationToken);
+        await repo.AddAsync(visitResult.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Visit created successfully with ID {id}.", visitResult.Value.Id);
@@ -122,7 +122,7 @@ public sealed class VisitService(
             return Result.Failure<int>(ServiceErrors.InvalidId);
         }
 
-        var visit = await prescriptionRepo.GetByIdAsync(visitId, cancellationToken);
+        var visit = await repo.GetByIdAsync(visitId, cancellationToken);
 
         if (visit == null)
         {
@@ -154,7 +154,7 @@ public sealed class VisitService(
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation("VisitService.GetTotalAmountAsync is called. {VisitId}", visitId);
-        var result = 
+        var result =
             await visitToothTreatmentRepo.GetTotalCostAsync(visitId, cancellationToken);
         logger.LogInformation("Total amount for visit {VisitId}: {TotalAmount}", visitId, result);
         return result;

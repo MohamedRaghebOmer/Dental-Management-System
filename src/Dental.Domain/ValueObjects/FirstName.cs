@@ -18,12 +18,12 @@ public sealed record FirstName : ValueObject
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return Result.Failure<FirstName>(DomainErrors.Patients.FirstName.Empty);
+            return Result.Failure<FirstName>(DomainErrors.ValueObjects.FirstName.Empty);
         }
 
         if (value.Length > MaxLength)
         {
-            return Result.Failure<FirstName>(DomainErrors.Patients.FirstName.TooLong);
+            return Result.Failure<FirstName>(DomainErrors.ValueObjects.FirstName.TooLong);
         }
 
         return new FirstName(value);

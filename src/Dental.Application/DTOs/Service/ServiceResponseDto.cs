@@ -11,7 +11,7 @@ public sealed record ServiceResponseDto(
 {
     public ServiceResponseDto(Domain.Entities.Service service)
         : this(service.Id,
-            service.Name.Value,
+            service.Name,
             service.Price.Value,
             service.Description)
     {

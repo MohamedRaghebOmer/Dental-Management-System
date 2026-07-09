@@ -88,7 +88,7 @@ public sealed class VisitToothTreatment : Entity
         var trimmedNotes = notes?.Trim();
         if (trimmedNotes?.Length > Constants.NotesMaxLength)
         {
-            return Result.Failure(DomainErrors.VisitToothTreatment.Notes.TooLong);
+            return Result.Failure(DomainErrors.Entities.VisitToothTreatment.Notes.TooLong);
         }
 
         return Result.Success();

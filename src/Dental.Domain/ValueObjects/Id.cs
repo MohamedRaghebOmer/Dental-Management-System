@@ -17,10 +17,10 @@ public sealed record Id : ValueObject
     {
         if (value <= 0)
         {
-            return Result.Failure<Id>(DomainErrors.Appointment.Id.InvalidId);
+            return Result.Failure<Id>(DomainErrors.Entities.Appointment.Id.InvalidId);
         }
 
-        return Result.Success(new Id(value));
+        return new Id(value);
     }
 
     /// <summary>

@@ -11,20 +11,20 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public sealed class PrescriptionService(
-    IRepository<Prescription> prescriptionRepo, 
+    IRepository<Prescription> prescriptionRepo,
     IRepository<Visit> visitRepository,
     IRepository<Patient> patientRepository,
-    IUnitOfWork unitOfWork, 
-    ILogger<ServiceBase<Prescription, PrescriptionResponseDto>> logger) 
+    IUnitOfWork unitOfWork,
+    ILogger<ServiceBase<Prescription, PrescriptionResponseDto>> logger)
     : ServiceBase<Prescription, PrescriptionResponseDto>(prescriptionRepo, unitOfWork, logger)
     , IPrescriptionService
 {
     public async Task<Result<int>> CreateAsync(
-        PrescriptionRequestDto dto, 
+        PrescriptionRequestDto dto,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation("PrescriptionService.CreateAsync called");
-        
+
         // Validate the DTO and get a valid Prescription entity
         var entityResult = ValidateDtoAndGetValidEntity(dto);
         if (entityResult.IsFailure)
@@ -48,8 +48,8 @@ public sealed class PrescriptionService(
     }
 
     public async Task<Result> UpdateAsync(
-        int prescriptionId, 
-        PrescriptionRequestDto dto, 
+        int prescriptionId,
+        PrescriptionRequestDto dto,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation("PrescriptionService.UpdateAsync called");
@@ -129,7 +129,7 @@ public sealed class PrescriptionService(
     }
 
     private async Task<Result> EnsureForeignKeysAsync(
-        PrescriptionRequestDto dto, 
+        PrescriptionRequestDto dto,
         CancellationToken cancellationToken)
     {
         if (!await patientRepository.ExistsAsync(dto.PatientId, cancellationToken))

@@ -1,5 +1,4 @@
 ﻿using Dental.Application.Abstractions;
-using Dental.Domain.Entities;
 using Dental.Domain.ValueObjects;
 
 namespace Dental.Application.DTOs.Prescription;

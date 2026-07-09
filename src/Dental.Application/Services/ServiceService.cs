@@ -12,10 +12,10 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public class ServiceService(
-    IRepository<Service> prescriptionRepo,
+    IRepository<Service> prescriptionItemRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceService> logger)
-    : ServiceBase<Service, ServiceResponseDto>(prescriptionRepo, unitOfWork, logger)
+    : ServiceBase<Service, ServiceResponseDto>(prescriptionItemRepo, unitOfWork, logger)
     , IServiceService
 {
     public async Task<Result<int>> CreateAsync(
@@ -30,12 +30,6 @@ public class ServiceService(
             return Result.Failure<int>(ServiceErrors.ParameterNullReference);
         }
 
-        var nameResult = ServiceName.Create(dto.Name);
-        if (!nameResult.IsSuccess)
-        {
-            return Result.Failure<int>(nameResult.Error);
-        }
-
         var priceResult = Money.Create(dto.Price);
         if (!priceResult.IsSuccess)
         {
@@ -44,7 +38,7 @@ public class ServiceService(
 
         var serviceResult =
             Service.Create(
-                nameResult.Value,
+                dto.Name,
                 priceResult.Value,
                 dto.Description);
 
@@ -53,7 +47,7 @@ public class ServiceService(
             return Result.Failure<int>(serviceResult.Error);
         }
 
-        await prescriptionRepo.AddAsync(serviceResult.Value, cancellationToken);
+        await prescriptionItemRepo.AddAsync(serviceResult.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Service created successfully.");
@@ -74,18 +68,12 @@ public class ServiceService(
             return Result.Failure<ServiceResponseDto>(ServiceErrors.InvalidId);
         }
 
-        var service = await prescriptionRepo.GetByIdAsync(id, cancellationToken);
+        var service = await prescriptionItemRepo.GetByIdAsync(id, cancellationToken);
 
         if (service is null)
         {
             logger.LogWarning("Service not found.");
             return Result.Failure<ServiceResponseDto>(ServiceErrors.NotFound);
-        }
-
-        var name = ServiceName.Create(dto.Name);
-        if (!name.IsSuccess)
-        {
-            return Result.Failure<ServiceResponseDto>(name.Error);
         }
 
         var price = Money.Create(dto.Price);
@@ -94,7 +82,7 @@ public class ServiceService(
             return Result.Failure<ServiceResponseDto>(price.Error);
         }
 
-        var updateResult = service.Update(name.Value, price.Value, dto.Description);
+        var updateResult = service.Update(dto.Name, price.Value, dto.Description);
         if (!updateResult.IsSuccess)
         {
             return Result.Failure<ServiceResponseDto>(updateResult.Error);

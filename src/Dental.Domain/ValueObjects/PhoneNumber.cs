@@ -18,14 +18,14 @@ public sealed record PhoneNumber : ValueObject
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return Result.Failure<PhoneNumber>(DomainErrors.Patients.PhoneNumber.Empty);
+            return Result.Failure<PhoneNumber>(DomainErrors.ValueObjects.PhoneNumber.Empty);
         }
 
         value = value.Trim();
 
         if (value.Length != Length)
         {
-            return Result.Failure<PhoneNumber>(DomainErrors.Patients.PhoneNumber.Invalid);
+            return Result.Failure<PhoneNumber>(DomainErrors.ValueObjects.PhoneNumber.Invalid);
         }
 
         return new PhoneNumber(value);

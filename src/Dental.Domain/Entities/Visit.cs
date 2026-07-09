@@ -102,13 +102,13 @@ public sealed class Visit : Entity
     {
         if (date > DateTime.Now)
         {
-            return Result.Failure(DomainErrors.Visit.Date.CannotBeInTheFuture);
+            return Result.Failure(DomainErrors.Entities.Visit.Date.CannotBeInTheFuture);
         }
 
         notes = notes?.Trim();
         if (notes?.Length > Constants.NotesMaxLength)
         {
-            return Result.Failure(DomainErrors.Visit.Notes.TooLong);
+            return Result.Failure(DomainErrors.Entities.Visit.Notes.TooLong);
         }
 
         return Result.Success();

@@ -43,4 +43,15 @@ public static class ServiceErrors
         public static readonly Error VisitNotFound =
             new("VisitNotFound", "Visit not found.");
     }
+
+    public static class PrescriptionItem
+    {
+        public static readonly Error PrescriptionNotFound =
+            new("PrescriptionNotFound", "Prescription not found.");
+
+        public static readonly Error PrescriptionItemNotFound = new(
+            "PrescriptionItemNotFound",
+            "Prescription item not found."
+        );
+    }
 }

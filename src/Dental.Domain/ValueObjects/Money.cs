@@ -40,7 +40,7 @@ public record Money : ValueObject
     {
         if (value < 0)
         {
-            return Result.Failure(DomainErrors.Services.Money.NonPositiveValue);
+            return Result.Failure(DomainErrors.ValueObjects.Money.NonPositiveValue);
         }
         return Result.Success();
     }

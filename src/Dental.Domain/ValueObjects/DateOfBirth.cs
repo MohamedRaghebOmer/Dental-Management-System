@@ -23,12 +23,12 @@ public sealed record DateOfBirth : ValueObject
         if (value > today.AddYears(-MinimumAge))
         {
             return Result.Failure<DateOfBirth>
-                (DomainErrors.Patients.DateOfBirth.LessThanMinimumAllowedAge);
+                (DomainErrors.ValueObjects.DateOfBirth.LessThanMinimumAllowedAge);
         }
 
         if (value < today.AddYears(-MaximumAge))
         {
-            return Result.Failure<DateOfBirth>(DomainErrors.Patients.DateOfBirth.OlderThanMaximumAllowedAge);
+            return Result.Failure<DateOfBirth>(DomainErrors.ValueObjects.DateOfBirth.OlderThanMaximumAllowedAge);
         }
 
         return new DateOfBirth(value);
