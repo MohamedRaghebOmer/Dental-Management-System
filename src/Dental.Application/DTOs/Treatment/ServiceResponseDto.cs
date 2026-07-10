@@ -9,16 +9,14 @@ public sealed record ServiceResponseDto(
     string? Description)
     : IResponseDto<Domain.Entities.Treatment, ServiceResponseDto>
 {
-    public ServiceResponseDto(Domain.Entities.Treatment treatment)
-        : this(treatment.Id,
-            treatment.Name,
-            treatment.Price.Value,
-            treatment.Description)
-    {
-    }
 
     public static ServiceResponseDto ToResponseDto(Domain.Entities.Treatment entity)
     {
-        return new ServiceResponseDto(entity);
+        return new ServiceResponseDto(
+            Id: entity.Id,
+            Name: entity.Name,
+            Price: entity.Price.Value,
+            Description: entity.Description
+        );
     }
 }

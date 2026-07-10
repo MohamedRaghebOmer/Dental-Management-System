@@ -33,10 +33,10 @@ public sealed class PrescriptionItem : Entity
     }
 
     public Id PrescriptionId { get; private set; } = default!;
-    public string MedicineName { get; private set; }
+    public string MedicineName { get; private set; } = string.Empty;
     public decimal Dosage { get; private set; }
-    public MedicineFrequency MedicineFrequency { get; private set; }
-    public string? Instructions { get; private set; }
+    public MedicineFrequency MedicineFrequency { get; private set; } = default!;
+    public string? Instructions { get; private set; } = null;
 
     public Prescription Prescription { get; private set; } = default!;
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public abstract class Repository<TEntity>(DentalDbContext _dbContext)
+public class Repository<TEntity>(DentalDbContext _dbContext)
     : IRepository<TEntity>
     where TEntity : Entity
 {

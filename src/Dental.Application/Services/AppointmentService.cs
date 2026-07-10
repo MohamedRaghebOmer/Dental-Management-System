@@ -15,8 +15,10 @@ public class AppointmentService(
     IRepository<Patient> patientRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger)
+#pragma warning disable CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
     : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger)
-    , IAppointmentService
+#pragma warning restore CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
+        , IAppointmentService
 {
     public async Task<Result<int>> CreateAsync(
         AppointmentRequestDto dto,
@@ -51,8 +53,8 @@ public class AppointmentService(
             "AppointmentService.UpdateAsync is called. {AppointmentId} {UpdateAppointmentDto}", appointmentId, dto);
 
         var validEntity = await BuildEntityAndValidateForeignKeys(
-            dto, 
-            cancellationToken, 
+            dto,
+            cancellationToken,
             appointmentId);
 
         if (validEntity.IsFailure)
@@ -63,7 +65,7 @@ public class AppointmentService(
         var appointment = await repo.GetByIdAsync(appointmentId, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to update appointment: Appointment not found.", cancellationToken);
+            logger.LogWarning("Failed to update appointment: Appointment not found. {AppointmentId}", appointmentId);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
@@ -80,7 +82,7 @@ public class AppointmentService(
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Appointment updated successfully.", cancellationToken);
+        logger.LogInformation("Appointment updated successfully. {AppointmentId}", appointmentId);
 
         return Result.Success(cancellationToken);
     }
@@ -130,7 +132,7 @@ public class AppointmentService(
 
         if (id <= 0)
         {
-            logger.LogWarning("Failed to cancel appointment: Invalid appointment ID.", cancellationToken);
+            logger.LogWarning("Failed to cancel appointment: Invalid appointment ID.");
             return Result.Failure(ServiceErrors.InvalidId);
         }
 
@@ -138,7 +140,7 @@ public class AppointmentService(
         var appointment = await repo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to cancel appointment: Appointment not found.", cancellationToken);
+            logger.LogWarning("Failed to cancel appointment: Appointment not found. {AppointmentId}", id);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
@@ -151,7 +153,7 @@ public class AppointmentService(
 
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Appointment canceled successfully.", cancellationToken);
+        logger.LogInformation("Appointment canceled successfully. {AppointmentId}", id);
 
         return Result.Success(cancellationToken);
     }
@@ -163,7 +165,7 @@ public class AppointmentService(
 
         if (id <= 0)
         {
-            logger.LogWarning("Failed to complete appointment: Invalid appointment ID.", cancellationToken);
+            logger.LogWarning("Failed to complete appointment: Invalid appointment ID. {AppointmentId}", id);
             return Result.Failure(ServiceErrors.InvalidId);
         }
 
@@ -171,7 +173,7 @@ public class AppointmentService(
         var appointment = await repo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to complete appointment: Appointment not found.", cancellationToken);
+            logger.LogWarning("Failed to complete appointment: Appointment not found. {AppointmentId}", id);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
@@ -183,7 +185,7 @@ public class AppointmentService(
         }
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Appointment completed successfully.", cancellationToken);
+        logger.LogInformation("Appointment completed successfully. {AppointmentId}", id);
 
         return Result.Success(cancellationToken);
     }
@@ -195,14 +197,14 @@ public class AppointmentService(
 
         if (id <= 0)
         {
-            logger.LogWarning("Failed to check if appointment is missed: Invalid appointment ID.", cancellationToken);
+            logger.LogWarning("Failed to check if appointment is missed: Invalid appointment ID. {AppointmentId}", id);
             return Result.Failure<bool>(ServiceErrors.InvalidId);
         }
 
         var appointment = await repo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to check if appointment is missed: Appointment not found.", cancellationToken);
+            logger.LogWarning("Failed to check if appointment is missed: Appointment not found. {AppointmentId}", id);
             return Result.Failure<bool>(ServiceErrors.NotFound);
         }
 
