@@ -34,6 +34,7 @@ public sealed class Supplier : Entity
     public string? Address { get; private set; } = null;
     public string? Description { get; private set; } = null;
 
+    public ICollection<Material> Materials { get; private set; } = [];
 
     public static Result<Supplier> Create(
         string name,
@@ -46,7 +47,7 @@ public sealed class Supplier : Entity
         if (validationResult.IsFailure)
             return Result.Failure<Supplier>(validationResult.Error);
 
-        return new Supplier(name, phoneNumber, address, description);
+        return new Supplier(name.Trim(), phoneNumber, address?.Trim(), description?.Trim());
     }
 
     public Result Update(
@@ -60,10 +61,10 @@ public sealed class Supplier : Entity
         if (validationResult.IsFailure)
             return Result.Failure(validationResult.Error);
 
-        Name = name;
+        Name = name.Trim();
         PhoneNumber = phoneNumber;
-        Address = address;
-        Description = description;
+        Address = address?.Trim();
+        Description = description?.Trim();
 
         return Result.Success();
     }

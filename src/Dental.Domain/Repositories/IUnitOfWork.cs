@@ -1,4 +1,4 @@
-﻿namespace Dental.Domain.Interfaces.Repositories;
+﻿namespace Dental.Domain.Repositories;
 
 public interface IUnitOfWork
 {

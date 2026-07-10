@@ -1,6 +1,6 @@
 ﻿using Dental.Domain.Entities;
 
-namespace Dental.Domain.Interfaces.Repositories;
+namespace Dental.Domain.Repositories;
 
 public interface IVisitToothTreatmentRepository
  : IRepository<VisitToothTreatment>
@@ -9,7 +9,10 @@ public interface IVisitToothTreatmentRepository
         int visitId,
         CancellationToken cancellationToken = default);
 
-    Task<bool> AreServiceIdAndVisitIdExists(
+    Task<bool> ExistsByToothNumberAndServiceIdAndVisitId(
+        byte toothNumber,
         int serviceId,
-        int visitId);
+        int visitId,
+        int? excludedId = null,
+        CancellationToken cancellationToken = default);
 }

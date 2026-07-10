@@ -1,5 +1,5 @@
-﻿using Dental.Domain.Interfaces.Repositories;
-using Dental.Domain.Primitives;
+﻿using Dental.Domain.Primitives;
+using Dental.Domain.Repositories;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

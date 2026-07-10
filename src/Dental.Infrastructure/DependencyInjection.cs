@@ -1,4 +1,4 @@
-﻿using Dental.Domain.Interfaces.Repositories;
+﻿using Dental.Domain.Repositories;
 using Dental.Infrastructure.Persistence;
 using Dental.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +24,10 @@ public static class DependencyInjection
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IVisitToothTreatmentRepository, VisitToothTreatmentRepository>();
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        services.AddScoped<ISupplierRepository, SupplierRepository>();
+        services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+        services.AddScoped<IMaterialRepository, MaterialRepository>();
 
         return services;
     }

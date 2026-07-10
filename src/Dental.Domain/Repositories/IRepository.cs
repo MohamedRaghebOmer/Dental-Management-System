@@ -1,6 +1,6 @@
 ﻿using Dental.Domain.Primitives;
 
-namespace Dental.Domain.Interfaces.Repositories;
+namespace Dental.Domain.Repositories;
 
 public interface IRepository<TEntity>
     where TEntity : Entity
