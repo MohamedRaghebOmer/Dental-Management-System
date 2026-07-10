@@ -25,11 +25,11 @@ public sealed class Treatment : Entity
 
     private Treatment() { } // EF Core
 
-    public string Name { get; private set; }
+    public string Name { get; private set; } = string.Empty;
 
     public Money Price { get; private set; } = default!;
 
-    public string? Description { get; private set; }
+    public string? Description { get; private set; } = null;
     public ICollection<VisitToothTreatment> VisitToothTreatments { get; private set; } = [];
 
     public static Result<Treatment> Create(

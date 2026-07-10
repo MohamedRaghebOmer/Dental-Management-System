@@ -1,5 +1,4 @@
-﻿using Dental.Domain.Entities;
-using Dental.Domain.Shared;
+﻿using Dental.Domain.Shared;
 
 namespace Dental.Domain.Errors;
 
@@ -139,6 +138,33 @@ public static class DomainErrors
                 public static Error TooLong = new(
                     "PrescriptionItems.InstructionsTooLong",
                     $"The instructions cannot be longer than {Domain.Entities.PrescriptionItem.Constants.InstructionsMaxLength} characters."
+                );
+            }
+        }
+
+        public static class Supplier
+        {
+            public static class Name
+            {
+                public static readonly Error TooLong = new(
+                    "Supplier.NameTooLong",
+                    $"The supplier name cannot be longer than {Domain.Entities.Supplier.Constants.NameMaxLength} characters."
+                );
+            }
+
+            public static class Address
+            {
+                public static readonly Error TooLong = new(
+                    "Supplier.AddressTooLong",
+                    $"The supplier address cannot be longer than {Domain.Entities.Supplier.Constants.AddressMaxLength} characters."
+                );
+            }
+
+            public static class Description
+            {
+                public static readonly Error TooLong = new(
+                    "Supplier.DescriptionTooLong",
+                    $"The supplier description cannot be longer than {Domain.Entities.Supplier.Constants.DescriptionMaxLength} characters."
                 );
             }
         }

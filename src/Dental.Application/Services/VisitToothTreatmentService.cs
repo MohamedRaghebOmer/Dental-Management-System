@@ -141,7 +141,7 @@ public sealed class VisitToothTreatmentService(
         var ensureForeignKeysResult = await EnsureForeignKeys(
             dto,
             cancellationToken);
-        
+
         if (ensureForeignKeysResult.IsFailure)
         {
             return Result.Failure<VisitToothTreatment>(ensureForeignKeysResult.Error);
