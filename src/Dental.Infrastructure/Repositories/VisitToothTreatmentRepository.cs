@@ -1,5 +1,5 @@
 ﻿using Dental.Domain.Entities;
-using Dental.Domain.Interfaces.Repositories;
+using Dental.Domain.Repositories;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,12 +18,18 @@ public sealed class VisitToothTreatmentRepository(DentalDbContext _dbContext)
             .SumAsync(vtt => vtt.Price.Value, cancellationToken);
     }
 
-    public async Task<bool> AreServiceIdAndVisitIdExists(
+    public async Task<bool> ExistsByToothNumberAndServiceIdAndVisitId(
+        byte toothNumber,
         int serviceId,
-        int visitId)
+        int visitId,
+        int? excludedId = null,
+        CancellationToken cancellationToken = default)
     {
         return await _dbContext.VisitToothTreatments
-            .AnyAsync(vtt => vtt.ServiceId.Value == serviceId
-                             && vtt.VisitId.Value == visitId);
+            .AnyAsync(vtt => vtt.ToothNumber.Value == toothNumber
+                             && vtt.ServiceId.Value == serviceId
+                             && vtt.VisitId.Value == visitId
+                             && vtt.Id != excludedId,
+                cancellationToken);
     }
 }

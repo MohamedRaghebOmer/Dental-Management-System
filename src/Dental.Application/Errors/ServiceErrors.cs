@@ -28,6 +28,9 @@ public static class ServiceErrors
     {
         public static readonly Error PatientNotFound =
             new("PatientNotFound", "Patient not found.");
+
+        public static readonly Error DateIsTaken =
+            new("DateIsTaken", "There is already an appointment for the given date.");
     }
 
     public static class Prescription
@@ -47,5 +50,26 @@ public static class ServiceErrors
             "PrescriptionItemNotFound",
             "Prescription item not found."
         );
+    }
+
+    public static class Supplier
+    {
+        public static readonly Error PhoneNumberExists =
+            new("PhoneNumberExists", "Phone number already exists.");
+    }
+
+    public static class Treatment
+    {
+        public static readonly Error DuplicateName =
+            new("DuplicateName", "A treatment with the same name already exists.");
+    }
+
+    public static class Material
+    {
+        public static readonly Error InvalidSupplierId =
+            new("InvalidSupplierId", "Invalid supplier ID.");
+
+        public static readonly Error DuplicateName =
+            new("DuplicateName", "A material with the same name already exists.");
     }
 }

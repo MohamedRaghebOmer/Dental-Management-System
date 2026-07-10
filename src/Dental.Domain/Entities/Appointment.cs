@@ -14,7 +14,7 @@ public sealed class Appointment : Entity
     }
 
     public Id PatientId { get; private set; } = default!;
-    public DateTime AppointmentDate { get; private set; }
+    public DateTime Date { get; private set; }
     public DateTime? CompletedAt { get; private set; }
     public AppointmentStatus Status { get; private set; }
     public string? Notes { get; private set; }
@@ -26,13 +26,13 @@ public sealed class Appointment : Entity
 
     private Appointment(
         Id patientId,
-        DateTime appointmentDate,
+        DateTime date,
         DateTime? completedAt,
         AppointmentStatus status,
         string? notes)
     {
         PatientId = patientId;
-        AppointmentDate = appointmentDate;
+        Date = date;
         CompletedAt = completedAt;
         Status = status;
         Notes = notes;
@@ -75,7 +75,7 @@ public sealed class Appointment : Entity
 
         if (Status != AppointmentStatus.Pending)
         {
-            if (appointmentDate != this.AppointmentDate)
+            if (appointmentDate != this.Date)
             {
                 return Result.Failure(DomainErrors.Entities.Appointment.Date.CannotBeChangedWhenStatusIsNotPending);
             }
@@ -94,7 +94,7 @@ public sealed class Appointment : Entity
         }
 
         this.PatientId = patientId;
-        this.AppointmentDate = appointmentDate;
+        this.Date = appointmentDate;
         this.Notes = notes;
 
         return Result.Success();
@@ -135,5 +135,5 @@ public sealed class Appointment : Entity
 
     public bool IsMissed() =>
         Status == AppointmentStatus.Pending &&
-        AppointmentDate < DateTime.Now;
+        Date < DateTime.Now;
 }

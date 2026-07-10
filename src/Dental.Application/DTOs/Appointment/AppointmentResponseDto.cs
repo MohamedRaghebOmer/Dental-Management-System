@@ -17,7 +17,7 @@ public sealed record AppointmentResponseDto(
         return new AppointmentResponseDto(
             id: entity.Id,
             patientId: entity.PatientId.Value,
-            scheduledAt: entity.AppointmentDate,
+            scheduledAt: entity.Date,
             completedAt: entity.CompletedAt,
             status: entity.Status,
             notes: entity.Notes

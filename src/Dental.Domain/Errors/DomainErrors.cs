@@ -254,4 +254,52 @@ public static class DomainErrors
                 $"The prescription notes cannot be longer than{Domain.Entities.Prescription.Constants.NotesMaxLength} characters.");
         }
     }
+
+    public static class Material
+    {
+        public static class Name
+        {
+            public static readonly Error Empty = new(
+                "Material.Name.Empty",
+                "The material name cannot be empty."
+            );
+
+            public static readonly Error TooLong = new(
+                "Material.Name.TooLong",
+                $"The material name cannot be longer than {Domain.Entities.Material.Constants.NameMaxLength} characters."
+            );
+        }
+
+        public static class ReorderLevel
+        {
+            public static readonly Error Negative = new(
+                "Material.ReorderLevel.Negative",
+                "The reorder level cannot be negative."
+            );
+        }
+
+        public static class Description
+        {
+            public static readonly Error TooLong = new(
+                "Material.Description.TooLong",
+                $"The material description cannot be longer than {Domain.Entities.Material.Constants.DescriptionMaxLength} characters."
+            );
+        }
+
+        public static class Quantity
+        {
+            public static readonly Error Negative = new(
+                "Material.Quantity.Negative",
+                "The quantity cannot be negative."
+            );
+        }
+
+        public static class BuyingPrice
+        {
+            public static readonly Error Negative = new(
+                "Material.BuyingPrice.Negative",
+                "The buying price cannot be negative."
+            );
+        }
+    }
 }

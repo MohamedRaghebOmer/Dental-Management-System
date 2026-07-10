@@ -1,6 +1,6 @@
 ﻿using Dental.Application.Errors;
-using Dental.Domain.Interfaces.Repositories;
 using Dental.Domain.Primitives;
+using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Microsoft.Extensions.Logging;
 

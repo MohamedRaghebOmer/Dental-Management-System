@@ -3,7 +3,7 @@ using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.VisitToothNumber;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
-using Dental.Domain.Interfaces.Repositories;
+using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
@@ -140,6 +140,7 @@ public sealed class VisitToothTreatmentService(
 
         var ensureForeignKeysResult = await EnsureForeignKeys(
             dto,
+            id,
             cancellationToken);
 
         if (ensureForeignKeysResult.IsFailure)
@@ -152,6 +153,7 @@ public sealed class VisitToothTreatmentService(
 
     private async Task<Result> EnsureForeignKeys(
         VisitToothTreatmentRequestDto dto,
+        int? id = null,
         CancellationToken cancellationToken = default)
     {
         if (!await visitRepo.ExistsAsync(
@@ -171,12 +173,15 @@ public sealed class VisitToothTreatmentService(
             return Result.Failure(ServiceErrors.VisitToothTreatmentErrors.ServiceNotFound);
         }
 
-        if (await visitToothTreatmentRepo.AreServiceIdAndVisitIdExists(
+        if (await visitToothTreatmentRepo.ExistsByToothNumberAndServiceIdAndVisitId(
+                dto.ToothNumber,
                 dto.ServiceId,
-                dto.VisitId))
+                dto.VisitId,
+                id,
+                cancellationToken))
         {
             logger.LogWarning(
-                "Visit tooth treatment already exists for the given service and visit IDs.");
+                "The visit tooth treatment already exists for the given tooth number, service, and visit IDs.");
             return Result.Failure(ServiceErrors.VisitToothTreatmentErrors.AlreadyExists);
         }
 

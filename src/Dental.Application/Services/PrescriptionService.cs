@@ -3,7 +3,7 @@ using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Prescription;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
-using Dental.Domain.Interfaces.Repositories;
+using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;

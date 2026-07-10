@@ -3,7 +3,7 @@ using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Supplier;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
-using Dental.Domain.Interfaces.Repositories;
+using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
@@ -12,6 +12,7 @@ namespace Dental.Application.Services;
 
 public sealed class SupplierService(
     IRepository<Supplier> repo,
+    ISupplierRepository supplierRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Supplier, SupplierResponseDto>> logger)
     : ServiceBase<Supplier, SupplierResponseDto>(repo, unitOfWork, logger), ISupplierService
@@ -20,7 +21,7 @@ public sealed class SupplierService(
         SupplierRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        var entityResult = BuildEntity(dto);
+        var entityResult = await BuildEntityAndEnsureUniqueFields(dto, cancellationToken);
         if (entityResult.IsFailure)
         {
             return Result.Failure<int>(entityResult.Error);
@@ -37,7 +38,8 @@ public sealed class SupplierService(
         SupplierRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        var updatedEntityResult = BuildEntity(dto, supplierId);
+        var updatedEntityResult = 
+            await BuildEntityAndEnsureUniqueFields(dto,cancellationToken, supplierId);
         if (updatedEntityResult.IsFailure)
         {
             return Result.Failure(updatedEntityResult.Error);
@@ -60,8 +62,9 @@ public sealed class SupplierService(
     }
 
 
-    private Result<Supplier> BuildEntity(
+    private async Task<Result<Supplier>> BuildEntityAndEnsureUniqueFields(
         SupplierRequestDto dto,
+        CancellationToken cancellationToken = default,
         int? supplierId = null)
     {
         if (supplierId <= 0)
@@ -78,6 +81,15 @@ public sealed class SupplierService(
             {
                 logger.LogInformation("Invalid phone number provided. {PhoneNumber}", dto.PhoneNumber);
                 return Result.Failure<Supplier>(phoneNumberResult.Error);
+            }
+
+            if (await supplierRepo.PhoneNumberExistsAsync(
+                    dto.PhoneNumber,
+                    supplierId, 
+                    cancellationToken))
+            {
+                logger.LogInformation("Phone number already exists. {PhoneNumber}", dto.PhoneNumber);
+                return Result.Failure<Supplier>(ServiceErrors.Supplier.PhoneNumberExists);
             }
         }
 

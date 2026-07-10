@@ -48,8 +48,8 @@ public sealed class AppointmentConfiguration
             .HasColumnName(nameof(Appointment.PatientId))
             .IsRequired();
 
-        builder.Property(p => p.AppointmentDate)
-            .HasColumnName(nameof(Appointment.AppointmentDate))
+        builder.Property(p => p.Date)
+            .HasColumnName(nameof(Appointment.Date))
             .IsRequired();
 
         builder.Property(p => p.CompletedAt)

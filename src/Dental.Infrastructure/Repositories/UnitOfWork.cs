@@ -1,4 +1,4 @@
-﻿using Dental.Domain.Interfaces.Repositories;
+﻿using Dental.Domain.Repositories;
 using Dental.Infrastructure.Persistence;
 
 namespace Dental.Infrastructure.Repositories;

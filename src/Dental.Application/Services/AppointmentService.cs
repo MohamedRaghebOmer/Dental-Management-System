@@ -3,7 +3,7 @@ using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Appointment;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
-using Dental.Domain.Interfaces.Repositories;
+using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
 using Microsoft.Extensions.Logging;
@@ -12,13 +12,12 @@ namespace Dental.Application.Services;
 
 public class AppointmentService(
     IRepository<Appointment> repo,
+    IAppointmentRepository appointmentRepo,
     IRepository<Patient> patientRepo,
-    IUnitOfWork unitOfWork,
-    ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger)
-#pragma warning disable CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
-    : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger)
-#pragma warning restore CS9107 // Parameter is captured into the state of the enclosing type and its value is also passed to the base constructor. The value might be captured by the base class as well.
-        , IAppointmentService
+    IUnitOfWork unitOfWork, 
+    ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger) 
+    : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger), 
+        IAppointmentService
 {
     public async Task<Result<int>> CreateAsync(
         AppointmentRequestDto dto,
@@ -105,6 +104,16 @@ public class AppointmentService(
             return Result.Failure<Appointment>(patientIdResult.Error);
         }
 
+        if (await appointmentRepo.ExistsByDateAsync(
+                requestDto.AppointmentDate, 
+                id, 
+                cancellationToken))
+        {
+            logger.LogWarning(
+                "Failed to create appointment: There is already an appointment for the given date. {Date}", requestDto.AppointmentDate);
+            return Result.Failure<Appointment>(ServiceErrors.AppointmentErrors.DateIsTaken);
+        }
+
         if (!await patientRepo.ExistsAsync(requestDto.PatientId, cancellationToken))
         {
             logger.LogWarning("Failed to create appointment: Patient not found. {PatientId}", requestDto.PatientId);
@@ -168,7 +177,7 @@ public class AppointmentService(
             logger.LogWarning("Failed to complete appointment: Invalid appointment ID. {AppointmentId}", id);
             return Result.Failure(ServiceErrors.InvalidId);
         }
-
+        
 
         var appointment = await repo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)
