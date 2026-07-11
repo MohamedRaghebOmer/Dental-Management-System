@@ -15,7 +15,7 @@ public sealed class SupplierRepository(DentalDbContext _dbContext)
         CancellationToken cancellationToken = default)
     {
         return _dbContext.Suppliers.AnyAsync(
-            s => s.PhoneNumber != null && s.PhoneNumber.Value == phoneNumber && s.Id != excludedId,
+            s => s.PhoneNumber != null && s.PhoneNumber.Value == phoneNumber && s.Id.Value != excludedId,
             cancellationToken);
     }
 }

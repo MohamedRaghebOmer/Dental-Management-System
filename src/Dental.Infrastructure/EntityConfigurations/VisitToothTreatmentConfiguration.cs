@@ -10,9 +10,10 @@ public sealed class VisitToothTreatmentConfiguration
     : BaseEntityConfiguration<VisitToothTreatment>
     , IEntityTypeConfiguration<VisitToothTreatment>
 {
-    public void Configure(EntityTypeBuilder<VisitToothTreatment> builder)
+    public new void Configure(EntityTypeBuilder<VisitToothTreatment> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureForeignKeys(builder);
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);
@@ -22,7 +23,7 @@ public sealed class VisitToothTreatmentConfiguration
     {
         // Create a unique index on the combination of VisitId and ServiceId
         // to ensure that a service can only be applied once per visit
-        builder.HasIndex(x => new { x.VisitId, x.ServiceId })
+        builder.HasIndex(x => new { x.VisitId, ServiceId = x.TreatmentId })
             .HasDatabaseName("UX_VisitToothTreatments_VisitId_ServiceId")
             .IsUnique(true);
 
@@ -54,7 +55,7 @@ public sealed class VisitToothTreatmentConfiguration
 
         builder.HasOne(x => x.Treatment)
             .WithMany(x => x.VisitToothTreatments)
-            .HasForeignKey(x => x.ServiceId)
+            .HasForeignKey(x => x.TreatmentId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 
@@ -74,11 +75,11 @@ public sealed class VisitToothTreatmentConfiguration
             .HasColumnName(nameof(VisitToothTreatment.VisitId))
             .IsRequired();
 
-        builder.Property(x => x.ServiceId)
+        builder.Property(x => x.TreatmentId)
             .HasConversion(
                 value => value.Value,
                 value => Id.FromDatabase(value))
-            .HasColumnName(nameof(VisitToothTreatment.ServiceId))
+            .HasColumnName(nameof(VisitToothTreatment.TreatmentId))
             .IsRequired();
 
         builder.Property(x => x.Price)

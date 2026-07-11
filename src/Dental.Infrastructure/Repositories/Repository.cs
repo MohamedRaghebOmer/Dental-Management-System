@@ -19,8 +19,7 @@ public class Repository<TEntity>(DentalDbContext _dbContext)
     public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Set<TEntity>()
-            .AsNoTracking()
-            .AnyAsync(e => e.Id == id, cancellationToken);
+            .AnyAsync(e => e.Id.Value == id, cancellationToken);
     }
 
     public async Task<TEntity?> GetByIdAsync(
@@ -37,7 +36,7 @@ public class Repository<TEntity>(DentalDbContext _dbContext)
         CancellationToken cancellationToken = default)
     {
         await _dbContext.Set<TEntity>()
-            .Where(s => s.Id == id)
+            .Where(s => s.Id.Value == id)
             .ExecuteDeleteAsync(cancellationToken);
     }
 

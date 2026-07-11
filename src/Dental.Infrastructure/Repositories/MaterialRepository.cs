@@ -14,6 +14,6 @@ public sealed class MaterialRepository(DentalDbContext _dbContext)
         int? excludeId = null, 
         CancellationToken cancellationToken = default)
     {
-        return _dbContext.Materials.AnyAsync(m => m.Name == name && m.Id != excludeId, cancellationToken);
+        return _dbContext.Materials.AnyAsync(m => m.Name == name && m.Id.Value != excludeId, cancellationToken);
     }
 }

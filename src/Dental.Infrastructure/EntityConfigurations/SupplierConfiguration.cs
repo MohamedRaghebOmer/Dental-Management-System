@@ -10,9 +10,10 @@ public sealed class SupplierConfiguration
     : BaseEntityConfiguration<Supplier>
     , IEntityTypeConfiguration<Supplier>
 {
-    public void Configure(EntityTypeBuilder<Supplier> builder)
+    public new void Configure(EntityTypeBuilder<Supplier> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureIndexes(builder);
     }
 

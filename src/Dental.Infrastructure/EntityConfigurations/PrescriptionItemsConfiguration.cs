@@ -10,9 +10,10 @@ public sealed class PrescriptionItemsConfiguration
     : BaseEntityConfiguration<PrescriptionItem>
     , IEntityTypeConfiguration<PrescriptionItem>
 {
-    public void Configure(EntityTypeBuilder<PrescriptionItem> builder)
+    public new void Configure(EntityTypeBuilder<PrescriptionItem> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureForeignKeys(builder);
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);

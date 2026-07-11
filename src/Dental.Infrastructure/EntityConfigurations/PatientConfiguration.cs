@@ -10,9 +10,10 @@ public sealed class PatientConfiguration
     : BaseEntityConfiguration<Patient>
     , IEntityTypeConfiguration<Patient>
 {
-    public void Configure(EntityTypeBuilder<Patient> builder)
+    public new void Configure(EntityTypeBuilder<Patient> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         AddConstraints(builder);
         AddComments(builder);
         ConfigureIgnoredFields(builder);

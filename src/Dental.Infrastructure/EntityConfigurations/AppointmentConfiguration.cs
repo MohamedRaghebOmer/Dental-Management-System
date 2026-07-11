@@ -10,9 +10,10 @@ public sealed class AppointmentConfiguration
         : BaseEntityConfiguration<Appointment>
         , IEntityTypeConfiguration<Appointment>
 {
-    public void Configure(EntityTypeBuilder<Appointment> builder)
+    public new void Configure(EntityTypeBuilder<Appointment> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureForeignKeys(builder);
         ConfigureIndexes(builder);
         AddColumnsComments(builder);

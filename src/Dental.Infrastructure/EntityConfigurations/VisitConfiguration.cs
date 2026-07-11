@@ -10,9 +10,10 @@ public sealed class VisitConfiguration
     : BaseEntityConfiguration<Visit>
     , IEntityTypeConfiguration<Visit>
 {
-    public void Configure(EntityTypeBuilder<Visit> builder)
+    public new void Configure(EntityTypeBuilder<Visit> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureForeignKeys(builder);
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);

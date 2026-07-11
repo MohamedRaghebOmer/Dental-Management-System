@@ -14,6 +14,7 @@ public sealed class TreatmentRepository(DentalDbContext _dbContext)
         int? excludedId = null,
         CancellationToken cancellationToken = default)
     {
-        return _dbContext.Treatments.AnyAsync(t => t.Name == name && t.Id != excludedId, cancellationToken);
+        return _dbContext.Treatments.AnyAsync(t => t.Name == name && t.Id.Value
+                != excludedId, cancellationToken);
     }
 }

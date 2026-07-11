@@ -1,4 +1,6 @@
 ﻿using Dental.Domain.Entities;
+using Dental.Domain.Errors;
+using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,15 +11,16 @@ public sealed class MaterialConfiguration
     : BaseEntityConfiguration<Material>
     , IEntityTypeConfiguration<Material>
 {
-    public void Configure(EntityTypeBuilder<Material> builder)
+    public new void Configure(EntityTypeBuilder<Material> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureForeignKeys(builder);
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);
     }
 
-    private void ConfigureIndexes(EntityTypeBuilder<Material> builder)
+    private static void ConfigureIndexes(EntityTypeBuilder<Material> builder)
     {
         builder.HasIndex(m => m.SupplierId)
             .IsUnique(false);
@@ -29,7 +32,7 @@ public sealed class MaterialConfiguration
             .IsUnique(false);
     }
 
-    private void ConfigureCheckConstraints(EntityTypeBuilder<Material> builder)
+    private static void ConfigureCheckConstraints(EntityTypeBuilder<Material> builder)
     {
         builder.ToTable(table =>
         {
@@ -47,7 +50,7 @@ public sealed class MaterialConfiguration
         });
     }
 
-    private void ConfigureForeignKeys(EntityTypeBuilder<Material> builder)
+    private static void ConfigureForeignKeys(EntityTypeBuilder<Material> builder)
     {
         builder.HasOne(m => m.Supplier)
             .WithMany(s => s.Materials)
@@ -63,6 +66,9 @@ public sealed class MaterialConfiguration
             .IsRequired();
 
         builder.Property(m => m.SupplierId)
+            .HasConversion(
+                value => value == null? (int?)null : value.Value,
+                value => value == null? null : Id.FromDatabase(value.Value))
             .HasColumnName(nameof(Material.SupplierId))
             .IsRequired(false);
 

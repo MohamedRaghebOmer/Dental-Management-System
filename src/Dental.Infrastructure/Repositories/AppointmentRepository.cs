@@ -15,7 +15,7 @@ public sealed class AppointmentRepository(DentalDbContext _dbContext)
         CancellationToken cancellationToken = default)
     {
         return _dbContext.Appointments.AnyAsync(
-            a => a.Date == date && a.Id != excludedId,
+            a => a.Date == date && a.Id.Value != excludedId,
             cancellationToken);
     }
 }
