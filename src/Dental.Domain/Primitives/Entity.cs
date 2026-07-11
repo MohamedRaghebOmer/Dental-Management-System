@@ -1,15 +1,12 @@
-﻿namespace Dental.Domain.Primitives;
+﻿using Dental.Domain.ValueObjects;
+
+namespace Dental.Domain.Primitives;
 
 public abstract class Entity : IEquatable<Entity>
 {
     protected Entity() { }
 
-    protected Entity(int id)
-    {
-        Id = id;
-    }
-
-    public int Id { get; private set; }
+    public Id Id { get; protected set; }
 
     public bool Equals(Entity? other)
     {

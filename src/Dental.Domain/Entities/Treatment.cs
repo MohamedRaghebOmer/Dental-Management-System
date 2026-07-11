@@ -23,7 +23,20 @@ public sealed class Treatment : Entity
         Description = description;
     }
 
+    private Treatment(
+        Id id,
+        string name,
+        Money price,
+        string? description = null)
+    {
+        base.Id = id;
+        Name = name;
+        Price = price;
+        Description = description;
+    }
+
     private Treatment() { } // EF Core
+
 
     public string Name { get; private set; } = string.Empty;
 
@@ -62,5 +75,21 @@ public sealed class Treatment : Entity
         Description = description?.Trim();
 
         return Result.Success();
+    }
+
+    public static Treatment[] InitialData()
+    {
+        return
+        [
+            new Treatment(Id.FromDatabase(1), "حشو عصب", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(2), "حشو ليزر", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(3), "تركيبات", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(4), "خلع", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(5), "زراعه", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(6), "تقويم", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(7), "تنظيف جير", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(8), "تلميع", Money.FromDatabase(100.00m)),
+            new Treatment(Id.FromDatabase(9), "تبيض", Money.FromDatabase(100.00m))
+        ];
     }
 }

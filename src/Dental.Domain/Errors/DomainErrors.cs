@@ -302,4 +302,27 @@ public static class DomainErrors
             );
         }
     }
+
+    public static class DentalInfo
+    {
+        public static readonly Error DoctorNameTooLong = new(
+            "DentalInfo.DoctorNameTooLong",
+            $"The doctor name cannot be longer than {Domain.Entities.DentalInfo.Constants.DoctorNameMaxLength} characters."
+        );
+
+        public static readonly Error DentalDescriptionTooLong = new(
+            "DentalInfo.DentalDescriptionTooLong",
+            $"The dental description cannot be longer than {Domain.Entities.DentalInfo.Constants.DentalDescriptionMaxLength} characters."
+        );
+
+        public static readonly Error PhoneNumberTooLong = new(
+            "DentalInfo.PhoneNumberTooLong",
+            $"The phone number cannot be longer than {Domain.Entities.DentalInfo.Constants.PhoneNumberMaxLength} characters."
+        );
+
+        public static readonly Error PicturePathTooLong = new(
+            "DentalInfo.PicturePathTooLong",
+            $"The picture path cannot be longer than {Domain.Entities.DentalInfo.Constants.PicturePathMaxLength} characters."
+        );
+    }
 }

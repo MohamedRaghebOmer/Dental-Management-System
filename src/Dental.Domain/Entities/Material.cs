@@ -34,7 +34,7 @@ public sealed class Material : Entity
     }
 
     public string Name { get; private set; } = string.Empty;
-    public Id? SupplierId { get; private set; } = default!;
+    public Id? SupplierId { get; private set; }
     public int ReorderLevel { get; private set; }
     public string? Description { get; private set; } = null;
     public int Quantity { get; private set; }

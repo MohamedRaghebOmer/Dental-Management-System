@@ -14,7 +14,7 @@ public sealed class VisitToothTreatment : Entity
 
     public ToothNumber ToothNumber { get; private set; } = default!;
     public Id VisitId { get; private set; } = default!;
-    public Id ServiceId { get; private set; } = default!;
+    public Id TreatmentId { get; private set; } = default!;
     public Money Price { get; private set; } = default!;
     public string? Notes { get; private set; }
 
@@ -26,13 +26,13 @@ public sealed class VisitToothTreatment : Entity
     private VisitToothTreatment(
         ToothNumber toothNumber,
         Id visitId,
-        Id serviceId,
+        Id treatmentId,
         Money price,
         string? notes)
     {
         ToothNumber = toothNumber;
         VisitId = visitId;
-        ServiceId = serviceId;
+        TreatmentId = treatmentId;
         Price = price;
         Notes = notes;
     }
@@ -75,7 +75,7 @@ public sealed class VisitToothTreatment : Entity
 
         ToothNumber = toothNumber;
         VisitId = visitId;
-        ServiceId = serviceId;
+        TreatmentId = serviceId;
         Price = price;
         Notes = notes?.Trim();
 
