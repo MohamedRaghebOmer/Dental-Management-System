@@ -3,6 +3,7 @@ using Dental.Infrastructure;
 using Dental.WinForms.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Dental.WinForms;
 
@@ -14,24 +15,36 @@ internal static class Program
     [STAThread]
     static void Main()
     {
-        ApplicationConfiguration.Initialize();
+        try
+        {
+            ApplicationConfiguration.Initialize();
 
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false)
-            .Build();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json",
+                    optional: false, reloadOnChange: true)
+                .Build();
 
-        var services = new ServiceCollection();
+            var services = new ServiceCollection();
 
-        services
-            .AddInfrastructure(configuration)
-            .AddApplication()
-            .AddWinForms()
-            .ConfigureSerilog();
+            services
+                .AddInfrastructure(configuration)
+                .AddApplication()
+                .AddWinForms()
+                .ConfigureSerilog(configuration);
 
 
-        ServiceProvider provider = services.BuildServiceProvider();
+            ServiceProvider provider = services.BuildServiceProvider();
 
-        System.Windows.Forms.Application.Run(provider.GetRequiredService<MainForm>());
+            System.Windows.Forms.Application.Run(provider.GetRequiredService<MainForm>());
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Application terminated unexpectedly.");
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
     }
 }

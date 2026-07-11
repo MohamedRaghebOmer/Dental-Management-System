@@ -1,3 +1,4 @@
+using Dental.WinForms.Views;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dental.WinForms;
@@ -8,6 +9,8 @@ public static class DependencyInjection
     {
         services.AddTransient<MainForm>();
         services.AddSingleton(TimeProvider.System);
+        services.AddTransient<MainMenuView>();
+        services.AddTransient<VisitView>();
 
         return services;
     }

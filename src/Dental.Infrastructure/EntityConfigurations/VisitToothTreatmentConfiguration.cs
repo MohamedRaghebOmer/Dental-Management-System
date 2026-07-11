@@ -21,10 +21,10 @@ public sealed class VisitToothTreatmentConfiguration
 
     private static void ConfigureIndexes(EntityTypeBuilder<VisitToothTreatment> builder)
     {
-        // Create a unique index on the combination of VisitId and ServiceId
-        // to ensure that a service can only be applied once per visit
-        builder.HasIndex(x => new { x.VisitId, ServiceId = x.TreatmentId })
-            .HasDatabaseName("UX_VisitToothTreatments_VisitId_ServiceId")
+        // Create a unique index on the combination of VisitId and TreatmentId
+        // to ensure that a treatment can only be applied once per visit
+        builder.HasIndex(x => new { x.ToothNumber, x.VisitId,  x.TreatmentId })
+            .HasDatabaseName("UX_VisitToothTreatments_ToothNumber_VisitId_TreatmentId")
             .IsUnique(true);
 
         builder.HasIndex(x => x.ToothNumber)

@@ -11,11 +11,9 @@ public sealed class Prescription : Entity
     private Prescription() { }  // EF Core
 
     private Prescription(
-        Id patientId,
         Id visitId,
         string? notes)
     {
-        this.PatientId = patientId;
         this.VisitId = visitId;
         this.Notes = notes;
     }
@@ -29,13 +27,11 @@ public sealed class Prescription : Entity
 
 
     // ========================= Proprieties ========================
-    public Id PatientId { get; private set; } = default!;
     public Id VisitId { get; private set; } = default!;
     public string? Notes { get; private set; }
 
 
     // ========================= Navigation Properties ========================
-    public Patient Patient { get; private set; } = default!;
     public Visit Visit { get; private set; } = default!;
     public ICollection<PrescriptionItem> PrescriptionItems { get; private set; } = [];
 
@@ -43,7 +39,6 @@ public sealed class Prescription : Entity
 
     // ========================= Methods ========================
     public static Result<Prescription> Create(
-        Id patientId,
         Id visitId,
         string? notes)
     {
@@ -55,14 +50,12 @@ public sealed class Prescription : Entity
 
         return Result.Success(new Prescription
         {
-            PatientId = patientId,
             VisitId = visitId,
             Notes = notes
         });
     }
 
     public Result Update(
-        Id patientId,
         Id visitId,
         string? notes)
     {
@@ -72,7 +65,6 @@ public sealed class Prescription : Entity
             return Result.Failure(validateResult.Error);
         }
 
-        this.PatientId = patientId;
         this.VisitId = visitId;
         this.Notes = notes;
 

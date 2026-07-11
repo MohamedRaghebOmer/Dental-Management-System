@@ -15,7 +15,7 @@ public sealed class Visit : Entity
     public Id? AppointmentId { get; private set; } = default!;
     public Money PaidAmount { get; private set; } = default!;
     public Money DiscountAmount { get; private set; } = default!;
-    public DateTime Date { get; private set; }
+    public DateTime VisitDateTime { get; private set; }
     public string? Notes { get; private set; }
 
     public Appointment? Appointment { get; private set; }
@@ -28,13 +28,13 @@ public sealed class Visit : Entity
         Id? appointmentId,
         Money paidAmount,
         Money discountAmount,
-        DateTime date,
+        DateTime visitDateTime,
         string? notes)
     {
         AppointmentId = appointmentId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        Date = date;
+        VisitDateTime = visitDateTime;
         Notes = notes;
     }
 
@@ -61,7 +61,7 @@ public sealed class Visit : Entity
             AppointmentId = appointmentId,
             PaidAmount = paidAmount,
             DiscountAmount = discountAmount,
-            Date = date,
+            VisitDateTime = date,
             Notes = notes?.Trim()
         };
     }
@@ -87,7 +87,7 @@ public sealed class Visit : Entity
         AppointmentId = appointmentId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        Date = date;
+        VisitDateTime = date;
         Notes = notes?.Trim();
 
         return Result.Success();

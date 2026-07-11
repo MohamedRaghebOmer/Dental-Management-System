@@ -19,10 +19,6 @@ public sealed class PrescriptionConfiguration
 
     private void ConfigureForeignKeys(EntityTypeBuilder<Prescription> builder)
     {
-        builder.HasOne(p => p.Patient)
-            .WithMany(p => p.Prescriptions)
-            .HasForeignKey(p => p.PatientId);
-
         builder.HasOne(p => p.Visit)
             .WithMany(v => v.Prescriptions)
             .HasForeignKey(p => p.VisitId);
@@ -30,13 +26,6 @@ public sealed class PrescriptionConfiguration
 
     protected override void ConfigureProperties(EntityTypeBuilder<Prescription> builder)
     {
-        builder.Property(p => p.PatientId)
-            .HasConversion(
-                value => value.Value,
-                value => Id.FromDatabase(value))
-            .HasColumnName(nameof(Prescription.PatientId))
-            .IsRequired();
-
         builder.Property(p => p.VisitId)
             .HasConversion(
                 value => value.Value,

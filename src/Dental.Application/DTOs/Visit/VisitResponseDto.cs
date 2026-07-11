@@ -19,7 +19,7 @@ public sealed record VisitResponseDto(
             AppointmentId: entity.AppointmentId,
             PaidAmount: entity.PaidAmount,
             DiscountAmount: entity.DiscountAmount,
-            Date: entity.Date,
+            Date: entity.VisitDateTime,
             Notes: entity.Notes
         );
     }

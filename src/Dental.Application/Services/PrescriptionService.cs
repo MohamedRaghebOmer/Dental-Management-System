@@ -80,7 +80,6 @@ public sealed class PrescriptionService(
 
         // Update the existing Prescription entity with new values
         var updateResult = existingPrescriptionResult.Update(
-            entityResult.Value.PatientId,
             entityResult.Value.VisitId,
             entityResult.Value.Notes);
 
@@ -115,7 +114,6 @@ public sealed class PrescriptionService(
         }
 
         var entityResult = Prescription.Create(
-            patientIdResult.Value,
             visitIdResult.Value,
             dto.Notes);
 

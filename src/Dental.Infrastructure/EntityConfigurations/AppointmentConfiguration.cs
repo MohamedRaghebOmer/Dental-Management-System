@@ -22,7 +22,7 @@ public sealed class AppointmentConfiguration
     private void ConfigureIndexes(EntityTypeBuilder<Appointment> builder)
     {
         builder.HasIndex(p => p.PatientId)
-            .HasDatabaseName("IX_Appointment_PatientId")
+            .HasDatabaseName("IX_Appointments_PatientId")
             .IsUnique(false);
     }
 

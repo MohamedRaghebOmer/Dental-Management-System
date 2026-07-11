@@ -40,8 +40,8 @@ public sealed class VisitConfiguration
             .HasFilter("[AppointmentId] IS NOT NULL")
             .IsUnique(true);
 
-        builder.HasIndex(p => p.Date)
-            .HasDatabaseName("UX_Visits_Date")
+        builder.HasIndex(p => p.VisitDateTime)
+            .HasDatabaseName("UX_Visits_DateTime")
             .IsUnique(true);
     }
 
@@ -76,8 +76,8 @@ public sealed class VisitConfiguration
             .HasColumnName(nameof(Visit.DiscountAmount))
             .IsRequired();
 
-        builder.Property(p => p.Date)
-            .HasColumnName(nameof(Visit.Date))
+        builder.Property(p => p.VisitDateTime)
+            .HasColumnName(nameof(Visit.VisitDateTime))
             .IsRequired();
 
         builder.Property(p => p.Notes)
