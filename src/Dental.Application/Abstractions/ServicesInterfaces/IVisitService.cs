@@ -17,4 +17,17 @@ public interface IVisitService
     Task<decimal> GetTotalAmountAsync(
         int visitId,
         CancellationToken cancellationToken = default);
+
+    Task<Result<VisitResponseDto>> GetByIdAsync(
+        int id,
+        CancellationToken cancellationToken = default);
+
+
+    Task<Result<IEnumerable<VisitResponseDto>>> GetAllAsync(
+        CancellationToken cancellationToken = default);
+
+
+    Task<Result> DeleteAsync(
+        int id,
+        CancellationToken cancellationToken = default);
 }

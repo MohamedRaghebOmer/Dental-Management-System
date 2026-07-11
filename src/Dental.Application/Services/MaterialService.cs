@@ -31,7 +31,7 @@ public sealed class MaterialService(
         await repo.AddAsync(entityResult.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(entityResult.Value.Id);
+        return Result.Success(entityResult.Value.Id.Value);
     }
 
     public async Task<Result> UpdateAsync(

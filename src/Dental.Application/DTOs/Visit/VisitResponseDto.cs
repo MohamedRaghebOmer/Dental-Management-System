@@ -15,7 +15,7 @@ public sealed record VisitResponseDto(
     public static VisitResponseDto ToResponseDto(Domain.Entities.Visit entity)
     {
         return new VisitResponseDto(
-            Id: entity.Id,
+            Id: entity.Id.Value,
             AppointmentId: entity.AppointmentId,
             PaidAmount: entity.PaidAmount,
             DiscountAmount: entity.DiscountAmount,

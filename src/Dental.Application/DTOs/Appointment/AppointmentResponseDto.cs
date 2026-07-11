@@ -15,7 +15,7 @@ public sealed record AppointmentResponseDto(
     public static AppointmentResponseDto ToResponseDto(Domain.Entities.Appointment entity)
     {
         return new AppointmentResponseDto(
-            id: entity.Id,
+            id: entity.Id.Value,
             patientId: entity.PatientId.Value,
             scheduledAt: entity.Date,
             completedAt: entity.CompletedAt,

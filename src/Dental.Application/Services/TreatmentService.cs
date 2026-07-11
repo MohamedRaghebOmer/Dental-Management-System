@@ -16,7 +16,7 @@ public class TreatmentService(
     ITreatmentRepository treatmentRepo,
     IUnitOfWork unitOfWork,
     ILogger<TreatmentService> logger)
-    : ServiceBase<Treatment, ServiceResponseDto>(repo, unitOfWork, logger)
+    : ServiceBase<Treatment, TreatmentResponseDto>(repo, unitOfWork, logger)
     , ITreatmentService
 {
     public async Task<Result<int>> CreateAsync(
@@ -36,7 +36,7 @@ public class TreatmentService(
 
         logger.LogInformation("Treatment created successfully.");
 
-        return Result.Success(entityResult.Value.Id);
+        return Result.Success(entityResult.Value.Id.Value);
     }
 
     public async Task<Result> UpdateAsync(

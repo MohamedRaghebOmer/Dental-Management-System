@@ -37,7 +37,7 @@ public sealed class VisitService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         logger.LogInformation("Visit created successfully with ID {id}.", entityResult.Value.Id);
-        return Result.Success(entityResult.Value.Id);
+        return Result.Success(entityResult.Value.Id.Value);
     }
 
     public async Task<Result> UpdateASync(

@@ -46,7 +46,7 @@ public sealed class PrescriptionItemService(
             "PrescriptionItem {Id} created successfully.",
             validEntityResult.Value.Id);
 
-        return Result.Success(validEntityResult.Value.Id);
+        return Result.Success(validEntityResult.Value.Id.Value);
     }
 
     public async Task<Result> UpdateAsync(

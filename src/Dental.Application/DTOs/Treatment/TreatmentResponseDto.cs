@@ -2,18 +2,18 @@
 
 namespace Dental.Application.DTOs.Responses;
 
-public sealed record ServiceResponseDto(
+public sealed record TreatmentResponseDto(
     int Id,
     string Name,
     decimal Price,
     string? Description)
-    : IResponseDto<Domain.Entities.Treatment, ServiceResponseDto>
+    : IResponseDto<Domain.Entities.Treatment, TreatmentResponseDto>
 {
 
-    public static ServiceResponseDto ToResponseDto(Domain.Entities.Treatment entity)
+    public static TreatmentResponseDto ToResponseDto(Domain.Entities.Treatment entity)
     {
-        return new ServiceResponseDto(
-            Id: entity.Id,
+        return new TreatmentResponseDto(
+            Id: entity.Id.Value,
             Name: entity.Name,
             Price: entity.Price.Value,
             Description: entity.Description

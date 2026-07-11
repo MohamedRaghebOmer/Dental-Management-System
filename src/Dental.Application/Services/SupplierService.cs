@@ -30,7 +30,7 @@ public sealed class SupplierService(
         await repo.AddAsync(entityResult.Value, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return entityResult.Value.Id;
+        return entityResult.Value.Id.Value;
     }
 
     public async Task<Result> UpdateAsync(

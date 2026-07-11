@@ -40,7 +40,7 @@ public sealed class VisitToothTreatmentService(
 
         logger.LogInformation("Visit tooth treatment created successfully with ID {Id}", validationResult.Value.Id);
 
-        return validationResult.Value.Id;
+        return validationResult.Value.Id.Value;
     }
 
     public async Task<Result> UpdateAsync(
@@ -68,7 +68,7 @@ public sealed class VisitToothTreatmentService(
         var updateResult = entity.Update(
             validationResult.Value.ToothNumber,
             validationResult.Value.VisitId,
-            validationResult.Value.ServiceId,
+            validationResult.Value.TreatmentId,
             validationResult.Value.Price,
             validationResult.Value.Notes);
 

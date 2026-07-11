@@ -14,7 +14,7 @@ public sealed record MaterialResponseDto(
     public static MaterialResponseDto ToResponseDto(Domain.Entities.Material entity)
     {
         return new MaterialResponseDto(
-            entity.Id,
+            entity.Id.Value,
             entity.Name,
             entity.SupplierId?.Value,
             entity.Description,

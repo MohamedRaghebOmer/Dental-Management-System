@@ -13,7 +13,7 @@ public sealed record PrescriptionResponseDto(
     public static PrescriptionResponseDto ToResponseDto(Domain.Entities.Prescription entity)
     {
         return new PrescriptionResponseDto(
-            entity.Id,
+            entity.Id.Value,
             entity.PatientId,
             entity.VisitId,
             entity.Notes);

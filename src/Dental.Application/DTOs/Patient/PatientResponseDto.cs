@@ -17,7 +17,7 @@ public sealed record PatientResponseDto(
 {
     public PatientResponseDto(Domain.Entities.Patient entity)
     : this(
-        entity.Id,
+        entity.Id.Value,
         entity.FirstName.Value,
         entity.LastName.Value,
         entity.FullName,

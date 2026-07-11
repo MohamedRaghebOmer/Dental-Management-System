@@ -11,7 +11,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<ServiceBase<Treatment, ServiceResponseDto>, TreatmentService>();
+        services.AddScoped<ServiceBase<Treatment, TreatmentResponseDto>, TreatmentService>();
         services.AddScoped<IAppointmentService, AppointmentService>();
         services.AddScoped<IPatientService, PatientService>();
         services.AddScoped<ITreatmentService, TreatmentService>();

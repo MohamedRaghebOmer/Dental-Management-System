@@ -13,4 +13,17 @@ public interface IVisitToothTreatmentService
         int id,
         VisitToothTreatmentRequestDto dto,
         CancellationToken cancellationToken = default);
+
+    Task<Result<VisitToothTreatmentResponseDto>> GetByIdAsync(
+        int id,
+        CancellationToken cancellationToken = default);
+
+
+    Task<Result<IEnumerable<VisitToothTreatmentResponseDto>>> GetAllAsync(
+        CancellationToken cancellationToken = default);
+
+
+    Task<Result> DeleteAsync(
+        int id,
+        CancellationToken cancellationToken = default);
 }

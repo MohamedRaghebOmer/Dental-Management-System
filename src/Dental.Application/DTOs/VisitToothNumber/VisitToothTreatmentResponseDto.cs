@@ -16,10 +16,10 @@ public sealed record VisitToothTreatmentResponseDto(
         Domain.Entities.VisitToothTreatment entity)
     {
         return new VisitToothTreatmentResponseDto(
-            Id: entity.Id,
+            Id: entity.Id.Value,
             ToothNumber: entity.ToothNumber,
             VisitId: entity.VisitId.Value,
-            ServiceId: entity.ServiceId.Value,
+            ServiceId: entity.TreatmentId.Value,
             Price: entity.Price.Value,
             Notes: entity.Notes
         );

@@ -33,7 +33,7 @@ public class PatientService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
         logger.LogInformation("Patient created successfully. {PatientId}", entityResult.Value.Id);
 
-        return Result.Success(entityResult.Value.Id);
+        return Result.Success(entityResult.Value.Id.Value);
     }
 
     public async Task<Result> UpdateAsync(
