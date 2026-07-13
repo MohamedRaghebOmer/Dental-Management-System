@@ -3,23 +3,26 @@ using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;
 
-public interface IVisitToothTreatmentService
+public interface IVisitTreatmentService
 {
     Task<Result<int>> CreateAsync(
-        VisitToothTreatmentRequestDto dto,
+        VisitTreatmentRequestDto dto,
         CancellationToken cancellationToken = default);
 
     Task<Result> UpdateAsync(
         int id,
-        VisitToothTreatmentRequestDto dto,
+        VisitTreatmentRequestDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<Result<VisitToothTreatmentResponseDto>> GetByIdAsync(
+    Task<Result<VisitTreatmentResponseDto>> GetByIdAsync(
         int id,
         CancellationToken cancellationToken = default);
 
+    Task<Result<List<VisitTreatmentResponseDto>>> GetByVisitIdAsync(
+        int visitId,
+        CancellationToken cancellationToken = default);
 
-    Task<Result<IEnumerable<VisitToothTreatmentResponseDto>>> GetAllAsync(
+    Task<Result<List<VisitTreatmentResponseDto>>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
 

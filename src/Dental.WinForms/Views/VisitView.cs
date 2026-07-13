@@ -1,26 +1,37 @@
 ﻿using Dental.Application.Abstractions.ServicesInterfaces;
+using Dental.Application.DTOs.Treatment;
+using Dental.Application.Services;
+using Dental.Application.ViewsStuff.Interfaces;
+using Dental.WinForms.Abstractions;
+using Dental.WinForms.Factories;
 using Dental.WinForms.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog.Core;
 
-namespace Dental.WinForms.Views
+namespace Dental.WinForms.Views;
+
+public partial class VisitView : UserControl
 {
-    public partial class VisitView : UserControl
+    private readonly IFormFactory _formFactory;
+
+    public VisitView(IFormFactory formFactory)
     {
-        private readonly ITreatmentService _treatmentService;
-        private readonly ILogger _logger;
+        InitializeComponent();
+        _formFactory = formFactory;
+    }
 
-        public VisitView(ITreatmentService treatmentService,
-            ILogger<VisitView> logger)
-        {
-            InitializeComponent();
+    private void button1_Click(object sender, EventArgs e)
+    {
+        var frm = _formFactory.Create_frmAddUpdateVisit();
+        frm.Show();
+    }
 
-            _treatmentService = treatmentService;
-            _logger = logger;
-        }
-        
-        private void button1_Click(object sender, EventArgs e)
+    private void button2_Click(object sender, EventArgs e)
+    {
+        if (int.TryParse(textBox1.Text, out int visitId))
         {
-            var frm = new frmAddUpdateVisit(_treatmentService, _logger);
+            var frm = _formFactory.Create_frmAddUpdateVisit(visitId);
             frm.Show();
         }
     }

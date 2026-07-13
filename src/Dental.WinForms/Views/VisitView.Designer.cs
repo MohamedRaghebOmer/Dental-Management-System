@@ -30,6 +30,8 @@
         {
             dataGridView1 = new DataGridView();
             button1 = new Button();
+            button2 = new Button();
+            textBox1 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -50,19 +52,38 @@
             // 
             // button1
             // 
-            button1.Location = new Point(430, 165);
+            button1.Location = new Point(596, 332);
             button1.Name = "button1";
             button1.Size = new Size(117, 42);
             button1.TabIndex = 1;
-            button1.Text = "button1";
+            button1.Text = "Add new";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(827, 332);
+            button2.Name = "button2";
+            button2.Size = new Size(117, 42);
+            button2.TabIndex = 2;
+            button2.Text = "Edit";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(782, 259);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(238, 34);
+            textBox1.TabIndex = 3;
             // 
             // VisitView
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkCyan;
+            Controls.Add(textBox1);
+            Controls.Add(button2);
             Controls.Add(button1);
             Controls.Add(dataGridView1);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -73,11 +94,14 @@
             Size = new Size(1388, 851);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private DataGridView dataGridView1;
         private Button button1;
+        private Button button2;
+        private TextBox textBox1;
     }
 }

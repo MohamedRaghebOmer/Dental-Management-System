@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dental.Application.DTOs.VisitToothNumber;
 
-public sealed record VisitToothTreatmentRequestDto
+public sealed record VisitTreatmentRequestDto
 {
     [Range(1, 32)]
     [Required]
@@ -22,6 +22,6 @@ public sealed record VisitToothTreatmentRequestDto
     [DataType(DataType.Currency)]
     public required decimal Price { get; init; }
 
-    [MaxLength(VisitToothTreatment.Constants.NotesMaxLength)]
+    [MaxLength(VisitTreatment.Constants.NotesMaxLength)]
     public string? Notes { get; init; } = null;
 }

@@ -14,7 +14,6 @@ public sealed class PrescriptionItemsConfiguration
     {
         base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
 
-        ConfigureForeignKeys(builder);
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);
     }
@@ -38,14 +37,6 @@ public sealed class PrescriptionItemsConfiguration
                 "CK_PrescriptionItems_Period",
                 "[Period] BETWEEN 1 AND 3");
         });
-    }
-
-    private static void ConfigureForeignKeys(EntityTypeBuilder<PrescriptionItem> builder)
-    {
-        builder.HasOne(p => p.Prescription)
-            .WithMany(pr => pr.PrescriptionItems)
-            .HasForeignKey(p => p.PrescriptionId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<PrescriptionItem> builder)

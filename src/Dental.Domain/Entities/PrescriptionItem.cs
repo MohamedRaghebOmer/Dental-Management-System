@@ -41,7 +41,7 @@ public sealed class PrescriptionItem : Entity
     public Prescription Prescription { get; private set; } = default!;
 
 
-    public static Result<PrescriptionItem> Create(
+    internal static Result<PrescriptionItem> Create(
         Id prescriptionId,
         string medicineName,
         decimal dosage,
@@ -62,8 +62,7 @@ public sealed class PrescriptionItem : Entity
             prescriptionId, medicineName.Trim(), dosage, medicineFrequency, instructions?.Trim());
     }
 
-    public Result Update(
-        Id prescriptionId,
+    internal Result Update(
         string medicineName,
         decimal dosage,
         MedicineFrequency medicineFrequency,
@@ -79,7 +78,6 @@ public sealed class PrescriptionItem : Entity
             return Result.Failure<PrescriptionItem>(validateResult.Error);
         }
 
-        PrescriptionId = prescriptionId;
         MedicineName = medicineName.Trim();
         Dosage = dosage;
         MedicineFrequency = medicineFrequency;
@@ -96,7 +94,7 @@ public sealed class PrescriptionItem : Entity
         if (string.IsNullOrWhiteSpace(medicineName))
         {
             return Result.Failure(
-                DomainErrors.Entities.PrescriptionItems.MedicineName.Required);
+                DomainErrors.Entities.PrescriptionItem.MedicineName.Required);
         }
 
         medicineName = medicineName.Trim();
@@ -104,13 +102,13 @@ public sealed class PrescriptionItem : Entity
         if (medicineName.Length > Constants.MedicineNameMaxLength)
         {
             return Result.Failure(
-                DomainErrors.Entities.PrescriptionItems.MedicineName.TooLong);
+                DomainErrors.Entities.PrescriptionItem.MedicineName.TooLong);
         }
 
         if (dosage <= 0)
         {
             return Result.Failure(
-                DomainErrors.Entities.PrescriptionItems.Dosage.MustBePositive);
+                DomainErrors.Entities.PrescriptionItem.Dosage.MustBePositive);
         }
 
         instructions = instructions?.Trim();
@@ -118,7 +116,7 @@ public sealed class PrescriptionItem : Entity
         if (instructions?.Length > Constants.InstructionsMaxLength)
         {
             return Result.Failure(
-                DomainErrors.Entities.PrescriptionItems.Instructions.TooLong);
+                DomainErrors.Entities.PrescriptionItem.Instructions.TooLong);
         }
 
         return Result.Success();

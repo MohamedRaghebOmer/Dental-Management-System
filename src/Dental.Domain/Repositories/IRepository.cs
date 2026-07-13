@@ -21,6 +21,6 @@ public interface IRepository<TEntity>
         int id,
         CancellationToken cancellationToken = default);
 
-    Task<IEnumerable<TEntity>> GetAllAsync(
+    Task<List<TEntity>> GetAllAsync(
         CancellationToken cancellationToken);
 }

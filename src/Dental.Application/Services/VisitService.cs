@@ -13,7 +13,6 @@ namespace Dental.Application.Services;
 public sealed class VisitService(
     IRepository<Visit> repo,
     IRepository<Appointment> appointmentRepo,
-    IVisitToothTreatmentRepository visitToothTreatmentRepo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Visit, VisitResponseDto>> logger)
     : ServiceBase<Visit, VisitResponseDto>(repo, unitOfWork, logger)
@@ -84,7 +83,7 @@ public sealed class VisitService(
     {
         logger.LogInformation("VisitService.GetTotalAmountAsync is called. {VisitId}", visitId);
         var result =
-            await visitToothTreatmentRepo.GetTotalCostAsync(visitId, cancellationToken);
+            await visitTreatmentsRepo.GetTotalCostAsync(visitId, cancellationToken);
         logger.LogInformation("Total amount for visit {VisitId}: {TotalAmount}", visitId, result);
         return result;
     }
@@ -111,6 +110,17 @@ public sealed class VisitService(
             }
         }
 
+        Result<Id> prescriptionIdResult = null!;
+        if (dto.PrescriptionId.HasValue)
+        {
+            prescriptionIdResult = Id.Create(dto.PrescriptionId.Value);
+            if (prescriptionIdResult.IsFailure)
+            {
+                logger.LogWarning("Failed to create visit: Invalid prescription ID. {PrescriptionId}", dto.PrescriptionId);
+                return Result.Failure<Visit>(ServiceErrors.InvalidId);
+            }
+        }
+
         var paidAmountResult = Money.Create(dto.PaidAmount);
         if (paidAmountResult.IsFailure)
         {
@@ -131,6 +141,7 @@ public sealed class VisitService(
 
         var visitResult = Visit.Create(
             appointmentIdResult?.Value,
+            prescriptionIdResult?.Value,
             paidAmountResult.Value,
             discountAmountResult.Value,
             dto.Date,
@@ -148,6 +159,14 @@ public sealed class VisitService(
         {
             logger.LogWarning("Failed to create visit: Appointment not found. {AppointmentId}", appointmentIdResult?.Value);
             return Result.Failure<Visit>(ServiceErrors.AppointmentErrors.PatientNotFound);
+        }
+
+        if (!await visitRepo.ExistsAsync(
+                (int)(prescriptionIdResult?.Value?.Value)!,
+                cancellationToken))
+        {
+            logger.LogWarning("Failed to create visit: Prescription not found. {PrescriptionId}", prescriptionIdResult?.Value);
+            return Result.Failure<Visit>(ServiceErrors.PrescriptionErrors.NotFound);
         }
 
         return Result.Success(visitResult.Value);

@@ -17,7 +17,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "DentalInfo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     DoctorName = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
                     DentalDescription = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
                     PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 13, nullable: true),
@@ -33,7 +34,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "Patients",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "TEXT", nullable: true),
@@ -51,7 +53,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "Suppliers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 11, nullable: true),
                     Address = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
@@ -66,7 +69,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "Treatments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Price = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true)
@@ -81,7 +85,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "Appointments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     PatientId = table.Column<int>(type: "INTEGER", nullable: false),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CompletedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -103,7 +108,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "Materials",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     SupplierId = table.Column<int>(type: "INTEGER", nullable: true),
                     ReorderLevel = table.Column<int>(type: "INTEGER", nullable: false),
@@ -129,7 +135,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "Visits",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     AppointmentId = table.Column<int>(type: "INTEGER", nullable: true),
                     PaidAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     DiscountAmount = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -153,7 +160,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "Prescriptions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     VisitId = table.Column<int>(type: "INTEGER", nullable: false),
                     Notes = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true)
                 },
@@ -169,10 +177,11 @@ namespace Dental.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VisitToothTreatments",
+                name: "VisitTreatments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     ToothNumber = table.Column<byte>(type: "INTEGER", nullable: false),
                     VisitId = table.Column<int>(type: "INTEGER", nullable: false),
                     TreatmentId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -202,7 +211,8 @@ namespace Dental.Infrastructure.Migrations
                 name: "PrescriptionItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     PrescriptionId = table.Column<int>(type: "INTEGER", nullable: false),
                     MedicineName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
                     Dosage = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -309,22 +319,22 @@ namespace Dental.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_VisitToothTreatments_ToothNumber",
-                table: "VisitToothTreatments",
+                table: "VisitTreatments",
                 column: "ToothNumber");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VisitToothTreatments_TreatmentId",
-                table: "VisitToothTreatments",
+                table: "VisitTreatments",
                 column: "TreatmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VisitToothTreatments_VisitId",
-                table: "VisitToothTreatments",
+                table: "VisitTreatments",
                 column: "VisitId");
 
             migrationBuilder.CreateIndex(
                 name: "UX_VisitToothTreatments_ToothNumber_VisitId_TreatmentId",
-                table: "VisitToothTreatments",
+                table: "VisitTreatments",
                 columns: new[] { "ToothNumber", "VisitId", "TreatmentId" },
                 unique: true);
         }
@@ -342,7 +352,7 @@ namespace Dental.Infrastructure.Migrations
                 name: "PrescriptionItems");
 
             migrationBuilder.DropTable(
-                name: "VisitToothTreatments");
+                name: "VisitTreatments");
 
             migrationBuilder.DropTable(
                 name: "Suppliers");

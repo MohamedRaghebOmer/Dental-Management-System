@@ -1,18 +1,20 @@
-﻿using System.Windows.Media;
-using Dental.WinForms.Views;
+﻿using Dental.WinForms.Views;
 using FontAwesome.Sharp;
 using Guna.UI2.WinForms;
+using System.Diagnostics;
+using System.Windows.Media;
+using Dental.Infrastructure.Constants;
 using Color = System.Drawing.Color;
 
 namespace Dental.WinForms;
 
-public partial class MainForm : Form
+public partial class frmMain : Form
 {
     private readonly MainMenuView _mainMenuView = default!;
     private readonly VisitView _VisitView = default!;
     private Guna2Button? _selectedButton;
 
-    public MainForm(
+    public frmMain(
         MainMenuView mainMenuView,
         VisitView visitView)
     {
@@ -57,5 +59,14 @@ public partial class MainForm : Form
     {
         ShowView(_VisitView);
         SelectMenuButton(btnVisits);
+    }
+
+    private void btnHelp_Click(object sender, EventArgs e)
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = DataStoragePaths.LogsFolderPath,
+            UseShellExecute = true
+        });
     }
 }

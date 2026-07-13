@@ -1,6 +1,9 @@
-﻿namespace Dental.Domain.Repositories;
+﻿using Dental.Domain.Entities;
+
+namespace Dental.Domain.Repositories;
 
 public interface ISupplierRepository
+    : IRepository<Supplier>
 {
     Task<bool> PhoneNumberExistsAsync(
         string phoneNumber, 

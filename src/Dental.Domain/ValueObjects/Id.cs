@@ -17,7 +17,7 @@ public sealed record Id : ValueObject
     {
         if (value <= 0)
         {
-            return Result.Failure<Id>(DomainErrors.Entities.Appointment.Id.InvalidId);
+            return Result.Failure<Id>(DomainErrors.ValueObjects.Id.LessThanOrEqualToZero);
         }
 
         return new Id(value);

@@ -3,6 +3,7 @@ using System;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -11,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dental.Infrastructure.Migrations
 {
     [DbContext(typeof(DentalDbContext))]
-    [Migration("20260711101549_InitialDatabaseSchema")]
+    [Migration("20260711105319_InitialDatabaseSchema")]
     partial class InitialDatabaseSchema
     {
         /// <inheritdoc />
@@ -25,6 +26,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("TEXT")
@@ -61,6 +64,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<string>("DentalDescription")
                         .HasMaxLength(20)
@@ -104,6 +109,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<decimal>("BuyingPrice")
                         .HasPrecision(18, 2)
@@ -158,6 +165,8 @@ namespace Dental.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
+
                     b.Property<string>("Address")
                         .HasMaxLength(500)
                         .HasColumnType("TEXT")
@@ -203,6 +212,8 @@ namespace Dental.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
+
                     b.Property<string>("Notes")
                         .HasMaxLength(500)
                         .HasColumnType("TEXT")
@@ -224,6 +235,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<decimal>("Dosage")
                         .HasColumnType("TEXT")
@@ -262,6 +275,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .HasMaxLength(100)
@@ -303,6 +318,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasMaxLength(500)
@@ -394,6 +411,8 @@ namespace Dental.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
+
                     b.Property<int?>("AppointmentId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("AppointmentId");
@@ -439,6 +458,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<string>("Notes")
                         .HasMaxLength(500)

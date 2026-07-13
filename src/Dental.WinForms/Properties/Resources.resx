@@ -121,8 +121,14 @@
   <data name="backup-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\backup-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="teeth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\other\teeth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="icons8-dental-48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-dental-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bin-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\bin-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="clock-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\clock-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -139,7 +145,7 @@
   <data name="tooth-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\tooth-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="teeth" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\other\teeth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="pen-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\pen-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

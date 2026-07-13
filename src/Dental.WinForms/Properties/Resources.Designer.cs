@@ -83,6 +83,16 @@ namespace Dental.WinForms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bin_512 {
+            get {
+                object obj = ResourceManager.GetObject("bin-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap calendar_512 {
             get {
                 object obj = ResourceManager.GetObject("calendar-512", resourceCulture);
@@ -106,6 +116,16 @@ namespace Dental.WinForms.Properties {
         internal static System.Drawing.Bitmap icons8_dental_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-dental-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pen_512 {
+            get {
+                object obj = ResourceManager.GetObject("pen-512", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

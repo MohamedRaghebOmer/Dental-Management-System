@@ -1,5 +1,6 @@
 ﻿using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
+using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,12 @@ public sealed class TreatmentRepository(DentalDbContext _dbContext)
         int? excludedId = null,
         CancellationToken cancellationToken = default)
     {
-        return _dbContext.Treatments.AnyAsync(t => t.Name == name && t.Id.Value
-                != excludedId, cancellationToken);
+        if (excludedId != null)
+        {
+            return _dbContext.Treatments.AnyAsync(
+                t => t.Name == name && t.Id != Id.FromDatabase(excludedId.Value), cancellationToken);
+        }
+
+        return _dbContext.Treatments.AnyAsync(t => t.Name == name);
     }
 }

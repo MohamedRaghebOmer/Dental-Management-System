@@ -1,6 +1,5 @@
 ﻿using Dental.Application.Abstractions;
 using Dental.Application.Abstractions.ServicesInterfaces;
-using Dental.Application.DTOs.Responses;
 using Dental.Application.DTOs.Treatment;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
@@ -106,6 +105,17 @@ public class TreatmentService(
         }
 
         return Result.Success(serviceResult.Value);
+    }
+
+    public async Task<Result<List<TreatmentResponseDto>>> GetAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var all = await repo.GetAllAsync(cancellationToken);
+
+        var dtos = 
+            all.Select(TreatmentResponseDto.ToResponseDto).ToList();
+
+        return Result.Success(dtos);
     }
 
 }

@@ -2,12 +2,22 @@
 
 namespace Dental.WinForms.Helpers;
 
-public static class DateHelper
+public static class DateTimeHelper
 {
-    public static string GetArabicDate(DateTime date)
-    {
-        var culture = new CultureInfo("ar-EG");
+    private static readonly CultureInfo ArabicCulture = new("ar-EG");
 
-        return date.ToString("dd MMMM yyyy", culture);
+    public static string GetArabicDate(DateTime datetime)
+    {
+        return datetime.ToString("dddd dd/MM/yyyy", ArabicCulture);
+    }
+
+    public static string GetArabicTime(DateTime datetime)
+    {
+        return datetime.ToString("hh:mm tt", ArabicCulture);
+    }
+
+    public static string GetArabicDateTime(DateTime datetime)
+    {
+        return $"{GetArabicDate(datetime)} {GetArabicTime(datetime)}";
     }
 }

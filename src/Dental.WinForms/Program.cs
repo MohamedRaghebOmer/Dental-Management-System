@@ -1,5 +1,6 @@
 using Dental.Application;
 using Dental.Infrastructure;
+using Dental.Infrastructure.Constants;
 using Dental.WinForms.Configurations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,15 +29,16 @@ internal static class Program
             var services = new ServiceCollection();
 
             services
-                .AddInfrastructure(configuration)
+                .AddInfrastructure()
                 .AddApplication()
                 .AddWinForms()
                 .ConfigureSerilog(configuration);
 
+            CreateApplicationDataFolder();
+
 
             ServiceProvider provider = services.BuildServiceProvider();
-
-            System.Windows.Forms.Application.Run(provider.GetRequiredService<MainForm>());
+            System.Windows.Forms.Application.Run(provider.GetRequiredService<frmMain>());
         }
         catch (Exception ex)
         {
@@ -45,6 +47,24 @@ internal static class Program
         finally
         {
             Log.CloseAndFlush();
+        }
+    }
+
+    private static void CreateApplicationDataFolder()
+    {
+        if(!Directory.Exists(DataStoragePaths.BasePath))
+        {
+            Directory.CreateDirectory(DataStoragePaths.BasePath);
+        }
+
+        if (!Directory.Exists(DataStoragePaths.DatabaseFolderPath))
+        {
+            Directory.CreateDirectory(DataStoragePaths.DatabaseFolderPath);
+        }
+
+        if (!Directory.Exists(DataStoragePaths.LogsFolderPath))
+        {
+            Directory.CreateDirectory(DataStoragePaths.LogsFolderPath);
         }
     }
 }

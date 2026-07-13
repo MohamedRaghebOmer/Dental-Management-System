@@ -39,6 +39,10 @@ public sealed class PatientConfiguration
                 "CK_Patient_Gender",
                 @"Gender IN (1, 2)"
             );
+
+            table.HasCheckConstraint(
+                "CK_Patient_PhoneNumberLengthEqualTo11",
+                "length(PhoneNumber) = 11");
         });
     }
 

@@ -1,7 +1,7 @@
 ﻿
 namespace Dental.WinForms
 {
-    partial class MainForm
+    partial class frmMain
     {
         /// <summary>
         /// Required designer variable.
@@ -29,33 +29,33 @@ namespace Dental.WinForms
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges33 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges34 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges35 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges36 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges37 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges38 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges39 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges40 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges41 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges42 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges43 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges44 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges45 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges46 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges47 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges48 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges49 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges50 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges51 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges52 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges31 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges32 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             splitContainer1 = new SplitContainer();
             btnHelp = new Guna.UI2.WinForms.Guna2Button();
             btnBackup = new Guna.UI2.WinForms.Guna2Button();
@@ -119,7 +119,7 @@ namespace Dental.WinForms
             btnHelp.BackColor = Color.Transparent;
             btnHelp.BackgroundImageLayout = ImageLayout.Zoom;
             btnHelp.BorderRadius = 10;
-            btnHelp.CustomizableEdges = customizableEdges27;
+            btnHelp.CustomizableEdges = customizableEdges1;
             btnHelp.DisabledState.BorderColor = Color.DarkGray;
             btnHelp.DisabledState.CustomBorderColor = Color.DarkGray;
             btnHelp.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -132,9 +132,10 @@ namespace Dental.WinForms
             btnHelp.Location = new Point(6, 980);
             btnHelp.Name = "btnHelp";
             btnHelp.PressedColor = Color.White;
-            btnHelp.ShadowDecoration.CustomizableEdges = customizableEdges28;
+            btnHelp.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnHelp.Size = new Size(72, 63);
             btnHelp.TabIndex = 4;
+            btnHelp.Click += btnHelp_Click;
             // 
             // btnBackup
             // 
@@ -143,7 +144,7 @@ namespace Dental.WinForms
             btnBackup.BackgroundImage = Properties.Resources.backup_512;
             btnBackup.BackgroundImageLayout = ImageLayout.Zoom;
             btnBackup.BorderRadius = 10;
-            btnBackup.CustomizableEdges = customizableEdges29;
+            btnBackup.CustomizableEdges = customizableEdges3;
             btnBackup.DisabledState.BorderColor = Color.DarkGray;
             btnBackup.DisabledState.CustomBorderColor = Color.DarkGray;
             btnBackup.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -156,7 +157,7 @@ namespace Dental.WinForms
             btnBackup.Location = new Point(266, 980);
             btnBackup.Name = "btnBackup";
             btnBackup.PressedColor = Color.White;
-            btnBackup.ShadowDecoration.CustomizableEdges = customizableEdges30;
+            btnBackup.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnBackup.Size = new Size(72, 63);
             btnBackup.TabIndex = 3;
             // 
@@ -205,7 +206,7 @@ namespace Dental.WinForms
             btnSettings.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnSettings.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnSettings.Cursor = Cursors.Hand;
-            btnSettings.CustomizableEdges = customizableEdges33;
+            btnSettings.CustomizableEdges = customizableEdges5;
             btnSettings.DisabledState.BorderColor = Color.DarkGray;
             btnSettings.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSettings.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -220,7 +221,7 @@ namespace Dental.WinForms
             btnSettings.Location = new Point(3, 751);
             btnSettings.Name = "btnSettings";
             btnSettings.PressedColor = Color.FromArgb(229, 231, 235);
-            btnSettings.ShadowDecoration.CustomizableEdges = customizableEdges34;
+            btnSettings.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnSettings.Size = new Size(344, 62);
             btnSettings.TabIndex = 13;
             btnSettings.Text = "الإعدادات";
@@ -238,7 +239,7 @@ namespace Dental.WinForms
             btnCashCount.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnCashCount.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnCashCount.Cursor = Cursors.Hand;
-            btnCashCount.CustomizableEdges = customizableEdges35;
+            btnCashCount.CustomizableEdges = customizableEdges7;
             btnCashCount.DisabledState.BorderColor = Color.DarkGray;
             btnCashCount.DisabledState.CustomBorderColor = Color.DarkGray;
             btnCashCount.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -253,7 +254,7 @@ namespace Dental.WinForms
             btnCashCount.Location = new Point(3, 683);
             btnCashCount.Name = "btnCashCount";
             btnCashCount.PressedColor = Color.FromArgb(229, 231, 235);
-            btnCashCount.ShadowDecoration.CustomizableEdges = customizableEdges36;
+            btnCashCount.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnCashCount.Size = new Size(344, 62);
             btnCashCount.TabIndex = 12;
             btnCashCount.Text = "جرد الحسابات";
@@ -271,7 +272,7 @@ namespace Dental.WinForms
             btnTreatments.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnTreatments.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnTreatments.Cursor = Cursors.Hand;
-            btnTreatments.CustomizableEdges = customizableEdges37;
+            btnTreatments.CustomizableEdges = customizableEdges9;
             btnTreatments.DisabledState.BorderColor = Color.DarkGray;
             btnTreatments.DisabledState.CustomBorderColor = Color.DarkGray;
             btnTreatments.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -286,7 +287,7 @@ namespace Dental.WinForms
             btnTreatments.Location = new Point(3, 479);
             btnTreatments.Name = "btnTreatments";
             btnTreatments.PressedColor = Color.FromArgb(229, 231, 235);
-            btnTreatments.ShadowDecoration.CustomizableEdges = customizableEdges38;
+            btnTreatments.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btnTreatments.Size = new Size(344, 62);
             btnTreatments.TabIndex = 11;
             btnTreatments.Text = "الخدمات الطبيه";
@@ -304,7 +305,7 @@ namespace Dental.WinForms
             btnSuppliers.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnSuppliers.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnSuppliers.Cursor = Cursors.Hand;
-            btnSuppliers.CustomizableEdges = customizableEdges39;
+            btnSuppliers.CustomizableEdges = customizableEdges11;
             btnSuppliers.DisabledState.BorderColor = Color.DarkGray;
             btnSuppliers.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSuppliers.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -319,7 +320,7 @@ namespace Dental.WinForms
             btnSuppliers.Location = new Point(3, 615);
             btnSuppliers.Name = "btnSuppliers";
             btnSuppliers.PressedColor = Color.FromArgb(229, 231, 235);
-            btnSuppliers.ShadowDecoration.CustomizableEdges = customizableEdges40;
+            btnSuppliers.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnSuppliers.Size = new Size(344, 62);
             btnSuppliers.TabIndex = 8;
             btnSuppliers.Text = "الموردين";
@@ -337,7 +338,7 @@ namespace Dental.WinForms
             btnMaterials.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnMaterials.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnMaterials.Cursor = Cursors.Hand;
-            btnMaterials.CustomizableEdges = customizableEdges41;
+            btnMaterials.CustomizableEdges = customizableEdges13;
             btnMaterials.DisabledState.BorderColor = Color.DarkGray;
             btnMaterials.DisabledState.CustomBorderColor = Color.DarkGray;
             btnMaterials.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -352,7 +353,7 @@ namespace Dental.WinForms
             btnMaterials.Location = new Point(3, 547);
             btnMaterials.Name = "btnMaterials";
             btnMaterials.PressedColor = Color.FromArgb(229, 231, 235);
-            btnMaterials.ShadowDecoration.CustomizableEdges = customizableEdges42;
+            btnMaterials.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btnMaterials.Size = new Size(344, 62);
             btnMaterials.TabIndex = 7;
             btnMaterials.Text = "الخامات والأدوات";
@@ -370,7 +371,7 @@ namespace Dental.WinForms
             btnPrescriptions.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnPrescriptions.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnPrescriptions.Cursor = Cursors.Hand;
-            btnPrescriptions.CustomizableEdges = customizableEdges43;
+            btnPrescriptions.CustomizableEdges = customizableEdges15;
             btnPrescriptions.DisabledState.BorderColor = Color.DarkGray;
             btnPrescriptions.DisabledState.CustomBorderColor = Color.DarkGray;
             btnPrescriptions.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -385,7 +386,7 @@ namespace Dental.WinForms
             btnPrescriptions.Location = new Point(3, 411);
             btnPrescriptions.Name = "btnPrescriptions";
             btnPrescriptions.PressedColor = Color.FromArgb(229, 231, 235);
-            btnPrescriptions.ShadowDecoration.CustomizableEdges = customizableEdges44;
+            btnPrescriptions.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnPrescriptions.Size = new Size(344, 62);
             btnPrescriptions.TabIndex = 5;
             btnPrescriptions.Text = "الوصفات الطبيه";
@@ -403,7 +404,7 @@ namespace Dental.WinForms
             btnPatients.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnPatients.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnPatients.Cursor = Cursors.Hand;
-            btnPatients.CustomizableEdges = customizableEdges45;
+            btnPatients.CustomizableEdges = customizableEdges17;
             btnPatients.DisabledState.BorderColor = Color.DarkGray;
             btnPatients.DisabledState.CustomBorderColor = Color.DarkGray;
             btnPatients.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -418,7 +419,7 @@ namespace Dental.WinForms
             btnPatients.Location = new Point(3, 343);
             btnPatients.Name = "btnPatients";
             btnPatients.PressedColor = Color.FromArgb(229, 231, 235);
-            btnPatients.ShadowDecoration.CustomizableEdges = customizableEdges46;
+            btnPatients.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnPatients.Size = new Size(344, 62);
             btnPatients.TabIndex = 4;
             btnPatients.Text = "المرضى";
@@ -436,7 +437,7 @@ namespace Dental.WinForms
             btnAppointments.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnAppointments.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnAppointments.Cursor = Cursors.Hand;
-            btnAppointments.CustomizableEdges = customizableEdges47;
+            btnAppointments.CustomizableEdges = customizableEdges19;
             btnAppointments.DisabledState.BorderColor = Color.DarkGray;
             btnAppointments.DisabledState.CustomBorderColor = Color.DarkGray;
             btnAppointments.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -451,7 +452,7 @@ namespace Dental.WinForms
             btnAppointments.Location = new Point(3, 275);
             btnAppointments.Name = "btnAppointments";
             btnAppointments.PressedColor = Color.FromArgb(229, 231, 235);
-            btnAppointments.ShadowDecoration.CustomizableEdges = customizableEdges48;
+            btnAppointments.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnAppointments.Size = new Size(344, 62);
             btnAppointments.TabIndex = 3;
             btnAppointments.Text = "المواعيد";
@@ -469,7 +470,7 @@ namespace Dental.WinForms
             btnVisits.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnVisits.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnVisits.Cursor = Cursors.Hand;
-            btnVisits.CustomizableEdges = customizableEdges49;
+            btnVisits.CustomizableEdges = customizableEdges21;
             btnVisits.DisabledState.BorderColor = Color.DarkGray;
             btnVisits.DisabledState.CustomBorderColor = Color.DarkGray;
             btnVisits.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -484,7 +485,7 @@ namespace Dental.WinForms
             btnVisits.Location = new Point(3, 207);
             btnVisits.Name = "btnVisits";
             btnVisits.PressedColor = Color.FromArgb(229, 231, 235);
-            btnVisits.ShadowDecoration.CustomizableEdges = customizableEdges50;
+            btnVisits.ShadowDecoration.CustomizableEdges = customizableEdges22;
             btnVisits.Size = new Size(344, 62);
             btnVisits.TabIndex = 2;
             btnVisits.Text = "الزيارات";
@@ -534,7 +535,7 @@ namespace Dental.WinForms
             btnMainMenu.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnMainMenu.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnMainMenu.Cursor = Cursors.Hand;
-            btnMainMenu.CustomizableEdges = customizableEdges51;
+            btnMainMenu.CustomizableEdges = customizableEdges23;
             btnMainMenu.DisabledState.BorderColor = Color.DarkGray;
             btnMainMenu.DisabledState.CustomBorderColor = Color.DarkGray;
             btnMainMenu.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -549,7 +550,7 @@ namespace Dental.WinForms
             btnMainMenu.Location = new Point(3, 139);
             btnMainMenu.Name = "btnMainMenu";
             btnMainMenu.PressedColor = Color.FromArgb(229, 231, 235);
-            btnMainMenu.ShadowDecoration.CustomizableEdges = customizableEdges52;
+            btnMainMenu.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnMainMenu.Size = new Size(344, 62);
             btnMainMenu.TabIndex = 1;
             btnMainMenu.Text = "القائمه الرئيسية";
@@ -563,10 +564,10 @@ namespace Dental.WinForms
             guna2CustomGradientPanel1.Controls.Add(ctrlNotification1);
             guna2CustomGradientPanel1.Controls.Add(ctrlDateTime1);
             guna2CustomGradientPanel1.Controls.Add(ctrlProfile1);
-            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges31;
-            guna2CustomGradientPanel1.Location = new Point(-6, 0);
+            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges25;
+            guna2CustomGradientPanel1.Location = new Point(-11, 0);
             guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
-            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges32;
+            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges26;
             guna2CustomGradientPanel1.Size = new Size(1568, 100);
             guna2CustomGradientPanel1.TabIndex = 0;
             // 

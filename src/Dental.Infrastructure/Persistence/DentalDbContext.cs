@@ -9,7 +9,7 @@ public sealed class DentalDbContext(
 {
     public DbSet<Treatment> Treatments => Set<Treatment>();
     public DbSet<Visit> Visits => Set<Visit>();
-    public DbSet<VisitToothTreatment> VisitToothTreatments => Set<VisitToothTreatment>();
+    public DbSet<VisitTreatment> VisitTreatments => Set<VisitTreatment>();
     public DbSet<Appointment> Appointments => Set<Appointment>();
     public DbSet<Patient> Patients => Set<Patient>();
     public DbSet<Prescription> Prescriptions => Set<Prescription>();

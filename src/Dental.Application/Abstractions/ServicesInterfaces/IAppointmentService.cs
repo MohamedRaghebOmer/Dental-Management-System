@@ -30,10 +30,8 @@ public interface IAppointmentService
         int id,
         CancellationToken cancellationToken = default);
 
-
-    Task<Result<IEnumerable<AppointmentResponseDto>>> GetAllAsync(
+    Task<Result<List<AppointmentResponseDto>>> GetAllAsync(
         CancellationToken cancellationToken = default);
-
 
     Task<Result> DeleteAsync(
         int id,

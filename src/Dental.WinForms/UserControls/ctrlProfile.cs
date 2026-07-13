@@ -111,28 +111,28 @@ public partial class ctrlProfile : UserControl
             return;
         }
 
-        if (updateResult.Error == DomainErrors.DentalInfo.DoctorNameTooLong)
+        if (updateResult.Error == DomainErrors.Entities.DentalInfo.DoctorNameTooLong)
         {
             MessageBox.Show("اسم الطبيب طويل جداً، برجاء إدخال اسم أقصر.",
                 "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
-        if (updateResult.Error == DomainErrors.DentalInfo.DentalDescriptionTooLong)
+        if (updateResult.Error == DomainErrors.Entities.DentalInfo.DentalDescriptionTooLong)
         {
             MessageBox.Show("وصف العيادة طويل جداً، برجاء إدخال وصف أقصر.",
                 "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
-        if (updateResult.Error == DomainErrors.DentalInfo.PhoneNumberTooLong)
+        if (updateResult.Error == DomainErrors.Entities.DentalInfo.PhoneNumberTooLong)
         {
             MessageBox.Show("رقم الهاتف طويل جداً، برجاء إدخال رقم هاتف أقصر.",
                 "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
-        if (updateResult.Error == DomainErrors.DentalInfo.PicturePathTooLong)
+        if (updateResult.Error == DomainErrors.Entities.DentalInfo.PicturePathTooLong)
         {
             MessageBox.Show("مسار الصورة طويل جداً، برجاء إدخال مسار أقصر.",
                 "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);

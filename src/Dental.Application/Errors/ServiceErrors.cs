@@ -10,7 +10,7 @@ public static class ServiceErrors
     public static readonly Error InvalidId =
         new("InvalidId", "ID must be greater than zero.");
 
-    public static class VisitToothTreatmentErrors
+    public static class VisitTreatmentErrors
     {
         public static readonly Error VisitNotFound =
             new("VisitNotFound", "Visit not found.");
@@ -43,12 +43,18 @@ public static class ServiceErrors
 
     public static class PrescriptionItem
     {
-        public static readonly Error PrescriptionNotFound =
-            new("PrescriptionNotFound", "Prescription not found.");
+        public static readonly Error PrescriptionNotFound = new(
+            "PrescriptionNotFound", 
+            "Prescription not found.");
 
         public static readonly Error PrescriptionItemNotFound = new(
             "PrescriptionItemNotFound",
             "Prescription item not found."
+        );
+
+        public static readonly Error VisitNotFound = new(
+            "VisitNotFound",
+            "Visit not found."
         );
     }
 

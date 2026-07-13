@@ -1,6 +1,9 @@
-﻿namespace Dental.Domain.Repositories;
+﻿using Dental.Domain.Entities;
+
+namespace Dental.Domain.Repositories;
 
 public interface IAppointmentRepository
+    :IRepository<Appointment>
 {
     Task<bool> ExistsByDateAsync(
         DateTime date,

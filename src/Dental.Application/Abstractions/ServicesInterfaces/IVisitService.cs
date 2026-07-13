@@ -23,7 +23,7 @@ public interface IVisitService
         CancellationToken cancellationToken = default);
 
 
-    Task<Result<IEnumerable<VisitResponseDto>>> GetAllAsync(
+    Task<Result<List<VisitResponseDto>>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
 

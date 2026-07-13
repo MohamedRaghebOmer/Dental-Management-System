@@ -8,7 +8,7 @@ public sealed record VisitResponseDto(
     Id? AppointmentId,
     Money PaidAmount,
     Money DiscountAmount,
-    DateTime Date,
+    DateTime VisitDateTime,
     string? Notes)
     : IResponseDto<Domain.Entities.Visit, VisitResponseDto>
 {
@@ -19,7 +19,7 @@ public sealed record VisitResponseDto(
             AppointmentId: entity.AppointmentId,
             PaidAmount: entity.PaidAmount,
             DiscountAmount: entity.DiscountAmount,
-            Date: entity.VisitDateTime,
+            VisitDateTime: entity.VisitDateTime,
             Notes: entity.Notes
         );
     }

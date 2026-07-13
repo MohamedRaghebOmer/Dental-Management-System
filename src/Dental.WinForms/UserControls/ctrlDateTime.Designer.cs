@@ -42,12 +42,13 @@
             // timer
             // 
             timer.Interval = 1000;
+            timer.Tick += OnTimerOnTick;
             // 
             // pictureBox1
             // 
             pictureBox1.BackgroundImage = Properties.Resources.calendar_512;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox1.Location = new Point(434, 9);
+            pictureBox1.Location = new Point(498, 9);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(79, 83);
             pictureBox1.TabIndex = 0;
@@ -57,7 +58,7 @@
             // 
             lblDate.AutoSize = true;
             lblDate.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDate.Location = new Point(275, 35);
+            lblDate.Location = new Point(296, 35);
             lblDate.Name = "lblDate";
             lblDate.RightToLeft = RightToLeft.Yes;
             lblDate.Size = new Size(0, 31);
@@ -67,7 +68,7 @@
             // 
             pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
             pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox2.Location = new Point(140, 9);
+            pictureBox2.Location = new Point(123, 9);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(84, 83);
             pictureBox2.TabIndex = 2;
@@ -77,7 +78,7 @@
             // 
             lblTime.AutoSize = true;
             lblTime.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTime.Location = new Point(24, 35);
+            lblTime.Location = new Point(27, 35);
             lblTime.Name = "lblTime";
             lblTime.Size = new Size(0, 31);
             lblTime.TabIndex = 3;
@@ -96,7 +97,7 @@
             MaximumSize = new Size(0, 100);
             MinimumSize = new Size(0, 100);
             Name = "ctrlDateTime";
-            Size = new Size(516, 100);
+            Size = new Size(590, 100);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);

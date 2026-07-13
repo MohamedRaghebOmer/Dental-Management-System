@@ -6,10 +6,6 @@ namespace Dental.Application.DTOs.PrescriptionItem;
 public sealed record PrescriptionItemRequestDto
 {
     [Required]
-    [Range(1, int.MaxValue)]
-    public required int PrescriptionId { get; init; }
-
-    [Required]
     [MaxLength(Domain.Entities.PrescriptionItem.Constants.MedicineNameMaxLength)]
     public required string MedicineName { get; init; }
 

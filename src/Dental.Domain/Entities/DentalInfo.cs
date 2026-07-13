@@ -108,19 +108,19 @@ public sealed class DentalInfo : Entity
         // Validate is about check the max length for each property
         if (doctorName?.Length > Constants.DoctorNameMaxLength)
         {
-            return Result.Failure(DomainErrors.DentalInfo.DoctorNameTooLong);
+            return Result.Failure(DomainErrors.Entities.DentalInfo.DoctorNameTooLong);
         }
         if (dentalDescription?.Length > Constants.DentalDescriptionMaxLength)
         {
-            return Result.Failure(DomainErrors.DentalInfo.DentalDescriptionTooLong);
+            return Result.Failure(DomainErrors.Entities.DentalInfo.DentalDescriptionTooLong);
         }
         if (phoneNumber?.Length > Constants.PhoneNumberMaxLength)
         {
-            return Result.Failure(DomainErrors.DentalInfo.PhoneNumberTooLong);
+            return Result.Failure(DomainErrors.Entities.DentalInfo.PhoneNumberTooLong);
         }
         if (picturePath?.Length > Constants.PicturePathMaxLength)
         {
-            return Result.Failure(DomainErrors.DentalInfo.PicturePathTooLong);
+            return Result.Failure(DomainErrors.Entities.DentalInfo.PicturePathTooLong);
         }
         return Result.Success();
     }

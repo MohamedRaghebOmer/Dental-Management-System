@@ -6,12 +6,13 @@ using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
+using Dental.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
 public class PatientService(
-    IRepository<Patient> repo,
+    IPatientRepository repo,
     IUnitOfWork unitOfWork,
     ILogger<PatientService> logger) :
     ServiceBase<Patient, PatientResponseDto>(repo, unitOfWork, logger)

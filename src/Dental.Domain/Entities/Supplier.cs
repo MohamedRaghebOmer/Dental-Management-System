@@ -23,7 +23,7 @@ public sealed class Supplier : Entity
     public static class Constants
     {
         public const int NameMaxLength = 50;
-        public const int PhoneNumberMaxLength = PhoneNumber.Length;
+        public const int PhoneNumberLength = PhoneNumber.Length;
         public const int AddressMaxLength = 100;
         public const int DescriptionMaxLength = 200;
     }

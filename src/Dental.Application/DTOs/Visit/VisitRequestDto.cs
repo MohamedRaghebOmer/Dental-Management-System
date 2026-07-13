@@ -7,6 +7,9 @@ public sealed record VisitRequestDto
     [Range(1, int.MaxValue)]
     public int? AppointmentId { get; init; }
 
+    [Range(1, int.MaxValue)]
+    public int? PrescriptionId { get; init; }
+
     [Required]
     [Range(0, double.MaxValue)]
     public required decimal PaidAmount { get; init; }

@@ -5,7 +5,7 @@ using Dental.Domain.ValueObjects;
 
 namespace Dental.Domain.Entities;
 
-public sealed class VisitToothTreatment : Entity
+public sealed class VisitTreatment : Entity
 {
     public static class Constants
     {
@@ -21,9 +21,9 @@ public sealed class VisitToothTreatment : Entity
     public Visit Visit { get; private set; } = default!;
     public Treatment Treatment { get; private set; } = default!;
 
-    private VisitToothTreatment() { } // EF Core
+    private VisitTreatment() { } // EF Core
 
-    private VisitToothTreatment(
+    private VisitTreatment(
         ToothNumber toothNumber,
         Id visitId,
         Id treatmentId,
@@ -37,10 +37,10 @@ public sealed class VisitToothTreatment : Entity
         Notes = notes;
     }
 
-    public static Result<VisitToothTreatment> Create(
+    internal static Result<VisitTreatment> Create(
         ToothNumber toothNumber,
         Id visitId,
-        Id serviceId,
+        Id treatmentId,
         Money price,
         string? notes)
     {
@@ -48,21 +48,20 @@ public sealed class VisitToothTreatment : Entity
 
         if (validationResult.IsFailure)
         {
-            return Result.Failure<VisitToothTreatment>(validationResult.Error);
+            return Result.Failure<VisitTreatment>(validationResult.Error);
         }
 
-        return new VisitToothTreatment(
+        return new VisitTreatment(
             toothNumber,
             visitId,
-            serviceId,
+            treatmentId,
             price,
             notes?.Trim());
     }
 
-    public Result Update(
+    internal Result Update(
         ToothNumber toothNumber,
-        Id visitId,
-        Id serviceId,
+        Id treatmentId,
         Money price,
         string? notes)
     {
@@ -74,8 +73,7 @@ public sealed class VisitToothTreatment : Entity
         }
 
         ToothNumber = toothNumber;
-        VisitId = visitId;
-        TreatmentId = serviceId;
+        TreatmentId = treatmentId;
         Price = price;
         Notes = notes?.Trim();
 
@@ -88,7 +86,7 @@ public sealed class VisitToothTreatment : Entity
         var trimmedNotes = notes?.Trim();
         if (trimmedNotes?.Length > Constants.NotesMaxLength)
         {
-            return Result.Failure(DomainErrors.Entities.VisitToothTreatment.Notes.TooLong);
+            return Result.Failure(DomainErrors.Entities.VisitTreatment.Notes.TooLong);
         }
 
         return Result.Success();

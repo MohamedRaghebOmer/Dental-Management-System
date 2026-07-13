@@ -6,17 +6,18 @@ using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
+using Dental.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
+
 
 namespace Dental.Application.Services;
 
 public class AppointmentService(
-    IRepository<Appointment> repo,
-    IAppointmentRepository appointmentRepo,
-    IRepository<Patient> patientRepo,
-    IUnitOfWork unitOfWork, 
-    ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger) 
-    : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger), 
+    IAppointmentRepository repo,
+    IPatientRepository patientRepo,
+    IUnitOfWork unitOfWork,
+    ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger)
+    : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger),
         IAppointmentService
 {
     public async Task<Result<int>> CreateAsync(
@@ -104,13 +105,14 @@ public class AppointmentService(
             return Result.Failure<Appointment>(patientIdResult.Error);
         }
 
-        if (await appointmentRepo.ExistsByDateAsync(
-                requestDto.AppointmentDate, 
-                id, 
+        if (await repo.ExistsByDateAsync(
+                requestDto.AppointmentDate,
+                id,
                 cancellationToken))
         {
             logger.LogWarning(
-                "Failed to create appointment: There is already an appointment for the given date. {Date}", requestDto.AppointmentDate);
+                "Failed to create appointment: There is already an appointment for the given date. {Date}",
+                requestDto.AppointmentDate);
             return Result.Failure<Appointment>(ServiceErrors.AppointmentErrors.DateIsTaken);
         }
 
@@ -127,7 +129,8 @@ public class AppointmentService(
 
         if (appointmentResult.IsFailure)
         {
-            logger.LogWarning("Failed to create appointment: Invalid appointment data. {error}", appointmentResult.Error);
+            logger.LogWarning("Failed to create appointment: Invalid appointment data. {error}",
+                appointmentResult.Error);
             return Result.Failure<Appointment>(appointmentResult.Error);
         }
 
@@ -177,7 +180,7 @@ public class AppointmentService(
             logger.LogWarning("Failed to complete appointment: Invalid appointment ID. {AppointmentId}", id);
             return Result.Failure(ServiceErrors.InvalidId);
         }
-        
+
 
         var appointment = await repo.GetByIdAsync(id, cancellationToken);
         if (appointment == null)

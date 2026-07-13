@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public sealed class DentalInfoRepository(DentalDbContext dbContext) : IDentalInfoRepository
+public sealed class DentalInfoRepository(DentalDbContext dbContext)
+    : IDentalInfoRepository
 {
     public async Task<DentalInfo?> GetAsync(CancellationToken cancellationToken)
     {

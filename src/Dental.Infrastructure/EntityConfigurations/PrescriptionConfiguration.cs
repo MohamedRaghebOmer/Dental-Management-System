@@ -13,26 +13,22 @@ public sealed class PrescriptionConfiguration
     public new void Configure(EntityTypeBuilder<Prescription> builder)
     {
         base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
-
         ConfigureForeignKeys(builder);
     }
 
     private void ConfigureForeignKeys(EntityTypeBuilder<Prescription> builder)
     {
-        builder.HasOne(p => p.Visit)
-            .WithMany(v => v.Prescriptions)
-            .HasForeignKey(p => p.VisitId);
+        builder.HasMany(p => p.Items)
+            .WithOne(i => i.Prescription)
+            .HasForeignKey(i => i.PrescriptionId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(p => p.Items)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<Prescription> builder)
     {
-        builder.Property(p => p.VisitId)
-            .HasConversion(
-                value => value.Value,
-                value => Id.FromDatabase(value))
-            .HasColumnName(nameof(Prescription.VisitId))
-            .IsRequired();
-
         builder.Property(p => p.Notes)
             .HasColumnName(nameof(Prescription.Notes))
             .HasMaxLength(Prescription.Constants.NotesMaxLength)

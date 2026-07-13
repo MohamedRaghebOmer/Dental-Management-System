@@ -11,8 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace Dental.Application.Services;
 
 public sealed class MaterialService(
-    IRepository<Material> repo,
-    IMaterialRepository materialRepo,
+    IMaterialRepository repo,
     IUnitOfWork unitOfWork,
     ILogger<ServiceBase<Material, MaterialResponseDto>> logger)
     : ServiceBase<Material, MaterialResponseDto>(repo, unitOfWork, logger),
@@ -87,7 +86,7 @@ public sealed class MaterialService(
             }
         }
 
-        if (await materialRepo.ExistsByNameAsync(requestDto.Name, materialId, cancellationToken))
+        if (await repo.ExistsByNameAsync(requestDto.Name, materialId, cancellationToken))
         {
             logger.LogWarning("Material with name {Name} already exists.", requestDto.Name);
             return Result.Failure<Material>(ServiceErrors.Material.DuplicateName);

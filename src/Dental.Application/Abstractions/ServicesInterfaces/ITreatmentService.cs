@@ -1,5 +1,4 @@
-﻿using Dental.Application.DTOs.Responses;
-using Dental.Application.DTOs.Treatment;
+﻿using Dental.Application.DTOs.Treatment;
 using Dental.Application.DTOs.VisitToothNumber;
 using Dental.Domain.Shared;
 
@@ -21,7 +20,7 @@ public interface ITreatmentService
         CancellationToken cancellationToken = default);
 
 
-    Task<Result<IEnumerable<TreatmentResponseDto>>> GetAllAsync(
+    Task<Result<List<TreatmentResponseDto>>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
 

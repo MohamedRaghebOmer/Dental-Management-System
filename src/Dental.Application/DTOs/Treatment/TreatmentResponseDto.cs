@@ -1,6 +1,6 @@
 ﻿using Dental.Application.Abstractions;
 
-namespace Dental.Application.DTOs.Responses;
+namespace Dental.Application.DTOs.Treatment;
 
 public sealed record TreatmentResponseDto(
     int Id,

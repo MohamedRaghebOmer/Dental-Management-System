@@ -36,17 +36,14 @@ public abstract class ServiceBase<TEntity, TResponseDto>(
         return TResponseDto.ToResponseDto(entity);
     }
 
-
-    public async Task<Result<IEnumerable<TResponseDto>>> GetAllAsync(
+    public async Task<Result<List<TResponseDto>>> GetAllAsync(
         CancellationToken cancellationToken = default)
     {
         var all = await repo.GetAllAsync(cancellationToken);
-
-        var dtos = all.Select(TResponseDto.ToResponseDto);
+        var dtos = all.Select(TResponseDto.ToResponseDto).ToList();
 
         return Result.Success(dtos);
     }
-
 
     public async Task<Result> DeleteAsync(
         int id,

@@ -3,19 +3,19 @@ using Dental.Domain.ValueObjects;
 
 namespace Dental.Application.DTOs.VisitToothNumber;
 
-public sealed record VisitToothTreatmentResponseDto(
+public sealed record VisitTreatmentResponseDto(
     int Id,
     ToothNumber ToothNumber,
     int VisitId,
     int ServiceId,
     decimal Price,
     string? Notes)
-    : IResponseDto<Domain.Entities.VisitToothTreatment, VisitToothTreatmentResponseDto>
+    : IResponseDto<Domain.Entities.VisitTreatment, VisitTreatmentResponseDto>
 {
-    public static VisitToothTreatmentResponseDto ToResponseDto(
-        Domain.Entities.VisitToothTreatment entity)
+    public static VisitTreatmentResponseDto ToResponseDto(
+        Domain.Entities.VisitTreatment entity)
     {
-        return new VisitToothTreatmentResponseDto(
+        return new VisitTreatmentResponseDto(
             Id: entity.Id.Value,
             ToothNumber: entity.ToothNumber,
             VisitId: entity.VisitId.Value,

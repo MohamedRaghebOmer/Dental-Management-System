@@ -1,5 +1,6 @@
 ﻿using Dental.Domain.Primitives;
 using Dental.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dental.Infrastructure.Extensions;
@@ -14,7 +15,7 @@ public static class EntityTypeBuilderExtensions
             .HasConversion(
                 id => id.Value,
                 value => Id.FromDatabase(value))
-            .ValueGeneratedOnAdd();
+            .UseAutoincrement();
 
         builder.HasKey(x => x.Id);
 

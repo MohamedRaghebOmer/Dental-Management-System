@@ -6,7 +6,7 @@ public abstract class Entity : IEquatable<Entity>
 {
     protected Entity() { }
 
-    public Id Id { get; protected set; }
+    public Id Id { get; protected set; } = default!;
 
     public bool Equals(Entity? other)
     {
