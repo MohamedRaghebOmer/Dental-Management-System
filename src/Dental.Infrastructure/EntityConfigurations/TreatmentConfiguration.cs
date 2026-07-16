@@ -11,11 +11,18 @@ public sealed class TreatmentConfiguration
     , IEntityTypeConfiguration<Treatment>
 
 {
-    public void Configure(EntityTypeBuilder<Treatment> builder)
+    public new void Configure(EntityTypeBuilder<Treatment> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         AddCheckConstraints(builder);
         ConfigureIndexes(builder);
+        AddInitialData(builder);
+    }
+
+    private void AddInitialData(EntityTypeBuilder<Treatment> builder)
+    {
+        builder.HasData(Treatment.InitialData());
     }
 
     private void AddCheckConstraints(EntityTypeBuilder<Treatment> builder)

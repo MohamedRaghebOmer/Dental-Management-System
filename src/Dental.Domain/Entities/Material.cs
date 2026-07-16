@@ -34,7 +34,7 @@ public sealed class Material : Entity
     }
 
     public string Name { get; private set; } = string.Empty;
-    public Id? SupplierId { get; private set; } = default!;
+    public Id? SupplierId { get; private set; }
     public int ReorderLevel { get; private set; }
     public string? Description { get; private set; } = null;
     public int Quantity { get; private set; }
@@ -108,32 +108,32 @@ public sealed class Material : Entity
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            return Result.Failure(DomainErrors.Material.Name.Empty);
+            return Result.Failure(DomainErrors.Entities.Material.Name.Empty);
         }
 
         if (name.Trim().Length > Constants.NameMaxLength)
         {
-            return Result.Failure(DomainErrors.Material.Name.TooLong);
+            return Result.Failure(DomainErrors.Entities.Material.Name.TooLong);
         }
 
         if (reorderLevel < 0)
         {
-            return Result.Failure(DomainErrors.Material.ReorderLevel.Negative);
+            return Result.Failure(DomainErrors.Entities.Material.ReorderLevel.Negative);
         }
 
         if (description is not null && description?.Trim().Length > Constants.DescriptionMaxLength)
         {
-            return Result.Failure(DomainErrors.Material.Description.TooLong);
+            return Result.Failure(DomainErrors.Entities.Material.Description.TooLong);
         }
 
         if (quantity < 0)
         {
-            return Result.Failure(DomainErrors.Material.Quantity.Negative);
+            return Result.Failure(DomainErrors.Entities.Material.Quantity.Negative);
         }
 
         if (buyingPrice < 0)
         {
-            return Result.Failure(DomainErrors.Material.BuyingPrice.Negative);
+            return Result.Failure(DomainErrors.Entities.Material.BuyingPrice.Negative);
         }
 
         return Result.Success();

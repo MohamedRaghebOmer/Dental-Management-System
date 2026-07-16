@@ -1,0 +1,27 @@
+﻿using Dental.Application.Abstractions;
+using Dental.Domain.ValueObjects;
+
+namespace Dental.Application.DTOs.VisitToothNumber;
+
+public sealed record VisitTreatmentResponseDto(
+    int Id,
+    ToothNumber ToothNumber,
+    int VisitId,
+    int ServiceId,
+    decimal Price,
+    string? Notes)
+    : IResponseDto<Domain.Entities.VisitTreatment, VisitTreatmentResponseDto>
+{
+    public static VisitTreatmentResponseDto ToResponseDto(
+        Domain.Entities.VisitTreatment entity)
+    {
+        return new VisitTreatmentResponseDto(
+            Id: entity.Id.Value,
+            ToothNumber: entity.ToothNumber,
+            VisitId: entity.VisitId.Value,
+            ServiceId: entity.TreatmentId.Value,
+            Price: entity.Price.Value,
+            Notes: entity.Notes
+        );
+    }
+}

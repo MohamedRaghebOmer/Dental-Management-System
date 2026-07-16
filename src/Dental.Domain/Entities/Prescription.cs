@@ -7,86 +7,147 @@ namespace Dental.Domain.Entities;
 
 public sealed class Prescription : Entity
 {
-    // ========================= Constructors ========================
-    private Prescription() { }  // EF Core
-
-    private Prescription(
-        Id patientId,
-        Id visitId,
-        string? notes)
-    {
-        this.PatientId = patientId;
-        this.VisitId = visitId;
-        this.Notes = notes;
-    }
-
-
-    // ========================= Constants ========================
     public static class Constants
     {
         public const int NotesMaxLength = 500;
     }
 
 
-    // ========================= Proprieties ========================
-    public Id PatientId { get; private set; } = default!;
+    private Prescription() { }  // EF Core
+
+    private Prescription(string? notes)
+    {
+        Notes = notes;
+    }
+
+
+    public Id? PatientId { get; private set; } = default!;
     public Id VisitId { get; private set; } = default!;
     public string? Notes { get; private set; }
-
-
-    // ========================= Navigation Properties ========================
-    public Patient Patient { get; private set; } = default!;
+    public Patient? Patient { get; private set; } = default!;
     public Visit Visit { get; private set; } = default!;
-    public ICollection<PrescriptionItem> PrescriptionItems { get; private set; } = [];
 
 
+    public IReadOnlyCollection<PrescriptionItem> Items => _items.AsReadOnly();
+    private readonly List<PrescriptionItem> _items = [];
 
-    // ========================= Methods ========================
-    public static Result<Prescription> Create(
-        Id patientId,
+
+    internal static Result<Prescription> Create(
+        Id? patientId,
         Id visitId,
         string? notes)
     {
+        notes = notes?.Trim();
+
         var validateResult = Validate(notes);
-        if (!validateResult.IsSuccess)
+        if (validateResult.IsFailure)
         {
             return Result.Failure<Prescription>(validateResult.Error);
         }
 
-        return Result.Success(new Prescription
-        {
-            PatientId = patientId,
-            VisitId = visitId,
-            Notes = notes
-        });
+        return new Prescription(notes);
     }
 
-    public Result Update(
-        Id patientId,
-        Id visitId,
-        string? notes)
+    internal Result Update(string? notes)
     {
+        notes = notes?.Trim();
+
         var validateResult = Validate(notes);
         if (!validateResult.IsSuccess)
         {
             return Result.Failure(validateResult.Error);
         }
 
-        this.PatientId = patientId;
-        this.VisitId = visitId;
-        this.Notes = notes;
+        Notes = notes;
 
         return Result.Success();
     }
 
-    private static Result Validate(
-        string? notes)
+    private static Result Validate(string? notes)
     {
-        if (notes?.Trim().Length > Constants.NotesMaxLength)
+        if (notes?.Length > Constants.NotesMaxLength)
         {
-            return Result.Failure(DomainErrors.Prescription.Notes.TooLong);
+            return Result.Failure(DomainErrors.Entities.Prescription.Notes.TooLong);
         }
 
+        return Result.Success();
+    }
+
+
+
+    internal Result<PrescriptionItem> AddItem(
+        string medicineName,
+        decimal dosage,
+        MedicineFrequency frequency,
+        string? instructions)
+    {
+        if (_items.Any(i => i.MedicineName == medicineName.Trim()))
+        {
+            return Result.Failure<PrescriptionItem>(DomainErrors.Entities.Prescription.Item.MedicineWithTheSameNameAlreadyExists);
+        }
+
+        var prescriptionItemResult = PrescriptionItem.Create(
+            Id,
+            medicineName,
+            dosage,
+            frequency,
+            instructions);
+
+        if (prescriptionItemResult.IsFailure)
+        {
+            return Result.Failure<PrescriptionItem>(prescriptionItemResult.Error);
+        }
+
+        _items.Add(prescriptionItemResult.Value);
+        return Result.Success(prescriptionItemResult.Value);
+    }
+
+    internal Result UpdateItem(
+        Id itemId,
+        string medicineName,
+        decimal dosage,
+        MedicineFrequency frequency,
+        string? instructions)
+    {
+        if (_items.Any(i => i.MedicineName == medicineName.Trim() && i.Id != itemId))
+        {
+            return Result.Failure(
+                DomainErrors.Entities.Prescription.Item.MedicineWithTheSameNameAlreadyExists);
+        }
+
+        var item = _items
+            .FirstOrDefault(p => p.Id == itemId);
+
+        if (item == null)
+        {
+            return Result.Failure(DomainErrors.Entities.Prescription.Item.NotFound);
+        }
+
+        var itemResult = item.Update(
+            medicineName,
+            dosage,
+            frequency,
+            instructions);
+
+        if (itemResult.IsFailure)
+        {
+            return Result.Failure(itemResult.Error);
+        }
+
+        return Result.Success();
+    }
+
+    internal Result RemoveItem(Id itemId)
+    {
+        var item = _items
+            .FirstOrDefault(p => p.Id == itemId);
+
+        if (item == null)
+        {
+            return Result.Failure(DomainErrors.Entities.Prescription.Item.NotFound);
+        }
+
+        _items.Remove(item);
         return Result.Success();
     }
 }

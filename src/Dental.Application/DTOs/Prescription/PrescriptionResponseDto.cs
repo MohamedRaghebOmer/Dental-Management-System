@@ -5,7 +5,6 @@ namespace Dental.Application.DTOs.Prescription;
 
 public sealed record PrescriptionResponseDto(
     int id,
-    Id patientId,
     Id visitId,
     string? notes)
     : IResponseDto<Domain.Entities.Prescription, PrescriptionResponseDto>
@@ -13,8 +12,7 @@ public sealed record PrescriptionResponseDto(
     public static PrescriptionResponseDto ToResponseDto(Domain.Entities.Prescription entity)
     {
         return new PrescriptionResponseDto(
-            entity.Id,
-            entity.PatientId,
+            entity.Id.Value,
             entity.VisitId,
             entity.Notes);
     }

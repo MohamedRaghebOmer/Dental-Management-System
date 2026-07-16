@@ -15,7 +15,7 @@ public sealed record PrescriptionItemResponseDto(
     public static PrescriptionItemResponseDto ToResponseDto(Domain.Entities.PrescriptionItem entity)
     {
         return new PrescriptionItemResponseDto(
-            Id: entity.Id,
+            Id: entity.Id.Value,
             PrescriptionId: entity.PrescriptionId,
             MedicineName: entity.MedicineName,
             Dosage: entity.Dosage,

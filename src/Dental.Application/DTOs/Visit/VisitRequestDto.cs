@@ -9,14 +9,17 @@ public sealed record VisitRequestDto
 
     [Required]
     [Range(0, double.MaxValue)]
+    [DataType(DataType.Currency)]
     public required decimal PaidAmount { get; init; }
 
     [Required]
     [Range(0, double.MaxValue)]
+    [DataType(DataType.Currency)]
     public required decimal DiscountAmount { get; init; }
 
     [Required]
-    public required DateTime Date { get; init; }
+    [DataType(DataType.DateTime)]
+    public required DateTime VisitDateTime { get; init; }
 
     [StringLength(Domain.Entities.Visit.Constants.NotesMaxLength)]
     public string? Notes { get; init; }

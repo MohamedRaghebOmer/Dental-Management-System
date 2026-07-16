@@ -1,4 +1,6 @@
 ﻿using Dental.Domain.Primitives;
+using Dental.Domain.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Dental.Infrastructure.Extensions;
@@ -9,10 +11,13 @@ public static class EntityTypeBuilderExtensions
         this EntityTypeBuilder<TEntity> builder)
         where TEntity : Entity
     {
-        builder.HasKey(x => x.Id);
+        builder.Property(e => e.Id)
+            .HasConversion(
+                id => id.Value,
+                value => Id.FromDatabase(value))
+            .UseAutoincrement();
 
-        builder.Property(x => x.Id)
-            .ValueGeneratedOnAdd();
+        builder.HasKey(x => x.Id);
 
         return builder;
     }

@@ -10,9 +10,10 @@ public sealed class PatientConfiguration
     : BaseEntityConfiguration<Patient>
     , IEntityTypeConfiguration<Patient>
 {
-    public void Configure(EntityTypeBuilder<Patient> builder)
+    public new void Configure(EntityTypeBuilder<Patient> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         AddConstraints(builder);
         AddComments(builder);
         ConfigureIgnoredFields(builder);
@@ -35,9 +36,13 @@ public sealed class PatientConfiguration
         builder.ToTable(table =>
         {
             table.HasCheckConstraint(
-                "CK_Patient_Gender",
+                "CK_Patients_Gender",
                 @"Gender IN (1, 2)"
             );
+
+            table.HasCheckConstraint(
+                "CK_Patients_PhoneNumberLengthEqualTo11",
+                "length(PhoneNumber) = 11");
         });
     }
 

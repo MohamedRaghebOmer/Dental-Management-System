@@ -10,9 +10,10 @@ public sealed class VisitConfiguration
     : BaseEntityConfiguration<Visit>
     , IEntityTypeConfiguration<Visit>
 {
-    public void Configure(EntityTypeBuilder<Visit> builder)
+    public new void Configure(EntityTypeBuilder<Visit> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureForeignKeys(builder);
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);
@@ -39,8 +40,8 @@ public sealed class VisitConfiguration
             .HasFilter("[AppointmentId] IS NOT NULL")
             .IsUnique(true);
 
-        builder.HasIndex(p => p.Date)
-            .HasDatabaseName("UX_Visits_Date")
+        builder.HasIndex(p => p.VisitDateTime)
+            .HasDatabaseName("UX_Visits_VisitDateTime")
             .IsUnique(true);
     }
 
@@ -49,7 +50,12 @@ public sealed class VisitConfiguration
         builder.HasOne(v => v.Appointment)
             .WithOne(a => a.Visit)
             .HasForeignKey<Visit>(v => v.AppointmentId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
+
+        builder.Metadata
+            .FindNavigation(nameof(Visit.VisitTreatments))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<Visit> builder)
@@ -75,8 +81,8 @@ public sealed class VisitConfiguration
             .HasColumnName(nameof(Visit.DiscountAmount))
             .IsRequired();
 
-        builder.Property(p => p.Date)
-            .HasColumnName(nameof(Visit.Date))
+        builder.Property(p => p.VisitDateTime)
+            .HasColumnName(nameof(Visit.VisitDateTime))
             .IsRequired();
 
         builder.Property(p => p.Notes)

@@ -10,10 +10,22 @@ public sealed class SupplierConfiguration
     : BaseEntityConfiguration<Supplier>
     , IEntityTypeConfiguration<Supplier>
 {
-    public void Configure(EntityTypeBuilder<Supplier> builder)
+    public new void Configure(EntityTypeBuilder<Supplier> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureIndexes(builder);
+        AddCheckConstraints(builder);
+    }
+
+    private void AddCheckConstraints(EntityTypeBuilder<Supplier> builder)
+    {
+        builder.ToTable(table =>
+        {
+            table.HasCheckConstraint(
+                "CK_Suppliers_PhoneNumberLengthEqualTo11",
+                "length(PhoneNumber) = 11");
+        });
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<Supplier> builder)
@@ -28,7 +40,7 @@ public sealed class SupplierConfiguration
                 value => value == null ? null : value.Value,
                 value => value == null ? null : PhoneNumber.FromDatabase(value))
             .HasColumnName(nameof(Supplier.PhoneNumber))
-            .HasMaxLength(Supplier.Constants.PhoneNumberMaxLength)
+            .HasMaxLength(Supplier.Constants.PhoneNumberLength)
             .IsRequired(false);
 
         builder.Property(s => s.Address)

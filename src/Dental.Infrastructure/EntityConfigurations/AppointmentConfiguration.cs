@@ -10,9 +10,10 @@ public sealed class AppointmentConfiguration
         : BaseEntityConfiguration<Appointment>
         , IEntityTypeConfiguration<Appointment>
 {
-    public void Configure(EntityTypeBuilder<Appointment> builder)
+    public new void Configure(EntityTypeBuilder<Appointment> builder)
     {
-        ConfigureProperties(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureForeignKeys(builder);
         ConfigureIndexes(builder);
         AddColumnsComments(builder);
@@ -21,7 +22,7 @@ public sealed class AppointmentConfiguration
     private void ConfigureIndexes(EntityTypeBuilder<Appointment> builder)
     {
         builder.HasIndex(p => p.PatientId)
-            .HasDatabaseName("IX_Appointment_PatientId")
+            .HasDatabaseName("IX_Appointments_PatientId")
             .IsUnique(false);
     }
 
@@ -48,12 +49,17 @@ public sealed class AppointmentConfiguration
             .HasColumnName(nameof(Appointment.PatientId))
             .IsRequired();
 
-        builder.Property(p => p.Date)
-            .HasColumnName(nameof(Appointment.Date))
+        builder.Property(p => p.CreatedAt)
+            .HasColumnName(nameof(Appointment.CreatedAt))
+            .HasDefaultValueSql("DATETIME('now', 'localtime')")
             .IsRequired();
 
-        builder.Property(p => p.CompletedAt)
-            .HasColumnName(nameof(Appointment.CompletedAt))
+        builder.Property(p => p.ScheduledVisitDateTime)
+            .HasColumnName(nameof(Appointment.ScheduledVisitDateTime))
+            .IsRequired();
+
+        builder.Property(p => p.ActualVisitDateTime)
+            .HasColumnName(nameof(Appointment.ActualVisitDateTime))
             .IsRequired(false)
             .HasDefaultValue(null);
 

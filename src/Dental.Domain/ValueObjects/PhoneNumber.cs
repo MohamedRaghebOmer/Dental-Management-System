@@ -25,7 +25,7 @@ public sealed record PhoneNumber : ValueObject
 
         if (value.Length != Length)
         {
-            return Result.Failure<PhoneNumber>(DomainErrors.ValueObjects.PhoneNumber.Invalid);
+            return Result.Failure<PhoneNumber>(DomainErrors.ValueObjects.PhoneNumber.InvalidLength);
         }
 
         return new PhoneNumber(value);

@@ -9,7 +9,8 @@ public sealed record SupplierRequestDto
     public required string Name { get; init; }
 
     [Phone]
-    [MaxLength(Domain.Entities.Supplier.Constants.PhoneNumberMaxLength)]
+    [StringLength(Domain.Entities.Supplier.Constants.PhoneNumberLength),
+        MinLength(Domain.Entities.Supplier.Constants.PhoneNumberLength)]
     public string? PhoneNumber { get; init; }
 
     [MaxLength(Domain.Entities.Supplier.Constants.AddressMaxLength)]

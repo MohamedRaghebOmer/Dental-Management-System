@@ -1,4 +1,5 @@
 ﻿using Dental.Application.DTOs.Visit;
+using Dental.Application.DTOs.VisitToothNumber;
 using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;
@@ -9,12 +10,21 @@ public interface IVisitService
         VisitRequestDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<Result> UpdateASync(
+    Task<Result> UpdateAsync(
         int visitId,
         VisitRequestDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<decimal> GetTotalAmountAsync(
-        int visitId,
+    Task<Result<VisitResponseDto>> GetByIdAsync(
+        int id,
+        CancellationToken cancellationToken = default);
+
+
+    Task<List<VisitResponseDto>> GetAllAsync(
+        CancellationToken cancellationToken = default);
+
+
+    Task<Result> DeleteAsync(
+        int id,
         CancellationToken cancellationToken = default);
 }

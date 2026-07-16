@@ -10,14 +10,24 @@ using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
-public sealed class MaterialService(
-    IRepository<Material> repo,
-    IMaterialRepository materialRepo,
-    IUnitOfWork unitOfWork,
-    ILogger<ServiceBase<Material, MaterialResponseDto>> logger)
-    : ServiceBase<Material, MaterialResponseDto>(repo, unitOfWork, logger),
+public sealed class MaterialService
+    : ServiceBase<Material, MaterialResponseDto>,
     IMaterialService
 {
+    private readonly IMaterialRepository _repo;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<MaterialService> _logger;
+
+    public MaterialService(
+        IMaterialRepository repo,
+        IUnitOfWork unitOfWork,
+        ILogger<MaterialService> logger) : base(repo, unitOfWork, logger)
+    {
+        _repo = repo;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
     public async Task<Result<int>> CreateAsync(
         MaterialRequestDto requestDto,
         CancellationToken cancellationToken = default)
@@ -28,10 +38,10 @@ public sealed class MaterialService(
             return Result.Failure<int>(entityResult.Error);
         }
 
-        await repo.AddAsync(entityResult.Value, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        _repo.Add(entityResult.Value);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return Result.Success(entityResult.Value.Id);
+        return Result.Success(entityResult.Value.Id.Value);
     }
 
     public async Task<Result> UpdateAsync(
@@ -39,16 +49,23 @@ public sealed class MaterialService(
         MaterialRequestDto dto,
         CancellationToken cancellationToken = default)
     {
+        var createIdResult = Id.Create(materialId);
+        if (createIdResult.IsFailure)
+        {
+            _logger.LogWarning("Invalid MaterialId {Id} {Error}", materialId, createIdResult.Error);
+            return Result.Failure(createIdResult.Error);
+        }
+
         var entityResult = await BuildEntityAsync(dto, cancellationToken, materialId);
         if (entityResult.IsFailure)
         {
             return Result.Failure(entityResult.Error);
         }
 
-        var existingEntity = await repo.GetByIdAsync(materialId, cancellationToken);
+        var existingEntity = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (existingEntity == null)
         {
-            logger.LogWarning("Material with ID {MaterialId} not found.", materialId);
+            _logger.LogWarning("Material with ID {MaterialId} not found.", materialId);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
@@ -60,7 +77,7 @@ public sealed class MaterialService(
             entityResult.Value.Quantity,
             entityResult.Value.BuyingPrice);
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }
@@ -70,10 +87,15 @@ public sealed class MaterialService(
         CancellationToken cancellationToken,
         int? materialId = null)
     {
-        if (materialId <= 0)
+        Result<Id>? createIdResult = null;
+        if (materialId.HasValue)
         {
-            logger.LogWarning("Invalid material ID. {MaterialId}", materialId);
-            return Result.Failure<Material>(ServiceErrors.InvalidId);
+            createIdResult = Id.Create(materialId.Value);
+            if (createIdResult.IsFailure)
+            {
+                _logger.LogWarning("Invalid Id. {Id} {Error}", materialId.Value, createIdResult.Value);
+                return Result.Failure<Material>(createIdResult.Error);
+            }
         }
 
         Result<Id> supplierIdResult = null!;
@@ -82,14 +104,14 @@ public sealed class MaterialService(
             supplierIdResult = Id.Create(requestDto.SupplierId.Value);
             if (supplierIdResult.IsFailure)
             {
-                logger.LogWarning("Invalid supplier ID. {SupplierId}", requestDto.SupplierId);
+                _logger.LogWarning("Invalid supplier ID. {SupplierId}", requestDto.SupplierId);
                 return Result.Failure<Material>(ServiceErrors.Material.InvalidSupplierId);
             }
         }
 
-        if (await materialRepo.ExistsByNameAsync(requestDto.Name, materialId, cancellationToken))
+        if (await _repo.ExistsByNameAsync(requestDto.Name, createIdResult?.Value, cancellationToken))
         {
-            logger.LogWarning("Material with name {Name} already exists.", requestDto.Name);
+            _logger.LogWarning("Material with name {Name} already exists.", requestDto.Name);
             return Result.Failure<Material>(ServiceErrors.Material.DuplicateName);
         }
 
@@ -103,7 +125,7 @@ public sealed class MaterialService(
 
         if (entityResult.IsFailure)
         {
-            logger.LogWarning("Failed to create material entity. {Error}", entityResult.Error);
+            _logger.LogWarning("Failed to create material entity. {Error}", entityResult.Error);
             return Result.Failure<Material>(entityResult.Error);
         }
 

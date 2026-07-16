@@ -10,16 +10,29 @@ public sealed class PrescriptionItemsConfiguration
     : BaseEntityConfiguration<PrescriptionItem>
     , IEntityTypeConfiguration<PrescriptionItem>
 {
-    public void Configure(EntityTypeBuilder<PrescriptionItem> builder)
+    public new void Configure(EntityTypeBuilder<PrescriptionItem> builder)
     {
-        ConfigureProperties(builder);
-        ConfigureForeignKeys(builder);
+        base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
+
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);
+        ConfigureForeignKeys(builder);
+    }
+
+    private static void ConfigureForeignKeys(EntityTypeBuilder<PrescriptionItem> builder)
+    {
+        builder.HasOne(pi => pi.Prescription)
+            .WithMany(p => p.Items)
+            .HasForeignKey(pi => pi.PrescriptionId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private static void ConfigureIndexes(EntityTypeBuilder<PrescriptionItem> builder)
     {
+        builder.HasIndex(p => new { p.PrescriptionId, p.MedicineName })
+            .HasDatabaseName("UX_PrescriptionItems_PrescriptionId_MedicineName")
+            .IsUnique(true);
+
         builder.HasIndex(p => p.PrescriptionId)
             .HasDatabaseName("IX_PrescriptionItems_PrescriptionId")
             .IsUnique(false);
@@ -37,14 +50,6 @@ public sealed class PrescriptionItemsConfiguration
                 "CK_PrescriptionItems_Period",
                 "[Period] BETWEEN 1 AND 3");
         });
-    }
-
-    private static void ConfigureForeignKeys(EntityTypeBuilder<PrescriptionItem> builder)
-    {
-        builder.HasOne(p => p.Prescription)
-            .WithMany(pr => pr.PrescriptionItems)
-            .HasForeignKey(p => p.PrescriptionId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<PrescriptionItem> builder)
