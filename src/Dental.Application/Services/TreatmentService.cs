@@ -10,19 +10,29 @@ using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
-public class TreatmentService(
-    IRepository<Treatment> repo,
-    ITreatmentRepository treatmentRepo,
-    IUnitOfWork unitOfWork,
-    ILogger<TreatmentService> logger)
-    : ServiceBase<Treatment, TreatmentResponseDto>(repo, unitOfWork, logger)
+public class TreatmentService
+    : ServiceBase<Treatment, TreatmentResponseDto>
     , ITreatmentService
 {
+    private readonly ITreatmentRepository _treatmentRepo;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<TreatmentService> _logger;
+
+    public TreatmentService(
+        ITreatmentRepository treatmentRepo,
+        IUnitOfWork unitOfWork,
+        ILogger<TreatmentService> logger) : base(treatmentRepo, unitOfWork, logger)
+    {
+        _treatmentRepo = treatmentRepo;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
     public async Task<Result<int>> CreateAsync(
         TreatmentRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("TreatmentService.CreateAsync is called. {TreatmentRequestDto}", dto);
+        _logger.LogInformation("TreatmentService.CreateAsync is called. {TreatmentRequestDto}", dto);
 
         var entityResult = await BuildEntityAsync(dto, cancellationToken);
         if (entityResult.IsFailure)
@@ -30,10 +40,10 @@ public class TreatmentService(
             return Result.Failure<int>(entityResult.Error);
         }
 
-        await repo.AddAsync(entityResult.Value, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        _treatmentRepo.Add(entityResult.Value);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("Treatment created successfully.");
+        _logger.LogInformation("Treatment created successfully.");
 
         return Result.Success(entityResult.Value.Id.Value);
     }
@@ -43,18 +53,25 @@ public class TreatmentService(
         TreatmentRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("TreatmentService.UpdateAsync is called. {TreatmentId} {TreatmentRequestDto}", id, dto);
+        _logger.LogInformation("TreatmentService.UpdateAsync is called. {TreatmentId} {TreatmentRequestDto}", id, dto);
 
-        var updatedEntity = await BuildEntityAsync(dto, cancellationToken, id);
+        var createIdResult = Id.Create(id);
+        if (createIdResult.IsFailure)
+        {
+            _logger.LogWarning("Invalid Id. {Id} {Error}", id, createIdResult.Error);
+            return Result.Failure(createIdResult.Error);
+        }
+
+        var updatedEntity = await BuildEntityAsync(dto, cancellationToken, createIdResult.Value);
         if (updatedEntity.IsFailure)
         {
             return Result.Failure(updatedEntity.Error);
         }
 
-        var treatment = await repo.GetByIdAsync(id, cancellationToken);
+        var treatment = await _treatmentRepo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (treatment is null)
         {
-            logger.LogWarning("Treatment not found.");
+            _logger.LogWarning("Treatment not found.");
             return Result.Failure<Treatment>(ServiceErrors.NotFound);
         }
 
@@ -64,8 +81,8 @@ public class TreatmentService(
             return Result.Failure<Treatment>(updateResult.Error);
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Treatment updated successfully.");
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.LogInformation("Treatment updated successfully.");
 
         return Result.Success();
     }
@@ -73,23 +90,17 @@ public class TreatmentService(
     private async Task<Result<Treatment>> BuildEntityAsync(
         TreatmentRequestDto dto,
         CancellationToken cancellationToken,
-        int? id = null)
+        Id? id = null)
     {
-        if (id <= 0)
-        {
-            logger.LogWarning("Attempted to update a treatment with an invalid ID.");
-            return Result.Failure<Treatment>(ServiceErrors.InvalidId);
-        }
-
         var priceResult = Money.Create(dto.Price);
         if (!priceResult.IsSuccess)
         {
             return Result.Failure<Treatment>(priceResult.Error);
         }
 
-        if (await treatmentRepo.ExistsByNameAsync(dto.Name.Trim(), id, cancellationToken))
+        if (await _treatmentRepo.ExistsByNameAsync(dto.Name.Trim(), id, cancellationToken))
         {
-            logger.LogWarning("A treatment with the same name already exists.");
+            _logger.LogWarning("A treatment with the same name already exists.");
             return Result.Failure<Treatment>(ServiceErrors.Treatment.DuplicateName);
         }
 
@@ -106,16 +117,4 @@ public class TreatmentService(
 
         return Result.Success(serviceResult.Value);
     }
-
-    public async Task<Result<List<TreatmentResponseDto>>> GetAllAsync(
-        CancellationToken cancellationToken = default)
-    {
-        var all = await repo.GetAllAsync(cancellationToken);
-
-        var dtos = 
-            all.Select(TreatmentResponseDto.ToResponseDto).ToList();
-
-        return Result.Success(dtos);
-    }
-
 }

@@ -8,9 +8,10 @@ namespace Dental.Infrastructure.Repositories;
 public sealed class DentalInfoRepository(DentalDbContext dbContext)
     : IDentalInfoRepository
 {
-    public async Task<DentalInfo?> GetAsync(CancellationToken cancellationToken)
+    public Task<DentalInfo?> GetAsync(
+        CancellationToken cancellationToken = default)
     {
         // There is must be one and only one DentalInfo record in the database, so we can use FirstAsync instead of FirstOrDefaultAsync
-        return await dbContext.DentalInfo.FirstAsync(cancellationToken);
+        return dbContext.DentalInfo.FirstAsync(cancellationToken)!;
     }
 }

@@ -15,12 +15,7 @@ public sealed record VisitTreatmentRequestDto
 
     [Range(1, int.MaxValue)]
     [Required]
-    public required int ServiceId { get; init; }
-
-    [Required]
-    [Range(0, double.MaxValue, ErrorMessage = "Price must be greater than or equal to zero.")]
-    [DataType(DataType.Currency)]
-    public required decimal Price { get; init; }
+    public required int TreatmentId { get; init; }
 
     [MaxLength(VisitTreatment.Constants.NotesMaxLength)]
     public string? Notes { get; init; } = null;

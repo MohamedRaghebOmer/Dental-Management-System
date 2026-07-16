@@ -2,6 +2,7 @@
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
+using static Dental.Domain.Errors.DomainErrors.Entities;
 
 namespace Dental.Domain.Entities;
 
@@ -12,8 +13,8 @@ public sealed class Visit : Entity
         public const int NotesMaxLength = 500;
     }
 
+
     public Id? AppointmentId { get; private set; } = default;
-    public Id? PrescriptionId { get; private set; } = default;
     public Money PaidAmount { get; private set; } = default!;
     public Money DiscountAmount { get; private set; } = default!;
     public DateTime VisitDateTime { get; private set; }
@@ -30,82 +31,78 @@ public sealed class Visit : Entity
 
     private Visit(
         Id? appointmentId,
-        Id? prescriptionId,
         Money paidAmount,
         Money discountAmount,
         DateTime visitDateTime,
         string? notes)
     {
         AppointmentId = appointmentId;
-        PrescriptionId = prescriptionId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
         VisitDateTime = visitDateTime;
-        Notes = notes?.Trim();
+        Notes = notes;
     }
+
 
 
     public static Result<Visit> Create(
         Id? appointmentId,
-        Id? prescriptionId,
         Money paidAmount,
         Money discountAmount,
-        DateTime date,
+        DateTime visitDateTime,
         string? notes)
     {
-        var validateResult = Validate(
-            paidAmount,
-            discountAmount,
-            date,
-            notes);
+        notes = notes?.Trim();
 
+        var validateResult = Validate(visitDateTime, notes);
         if (validateResult.IsFailure)
         {
             return Result.Failure<Visit>(validateResult.Error);
         }
 
-        return new Visit(appointmentId, prescriptionId, paidAmount, discountAmount, date, notes);
+        return new Visit(appointmentId, paidAmount, discountAmount, visitDateTime, notes);
     }
 
     public Result Update(
         Id? appointmentId,
         Money paidAmount,
         Money discountAmount,
-        DateTime date,
+        DateTime visitDateTime,
         string? notes)
     {
-        var validateResult = Validate(
-            paidAmount,
-            discountAmount,
-            date,
-            notes);
+        notes = notes?.Trim();
 
+        var validateResult = Validate(visitDateTime, notes);
         if (validateResult.IsFailure)
         {
             return Result.Failure(validateResult.Error);
         }
 
+        if (appointmentId != AppointmentId && Appointment is not null)
+        {
+            var changeStatusResult = Appointment.ChangeStatusToPending();
+            if (changeStatusResult.IsFailure)
+            {
+                return Result.Failure(changeStatusResult.Error);
+            }
+        }
+
         AppointmentId = appointmentId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        VisitDateTime = date;
-        Notes = notes?.Trim();
+        VisitDateTime = visitDateTime;
+        Notes = notes;
 
         return Result.Success();
     }
 
-    private static Result Validate(
-        Money paidAmount,
-        Money discountAmount,
-        DateTime date,
-        string? notes)
+    private static Result Validate(DateTime visitDateTime, string? notes)
     {
-        if (date > DateTime.Now)
+        if (visitDateTime > DateTime.Now)
         {
-            return Result.Failure(DomainErrors.Entities.Visit.Date.CannotBeInTheFuture);
+            return Result.Failure(DomainErrors.Entities.Visit.Date.InThePast);
         }
 
-        notes = notes?.Trim();
         if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.Visit.Notes.TooLong);
@@ -118,7 +115,7 @@ public sealed class Visit : Entity
     public Result<VisitTreatment> AddVisitTreatment(
         ToothNumber toothNumber,
         Id treatmentId,
-        Money price,
+        Money price, // Get it from database first and put it in the constructor. In treatments table > price
         string? notes)
     {
         if (_visitTreatments.Any(t => t.TreatmentId == treatmentId && t.ToothNumber == toothNumber))
@@ -147,7 +144,6 @@ public sealed class Visit : Entity
         Id visitTreatmentId,
         ToothNumber toothNumber,
         Id treatmentId,
-        Money price,
         string? notes)
     {
         if (_visitTreatments.Any(
@@ -167,7 +163,6 @@ public sealed class Visit : Entity
         var updateResult = treatment.Update(
             toothNumber,
             treatmentId,
-            price,
             notes);
 
         if (updateResult.IsFailure)
@@ -190,8 +185,10 @@ public sealed class Visit : Entity
         return Result.Success();
     }
 
+    public void RemoveAllVisitTreatments()
+        => _visitTreatments.Clear();
 
-    public Result<Prescription> AddPrescription(string? notes)
+    public Result<Prescription> AddPrescription(Id patientId, string? notes)
     {
         if (Prescription is not null)
         {
@@ -199,7 +196,10 @@ public sealed class Visit : Entity
                 DomainErrors.Entities.Visit.Prescription.AlreadyExists);
         }
 
-        var result = Prescription.Create(notes);
+        var result = Prescription.Create(
+            patientId: patientId,
+            visitId: Id,
+            notes);
 
         if (result.IsFailure)
         {

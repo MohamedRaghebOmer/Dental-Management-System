@@ -9,24 +9,12 @@ public interface IVisitTreatmentService
         VisitTreatmentRequestDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<Result> UpdateAsync(
-        int id,
-        VisitTreatmentRequestDto dto,
+    Task<Result> CreateManyAsync(
+        VisitTreatmentRequestDto[] dtos,
         CancellationToken cancellationToken = default);
 
-    Task<Result<VisitTreatmentResponseDto>> GetByIdAsync(
-        int id,
-        CancellationToken cancellationToken = default);
-
-    Task<Result<List<VisitTreatmentResponseDto>>> GetByVisitIdAsync(
+    Task<Result> SetAllVisitTreatmentsAsync(
         int visitId,
-        CancellationToken cancellationToken = default);
-
-    Task<Result<List<VisitTreatmentResponseDto>>> GetAllAsync(
-        CancellationToken cancellationToken = default);
-
-
-    Task<Result> DeleteAsync(
-        int id,
+        VisitTreatmentRequestDto[] dtos,
         CancellationToken cancellationToken = default);
 }

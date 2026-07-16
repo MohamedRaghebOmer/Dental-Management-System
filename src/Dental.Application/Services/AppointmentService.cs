@@ -9,22 +9,34 @@ using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
 
-
 namespace Dental.Application.Services;
 
-public class AppointmentService(
-    IAppointmentRepository repo,
-    IPatientRepository patientRepo,
-    IUnitOfWork unitOfWork,
-    ILogger<ServiceBase<Appointment, AppointmentResponseDto>> logger)
-    : ServiceBase<Appointment, AppointmentResponseDto>(repo, unitOfWork, logger),
-        IAppointmentService
+public class AppointmentService
+    : ServiceBase<Appointment, AppointmentResponseDto>,
+    IAppointmentService
 {
+    private readonly IAppointmentRepository _repo;
+    private readonly IPatientRepository _patientRepo;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<AppointmentService> _logger;
+
+    public AppointmentService(
+        IAppointmentRepository repo,
+        IPatientRepository patientRepo,
+        IUnitOfWork unitOfWork,
+        ILogger<AppointmentService> logger) : base(repo, unitOfWork, logger)
+    {
+        _repo = repo;
+        _patientRepo = patientRepo;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
     public async Task<Result<int>> CreateAsync(
         AppointmentRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation(
+        _logger.LogInformation(
             "AppointmentService.CreateAsync is called. {CreateAppointmentDto}", dto);
 
         var entityResult = await BuildEntityAndValidateForeignKeys(
@@ -36,10 +48,10 @@ public class AppointmentService(
             return Result.Failure<int>(entityResult.Error);
         }
 
-        await repo.AddAsync(entityResult.Value, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        _repo.Add(entityResult.Value);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        logger.LogInformation("Appointment created successfully. {Id}", entityResult.Value.Id);
+        _logger.LogInformation("Appointment created successfully. {Id}", entityResult.Value.Id);
 
         return Result.Success(entityResult.Value.Id.Value);
     }
@@ -49,40 +61,49 @@ public class AppointmentService(
         AppointmentRequestDto dto,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation(
+        _logger.LogInformation(
             "AppointmentService.UpdateAsync is called. {AppointmentId} {UpdateAppointmentDto}", appointmentId, dto);
+
+        var createIdResult = Id.Create(appointmentId);
+        if (createIdResult.IsFailure)
+        {
+            _logger.LogWarning(
+                "Failed to update appointment: Invalid appointment ID. {Id} {Error}", 
+                appointmentId, createIdResult.Error);
+            return Result.Failure<Appointment>(ServiceErrors.InvalidId);
+        }
 
         var validEntity = await BuildEntityAndValidateForeignKeys(
             dto,
             cancellationToken,
-            appointmentId);
+            createIdResult.Value);
 
         if (validEntity.IsFailure)
         {
             return Result.Failure(validEntity.Error);
         }
 
-        var appointment = await repo.GetByIdAsync(appointmentId, cancellationToken);
+        var appointment = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to update appointment: Appointment not found. {AppointmentId}", appointmentId);
+            _logger.LogWarning("Failed to update appointment: Appointment not found. {AppointmentId}", appointmentId);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
         // Update the appointment properties
         var updateResult = appointment.Update(
             validEntity.Value.PatientId,
-            dto.AppointmentDate,
+            dto.ScheduledVisitDateTime,
             dto.Notes);
 
         if (updateResult.IsFailure)
         {
-            logger.LogWarning("Failed to update appointment: Invalid appointment data. {error}", updateResult.Error);
+            _logger.LogWarning("Failed to update appointment: Invalid appointment data. {error}", updateResult.Error);
             return Result.Failure(updateResult.Error);
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Appointment updated successfully. {AppointmentId}", appointmentId);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.LogInformation("Appointment updated successfully. {AppointmentId}", appointmentId);
 
         return Result.Success(cancellationToken);
     }
@@ -90,46 +111,41 @@ public class AppointmentService(
     private async Task<Result<Appointment>> BuildEntityAndValidateForeignKeys(
         AppointmentRequestDto requestDto,
         CancellationToken cancellationToken = default,
-        int? id = null)
+        Id? id = null)
     {
-        if (id is <= 0)
-        {
-            logger.LogWarning("Failed to update appointment: Invalid appointment ID. {Id}", id);
-            return Result.Failure<Appointment>(ServiceErrors.InvalidId);
-        }
-
         var patientIdResult = Id.Create(requestDto.PatientId);
         if (patientIdResult.IsFailure)
         {
-            logger.LogWarning("Failed to create appointment: Invalid patient ID. {error}", patientIdResult.Error);
+            _logger.LogWarning(
+                "Failed to create appointment: Invalid patient ID. {Id} {Error}", id, patientIdResult.Error);
             return Result.Failure<Appointment>(patientIdResult.Error);
         }
 
-        if (await repo.ExistsByDateAsync(
-                requestDto.AppointmentDate,
+        if (await _repo.ExistsByScheduleVisitDateTimeAsync(
+                requestDto.ScheduledVisitDateTime,
                 id,
                 cancellationToken))
         {
-            logger.LogWarning(
+            _logger.LogWarning(
                 "Failed to create appointment: There is already an appointment for the given date. {Date}",
-                requestDto.AppointmentDate);
-            return Result.Failure<Appointment>(ServiceErrors.AppointmentErrors.DateIsTaken);
+                requestDto.ScheduledVisitDateTime);
+            return Result.Failure<Appointment>(ServiceErrors.Appointment.DateIsTaken);
         }
 
-        if (!await patientRepo.ExistsAsync(requestDto.PatientId, cancellationToken))
+        if (!await _patientRepo.ExistsAsync(patientIdResult.Value, cancellationToken))
         {
-            logger.LogWarning("Failed to create appointment: Patient not found. {PatientId}", requestDto.PatientId);
-            return Result.Failure<Appointment>(ServiceErrors.AppointmentErrors.PatientNotFound);
+            _logger.LogWarning("Failed to create appointment: Patient not found. {PatientId}", requestDto.PatientId);
+            return Result.Failure<Appointment>(ServiceErrors.Appointment.PatientNotFound);
         }
 
         var appointmentResult = Appointment.Create(
             patientIdResult.Value,
-            requestDto.AppointmentDate,
+            requestDto.ScheduledVisitDateTime,
             requestDto.Notes);
 
         if (appointmentResult.IsFailure)
         {
-            logger.LogWarning("Failed to create appointment: Invalid appointment data. {error}",
+            _logger.LogWarning("Failed to create appointment: Invalid appointment data. {error}",
                 appointmentResult.Error);
             return Result.Failure<Appointment>(appointmentResult.Error);
         }
@@ -137,90 +153,99 @@ public class AppointmentService(
         return appointmentResult.Value;
     }
 
-    public async Task<Result> CancelAsync(int id,
+    public async Task<Result> CancelAsync(
+        int id,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("AppointmentService.CancelAsync is called. {AppointmentId}", id);
+        _logger.LogInformation("AppointmentService.CancelAsync is called. {AppointmentId}", id);
 
-        if (id <= 0)
+        var createIdResult = Id.Create(id);
+        if (createIdResult.IsFailure)
         {
-            logger.LogWarning("Failed to cancel appointment: Invalid appointment ID.");
-            return Result.Failure(ServiceErrors.InvalidId);
+            _logger.LogWarning(
+                "Failed to cancel appointment: Invalid appointment ID. {Id} {Error}", 
+                    id, createIdResult.Error);
+            return Result.Failure(createIdResult.Error);
         }
 
-
-        var appointment = await repo.GetByIdAsync(id, cancellationToken);
+        var appointment = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to cancel appointment: Appointment not found. {AppointmentId}", id);
+            _logger.LogWarning("Failed to cancel appointment: Appointment not found. {AppointmentId}", id);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
         var cancelResult = appointment.Cancel();
         if (cancelResult.IsFailure)
         {
-            logger.LogWarning("Failed to cancel appointment: {error}", cancelResult.Error);
+            _logger.LogWarning("Failed to cancel appointment: {error}", cancelResult.Error);
             return Result.Failure(cancelResult.Error);
         }
 
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Appointment canceled successfully. {AppointmentId}", id);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.LogInformation("Appointment canceled successfully. {AppointmentId}", id);
 
         return Result.Success(cancellationToken);
     }
 
-    public async Task<Result> CompleteAsync(int id,
+    public async Task<Result> CompleteAsync(
+        int id,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("AppointmentService.CompleteAsync is called. {AppointmentId}", id);
+        _logger.LogInformation("AppointmentService.CompleteAsync is called. {AppointmentId}", id);
 
-        if (id <= 0)
+        var createIdResult = Id.Create(id);
+        if (createIdResult.IsFailure)
         {
-            logger.LogWarning("Failed to complete appointment: Invalid appointment ID. {AppointmentId}", id);
-            return Result.Failure(ServiceErrors.InvalidId);
+            _logger.LogWarning(
+                "Invalid appointment ID. {Id} {Error}", id, createIdResult.Error);
+            return Result.Failure(createIdResult.Error);
         }
 
-
-        var appointment = await repo.GetByIdAsync(id, cancellationToken);
+        var appointment = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to complete appointment: Appointment not found. {AppointmentId}", id);
+            _logger.LogWarning("Failed to complete appointment: Appointment not found. {AppointmentId}", id);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
         var completeResult = appointment.Complete();
         if (completeResult.IsFailure)
         {
-            logger.LogWarning("Failed to complete appointment: {error}", completeResult.Error);
+            _logger.LogWarning("Failed to complete appointment: {error}", completeResult.Error);
             return Result.Failure(completeResult.Error);
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Appointment completed successfully. {AppointmentId}", id);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.LogInformation("Appointment completed successfully. {AppointmentId}", id);
 
         return Result.Success(cancellationToken);
     }
 
-    public async Task<Result<bool>> IsMissed(int id,
+    public async Task<Result<bool>> IsMissed(
+        int id,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("AppointmentService.IsMissed is called. {AppointmentId}", id);
+        _logger.LogInformation("AppointmentService.IsMissed is called. {AppointmentId}", id);
 
-        if (id <= 0)
+        var createIdResult = Id.Create(id);
+        if (createIdResult.IsFailure)
         {
-            logger.LogWarning("Failed to check if appointment is missed: Invalid appointment ID. {AppointmentId}", id);
-            return Result.Failure<bool>(ServiceErrors.InvalidId);
+            _logger.LogWarning(
+                "Failed to check if appointment is missed: Invalid appointment ID. {Id} {Error}",
+                id, createIdResult.Error);
+            return Result.Failure<bool>(createIdResult.Error);
         }
 
-        var appointment = await repo.GetByIdAsync(id, cancellationToken);
+        var appointment = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (appointment == null)
         {
-            logger.LogWarning("Failed to check if appointment is missed: Appointment not found. {AppointmentId}", id);
+            _logger.LogWarning("Failed to check if appointment is missed: Appointment not found. {AppointmentId}", id);
             return Result.Failure<bool>(ServiceErrors.NotFound);
         }
 
-        logger.LogInformation("Appointment with ID {id} is {missed}.",
+        _logger.LogInformation("Appointment with ID {id} is {missed}.",
             id, appointment.IsMissed());
 
         return Result.Success(appointment.IsMissed());

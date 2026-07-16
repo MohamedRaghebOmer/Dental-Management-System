@@ -5,9 +5,9 @@ namespace Dental.Application.DTOs.Visit;
 
 public sealed record VisitResponseDto(
     int Id,
-    Id? AppointmentId,
-    Money PaidAmount,
-    Money DiscountAmount,
+    int? AppointmentId,
+    decimal PaidAmount,
+    decimal DiscountAmount,
     DateTime VisitDateTime,
     string? Notes)
     : IResponseDto<Domain.Entities.Visit, VisitResponseDto>
@@ -16,9 +16,9 @@ public sealed record VisitResponseDto(
     {
         return new VisitResponseDto(
             Id: entity.Id.Value,
-            AppointmentId: entity.AppointmentId,
-            PaidAmount: entity.PaidAmount,
-            DiscountAmount: entity.DiscountAmount,
+            AppointmentId: entity.AppointmentId?.Value,
+            PaidAmount: entity.PaidAmount.Value,
+            DiscountAmount: entity.DiscountAmount.Value,
             VisitDateTime: entity.VisitDateTime,
             Notes: entity.Notes
         );

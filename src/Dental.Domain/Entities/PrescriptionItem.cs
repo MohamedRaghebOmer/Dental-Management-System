@@ -48,6 +48,9 @@ public sealed class PrescriptionItem : Entity
         MedicineFrequency medicineFrequency,
         string? instructions)
     {
+        medicineName = medicineName.Trim();
+        instructions = instructions?.Trim();
+
         var validateResult = Validate(
             medicineName,
             dosage,
@@ -59,7 +62,7 @@ public sealed class PrescriptionItem : Entity
         }
 
         return new PrescriptionItem(
-            prescriptionId, medicineName.Trim(), dosage, medicineFrequency, instructions?.Trim());
+            prescriptionId, medicineName, dosage, medicineFrequency, instructions);
     }
 
     internal Result Update(
@@ -68,6 +71,9 @@ public sealed class PrescriptionItem : Entity
         MedicineFrequency medicineFrequency,
         string? instructions)
     {
+        medicineName = medicineName.Trim();
+        instructions = instructions?.Trim();
+
         var validateResult = Validate(
             medicineName,
             dosage,
@@ -78,10 +84,10 @@ public sealed class PrescriptionItem : Entity
             return Result.Failure<PrescriptionItem>(validateResult.Error);
         }
 
-        MedicineName = medicineName.Trim();
+        MedicineName = medicineName;
         Dosage = dosage;
         MedicineFrequency = medicineFrequency;
-        Instructions = instructions?.Trim();
+        Instructions = instructions;
 
         return Result.Success();
     }
@@ -94,10 +100,8 @@ public sealed class PrescriptionItem : Entity
         if (string.IsNullOrWhiteSpace(medicineName))
         {
             return Result.Failure(
-                DomainErrors.Entities.PrescriptionItem.MedicineName.Required);
+                DomainErrors.Entities.PrescriptionItem.MedicineName.Empty);
         }
-
-        medicineName = medicineName.Trim();
 
         if (medicineName.Length > Constants.MedicineNameMaxLength)
         {
@@ -108,10 +112,8 @@ public sealed class PrescriptionItem : Entity
         if (dosage <= 0)
         {
             return Result.Failure(
-                DomainErrors.Entities.PrescriptionItem.Dosage.MustBePositive);
+                DomainErrors.Entities.PrescriptionItem.Dosage.LessThanOrEqualToZero);
         }
-
-        instructions = instructions?.Trim();
 
         if (instructions?.Length > Constants.InstructionsMaxLength)
         {

@@ -25,16 +25,14 @@ public static class DependencyInjection
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddScoped<IVisitTreatmentsRepository, VisitTreatmentsRepository>();
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<ITreatmentRepository, TreatmentRepository>();
         services.AddScoped<IMaterialRepository, MaterialRepository>();
-        services.AddScoped<IVisitToothTreatmentsViewRepository, VisitToothTreatmentsViewRepository>();
+        services.AddScoped<IVisitToothTreatmentsViewRepository, VisitTreatmentsViewRepository>();
         services.AddScoped<IDentalInfoRepository, DentalInfoRepository>();
         services.AddScoped<IVisitRepository, VisitRepository>();
         services.AddScoped<IPatientRepository, PatientRepository>();
-        services.AddScoped<IPrescriptionItemRepository, PrescriptionItemRepository>();
 
         return services;
     }

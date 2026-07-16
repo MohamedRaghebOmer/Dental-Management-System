@@ -1,5 +1,6 @@
 ﻿using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
+using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,14 +12,10 @@ public sealed class MaterialRepository(DentalDbContext _dbContext)
 {
     public Task<bool> ExistsByNameAsync(
         string name, 
-        int? excludeId = null, 
+        Id? excludeId = null, 
         CancellationToken cancellationToken = default)
     {
-        if (excludeId == null)
-        {
-            return _dbContext.Materials.AnyAsync(m => m.Name == name, cancellationToken);
-        }
-
-        return _dbContext.Materials.AnyAsync(m => m.Name == name && m.Id.Value != excludeId, cancellationToken);
+        return _dbContext.Materials.AnyAsync(
+            m => m.Name == name && m.Id != excludeId, cancellationToken);
     }
 }

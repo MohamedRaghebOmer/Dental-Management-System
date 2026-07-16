@@ -20,9 +20,9 @@ public sealed class PrescriptionItemService : IPrescriptionItemService
         IUnitOfWork unitOfWork,
         ILogger<PrescriptionItemService> logger)
     {
-        this._visitRepo = visitRepository;
-        this._unitOfWork = unitOfWork;
-        this._logger = logger;
+        _visitRepo = visitRepository;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<Result<PrescriptionItem>> CreateAsync(
@@ -55,7 +55,7 @@ public sealed class PrescriptionItemService : IPrescriptionItemService
         }
 
         // Get the visit by dto.VisitId
-        var visit = await _visitRepo.GetByIdAsync(visitIdResult.Value.Value);
+        var visit = await _visitRepo.GetByIdAsync(visitIdResult.Value);
         if (visit == null)
         {
             _logger.LogWarning("Visit not found. {Id}", visitIdResult.Value.Value);
@@ -103,7 +103,8 @@ public sealed class PrescriptionItemService : IPrescriptionItemService
             return Result.Failure(medicineFrequencyResult.Error);
         }
 
-        var visit = await _visitRepo.GetVisitByPrescriptionItemIdAsync(id, cancellationToken);
+        var visit = await _visitRepo.GetByPrescriptionItemIdAsync(
+            itemIdResult.Value, false, cancellationToken);
         if (visit == null)
         {
             _logger.LogWarning("PrescriptionItem not found. {Id}", id);

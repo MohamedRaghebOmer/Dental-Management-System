@@ -1,10 +1,11 @@
-﻿using Dental.Domain.Views;
+﻿using Dental.Domain.ValueObjects;
+using Dental.Domain.Views;
 
 namespace Dental.Domain.Repositories.Views;
 
 public interface IVisitToothTreatmentsViewRepository
 {
     Task<List<VisitTreatmentsView>> GetAsync(
-        int visitId,
+        Id visitId,
         CancellationToken cancellationToken = default);
 }

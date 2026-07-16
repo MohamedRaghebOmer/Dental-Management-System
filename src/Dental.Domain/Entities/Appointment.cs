@@ -14,8 +14,9 @@ public sealed class Appointment : Entity
     }
 
     public Id PatientId { get; private set; } = default!;
-    public DateTime Date { get; private set; }
-    public DateTime? CompletedAt { get; private set; }
+    public DateTime CreatedAt { get; private set; } = DateTime.Now;
+    public DateTime ScheduledVisitDateTime { get; private set; }
+    public DateTime? ActualVisitDateTime { get; private set; }
     public AppointmentStatus Status { get; private set; }
     public string? Notes { get; private set; }
 
@@ -26,26 +27,28 @@ public sealed class Appointment : Entity
 
     private Appointment(
         Id patientId,
-        DateTime date,
-        DateTime? completedAt,
+        DateTime createdAt,
+        DateTime scheduledVisitDateTime,
+        DateTime? actualVisitDateTime,
         AppointmentStatus status,
         string? notes)
     {
         PatientId = patientId;
-        Date = date;
-        CompletedAt = completedAt;
+        CreatedAt = createdAt;
+        ScheduledVisitDateTime = scheduledVisitDateTime;
+        ActualVisitDateTime = actualVisitDateTime;
         Status = status;
         Notes = notes;
     }
 
     public static Result<Appointment> Create(
         Id patientId,
-        DateTime appointmentDate,
+        DateTime scheduledVisitDateTime,
         string? notes)
     {
-        if (appointmentDate < DateTime.Now)
+        if (scheduledVisitDateTime < DateTime.Now)
         {
-            return Result.Failure<Appointment>(DomainErrors.Entities.Appointment.Date.InThePast);
+            return Result.Failure<Appointment>(DomainErrors.Entities.Appointment.ScheduledVisitDateTime.InThePast);
         }
 
         notes = notes?.Trim();
@@ -57,7 +60,8 @@ public sealed class Appointment : Entity
 
         return new Appointment(
             patientId,
-            appointmentDate,
+            DateTime.Now,
+            scheduledVisitDateTime,
             null,
             AppointmentStatus.Pending,
             notes);
@@ -65,19 +69,19 @@ public sealed class Appointment : Entity
 
     public Result Update(
         Id patientId,
-        DateTime appointmentDate,
+        DateTime scheduledVisitDateTime,
         string? notes)
     {
-        if (appointmentDate < DateTime.Now)
+        if (scheduledVisitDateTime < DateTime.Now)
         {
-            return Result.Failure(DomainErrors.Entities.Appointment.Date.InThePast);
+            return Result.Failure(DomainErrors.Entities.Appointment.ScheduledVisitDateTime.InThePast);
         }
 
         if (Status != AppointmentStatus.Pending)
         {
-            if (appointmentDate != this.Date)
+            if (scheduledVisitDateTime != this.ScheduledVisitDateTime)
             {
-                return Result.Failure(DomainErrors.Entities.Appointment.Date.CannotBeChangedWhenStatusIsNotPending);
+                return Result.Failure(DomainErrors.Entities.Appointment.ScheduledVisitDateTime.CannotBeChangedWhenStatusIsNotPending);
             }
 
             if (patientId != this.PatientId)
@@ -94,22 +98,47 @@ public sealed class Appointment : Entity
         }
 
         this.PatientId = patientId;
-        this.Date = appointmentDate;
+        this.ScheduledVisitDateTime = scheduledVisitDateTime;
         this.Notes = notes;
+
+        return Result.Success();
+    }
+
+
+    public Result ChangeStatusToPending()
+    {
+        if (Status == AppointmentStatus.Pending)
+            return Result.Failure(DomainErrors.Entities.Appointment
+                .Status.CannotBePendingWhenAlreadyPending);
+
+        if (Status == AppointmentStatus.Canceled)
+            return Result.Failure(DomainErrors.Entities.Appointment.
+                Status.CannotBePendingWhenCanceled);
+
+        ActualVisitDateTime = null;
+        Status = AppointmentStatus.Pending;
 
         return Result.Success();
     }
 
     public Result Cancel()
     {
-        if (Status == AppointmentStatus.Canceled
-            || Status == AppointmentStatus.Completed)
+        if (Status == AppointmentStatus.Canceled)
         {
             return Result.Failure(
                 DomainErrors.Entities
                 .Appointment
                 .Status
-                .CannotBeCanceledWhenCompletedOrCanceled);
+                .CannotBeCanceledWhenAlreadyCanceled);
+        }
+
+        if (Status == AppointmentStatus.Completed)
+        {
+            return Result.Failure(
+                DomainErrors.Entities
+                .Appointment
+                .Status
+                .CannotBeCanceledWhenCompleted);
         }
 
         Status = AppointmentStatus.Canceled;
@@ -118,22 +147,30 @@ public sealed class Appointment : Entity
 
     public Result Complete()
     {
-        if (Status == AppointmentStatus.Completed
-            || Status == AppointmentStatus.Canceled)
+        if (Status == AppointmentStatus.Completed)
         {
             return Result.Failure(DomainErrors.Entities
                     .Appointment
                     .Status
-                    .CannotBeCompletedWhenCanceledOrCompleted);
+                    .CannotBeCompletedWhenAlreadyCompleted);
+        }
+
+        if (Status == AppointmentStatus.Canceled)
+        {
+            return Result.Failure(DomainErrors.Entities
+                    .Appointment
+                    .Status
+                    .CannotBeCompletedWhenCanceled);
         }
 
         Status = AppointmentStatus.Completed;
-        CompletedAt = DateTime.Now;
+        ActualVisitDateTime = DateTime.Now;
 
         return Result.Success();
     }
 
     public bool IsMissed() =>
         Status == AppointmentStatus.Pending &&
-        Date < DateTime.Now;
+        ScheduledVisitDateTime < DateTime.Now &&
+        ActualVisitDateTime == null;
 }

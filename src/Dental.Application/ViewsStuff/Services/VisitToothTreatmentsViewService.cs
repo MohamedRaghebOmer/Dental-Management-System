@@ -1,29 +1,39 @@
-﻿using Dental.Application.Errors;
-using Dental.Application.ViewsStuff.Interfaces;
+﻿using Dental.Application.ViewsStuff.Interfaces;
 using Dental.Domain.Repositories.Views;
 using Dental.Domain.Shared;
+using Dental.Domain.ValueObjects;
 using Dental.Domain.Views;
 using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.ViewsStuff.Services;
 
-public sealed class VisitToothTreatmentsViewService(
-    IVisitToothTreatmentsViewRepository repo,
-    ILogger<VisitToothTreatmentsViewService> logger) 
-    : IVisitToothTreatmentsViewService
+public sealed class VisitToothTreatmentsViewService : IVisitToothTreatmentsViewService
 {
+    private readonly IVisitToothTreatmentsViewRepository _repo;
+    private readonly ILogger<VisitToothTreatmentsViewService> _logger;
+
+    public VisitToothTreatmentsViewService(
+        IVisitToothTreatmentsViewRepository repo,
+        ILogger<VisitToothTreatmentsViewService> logger)
+    {
+        _repo = repo;
+        _logger = logger;
+    }
+
     public async Task<Result<List<VisitTreatmentsView>>> GetAsync(
-        int visitId, 
+        int visitId,
         CancellationToken cancellationToken = default)
     {
-        logger.LogInformation("VisitToothTreatmentsViewService.GetAsync is called. {VisitId}.", visitId);
+        _logger.LogInformation(
+            "VisitToothTreatmentsViewService.GetAsync is called. {VisitId}.", visitId);
 
-        if (visitId <= 0)
+        var createVisitIdResult = Id.Create(visitId);
+        if (createVisitIdResult.IsFailure)
         {
-            logger.LogWarning("Invalid id. {VisitId}", visitId);
-            return Result.Failure<List<VisitTreatmentsView>>(ServiceErrors.InvalidId);
+            _logger.LogWarning("Invalid id. {VisitId} {Error}", visitId, createVisitIdResult.Error);
+            return Result.Failure<List<VisitTreatmentsView>>(createVisitIdResult.Error);
         }
 
-        return await repo.GetAsync(visitId, cancellationToken);
+        return await _repo.GetAsync(createVisitIdResult.Value, cancellationToken);
     }
 }

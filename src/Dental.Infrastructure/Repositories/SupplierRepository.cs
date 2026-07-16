@@ -11,20 +11,11 @@ public sealed class SupplierRepository(DentalDbContext _dbContext)
         ISupplierRepository
 {
     public Task<bool> PhoneNumberExistsAsync(
-        string phoneNumber, 
-        int? excludedId = null, 
+        PhoneNumber phoneNumber, 
+        Id? excludedId = null, 
         CancellationToken cancellationToken = default)
     {
-        if (excludedId == null)
-        {
-            return _dbContext.Suppliers.AnyAsync(
-                s => s.PhoneNumber == PhoneNumber.FromDatabase(phoneNumber),
-                cancellationToken);
-        }
-
         return _dbContext.Suppliers.AnyAsync(
-            s => s.PhoneNumber == PhoneNumber.FromDatabase(phoneNumber) 
-            && s.Id != Id.FromDatabase(excludedId.Value),
-            cancellationToken);
+            s => s.PhoneNumber == phoneNumber && s.Id != excludedId, cancellationToken);
     }
 }

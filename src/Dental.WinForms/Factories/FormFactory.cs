@@ -23,8 +23,25 @@ public class FormFactory : IFormFactory
         return ActivatorUtilities.CreateInstance<frmAddUpdateVisit>(_serviceProvider, visitId);
     }
 
+
     public frmAddEditTreatment Create_frmAddEditTreatment()
     {
         return _serviceProvider.GetRequiredService<frmAddEditTreatment>();
+    }
+
+    public frmAddEditTreatment Create_frmAddEditTreatment(int treatmentId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditTreatment>(_serviceProvider, treatmentId);
+    }
+
+
+    public frmAddEditPrescription Create_frmAddEditPrescription()
+    {
+        return _serviceProvider.GetRequiredService<frmAddEditPrescription>();
+    }
+
+    public frmAddEditPrescription Create_frmAddEditPrescription(int visitId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditPrescription>(_serviceProvider, visitId);
     }
 }

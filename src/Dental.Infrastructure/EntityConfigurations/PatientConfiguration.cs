@@ -36,12 +36,12 @@ public sealed class PatientConfiguration
         builder.ToTable(table =>
         {
             table.HasCheckConstraint(
-                "CK_Patient_Gender",
+                "CK_Patients_Gender",
                 @"Gender IN (1, 2)"
             );
 
             table.HasCheckConstraint(
-                "CK_Patient_PhoneNumberLengthEqualTo11",
+                "CK_Patients_PhoneNumberLengthEqualTo11",
                 "length(PhoneNumber) = 11");
         });
     }

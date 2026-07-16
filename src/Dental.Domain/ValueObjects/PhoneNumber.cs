@@ -23,14 +23,9 @@ public sealed record PhoneNumber : ValueObject
 
         value = value.Trim();
 
-        if (value.Length < MinLength)
+        if (value.Length != Length)
         {
-            return Result.Failure<PhoneNumber>(DomainErrors.ValueObjects.PhoneNumber.TooShort);
-        }
-
-        if (value.Length > MaxLength)
-        {
-            return Result.Failure<PhoneNumber>(DomainErrors.ValueObjects.PhoneNumber.TooLong);
+            return Result.Failure<PhoneNumber>(DomainErrors.ValueObjects.PhoneNumber.InvalidLength);
         }
 
         return new PhoneNumber(value);

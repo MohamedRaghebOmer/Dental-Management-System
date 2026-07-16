@@ -1,26 +1,25 @@
 ﻿using Dental.Domain.Primitives;
+using Dental.Domain.ValueObjects;
 
 namespace Dental.Domain.Repositories;
 
 public interface IRepository<TEntity>
     where TEntity : Entity
 {
-    Task AddAsync(
-        TEntity entity,
-        CancellationToken cancellationToken = default);
+    void Add(TEntity entity);
 
     Task<bool> ExistsAsync(
-        int id,
+        Id id,
         CancellationToken cancellationToken = default);
 
     Task<TEntity?> GetByIdAsync(
-        int id,
+        Id id,
         CancellationToken cancellationToken = default);
 
-    Task DeleteAsync(
-        int id,
+    Task<bool> RemoveAsync(
+        Id id,
         CancellationToken cancellationToken = default);
 
     Task<List<TEntity>> GetAllAsync(
-        CancellationToken cancellationToken);
+        CancellationToken cancellationToken = default);
 }

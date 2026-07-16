@@ -16,10 +16,23 @@ public sealed class PrescriptionItemsConfiguration
 
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);
+        ConfigureForeignKeys(builder);
+    }
+
+    private static void ConfigureForeignKeys(EntityTypeBuilder<PrescriptionItem> builder)
+    {
+        builder.HasOne(pi => pi.Prescription)
+            .WithMany(p => p.Items)
+            .HasForeignKey(pi => pi.PrescriptionId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 
     private static void ConfigureIndexes(EntityTypeBuilder<PrescriptionItem> builder)
     {
+        builder.HasIndex(p => new { p.PrescriptionId, p.MedicineName })
+            .HasDatabaseName("UX_PrescriptionItems_PrescriptionId_MedicineName")
+            .IsUnique(true);
+
         builder.HasIndex(p => p.PrescriptionId)
             .HasDatabaseName("IX_PrescriptionItems_PrescriptionId")
             .IsUnique(false);

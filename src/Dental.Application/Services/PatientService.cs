@@ -11,18 +11,29 @@ using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
-public class PatientService(
-    IPatientRepository repo,
-    IUnitOfWork unitOfWork,
-    ILogger<PatientService> logger) :
-    ServiceBase<Patient, PatientResponseDto>(repo, unitOfWork, logger)
+public class PatientService 
+    : ServiceBase<Patient, PatientResponseDto>
     , IPatientService
 {
+    private readonly IPatientRepository _repo;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<PatientService> _logger;
+
+    public PatientService(
+        IPatientRepository repo,
+        IUnitOfWork unitOfWork,
+        ILogger<PatientService> logger) : base(repo, unitOfWork, logger)
+    {
+        _repo = repo;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
     public async Task<Result<int>> CreateAsync(
         PatientRequestDto dto,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("PatientService.CreateAsync is called. {dto}", dto);
+        _logger.LogInformation("PatientService.CreateAsync is called. {dto}", dto);
 
         var entityResult = BuildEntity(dto);
         if (entityResult.IsFailure)
@@ -30,9 +41,9 @@ public class PatientService(
             return Result.Failure<int>(entityResult.Error);
         }
 
-        await repo.AddAsync(entityResult.Value, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Patient created successfully. {PatientId}", entityResult.Value.Id);
+        _repo.Add(entityResult.Value);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.LogInformation("Patient created successfully. {PatientId}", entityResult.Value.Id);
 
         return Result.Success(entityResult.Value.Id.Value);
     }
@@ -42,20 +53,27 @@ public class PatientService(
         PatientRequestDto dto,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation(
+        _logger.LogInformation(
             "PatientService.UpdateAsync is called. {PatientId} {UpdatePatientDto}",
             id, dto);
 
-        var buildEntityResult = BuildEntity(dto, id);
+        var createIdResult = Id.Create(id);
+        if (createIdResult.IsFailure)
+        {
+            _logger.LogWarning("Invalid Id. {Id} {Error}", id, createIdResult.Error);
+            return Result.Failure(createIdResult.Error);
+        }
+
+        var buildEntityResult = BuildEntity(dto);
         if (buildEntityResult.IsFailure)
         {
             return Result.Failure(buildEntityResult.Error);
         }
 
-        var patient = await repo.GetByIdAsync(id, cancellationToken);
+        var patient = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (patient is null)
         {
-            logger.LogWarning("Patient not found. {Id}", id);
+            _logger.LogWarning("Patient not found. {Id}", id);
             return Result.Failure(ServiceErrors.NotFound);
         }
 
@@ -69,47 +87,39 @@ public class PatientService(
 
         if (updateResult.IsFailure)
         {
-            logger.LogWarning("Failed to update patient due to invalid patient data. {Error}", updateResult.Error);
+            _logger.LogWarning("Failed to update patient due to invalid patient data. {Error}", updateResult.Error);
             return Result.Failure(updateResult.Error);
         }
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        logger.LogInformation("Patient updated successfully. {PatientId}", patient.Id);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        _logger.LogInformation("Patient updated successfully. {PatientId}", patient.Id);
 
         return Result.Success();
     }
 
-    private Result<Patient> BuildEntity(PatientRequestDto dto, int? id = null)
+    private Result<Patient> BuildEntity(PatientRequestDto dto)
     {
-        if (id <= 0)
-        {
-            logger.LogWarning("Invalid patient ID. {Id}", id);
-            return Result.Failure<Patient>(ServiceErrors.InvalidId);
-
-        }
-
         var firstNameResult = FirstName.Create(dto.FirstName);
         if (firstNameResult.IsFailure)
         {
-            logger.LogWarning("Failed to create patient due to invalid first name. {FirstName}", dto.FirstName);
+            _logger.LogWarning("Failed to create patient due to invalid first name. {FirstName}", dto.FirstName);
             return Result.Failure<Patient>(firstNameResult.Error);
         }
 
         var lastNameResult = LastName.Create(dto.LastName);
         if (lastNameResult.IsFailure)
         {
-            logger.LogWarning("Failed to create patient due to invalid last name. {LastName}", dto.LastName);
+            _logger.LogWarning("Failed to create patient due to invalid last name. {LastName}", dto.LastName);
             return Result.Failure<Patient>(lastNameResult.Error);
         }
 
         DateOfBirth? dateOfBirth = null;
-
         if (dto.DateOfBirth is not null)
         {
             var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth.Value);
             if (dateOfBirthResult.IsFailure)
             {
-                logger.LogWarning("Failed to create patient due to invalid date of birth. {DateOfBirth}", dto.DateOfBirth);
+                _logger.LogWarning("Failed to create patient due to invalid date of birth. {DateOfBirth}", dto.DateOfBirth);
                 return Result.Failure<Patient>(dateOfBirthResult.Error);
             }
 
@@ -117,13 +127,12 @@ public class PatientService(
         }
 
         PhoneNumber? phoneNumber = null;
-
         if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
         {
             var phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
             if (phoneNumberResult.IsFailure)
             {
-                logger.LogWarning("Failed to create patient due to invalid phone number. {PhoneNumber}", dto.PhoneNumber);
+                _logger.LogWarning("Failed to create patient due to invalid phone number. {PhoneNumber}", dto.PhoneNumber);
                 return Result.Failure<Patient>(phoneNumberResult.Error);
             }
 
@@ -141,7 +150,7 @@ public class PatientService(
 
         if (patientResult.IsFailure)
         {
-            logger.LogWarning("Failed to create patient due to invalid patient data. {Error}", patientResult.Error);
+            _logger.LogWarning("Failed to create patient due to invalid patient data. {Error}", patientResult.Error);
             return Result.Failure<Patient>(patientResult.Error);
         }
 

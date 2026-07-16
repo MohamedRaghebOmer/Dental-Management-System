@@ -19,7 +19,7 @@ public interface ISupplierService
         CancellationToken cancellationToken = default);
 
 
-    Task<Result<List<SupplierResponseDto>>> GetAllAsync(
+    Task<List<SupplierResponseDto>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
 

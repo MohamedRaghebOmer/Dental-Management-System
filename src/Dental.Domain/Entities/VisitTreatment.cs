@@ -41,11 +41,12 @@ public sealed class VisitTreatment : Entity
         ToothNumber toothNumber,
         Id visitId,
         Id treatmentId,
-        Money price,
+        Money price, // Auto set from table Treatments<treatmentId>.Price | NOT updatable
         string? notes)
     {
-        var validationResult = Validate(notes);
+        notes = notes?.Trim();
 
+        var validationResult = Validate(notes);
         if (validationResult.IsFailure)
         {
             return Result.Failure<VisitTreatment>(validationResult.Error);
@@ -56,17 +57,17 @@ public sealed class VisitTreatment : Entity
             visitId,
             treatmentId,
             price,
-            notes?.Trim());
+            notes);
     }
 
     internal Result Update(
         ToothNumber toothNumber,
         Id treatmentId,
-        Money price,
         string? notes)
     {
-        var validationResult = Validate(notes);
+        notes = notes?.Trim();
 
+        var validationResult = Validate(notes);
         if (validationResult.IsFailure)
         {
             return Result.Failure(validationResult.Error);
@@ -74,8 +75,7 @@ public sealed class VisitTreatment : Entity
 
         ToothNumber = toothNumber;
         TreatmentId = treatmentId;
-        Price = price;
-        Notes = notes?.Trim();
+        Notes = notes;
 
         return Result.Success();
     }
@@ -83,8 +83,7 @@ public sealed class VisitTreatment : Entity
     private static Result Validate(
         string? notes)
     {
-        var trimmedNotes = notes?.Trim();
-        if (trimmedNotes?.Length > Constants.NotesMaxLength)
+        if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.VisitTreatment.Notes.TooLong);
         }

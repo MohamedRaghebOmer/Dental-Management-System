@@ -4,5 +4,6 @@ namespace Dental.Domain.Repositories;
 
 public interface IDentalInfoRepository
 {
-    Task<DentalInfo?> GetAsync(CancellationToken cancellationToken);
+    Task<DentalInfo?> GetAsync(
+        CancellationToken cancellationToken = default);
 }

@@ -10,13 +10,28 @@ using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
-public sealed class SupplierService(
-    IRepository<Supplier> repo,
-    ISupplierRepository supplierRepo,
-    IUnitOfWork unitOfWork,
-    ILogger<ServiceBase<Supplier, SupplierResponseDto>> logger)
-    : ServiceBase<Supplier, SupplierResponseDto>(repo, unitOfWork, logger), ISupplierService
+public sealed class SupplierService
+    : ServiceBase<Supplier, SupplierResponseDto>
+    , ISupplierService
 {
+    private readonly IRepository<Supplier> _repo;
+    private readonly ISupplierRepository _supplierRepo;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<SupplierService> _logger;
+
+    public SupplierService(
+        IRepository<Supplier> repo,
+        ISupplierRepository supplierRepo,
+        IUnitOfWork unitOfWork,
+        ILogger<SupplierService> logger) : base(repo, unitOfWork, logger)
+    {
+        _repo = repo;
+        _supplierRepo = supplierRepo;
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
+
+
     public async Task<Result<int>> CreateAsync(
         SupplierRequestDto dto,
         CancellationToken cancellationToken = default)
@@ -27,8 +42,8 @@ public sealed class SupplierService(
             return Result.Failure<int>(entityResult.Error);
         }
 
-        await repo.AddAsync(entityResult.Value, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        _repo.Add(entityResult.Value);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return entityResult.Value.Id.Value;
     }
@@ -38,14 +53,21 @@ public sealed class SupplierService(
         SupplierRequestDto dto,
         CancellationToken cancellationToken = default)
     {
+        var createIdResult = Id.Create(supplierId);
+        if (createIdResult.IsFailure)
+        {
+            _logger.LogWarning("Invalid Id. {Id} {Error}", supplierId, createIdResult.Error);
+            return Result.Failure(createIdResult.Error);
+        }
+
         var updatedEntityResult = 
-            await BuildEntityAndEnsureUniqueFields(dto,cancellationToken, supplierId);
+            await BuildEntityAndEnsureUniqueFields(dto, cancellationToken, createIdResult.Value);
         if (updatedEntityResult.IsFailure)
         {
             return Result.Failure(updatedEntityResult.Error);
         }
 
-        var existingEntity = await repo.GetByIdAsync(supplierId, cancellationToken);
+        var existingEntity = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (existingEntity is null)
         {
             return Result.Failure(ServiceErrors.NotFound);
@@ -57,7 +79,7 @@ public sealed class SupplierService(
             updatedEntityResult.Value.Address,
             updatedEntityResult.Value.Description);
 
-        await unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
         return Result.Success();
     }
 
@@ -65,31 +87,25 @@ public sealed class SupplierService(
     private async Task<Result<Supplier>> BuildEntityAndEnsureUniqueFields(
         SupplierRequestDto dto,
         CancellationToken cancellationToken = default,
-        int? supplierId = null)
+        Id? supplierId = null)
     {
-        if (supplierId <= 0)
-        {
-            logger.LogInformation("Invalid supplier ID provided. {SupplierId}", supplierId);
-            return Result.Failure<Supplier>(ServiceErrors.InvalidId);
-        }
-
         Result<PhoneNumber> phoneNumberResult = null!;
         if (dto.PhoneNumber is not null)
         {
             phoneNumberResult = PhoneNumber.Create(dto.PhoneNumber);
             if (phoneNumberResult.IsFailure)
             {
-                logger.LogInformation("Invalid phone number provided. {PhoneNumber}", dto.PhoneNumber);
+                _logger.LogInformation("Invalid phone number provided. {PhoneNumber}", dto.PhoneNumber);
                 return Result.Failure<Supplier>(phoneNumberResult.Error);
             }
 
-            if (await supplierRepo.PhoneNumberExistsAsync(
-                    dto.PhoneNumber,
+            if (await _supplierRepo.PhoneNumberExistsAsync(
+                    phoneNumberResult.Value,
                     supplierId, 
                     cancellationToken))
             {
-                logger.LogInformation("Phone number already exists. {PhoneNumber}", dto.PhoneNumber);
-                return Result.Failure<Supplier>(ServiceErrors.Supplier.PhoneNumberExists);
+                _logger.LogInformation("Phone number already exists. {PhoneNumber}", dto.PhoneNumber);
+                return Result.Failure<Supplier>(ServiceErrors.Supplier.PhoneNumberAlreadyExists);
             }
         }
 
@@ -101,7 +117,7 @@ public sealed class SupplierService(
 
         if (entityResult.IsFailure)
         {
-            logger.LogInformation("Failed to create supplier entity. {Errors}", entityResult.Error);
+            _logger.LogInformation("Failed to create supplier entity. {Errors}", entityResult.Error);
             return Result.Failure<Supplier>(entityResult.Error);
         }
 

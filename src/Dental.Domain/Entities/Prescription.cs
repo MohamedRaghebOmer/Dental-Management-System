@@ -7,54 +7,65 @@ namespace Dental.Domain.Entities;
 
 public sealed class Prescription : Entity
 {
-    private Prescription() { }  // EF Core
-
-    private Prescription(
-        string? notes)
-    {
-        this.Notes = notes?.Trim();
-    }
-
     public static class Constants
     {
         public const int NotesMaxLength = 500;
     }
 
+
+    private Prescription() { }  // EF Core
+
+    private Prescription(string? notes)
+    {
+        Notes = notes;
+    }
+
+
+    public Id? PatientId { get; private set; } = default!;
+    public Id VisitId { get; private set; } = default!;
     public string? Notes { get; private set; }
-
-
+    public Patient? Patient { get; private set; } = default!;
     public Visit Visit { get; private set; } = default!;
+
+
     public IReadOnlyCollection<PrescriptionItem> Items => _items.AsReadOnly();
     private readonly List<PrescriptionItem> _items = [];
 
 
-    internal static Result<Prescription> Create(string? notes)
+    internal static Result<Prescription> Create(
+        Id? patientId,
+        Id visitId,
+        string? notes)
     {
+        notes = notes?.Trim();
+
         var validateResult = Validate(notes);
-        if (!validateResult.IsSuccess)
+        if (validateResult.IsFailure)
         {
             return Result.Failure<Prescription>(validateResult.Error);
         }
 
-        return new Prescription(notes?.Trim());
+        return new Prescription(notes);
     }
 
     internal Result Update(string? notes)
     {
+        notes = notes?.Trim();
+
         var validateResult = Validate(notes);
         if (!validateResult.IsSuccess)
         {
             return Result.Failure(validateResult.Error);
         }
 
-        this.Notes = notes?.Trim();
+        Notes = notes;
 
         return Result.Success();
     }
 
     private static Result Validate(string? notes)
     {
-        if (notes?.Trim().Length > Constants.NotesMaxLength)
+        if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.Prescription.Notes.TooLong);
         }
@@ -70,14 +81,13 @@ public sealed class Prescription : Entity
         MedicineFrequency frequency,
         string? instructions)
     {
-        medicineName = medicineName.Trim();
-        if (_items.Any(i => i.MedicineName == medicineName))
+        if (_items.Any(i => i.MedicineName == medicineName.Trim()))
         {
             return Result.Failure<PrescriptionItem>(DomainErrors.Entities.Prescription.Item.MedicineWithTheSameNameAlreadyExists);
         }
 
         var prescriptionItemResult = PrescriptionItem.Create(
-            this.Id,
+            Id,
             medicineName,
             dosage,
             frequency,
@@ -99,11 +109,10 @@ public sealed class Prescription : Entity
         MedicineFrequency frequency,
         string? instructions)
     {
-        medicineName = medicineName.Trim();
-
-        if (_items.Any(i => i.MedicineName == medicineName && i.Id != itemId))
+        if (_items.Any(i => i.MedicineName == medicineName.Trim() && i.Id != itemId))
         {
-            return Result.Failure(DomainErrors.Entities.Prescription.Item.MedicineWithTheSameNameAlreadyExists);
+            return Result.Failure(
+                DomainErrors.Entities.Prescription.Item.MedicineWithTheSameNameAlreadyExists);
         }
 
         var item = _items

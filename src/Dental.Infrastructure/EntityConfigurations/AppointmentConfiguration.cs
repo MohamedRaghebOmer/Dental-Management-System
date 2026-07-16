@@ -49,12 +49,17 @@ public sealed class AppointmentConfiguration
             .HasColumnName(nameof(Appointment.PatientId))
             .IsRequired();
 
-        builder.Property(p => p.Date)
-            .HasColumnName(nameof(Appointment.Date))
+        builder.Property(p => p.CreatedAt)
+            .HasColumnName(nameof(Appointment.CreatedAt))
+            .HasDefaultValueSql("DATETIME('now', 'localtime')")
             .IsRequired();
 
-        builder.Property(p => p.CompletedAt)
-            .HasColumnName(nameof(Appointment.CompletedAt))
+        builder.Property(p => p.ScheduledVisitDateTime)
+            .HasColumnName(nameof(Appointment.ScheduledVisitDateTime))
+            .IsRequired();
+
+        builder.Property(p => p.ActualVisitDateTime)
+            .HasColumnName(nameof(Appointment.ActualVisitDateTime))
             .IsRequired(false)
             .HasDefaultValue(null);
 

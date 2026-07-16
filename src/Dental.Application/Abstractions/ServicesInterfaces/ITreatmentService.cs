@@ -20,7 +20,7 @@ public interface ITreatmentService
         CancellationToken cancellationToken = default);
 
 
-    Task<Result<List<TreatmentResponseDto>>> GetAllAsync(
+    Task<List<TreatmentResponseDto>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
 

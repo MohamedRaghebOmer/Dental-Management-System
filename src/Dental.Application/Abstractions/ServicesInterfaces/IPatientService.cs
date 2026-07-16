@@ -20,7 +20,7 @@ public interface IPatientService
         CancellationToken cancellationToken = default);
 
 
-    Task<Result<List<PatientResponseDto>>> GetAllAsync(
+    Task<List<PatientResponseDto>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
 

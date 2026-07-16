@@ -10,20 +10,13 @@ public sealed class AppointmentRepository(DentalDbContext _dbContext)
     : Repository<Appointment>(_dbContext), 
     IAppointmentRepository
 {
-    public Task<bool> ExistsByDateAsync(
-        DateTime date,
-        int? excludedId = null,
+    public Task<bool> ExistsByScheduleVisitDateTimeAsync(
+        DateTime scheduledVisitDateTime,
+        Id? excludedId = null,
         CancellationToken cancellationToken = default)
     {
-        if (excludedId == null)
-        {
-            return _dbContext.Appointments.AnyAsync(
-            a => a.Date == date,
-            cancellationToken);
-        }
-
         return _dbContext.Appointments.AnyAsync(
-            a => a.Date == date && a.Id != Id.FromDatabase(excludedId.Value),
+            a => a.ScheduledVisitDateTime == scheduledVisitDateTime && a.Id != excludedId,
             cancellationToken);
     }
 }

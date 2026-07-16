@@ -24,7 +24,7 @@ public sealed class VisitTreatmentConfiguration
         // Create a unique index on the combination of VisitId and TreatmentId
         // to ensure that a treatment can only be applied once per visit
         builder.HasIndex(vt => new { vt.ToothNumber, vt.VisitId,  vt.TreatmentId })
-            .HasDatabaseName("UX_VisitToothTreatments_ToothNumber_VisitId_TreatmentId")
+            .HasDatabaseName("UX_VisitTreatments_ToothNumber_VisitId_TreatmentId")
             .IsUnique(true);
     }
 
@@ -33,11 +33,11 @@ public sealed class VisitTreatmentConfiguration
         builder.ToTable(table =>
         {
             table.HasCheckConstraint(
-                "CK_VisitToothTreatments_ToothNumber_Range",
+                "CK_VisitTreatments_ToothNumber_Range",
                 "[ToothNumber] >= 1 AND [ToothNumber] <= 32");
 
             table.HasCheckConstraint(
-                "CK_VisitToothTreatments_Price_NonNegative",
+                "CK_VisitTreatments_Price_NonNegative",
                 "[Price] >= 0");
         });
     }
@@ -50,9 +50,9 @@ public sealed class VisitTreatmentConfiguration
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(vt => vt.Treatment)
-            .WithMany(t => t.VisitToothTreatments)
+            .WithMany(t => t.VisitTreatments)
             .HasForeignKey(vt => vt.TreatmentId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<VisitTreatment> builder)

@@ -19,7 +19,7 @@ public interface IMaterialService
         CancellationToken cancellationToken = default);
 
 
-    Task<Result<List<MaterialResponseDto>>> GetAllAsync(
+    Task<List<MaterialResponseDto>> GetAllAsync(
         CancellationToken cancellationToken = default);
 
 

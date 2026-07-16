@@ -40,13 +40,8 @@ public sealed class VisitConfiguration
             .HasFilter("[AppointmentId] IS NOT NULL")
             .IsUnique(true);
 
-        builder.HasIndex(p => p.PrescriptionId)
-            .HasDatabaseName("UX_Visits_PrescriptionId")
-            .HasFilter("[PrescriptionId] IS NOT NULL")
-            .IsUnique(true);
-
         builder.HasIndex(p => p.VisitDateTime)
-            .HasDatabaseName("UX_Visits_DateTime")
+            .HasDatabaseName("UX_Visits_VisitDateTime")
             .IsUnique(true);
     }
 
@@ -55,14 +50,12 @@ public sealed class VisitConfiguration
         builder.HasOne(v => v.Appointment)
             .WithOne(a => a.Visit)
             .HasForeignKey<Visit>(v => v.AppointmentId)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
 
-        builder.HasOne(v => v.Prescription)
-            .WithOne(a => a.Visit)
-            .HasForeignKey<Visit>(v => v.PrescriptionId)
-            .IsRequired(false)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.Metadata
+            .FindNavigation(nameof(Visit.VisitTreatments))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<Visit> builder)
@@ -72,13 +65,6 @@ public sealed class VisitConfiguration
                 value => value == null ? (int?)null : value.Value,
                 value => value == null ? null : Id.FromDatabase(value.Value))
             .HasColumnName(nameof(Visit.AppointmentId))
-            .IsRequired(false);
-
-        builder.Property(p => p.PrescriptionId)
-            .HasConversion(
-                value => value == null ? (int?)null : value.Value,
-                value => value == null ? null : Id.FromDatabase(value.Value))
-            .HasColumnName(nameof(Visit.PrescriptionId))
             .IsRequired(false);
 
         builder.Property((p => p.PaidAmount))

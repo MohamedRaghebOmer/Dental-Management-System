@@ -45,6 +45,7 @@ public sealed class Patient : Entity
     public string? Address { get; private set; }
 
     public ICollection<Appointment> Appointments { get; private set; } = [];
+    public ICollection<Prescription> Prescriptions { get; private set; } = [];
 
     public static Result<Patient> Create(
         FirstName firstName,

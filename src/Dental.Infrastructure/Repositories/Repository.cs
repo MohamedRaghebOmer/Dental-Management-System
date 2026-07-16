@@ -1,5 +1,4 @@
-﻿using Dental.Domain.Entities;
-using Dental.Domain.Primitives;
+﻿using Dental.Domain.Primitives;
 using Dental.Domain.Repositories;
 using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Persistence;
@@ -11,41 +10,52 @@ public class Repository<TEntity>(DentalDbContext _dbContext)
     : IRepository<TEntity>
     where TEntity : Entity
 {
-    public async Task AddAsync(TEntity entity,
-        CancellationToken cancellationToken = default)
+    public void Add(TEntity entity)
     {
-        await _dbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+        _dbContext.Set<TEntity>().Add(entity);
     }
 
-    public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsAsync(
+        Id id,
+        CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Set<TEntity>()
-            .AnyAsync(e => e.Id == Id.FromDatabase(id), cancellationToken);
+        return _dbContext.Set<TEntity>()
+            .AnyAsync(e => e.Id == id, cancellationToken);
     }
 
     public async Task<TEntity?> GetByIdAsync(
-        int id,
-        CancellationToken cancellationToken = default)
-    {
-        return await _dbContext.Set<TEntity>().FindAsync(
-            [Id.FromDatabase(id)],
-            cancellationToken);
-    }
-
-    public async Task DeleteAsync(
-        int id,
-        CancellationToken cancellationToken = default)
-    {
-        await _dbContext.Set<TEntity>()
-            .Where(s => s.Id == Id.FromDatabase(id))
-            .ExecuteDeleteAsync(cancellationToken);
-    }
-
-    public async Task<List<TEntity>> GetAllAsync(
+        Id id,
         CancellationToken cancellationToken = default)
     {
         return await _dbContext.Set<TEntity>()
+            .FindAsync([id], cancellationToken);
+    }
+
+    public async Task<bool> RemoveAsync(
+        Id id,
+        CancellationToken cancellationToken = default)
+    {
+        var entity = await GetByIdAsync(id, cancellationToken);
+
+        if (entity is null)
+            return false;
+
+        _dbContext.Set<TEntity>()
+            .Remove(entity);
+
+        return true;
+    }
+
+    public Task<List<TEntity>> GetAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Set<TEntity>()
             .AsNoTracking()
             .ToListAsync(cancellationToken);
+    }
+
+    public Task BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Database.BeginTransactionAsync(cancellationToken);
     }
 }

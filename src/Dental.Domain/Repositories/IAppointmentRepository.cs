@@ -1,12 +1,13 @@
 ﻿using Dental.Domain.Entities;
+using Dental.Domain.ValueObjects;
 
 namespace Dental.Domain.Repositories;
 
 public interface IAppointmentRepository
     :IRepository<Appointment>
 {
-    Task<bool> ExistsByDateAsync(
+    Task<bool> ExistsByScheduleVisitDateTimeAsync(
         DateTime date,
-        int? excludeId = null,
+        Id? excludeId = null,
         CancellationToken cancellationToken = default);
 }
