@@ -110,7 +110,7 @@ public static class DomainErrors
                 public static readonly Error DuplicateTreatmentForTheSameTooth = new(
                     "Treatment.DuplicateTreatmentForTheSameTooth",
                     "A treatment with the same ID already exists for the same tooth in this visit.");
-                
+
                 public static readonly Error NotFound = new(
                     "Treatment.NotFound",
                     "Treatment not found");
@@ -125,6 +125,13 @@ public static class DomainErrors
                 public static readonly Error AlreadyExists = new(
                     "Prescription.AlreadyExists",
                     "There is already a prescription added for this visit.");
+            }
+
+            public static class PatientName
+            {
+                public static readonly Error TooLong = new(
+                    "PatientName.TooLong",
+                    $"Patient name can not exceed {Domain.Entities.Visit.Constants.PatientNameMaxLength} character length.");
             }
         }
 

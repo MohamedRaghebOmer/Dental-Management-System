@@ -2,7 +2,6 @@
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
-using static Dental.Domain.Errors.DomainErrors.Entities;
 
 namespace Dental.Domain.Entities;
 
@@ -11,10 +10,12 @@ public sealed class Visit : Entity
     public static class Constants
     {
         public const int NotesMaxLength = 500;
+        public const int PatientNameMaxLength = 50;
     }
 
 
     public Id? AppointmentId { get; private set; } = default;
+    public string? PatientName { get; private set; }
     public Money PaidAmount { get; private set; } = default!;
     public Money DiscountAmount { get; private set; } = default!;
     public DateTime VisitDateTime { get; private set; }
@@ -31,12 +32,14 @@ public sealed class Visit : Entity
 
     private Visit(
         Id? appointmentId,
+        string? patientName,
         Money paidAmount,
         Money discountAmount,
         DateTime visitDateTime,
         string? notes)
     {
         AppointmentId = appointmentId;
+        PatientName = patientName;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
         VisitDateTime = visitDateTime;
@@ -47,32 +50,36 @@ public sealed class Visit : Entity
 
     public static Result<Visit> Create(
         Id? appointmentId,
+        string? patientName,
         Money paidAmount,
         Money discountAmount,
         DateTime visitDateTime,
         string? notes)
     {
         notes = notes?.Trim();
+        patientName = patientName?.Trim();
 
-        var validateResult = Validate(visitDateTime, notes);
+        var validateResult = Validate(visitDateTime, patientName, notes);
         if (validateResult.IsFailure)
         {
             return Result.Failure<Visit>(validateResult.Error);
         }
 
-        return new Visit(appointmentId, paidAmount, discountAmount, visitDateTime, notes);
+        return new Visit(appointmentId, patientName, paidAmount, discountAmount, visitDateTime, notes);
     }
 
     public Result Update(
         Id? appointmentId,
+        string? patientName,
         Money paidAmount,
         Money discountAmount,
         DateTime visitDateTime,
         string? notes)
     {
         notes = notes?.Trim();
+        patientName = patientName?.Trim();
 
-        var validateResult = Validate(visitDateTime, notes);
+        var validateResult = Validate(visitDateTime, patientName, notes);
         if (validateResult.IsFailure)
         {
             return Result.Failure(validateResult.Error);
@@ -88,6 +95,7 @@ public sealed class Visit : Entity
         }
 
         AppointmentId = appointmentId;
+        PatientName = patientName;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
         VisitDateTime = visitDateTime;
@@ -96,7 +104,9 @@ public sealed class Visit : Entity
         return Result.Success();
     }
 
-    private static Result Validate(DateTime visitDateTime, string? notes)
+    private static Result Validate(
+        DateTime visitDateTime, string? patientName,
+        string? notes)
     {
         if (visitDateTime > DateTime.Now)
         {
@@ -106,6 +116,11 @@ public sealed class Visit : Entity
         if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.Visit.Notes.TooLong);
+        }
+
+        if (patientName?.Length > Constants.PatientNameMaxLength)
+        {
+            return Result.Failure(DomainErrors.Entities.Visit.PatientName.TooLong);
         }
 
         return Result.Success();
@@ -147,7 +162,7 @@ public sealed class Visit : Entity
         string? notes)
     {
         if (_visitTreatments.Any(
-            t => t.TreatmentId == treatmentId 
+            t => t.TreatmentId == treatmentId
             && t.ToothNumber == toothNumber
             && t.Id != visitTreatmentId))
         {
@@ -171,7 +186,7 @@ public sealed class Visit : Entity
         }
 
         return Result.Success();
-    }   
+    }
 
     public Result RemoveVisitTreatment(Id visitTreatmentId)
     {

@@ -19,7 +19,7 @@ public static class ServiceErrors
         public static readonly Error InvalidToothNumber = new(
             "Visit.InvalidToothNumber",
             "Invalid tooth number");
-        
+
         public static readonly Error InvalidTreatmentId = new(
             "Visit.InvalidTreatmentId",
             "Invalid treatment Id.");
@@ -53,7 +53,7 @@ public static class ServiceErrors
             new("Appointment.PatientNotFound", "Patient not found.");
 
         public static readonly Error DateIsTaken =
-            new("Appointment.DateIsTaken", 
+            new("Appointment.DateIsTaken",
                 "There is already an appointment for the given date.");
     }
 
@@ -69,7 +69,7 @@ public static class ServiceErrors
     public static class PrescriptionItem
     {
         public static readonly Error PrescriptionNotFound = new(
-            "PrescriptionItem.PrescriptionNotFound", 
+            "PrescriptionItem.PrescriptionNotFound",
             "Prescription not found.");
 
         public static readonly Error PrescriptionItemNotFound = new(

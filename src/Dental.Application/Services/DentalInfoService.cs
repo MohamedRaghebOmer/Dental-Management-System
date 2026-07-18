@@ -1,5 +1,4 @@
-﻿using Dental.Application.Abstractions;
-using Dental.Application.Abstractions.ServicesInterfaces;
+﻿using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.DentalInfo;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
@@ -27,7 +26,7 @@ public sealed class DentalInfoService : IDentalInfoService
 
 
     public async Task<Result<DentalInfoDto>> UpdateAsync(
-        DentalInfoDto dto, 
+        DentalInfoDto dto,
         CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("DentalInfoService.UpdateAsync is called. {dto}", dto);

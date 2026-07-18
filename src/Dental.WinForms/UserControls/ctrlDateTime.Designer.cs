@@ -58,11 +58,12 @@
             // 
             lblDate.AutoSize = true;
             lblDate.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDate.Location = new Point(296, 35);
+            lblDate.Location = new Point(278, 35);
             lblDate.Name = "lblDate";
             lblDate.RightToLeft = RightToLeft.Yes;
-            lblDate.Size = new Size(0, 31);
+            lblDate.Size = new Size(194, 31);
             lblDate.TabIndex = 1;
+            lblDate.Text = "الثلاثاء 30/12/2026";
             // 
             // pictureBox2
             // 
@@ -78,10 +79,12 @@
             // 
             lblTime.AutoSize = true;
             lblTime.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTime.Location = new Point(27, 35);
+            lblTime.Location = new Point(24, 35);
             lblTime.Name = "lblTime";
-            lblTime.Size = new Size(0, 31);
+            lblTime.RightToLeft = RightToLeft.Yes;
+            lblTime.Size = new Size(104, 31);
             lblTime.TabIndex = 3;
+            lblTime.Text = "12:59 ص";
             // 
             // ctrlDateTime
             // 

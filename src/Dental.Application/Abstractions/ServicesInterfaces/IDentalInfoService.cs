@@ -1,5 +1,4 @@
 ﻿using Dental.Application.DTOs.DentalInfo;
-using Dental.Application.Errors;
 using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;

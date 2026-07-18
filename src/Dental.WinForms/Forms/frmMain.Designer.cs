@@ -56,6 +56,8 @@ namespace Dental.WinForms
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             splitContainer1 = new SplitContainer();
             btnHelp = new Guna.UI2.WinForms.Guna2Button();
             btnBackup = new Guna.UI2.WinForms.Guna2Button();
@@ -73,6 +75,7 @@ namespace Dental.WinForms
             lblHeader = new Label();
             pictureBox1 = new PictureBox();
             btnMainMenu = new Guna.UI2.WinForms.Guna2Button();
+            pnlView = new Guna.UI2.WinForms.Guna2Panel();
             guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             ctrlNotification1 = new Dental.WinForms.UserControls.ctrlNotification();
             ctrlDateTime1 = new Dental.WinForms.UserControls.ctrlDateTime();
@@ -106,6 +109,7 @@ namespace Dental.WinForms
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.BackColor = Color.DarkCyan;
+            splitContainer1.Panel2.Controls.Add(pnlView);
             splitContainer1.Panel2.Controls.Add(guna2CustomGradientPanel1);
             splitContainer1.Panel2.RightToLeft = RightToLeft.Yes;
             splitContainer1.Size = new Size(1918, 1055);
@@ -557,18 +561,29 @@ namespace Dental.WinForms
             btnMainMenu.UseTransparentBackground = true;
             btnMainMenu.Click += btnMainMenu_Click;
             // 
+            // pnlView
+            // 
+            pnlView.BackColor = Color.DarkCyan;
+            pnlView.CustomizableEdges = customizableEdges25;
+            pnlView.Dock = DockStyle.Bottom;
+            pnlView.Location = new Point(0, 99);
+            pnlView.Name = "pnlView";
+            pnlView.ShadowDecoration.CustomizableEdges = customizableEdges26;
+            pnlView.Size = new Size(1562, 956);
+            pnlView.TabIndex = 2;
+            // 
             // guna2CustomGradientPanel1
             // 
-            guna2CustomGradientPanel1.Anchor = AnchorStyles.Top;
             guna2CustomGradientPanel1.BackColor = Color.White;
             guna2CustomGradientPanel1.Controls.Add(ctrlNotification1);
             guna2CustomGradientPanel1.Controls.Add(ctrlDateTime1);
             guna2CustomGradientPanel1.Controls.Add(ctrlProfile1);
-            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges25;
-            guna2CustomGradientPanel1.Location = new Point(-11, 0);
+            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges27;
+            guna2CustomGradientPanel1.Dock = DockStyle.Top;
+            guna2CustomGradientPanel1.Location = new Point(0, 0);
             guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
-            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges26;
-            guna2CustomGradientPanel1.Size = new Size(1568, 100);
+            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges28;
+            guna2CustomGradientPanel1.Size = new Size(1562, 100);
             guna2CustomGradientPanel1.TabIndex = 0;
             // 
             // ctrlNotification1
@@ -576,7 +591,7 @@ namespace Dental.WinForms
             ctrlNotification1.BackColor = Color.Transparent;
             ctrlNotification1.Cursor = Cursors.Hand;
             ctrlNotification1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ctrlNotification1.Location = new Point(4, 4);
+            ctrlNotification1.Location = new Point(5, 5);
             ctrlNotification1.Margin = new Padding(4);
             ctrlNotification1.MaximumSize = new Size(70, 45);
             ctrlNotification1.MinimumSize = new Size(70, 45);
@@ -591,7 +606,7 @@ namespace Dental.WinForms
             ctrlDateTime1.Anchor = AnchorStyles.Top;
             ctrlDateTime1.BackColor = Color.Transparent;
             ctrlDateTime1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ctrlDateTime1.Location = new Point(534, -3);
+            ctrlDateTime1.Location = new Point(531, -3);
             ctrlDateTime1.Margin = new Padding(4);
             ctrlDateTime1.MaximumSize = new Size(0, 100);
             ctrlDateTime1.MinimumSize = new Size(0, 100);
@@ -605,7 +620,7 @@ namespace Dental.WinForms
             ctrlProfile1.BackColor = Color.Transparent;
             ctrlProfile1.Cursor = Cursors.Hand;
             ctrlProfile1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ctrlProfile1.Location = new Point(1187, -3);
+            ctrlProfile1.Location = new Point(1181, -3);
             ctrlProfile1.Margin = new Padding(4);
             ctrlProfile1.MaximumSize = new Size(378, 100);
             ctrlProfile1.MinimumSize = new Size(378, 100);
@@ -614,7 +629,7 @@ namespace Dental.WinForms
             ctrlProfile1.Size = new Size(378, 100);
             ctrlProfile1.TabIndex = 0;
             // 
-            // MainForm
+            // frmMain
             // 
             AutoScaleDimensions = new SizeF(17F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -622,10 +637,12 @@ namespace Dental.WinForms
             ClientSize = new Size(1918, 1055);
             Controls.Add(splitContainer1);
             Font = new Font("Arial Rounded MT Bold", 16.2F);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(6, 5, 6, 5);
+            MaximizeBox = false;
             MinimumSize = new Size(1918, 1078);
-            Name = "MainForm";
+            Name = "frmMain";
             RightToLeft = RightToLeft.Yes;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "إدارة عيادة الأسنان";
@@ -665,5 +682,6 @@ namespace Dental.WinForms
         private UserControls.ctrlNotification ctrlNotification1;
         private Guna.UI2.WinForms.Guna2Button btnSettings;
         private Guna.UI2.WinForms.Guna2Button btnCashCount;
+        private Guna.UI2.WinForms.Guna2Panel pnlView;
     }
 }

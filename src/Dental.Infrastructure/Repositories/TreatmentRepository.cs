@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public sealed class TreatmentRepository(DentalDbContext _dbContext) 
-    : Repository<Treatment>(_dbContext), 
+public sealed class TreatmentRepository(DentalDbContext _dbContext)
+    : Repository<Treatment>(_dbContext),
         ITreatmentRepository
 {
     public Task<bool> ExistsByNameAsync(

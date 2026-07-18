@@ -451,6 +451,11 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("PaidAmount");
 
+                    b.Property<string>("PatientName")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("PatientName");
+
                     b.Property<DateTime>("VisitDateTime")
                         .HasColumnType("TEXT")
                         .HasColumnName("VisitDateTime");

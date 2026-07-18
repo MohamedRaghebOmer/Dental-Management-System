@@ -1,5 +1,4 @@
 ﻿using Dental.Domain.Entities;
-using Dental.Infrastructure.Abstractions;
 using Dental.Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

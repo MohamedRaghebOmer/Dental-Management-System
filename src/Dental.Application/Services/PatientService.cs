@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
-public class PatientService 
+public class PatientService
     : ServiceBase<Patient, PatientResponseDto>
     , IPatientService
 {

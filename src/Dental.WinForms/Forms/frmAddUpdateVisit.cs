@@ -9,7 +9,6 @@ using Dental.Domain.Views;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
-using Guna.UI2.WinForms;
 using Microsoft.Extensions.Logging;
 
 namespace Dental.WinForms.Forms;
@@ -25,8 +24,6 @@ public partial class frmAddUpdateVisit : Form
     private readonly int _visitId;
     private int _selectedRowIndex = -1;
     private List<TreatmentResponseDto> _treatments = [];
-
-    private Task InitializeFormTask = default!;
 
     private enum Mode { Add, Update }
     private Mode _mode = Mode.Add;
@@ -75,7 +72,7 @@ public partial class frmAddUpdateVisit : Form
         await InitializeAsync();
 
         if (_mode == Mode.Update)
-             await LoadUi();
+            await LoadUi();
     }
 
     private async Task InitializeAsync()
@@ -83,9 +80,9 @@ public partial class frmAddUpdateVisit : Form
         try
         {
             dataGridView.DataError += (_, _) => { };
-            dataGridView.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle();
-            dataGridView.ThemeStyle.RowsStyle.ForeColor = Color.Black;
-            dataGridView.DefaultCellStyle.SelectionForeColor = Color.Black;
+            //dataGridView.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle();
+            //dataGridView.ThemeStyle.RowsStyle.ForeColor = Color.Black;
+            //dataGridView.DefaultCellStyle.SelectionForeColor = Color.Black;
 
             InitializeFormTexts();
             await LoadDataGrid();
@@ -154,7 +151,7 @@ public partial class frmAddUpdateVisit : Form
             // Fill the grid with empty rows same as views count
             dataGridView.Rows.Add(viewsCount);
         }
-        
+
         for (int i = 0; i < viewsCount; i++)
         {
             AssignViewToRowCells(viewResult.Value[i], i);
@@ -239,6 +236,7 @@ public partial class frmAddUpdateVisit : Form
         }
 
         txtAppointmentId.Text = visitResult.Value.AppointmentId?.ToString() ?? string.Empty;
+        txtPatientName.Text = visitResult.Value.PatientName?.ToString() ?? string.Empty;
         txtPaidAmount.Text = visitResult.Value.PaidAmount.ToString();
         txtDiscountAmount.Text = visitResult.Value.DiscountAmount.ToString();
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(visitResult.Value.VisitDateTime);
@@ -354,10 +352,10 @@ public partial class frmAddUpdateVisit : Form
 
     private async void btnSave_Click(object sender, EventArgs e)
     {
-        if (!Validate(out bool areYouShowMessageIsShown))
+        if (!Validate())
             return;
 
-        if (!MakeSure((areYouShowMessageIsShown)))
+        if (!MakeSure())
             return;
 
         VisitRequestDto? visitDto = GetVisitDtoFromUi();
@@ -408,10 +406,10 @@ public partial class frmAddUpdateVisit : Form
 
     private async Task UpdateVisitAndTreatmentsAsync(VisitRequestDto visitDto)
     {
-        var addVisitResult = await _visitService.UpdateAsync(_visitId, visitDto);
-        if (addVisitResult.IsFailure)
+        var updateVisitResult = await _visitService.UpdateAsync(_visitId, visitDto);
+        if (updateVisitResult.IsFailure)
         {
-            HandelCreateAndUpdateVisitResult(addVisitResult.Error);
+            HandelCreateAndUpdateVisitResult(updateVisitResult.Error);
             return;
         }
 
@@ -460,6 +458,10 @@ public partial class frmAddUpdateVisit : Form
         {
             case "Notes.TooLong":
                 MessageBoxExtensions.ShowError("ملاحظات الزياره طويله جدا");
+                break;
+
+            case "PatientName.TooLong":
+                MessageBoxExtensions.ShowError($"اسم المريض طويل جدا.");
                 break;
 
             case "Appointment.NotFound":
@@ -596,6 +598,7 @@ public partial class frmAddUpdateVisit : Form
         return new VisitRequestDto
         {
             AppointmentId = GetAppointmentIdFromUi(),
+            PatientName = txtPatientName.Text,
             PaidAmount = paidAmount.Value, // Validated before, shouldn't be null.
             DiscountAmount = GetDiscountPriceFromTextbox() ?? 0,
             VisitDateTime = dateTimePicker.Value,
@@ -611,45 +614,27 @@ public partial class frmAddUpdateVisit : Form
         return null;
     }
 
-    private bool MakeSure(bool areYouShowMessageIsShown)
+    private bool MakeSure()
     {
         string message = _mode == Mode.Add ?
             "هل انت متأكد من تسجيل الزيارة؟" : "هل انت متأكد من تعديل الزيارة؟";
 
-        if (!areYouShowMessageIsShown)
+        if (MessageBoxExtensions.ShowQuestion(
+                message, "تأكيد") == DialogResult.No)
         {
-            if (MessageBoxExtensions.ShowQuestion(
-                    message, "تأكيد") == DialogResult.No)
-            {
-                return false;
-            }
+            return false;
         }
 
         return true;
     }
 
-    private bool Validate(out bool areYouShowMessageIsShown)
+    private new bool Validate()
     {
-        areYouShowMessageIsShown = false;
-
-        if (!ValidateTextboxes(out bool appointmentIdIsEmptyFlag))
+        if (!ValidateTextboxes())
             return false;
 
         if (!ValidateDataGrid())
             return false;
-
-        if (appointmentIdIsEmptyFlag && _mode == Mode.Add)
-        {
-            if (MessageBoxExtensions.ShowQuestion(
-                    "هل تريد تسجيل زياره من غير ميعاد مسبق؟") == DialogResult.No)
-            {
-                areYouShowMessageIsShown = true;
-                txtAppointmentId.Focus();
-                return false;
-            }
-
-            areYouShowMessageIsShown = true;
-        }
 
         return true;
     }
@@ -751,14 +736,13 @@ public partial class frmAddUpdateVisit : Form
         return true;
     }
 
-    private bool ValidateTextboxes(out bool appointmentIdIsEmptyFlag)
+    private bool ValidateTextboxes()
     {
-        appointmentIdIsEmptyFlag = false;
-
         // ========================== Appointment Id ==========================
         if (string.IsNullOrWhiteSpace(txtAppointmentId.Text))
         {
-            appointmentIdIsEmptyFlag = true;
+            // Do Nothing
+            // This condition exists to do not check the next condition
         }
         else if (!int.TryParse(txtAppointmentId.Text, out int appointmentId))
         {

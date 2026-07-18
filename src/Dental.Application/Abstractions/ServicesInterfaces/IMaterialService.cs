@@ -1,5 +1,4 @@
-﻿using Dental.Application.DTOs.DentalInfo;
-using Dental.Application.DTOs.Material;
+﻿using Dental.Application.DTOs.Material;
 using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;

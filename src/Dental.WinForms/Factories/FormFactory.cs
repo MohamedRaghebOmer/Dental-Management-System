@@ -13,6 +13,7 @@ public class FormFactory : IFormFactory
         _serviceProvider = serviceProvider;
     }
 
+
     public frmAddUpdateVisit Create_frmAddUpdateVisit()
     {
         return _serviceProvider.GetRequiredService<frmAddUpdateVisit>();

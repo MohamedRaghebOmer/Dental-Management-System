@@ -60,7 +60,7 @@ public sealed class SupplierService
             return Result.Failure(createIdResult.Error);
         }
 
-        var updatedEntityResult = 
+        var updatedEntityResult =
             await BuildEntityAndEnsureUniqueFields(dto, cancellationToken, createIdResult.Value);
         if (updatedEntityResult.IsFailure)
         {
@@ -101,7 +101,7 @@ public sealed class SupplierService
 
             if (await _supplierRepo.PhoneNumberExistsAsync(
                     phoneNumberResult.Value,
-                    supplierId, 
+                    supplierId,
                     cancellationToken))
             {
                 _logger.LogInformation("Phone number already exists. {PhoneNumber}", dto.PhoneNumber);

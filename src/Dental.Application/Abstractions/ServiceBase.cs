@@ -73,7 +73,7 @@ public abstract class ServiceBase<TEntity, TResponseDto>
         int id,
         CancellationToken cancellationToken = default)
     {
-        var idResult = Id.Create(id); 
+        var idResult = Id.Create(id);
         if (idResult.IsFailure)
         {
             _logger.LogWarning(

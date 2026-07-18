@@ -1,9 +1,7 @@
-﻿using Dental.WinForms.Views;
-using FontAwesome.Sharp;
+﻿using Dental.Infrastructure.Constants;
+using Dental.WinForms.Views;
 using Guna.UI2.WinForms;
 using System.Diagnostics;
-using System.Windows.Media;
-using Dental.Infrastructure.Constants;
 using Color = System.Drawing.Color;
 
 namespace Dental.WinForms;
@@ -28,9 +26,9 @@ public partial class frmMain : Form
 
     private void ShowView(UserControl view)
     {
-        //splitContainer1.Panel2.Controls.Clear();
         view.Dock = DockStyle.Fill;
-        splitContainer1.Panel2.Controls.Add(view);
+        pnlView.Controls.Clear();
+        pnlView.Controls.Add(view);
     }
 
     private void SelectMenuButton(Guna2Button button)
@@ -44,21 +42,25 @@ public partial class frmMain : Form
 
         _selectedButton = button;
 
-        _selectedButton.FillColor = Color.DarkCyan;
-        _selectedButton.HoverState.FillColor = Color.DarkCyan;
+        _selectedButton.FillColor = Color.DarkTurquoise;
+        _selectedButton.HoverState.FillColor = Color.DarkTurquoise;
         _selectedButton.ForeColor = Color.FromArgb(37, 99, 235);
     }
 
     private void btnMainMenu_Click(object sender, EventArgs e)
     {
+        Cursor = Cursors.WaitCursor;
         ShowView(_mainMenuView);
         SelectMenuButton(btnMainMenu);
+        Cursor = Cursors.Default;
     }
 
     private void btnVisits_Click(object sender, EventArgs e)
     {
+        Cursor = Cursors.WaitCursor;
         ShowView(_VisitView);
         SelectMenuButton(btnVisits);
+        Cursor = Cursors.Default;
     }
 
     private void btnHelp_Click(object sender, EventArgs e)

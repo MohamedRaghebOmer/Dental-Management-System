@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories.Views;
 
-public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext) 
+public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext)
     : IVisitToothTreatmentsViewRepository
 {
     public Task<List<VisitTreatmentsView>> GetAsync(
-        Id visitId, 
+        Id visitId,
         CancellationToken cancellationToken = default)
     {
         var query = dbContext.VisitTreatments

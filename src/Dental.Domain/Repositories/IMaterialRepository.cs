@@ -7,7 +7,7 @@ public interface IMaterialRepository
     : IRepository<Material>
 {
     Task<bool> ExistsByNameAsync(
-        string name, 
-        Id? excludeId = null, 
+        string name,
+        Id? excludeId = null,
         CancellationToken cancellationToken = default);
 }

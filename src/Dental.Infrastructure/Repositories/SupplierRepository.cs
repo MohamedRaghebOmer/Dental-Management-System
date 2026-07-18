@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Dental.Infrastructure.Repositories;
 
 public sealed class SupplierRepository(DentalDbContext _dbContext)
-    : Repository<Supplier>(_dbContext), 
+    : Repository<Supplier>(_dbContext),
         ISupplierRepository
 {
     public Task<bool> PhoneNumberExistsAsync(
-        PhoneNumber phoneNumber, 
-        Id? excludedId = null, 
+        PhoneNumber phoneNumber,
+        Id? excludedId = null,
         CancellationToken cancellationToken = default)
     {
         return _dbContext.Suppliers.AnyAsync(

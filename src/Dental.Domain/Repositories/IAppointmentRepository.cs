@@ -4,7 +4,7 @@ using Dental.Domain.ValueObjects;
 namespace Dental.Domain.Repositories;
 
 public interface IAppointmentRepository
-    :IRepository<Appointment>
+    : IRepository<Appointment>
 {
     Task<bool> ExistsByScheduleVisitDateTimeAsync(
         DateTime date,

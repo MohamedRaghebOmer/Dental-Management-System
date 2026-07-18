@@ -6,5 +6,5 @@ namespace Dental.Infrastructure.Repositories;
 public interface IPatientRepository
     : IRepository<Patient>
 {
-    
+
 }

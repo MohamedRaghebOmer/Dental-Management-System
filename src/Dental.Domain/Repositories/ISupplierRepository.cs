@@ -7,7 +7,7 @@ public interface ISupplierRepository
     : IRepository<Supplier>
 {
     Task<bool> PhoneNumberExistsAsync(
-        PhoneNumber phoneNumber, 
+        PhoneNumber phoneNumber,
         Id? excludedId = null,
         CancellationToken cancellationToken = default);
 }

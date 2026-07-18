@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 namespace Dental.Infrastructure.Repositories;
 
 public sealed class MaterialRepository(DentalDbContext _dbContext)
-    : Repository<Material>(_dbContext), 
+    : Repository<Material>(_dbContext),
         IMaterialRepository
 {
     public Task<bool> ExistsByNameAsync(
-        string name, 
-        Id? excludeId = null, 
+        string name,
+        Id? excludeId = null,
         CancellationToken cancellationToken = default)
     {
         return _dbContext.Materials.AnyAsync(

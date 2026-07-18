@@ -85,6 +85,7 @@ public sealed class VisitService
 
         var visitUpdateResult = visit.Update(
             entityResult.Value.AppointmentId,
+            entityResult.Value.PatientName,
             entityResult.Value.PaidAmount,
             entityResult.Value.DiscountAmount,
             dto.VisitDateTime,
@@ -137,6 +138,7 @@ public sealed class VisitService
 
         var visitResult = Visit.Create(
             appointmentIdResult?.Value,
+            dto.PatientName,
             paidAmountResult.Value,
             discountAmountResult.Value,
             dto.VisitDateTime,

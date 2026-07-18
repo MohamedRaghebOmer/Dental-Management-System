@@ -8,7 +8,7 @@ public sealed record MaterialResponseDto(
     int? SupplierId,
     string? Description,
     int Quantity,
-    decimal BuyingPrice) 
+    decimal BuyingPrice)
     : IResponseDto<Domain.Entities.Material, MaterialResponseDto>
 {
     public static MaterialResponseDto ToResponseDto(Domain.Entities.Material entity)
