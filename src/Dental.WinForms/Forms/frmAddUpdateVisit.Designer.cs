@@ -538,7 +538,7 @@
             txtPatientName.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtPatientName.Location = new Point(890, 180);
             txtPatientName.Margin = new Padding(3, 5, 3, 5);
-            txtPatientName.MaxLength = 51;
+            txtPatientName.MaxLength = 50;
             txtPatientName.Name = "txtPatientName";
             txtPatientName.PlaceholderText = "";
             txtPatientName.SelectedText = "";

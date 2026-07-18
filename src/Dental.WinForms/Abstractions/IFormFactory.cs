@@ -15,4 +15,7 @@ public interface IFormFactory
 
     frmAddEditAppointment Create_frmAddEditAppointment();
     frmAddEditAppointment Create_frmAddEditAppointment(int appointmentId);
+
+    frmAddEditPatient Create_frmAddEditPatient();
+    frmAddEditPatient Create_frmAddEditPatient(int patientId);
 }

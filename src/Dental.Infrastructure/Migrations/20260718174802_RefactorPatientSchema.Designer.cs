@@ -4,6 +4,7 @@ using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dental.Infrastructure.Migrations
 {
     [DbContext(typeof(DentalDbContext))]
-    partial class DentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260718174802_RefactorPatientSchema")]
+    partial class RefactorPatientSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
@@ -183,7 +186,7 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<byte>("Gender")
                         .HasColumnType("TINYINT")
                         .HasColumnName("Gender")
-                        .HasComment("Male = 0, Female = 1");
+                        .HasComment("Male = 1, Female = 2");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -208,7 +211,7 @@ namespace Dental.Infrastructure.Migrations
                         {
                             t.HasCheckConstraint("CK_Patients_AgeRange", "Age BETWEEN 0 AND 99");
 
-                            t.HasCheckConstraint("CK_Patients_Gender", "Gender IN (0, 1)");
+                            t.HasCheckConstraint("CK_Patients_Gender", "Gender IN (1, 2)");
 
                             t.HasCheckConstraint("CK_Patients_PhoneNumberLength", "length(PhoneNumber) = 11");
                         });

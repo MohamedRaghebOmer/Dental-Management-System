@@ -179,6 +179,20 @@ public static class DomainErrors
             }
         }
 
+        public static class Patient
+        {
+            public static class Age
+            {
+                public static readonly Error LessThanMinimumAllowedAge = new(
+                    "Age.LessThanMinimumAllowedAge",
+                    $"Age must be greater than or equal to{Domain.Entities.Patient.Constants.MinimumAllowedAge}");
+
+                public static readonly Error GreaterThanMaximumAllowedAge = new(
+                    "Age.GreaterThanMaximumAllowedAge",
+                    $"Age must less than or equal to{Domain.Entities.Patient.Constants.MaximumAllowedAge}");
+            }
+        }
+
         public static class Supplier
         {
             public static class Name
@@ -336,18 +350,6 @@ public static class DomainErrors
             public static readonly Error TooLong = new(
                 "LastName.TooLong",
                 $"The last name cannot be longer than {Domain.Entities.Patient.Constants.LastNameMaxLength} characters."
-            );
-        }
-
-        public static class DateOfBirth
-        {
-            public static readonly Error LessThanMinimumAllowedAge = new(
-                "DateOfBirth.LessThanMinimumAllowedAge",
-                $"The date of birth cannot be less than {Domain.ValueObjects.DateOfBirth.MinimumAge} years.");
-
-            public static readonly Error OlderThanMaximumAllowedAge = new(
-                "DateOfBirth.OlderThanMaximumAllowedAge",
-                $"The date of birth cannot be longer than {Domain.ValueObjects.DateOfBirth.MaximumAge} years."
             );
         }
 

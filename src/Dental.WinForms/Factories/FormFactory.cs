@@ -55,4 +55,15 @@ public class FormFactory : IFormFactory
         return ActivatorUtilities.CreateInstance<frmAddEditAppointment>
             (_serviceProvider, appointmentId);
     }
+
+    public frmAddEditPatient Create_frmAddEditPatient()
+    {
+        return _serviceProvider.GetRequiredService<frmAddEditPatient>();
+    }
+
+    public frmAddEditPatient Create_frmAddEditPatient(int patientId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditPatient>
+            (_serviceProvider, patientId);
+    }
 }

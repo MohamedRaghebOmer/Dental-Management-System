@@ -39,6 +39,7 @@
             MaximizeBox = false;
             Name = "frmAddEditAppointment";
             ShowIcon = false;
+            ShowInTaskbar = false;
             ResumeLayout(false);
         }
 

@@ -8,8 +8,8 @@ public partial class frmAddEditAppointment : Form
     }
 
     public frmAddEditAppointment(
-        int appointmentId) : base()
+        int appointmentId) : this()
     {
-
+        Text = appointmentId.ToString();
     }
 }

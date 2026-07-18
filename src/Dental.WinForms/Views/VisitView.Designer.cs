@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             dataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
             colVisitId = new DataGridViewTextBoxColumn();
             colAppointmetId = new DataGridViewTextBoxColumn();
@@ -97,31 +97,31 @@
             dataGridView.AllowUserToDeleteRows = false;
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle5.BackColor = Color.Transparent;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = Color.White;
-            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
-            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.BackColor = Color.Transparent;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = Color.White;
+            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
+            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle6.ForeColor = Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView.ColumnHeadersHeight = 35;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { colVisitId, colAppointmetId, colPatientName, colVisitDateTime, colVisitTreatments, colTotalAmount, colPaidAmount, colDiscountAmount, colRemainedAmount });
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = Color.White;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle7.ForeColor = Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = Color.DodgerBlue;
-            dataGridViewCellStyle7.SelectionForeColor = Color.White;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             dataGridView.Dock = DockStyle.Bottom;
             dataGridView.GridColor = Color.LightGray;
             dataGridView.Location = new Point(0, 577);
@@ -129,14 +129,14 @@
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = Color.White;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = Color.White;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = Color.White;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.RowTemplate.ContextMenuStrip = contextMenuStrip;
@@ -145,7 +145,7 @@
             dataGridView.ShowCellErrors = false;
             dataGridView.ShowRowErrors = false;
             dataGridView.Size = new Size(1562, 379);
-            dataGridView.TabIndex = 6;
+            dataGridView.TabIndex = 9;
             dataGridView.ThemeStyle.AlternatingRowsStyle.BackColor = Color.Transparent;
             dataGridView.ThemeStyle.AlternatingRowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridView.ThemeStyle.AlternatingRowsStyle.ForeColor = SystemColors.ControlText;
@@ -317,7 +317,7 @@
             // txtFilterValue
             // 
             txtFilterValue.BorderRadius = 5;
-            txtFilterValue.CustomizableEdges = customizableEdges8;
+            txtFilterValue.CustomizableEdges = customizableEdges1;
             txtFilterValue.DefaultText = "";
             txtFilterValue.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtFilterValue.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -332,7 +332,7 @@
             txtFilterValue.Name = "txtFilterValue";
             txtFilterValue.PlaceholderText = "ابحث هنا";
             txtFilterValue.SelectedText = "";
-            txtFilterValue.ShadowDecoration.CustomizableEdges = customizableEdges9;
+            txtFilterValue.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtFilterValue.Size = new Size(301, 36);
             txtFilterValue.TabIndex = 9;
             txtFilterValue.TextChanged += txtFilterValue_TextChanged;
@@ -346,7 +346,7 @@
             cbFilterList.Location = new Point(477, 508);
             cbFilterList.Name = "cbFilterList";
             cbFilterList.Size = new Size(301, 36);
-            cbFilterList.TabIndex = 10;
+            cbFilterList.TabIndex = 8;
             cbFilterList.SelectedIndexChanged += cbFilterList_SelectedIndexChanged;
             // 
             // pnlTotalVisits
@@ -361,7 +361,7 @@
             pnlTotalVisits.ShadowColor = Color.Black;
             pnlTotalVisits.ShadowDepth = 150;
             pnlTotalVisits.Size = new Size(295, 125);
-            pnlTotalVisits.TabIndex = 11;
+            pnlTotalVisits.TabIndex = 2;
             // 
             // lblTotalVisits
             // 
@@ -396,7 +396,7 @@
             guna2ShadowPanel1.ShadowColor = Color.Black;
             guna2ShadowPanel1.ShadowDepth = 150;
             guna2ShadowPanel1.Size = new Size(295, 125);
-            guna2ShadowPanel1.TabIndex = 12;
+            guna2ShadowPanel1.TabIndex = 3;
             // 
             // lblTotalPaidAmount
             // 
@@ -405,7 +405,7 @@
             lblTotalPaidAmount.Location = new Point(136, 55);
             lblTotalPaidAmount.Name = "lblTotalPaidAmount";
             lblTotalPaidAmount.Size = new Size(23, 28);
-            lblTotalPaidAmount.TabIndex = 5;
+            lblTotalPaidAmount.TabIndex = 0;
             lblTotalPaidAmount.Text = "0";
             // 
             // label2
@@ -431,7 +431,7 @@
             guna2ShadowPanel2.ShadowColor = Color.Black;
             guna2ShadowPanel2.ShadowDepth = 150;
             guna2ShadowPanel2.Size = new Size(295, 125);
-            guna2ShadowPanel2.TabIndex = 13;
+            guna2ShadowPanel2.TabIndex = 4;
             // 
             // lblTotalDiscountAmount
             // 
@@ -466,7 +466,7 @@
             guna2ShadowPanel3.ShadowColor = Color.Black;
             guna2ShadowPanel3.ShadowDepth = 150;
             guna2ShadowPanel3.Size = new Size(295, 125);
-            guna2ShadowPanel3.TabIndex = 14;
+            guna2ShadowPanel3.TabIndex = 5;
             // 
             // lblTotalRemainedAmount
             // 
@@ -499,12 +499,12 @@
             pnlCardsPeriod.Controls.Add(rbThisMonth);
             pnlCardsPeriod.Controls.Add(rbAll);
             pnlCardsPeriod.Controls.Add(rbToday);
-            pnlCardsPeriod.CustomizableEdges = customizableEdges10;
+            pnlCardsPeriod.CustomizableEdges = customizableEdges3;
             pnlCardsPeriod.Location = new Point(1287, 81);
             pnlCardsPeriod.Name = "pnlCardsPeriod";
-            pnlCardsPeriod.ShadowDecoration.CustomizableEdges = customizableEdges11;
+            pnlCardsPeriod.ShadowDecoration.CustomizableEdges = customizableEdges4;
             pnlCardsPeriod.Size = new Size(272, 168);
-            pnlCardsPeriod.TabIndex = 4;
+            pnlCardsPeriod.TabIndex = 1;
             pnlCardsPeriod.UseTransparentBackground = true;
             // 
             // rbThisWeek
@@ -513,7 +513,7 @@
             rbThisWeek.Location = new Point(137, 51);
             rbThisWeek.Name = "rbThisWeek";
             rbThisWeek.Size = new Size(129, 32);
-            rbThisWeek.TabIndex = 7;
+            rbThisWeek.TabIndex = 1;
             rbThisWeek.Text = "هذا الأسبوع";
             rbThisWeek.UseVisualStyleBackColor = true;
             rbThisWeek.CheckedChanged += RadioButtonsDateTimeFiltering_CheckedChanged;
@@ -524,7 +524,7 @@
             rbThisMonth.Location = new Point(153, 89);
             rbThisMonth.Name = "rbThisMonth";
             rbThisMonth.Size = new Size(113, 32);
-            rbThisMonth.TabIndex = 6;
+            rbThisMonth.TabIndex = 2;
             rbThisMonth.Text = "هذا الشهر";
             rbThisMonth.UseVisualStyleBackColor = true;
             rbThisMonth.CheckedChanged += RadioButtonsDateTimeFiltering_CheckedChanged;
@@ -535,7 +535,7 @@
             rbAll.Location = new Point(178, 124);
             rbAll.Name = "rbAll";
             rbAll.Size = new Size(88, 32);
-            rbAll.TabIndex = 5;
+            rbAll.TabIndex = 3;
             rbAll.Text = "الجميع";
             rbAll.UseVisualStyleBackColor = true;
             rbAll.CheckedChanged += RadioButtonsDateTimeFiltering_CheckedChanged;
@@ -547,7 +547,7 @@
             rbToday.Location = new Point(192, 13);
             rbToday.Name = "rbToday";
             rbToday.Size = new Size(74, 32);
-            rbToday.TabIndex = 4;
+            rbToday.TabIndex = 0;
             rbToday.TabStop = true;
             rbToday.Text = "اليوم";
             rbToday.UseVisualStyleBackColor = true;
@@ -566,9 +566,9 @@
             btnAddVisit.Location = new Point(1473, 492);
             btnAddVisit.Name = "btnAddVisit";
             btnAddVisit.PressedState.ImageSize = new Size(64, 64);
-            btnAddVisit.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnAddVisit.ShadowDecoration.CustomizableEdges = customizableEdges5;
             btnAddVisit.Size = new Size(80, 68);
-            btnAddVisit.TabIndex = 15;
+            btnAddVisit.TabIndex = 6;
             btnAddVisit.UseTransparentBackground = true;
             btnAddVisit.Click += btnAddVisit_Click;
             // 
@@ -580,7 +580,7 @@
             dateTimePicker.BorderColor = Color.White;
             dateTimePicker.BorderRadius = 21;
             dateTimePicker.Checked = true;
-            dateTimePicker.CustomizableEdges = customizableEdges13;
+            dateTimePicker.CustomizableEdges = customizableEdges6;
             dateTimePicker.FillColor = Color.White;
             dateTimePicker.FocusedColor = Color.White;
             dateTimePicker.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -594,10 +594,10 @@
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.RightToLeft = RightToLeft.No;
             dateTimePicker.ShadowDecoration.BorderRadius = 30;
-            dateTimePicker.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            dateTimePicker.ShadowDecoration.CustomizableEdges = customizableEdges7;
             dateTimePicker.ShadowDecoration.Shadow = new Padding(0);
             dateTimePicker.Size = new Size(301, 45);
-            dateTimePicker.TabIndex = 16;
+            dateTimePicker.TabIndex = 7;
             dateTimePicker.TextAlign = HorizontalAlignment.Center;
             dateTimePicker.Value = new DateTime(2026, 7, 17, 17, 48, 32, 351);
             dateTimePicker.ValueChanged += dateTimePicker_ValueChanged;
@@ -621,7 +621,7 @@
             btnRefresh.Location = new Point(3, 3);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(47, 49);
-            btnRefresh.TabIndex = 19;
+            btnRefresh.TabIndex = 0;
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 

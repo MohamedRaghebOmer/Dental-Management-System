@@ -5,14 +5,12 @@ namespace Dental.Application.DTOs.Patient;
 
 public sealed record PatientResponseDto(
     int id,
-    string firstName,
-    string lastName,
+    string FirstName,
+    string LastName,
     string fullName,
-    DateOnly? birthDate,
-    int? age,
-    Gender gender,
-    string? phoneNumber,
-    string? address)
+    int Age,
+    Gender Gender,
+    string? PhoneNumber)
     : IResponseDto<Domain.Entities.Patient, PatientResponseDto>
 {
     public PatientResponseDto(Domain.Entities.Patient entity)
@@ -21,11 +19,9 @@ public sealed record PatientResponseDto(
         entity.FirstName.Value,
         entity.LastName.Value,
         entity.FullName,
-        entity.DateOfBirth?.Value,
         entity.Age,
         entity.Gender,
-        entity.PhoneNumber?.Value,
-        entity.Address)
+        entity.PhoneNumber?.Value)
     { }
 
     public static PatientResponseDto ToResponseDto(Domain.Entities.Patient entity)
