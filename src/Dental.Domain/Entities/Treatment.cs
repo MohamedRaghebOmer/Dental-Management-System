@@ -2,7 +2,6 @@
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
-using System.Net.Http.Headers;
 
 namespace Dental.Domain.Entities;
 

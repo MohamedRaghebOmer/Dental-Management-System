@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dental.Domain.Errors;
+﻿using Dental.Domain.Errors;
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
@@ -43,11 +42,11 @@ public sealed class Material : Entity
     public Supplier? Supplier { get; private set; } = null;
 
     public static Result<Material> Create(
-        string name, 
-        Id? supplierId, 
-        int reorderLevel, 
-        string? description, 
-        int quantity, 
+        string name,
+        Id? supplierId,
+        int reorderLevel,
+        string? description,
+        int quantity,
         decimal buyingPrice)
     {
         var validationResult = Validate(
@@ -62,11 +61,11 @@ public sealed class Material : Entity
         }
 
         return new Material(
-            name.Trim(), 
-            supplierId, 
-            reorderLevel, 
-            description?.Trim(), 
-            quantity, 
+            name.Trim(),
+            supplierId,
+            reorderLevel,
+            description?.Trim(),
+            quantity,
             buyingPrice);
     }
 
@@ -100,10 +99,10 @@ public sealed class Material : Entity
     }
 
     private static Result Validate(
-        string name, 
-        int reorderLevel, 
-        string? description, 
-        int quantity, 
+        string name,
+        int reorderLevel,
+        string? description,
+        int quantity,
         decimal buyingPrice)
     {
         if (string.IsNullOrWhiteSpace(name))

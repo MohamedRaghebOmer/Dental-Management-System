@@ -13,14 +13,13 @@ public sealed record PatientRequestDto()
     [StringLength(Domain.ValueObjects.LastName.MaxLength)]
     public required string LastName { get; init; }
 
-    public DateOnly? DateOfBirth { get; init; }
+    [Required]
+    public required int Age { get; init; }
 
     [Required]
     public required Gender Gender { get; init; }
 
     [StringLength(Domain.ValueObjects.PhoneNumber.Length)]
+    [DataType(DataType.PhoneNumber)]
     public string? PhoneNumber { get; init; }
-
-    [StringLength(Domain.Entities.Patient.Constants.AddressMaxLength)]
-    public string? Address { get; init; }
 }

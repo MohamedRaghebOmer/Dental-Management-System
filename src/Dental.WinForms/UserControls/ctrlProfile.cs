@@ -80,7 +80,7 @@ public partial class ctrlProfile : UserControl
         try
         {
             pbDoctorPicture.Image = Image.FromFile(
-                existingValuesResult.PicturePath?? string.Empty);
+                existingValuesResult.PicturePath ?? string.Empty);
         }
         catch
         {

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 
-public class PatientService 
+public class PatientService
     : ServiceBase<Patient, PatientResponseDto>
     , IPatientService
 {
@@ -80,10 +80,9 @@ public class PatientService
         var updateResult = patient.Update(
             buildEntityResult.Value.FirstName,
             buildEntityResult.Value.LastName,
-            buildEntityResult.Value.DateOfBirth,
+            buildEntityResult.Value.Age,
             dto.Gender,
-            buildEntityResult.Value.PhoneNumber,
-            dto.Address);
+            buildEntityResult.Value.PhoneNumber);
 
         if (updateResult.IsFailure)
         {
@@ -113,19 +112,6 @@ public class PatientService
             return Result.Failure<Patient>(lastNameResult.Error);
         }
 
-        DateOfBirth? dateOfBirth = null;
-        if (dto.DateOfBirth is not null)
-        {
-            var dateOfBirthResult = DateOfBirth.Create(dto.DateOfBirth.Value);
-            if (dateOfBirthResult.IsFailure)
-            {
-                _logger.LogWarning("Failed to create patient due to invalid date of birth. {DateOfBirth}", dto.DateOfBirth);
-                return Result.Failure<Patient>(dateOfBirthResult.Error);
-            }
-
-            dateOfBirth = dateOfBirthResult.Value;
-        }
-
         PhoneNumber? phoneNumber = null;
         if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
         {
@@ -143,10 +129,9 @@ public class PatientService
         var patientResult = Patient.Create(
             firstNameResult.Value,
             lastNameResult.Value,
-            dateOfBirth,
+            dto.Age,
             dto.Gender,
-            phoneNumber,
-            dto.Address);
+            phoneNumber);
 
         if (patientResult.IsFailure)
         {

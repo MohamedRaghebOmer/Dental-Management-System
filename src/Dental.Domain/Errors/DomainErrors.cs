@@ -110,7 +110,7 @@ public static class DomainErrors
                 public static readonly Error DuplicateTreatmentForTheSameTooth = new(
                     "Treatment.DuplicateTreatmentForTheSameTooth",
                     "A treatment with the same ID already exists for the same tooth in this visit.");
-                
+
                 public static readonly Error NotFound = new(
                     "Treatment.NotFound",
                     "Treatment not found");
@@ -125,6 +125,13 @@ public static class DomainErrors
                 public static readonly Error AlreadyExists = new(
                     "Prescription.AlreadyExists",
                     "There is already a prescription added for this visit.");
+            }
+
+            public static class PatientName
+            {
+                public static readonly Error TooLong = new(
+                    "PatientName.TooLong",
+                    $"Patient name can not exceed {Domain.Entities.Visit.Constants.PatientNameMaxLength} character length.");
             }
         }
 
@@ -169,6 +176,20 @@ public static class DomainErrors
                     "Instructions.TooLong",
                     $"The instructions cannot be longer than {Domain.Entities.PrescriptionItem.Constants.InstructionsMaxLength} characters."
                 );
+            }
+        }
+
+        public static class Patient
+        {
+            public static class Age
+            {
+                public static readonly Error LessThanMinimumAllowedAge = new(
+                    "Age.LessThanMinimumAllowedAge",
+                    $"Age must be greater than or equal to{Domain.Entities.Patient.Constants.MinimumAllowedAge}");
+
+                public static readonly Error GreaterThanMaximumAllowedAge = new(
+                    "Age.GreaterThanMaximumAllowedAge",
+                    $"Age must less than or equal to{Domain.Entities.Patient.Constants.MaximumAllowedAge}");
             }
         }
 
@@ -329,18 +350,6 @@ public static class DomainErrors
             public static readonly Error TooLong = new(
                 "LastName.TooLong",
                 $"The last name cannot be longer than {Domain.Entities.Patient.Constants.LastNameMaxLength} characters."
-            );
-        }
-
-        public static class DateOfBirth
-        {
-            public static readonly Error LessThanMinimumAllowedAge = new(
-                "DateOfBirth.LessThanMinimumAllowedAge",
-                $"The date of birth cannot be less than {Domain.ValueObjects.DateOfBirth.MinimumAge} years.");
-
-            public static readonly Error OlderThanMaximumAllowedAge = new(
-                "DateOfBirth.OlderThanMaximumAllowedAge",
-                $"The date of birth cannot be longer than {Domain.ValueObjects.DateOfBirth.MaximumAge} years."
             );
         }
 

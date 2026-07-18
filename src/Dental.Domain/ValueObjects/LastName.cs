@@ -21,6 +21,8 @@ public sealed record LastName : ValueObject
             return Result.Failure<LastName>(DomainErrors.ValueObjects.LastName.Empty);
         }
 
+        value = value.Trim();
+
         if (value.Length > MaxLength)
         {
             return Result.Failure<LastName>(DomainErrors.ValueObjects.LastName.TooLong);

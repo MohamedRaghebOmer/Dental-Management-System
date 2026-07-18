@@ -46,7 +46,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(label1);
+            MaximizeBox = false;
             Name = "frmAddEditTreatment";
+            ShowIcon = false;
+            ShowInTaskbar = false;
             Text = "frmAddEditTreatment";
             ResumeLayout(false);
             PerformLayout();

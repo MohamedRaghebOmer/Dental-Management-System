@@ -7,6 +7,9 @@ public sealed record VisitRequestDto
     [Range(1, int.MaxValue)]
     public int? AppointmentId { get; init; }
 
+    [StringLength(Domain.Entities.Visit.Constants.PatientNameMaxLength)]
+    public string? PatientName { get; init; }
+
     [Required]
     [Range(0, double.MaxValue)]
     [DataType(DataType.Currency)]

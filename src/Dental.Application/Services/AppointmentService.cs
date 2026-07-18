@@ -68,7 +68,7 @@ public class AppointmentService
         if (createIdResult.IsFailure)
         {
             _logger.LogWarning(
-                "Failed to update appointment: Invalid appointment ID. {Id} {Error}", 
+                "Failed to update appointment: Invalid appointment ID. {Id} {Error}",
                 appointmentId, createIdResult.Error);
             return Result.Failure<Appointment>(ServiceErrors.InvalidId);
         }
@@ -163,7 +163,7 @@ public class AppointmentService
         if (createIdResult.IsFailure)
         {
             _logger.LogWarning(
-                "Failed to cancel appointment: Invalid appointment ID. {Id} {Error}", 
+                "Failed to cancel appointment: Invalid appointment ID. {Id} {Error}",
                     id, createIdResult.Error);
             return Result.Failure(createIdResult.Error);
         }

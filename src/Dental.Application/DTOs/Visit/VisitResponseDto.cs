@@ -1,11 +1,11 @@
 ﻿using Dental.Application.Abstractions;
-using Dental.Domain.ValueObjects;
 
 namespace Dental.Application.DTOs.Visit;
 
 public sealed record VisitResponseDto(
     int Id,
     int? AppointmentId,
+    string? PatientName,
     decimal PaidAmount,
     decimal DiscountAmount,
     DateTime VisitDateTime,
@@ -17,6 +17,7 @@ public sealed record VisitResponseDto(
         return new VisitResponseDto(
             Id: entity.Id.Value,
             AppointmentId: entity.AppointmentId?.Value,
+            PatientName: entity.PatientName,
             PaidAmount: entity.PaidAmount.Value,
             DiscountAmount: entity.DiscountAmount.Value,
             VisitDateTime: entity.VisitDateTime,

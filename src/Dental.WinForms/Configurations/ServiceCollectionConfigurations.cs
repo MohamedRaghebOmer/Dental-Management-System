@@ -17,7 +17,7 @@ public static class ServiceCollectionConfigurations
                 Path.Combine(DataStoragePaths.LogsFolderPath, "log-.txt"),
                 rollingInterval: RollingInterval.Day,
                 retainedFileCountLimit: 30,
-                outputTemplate: 
+                outputTemplate:
                 "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
             .CreateLogger();
 

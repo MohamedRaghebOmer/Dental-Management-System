@@ -22,6 +22,8 @@ public static class DependencyInjection
         services.AddTransient<frmMain>();
         services.AddTransient<frmAddUpdateVisit>();
         services.AddTransient<frmAddEditTreatment>();
+        services.AddTransient<frmAddEditAppointment>();
+        services.AddTransient<frmAddEditPatient>();
 
         return services;
     }

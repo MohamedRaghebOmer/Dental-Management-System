@@ -29,6 +29,8 @@ public static class DependencyInjection
 
         // Dental.Application.ViewsStuff
         services.AddScoped<IVisitToothTreatmentsViewService, VisitToothTreatmentsViewService>();
+        services.AddScoped<IVisitViewService, VisitViewService>();
+        services.AddScoped<IVisitSummaryService, VisitSummaryService>();
 
         return services;
     }

@@ -4,7 +4,6 @@ using Dental.Infrastructure.Persistence;
 using Dental.Infrastructure.Repositories;
 using Dental.Infrastructure.Repositories.Views;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dental.Infrastructure;
@@ -20,6 +19,8 @@ public static class DependencyInjection
                 string.Concat(
                     "Data Source=",
                     Constants.DataStoragePaths.DatabaseFilePath));
+
+            options.AddInterceptors(new LoggingInterceptor());
         });
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -33,6 +34,8 @@ public static class DependencyInjection
         services.AddScoped<IDentalInfoRepository, DentalInfoRepository>();
         services.AddScoped<IVisitRepository, VisitRepository>();
         services.AddScoped<IPatientRepository, PatientRepository>();
+        services.AddScoped<IVisitViewRepository, VisitViewRepository>();
+        services.AddScoped<IVisitSummaryRepository, VisitSummaryRepository>();
 
         return services;
     }

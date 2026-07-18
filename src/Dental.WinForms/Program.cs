@@ -27,7 +27,6 @@ internal static class Program
                 .Build();
 
             var services = new ServiceCollection();
-
             services
                 .AddInfrastructure()
                 .AddApplication()
@@ -35,7 +34,6 @@ internal static class Program
                 .ConfigureSerilog(configuration);
 
             CreateApplicationDataFolder();
-
 
             ServiceProvider provider = services.BuildServiceProvider();
             System.Windows.Forms.Application.Run(provider.GetRequiredService<frmMain>());
@@ -52,7 +50,7 @@ internal static class Program
 
     private static void CreateApplicationDataFolder()
     {
-        if(!Directory.Exists(DataStoragePaths.BasePath))
+        if (!Directory.Exists(DataStoragePaths.BasePath))
         {
             Directory.CreateDirectory(DataStoragePaths.BasePath);
         }

@@ -38,8 +38,8 @@ public sealed class VisitRepository
         CancellationToken cancellationToken = default)
     {
         IQueryable<Visit> query = _dbContext.Visits;
-        
-        if(asNoTracking) 
+
+        if (asNoTracking)
             query = query.AsNoTracking();
 
         return query
@@ -106,7 +106,7 @@ public sealed class VisitRepository
         CancellationToken cancellationToken = default)
     {
         _dbContext.ChangeTracker.Clear();
-        
+
         return _dbContext.VisitTreatments
             .Where(vt => vt.VisitId == visitId)
             .ExecuteDeleteAsync(cancellationToken);

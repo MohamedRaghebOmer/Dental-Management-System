@@ -9,9 +9,8 @@ public class FormFactory : IFormFactory
     private readonly IServiceProvider _serviceProvider;
 
     public FormFactory(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
+       => _serviceProvider = serviceProvider;
+
 
     public frmAddUpdateVisit Create_frmAddUpdateVisit()
     {
@@ -43,5 +42,28 @@ public class FormFactory : IFormFactory
     public frmAddEditPrescription Create_frmAddEditPrescription(int visitId)
     {
         return ActivatorUtilities.CreateInstance<frmAddEditPrescription>(_serviceProvider, visitId);
+    }
+
+
+    public frmAddEditAppointment Create_frmAddEditAppointment()
+    {
+        return _serviceProvider.GetRequiredService<frmAddEditAppointment>();
+    }
+
+    public frmAddEditAppointment Create_frmAddEditAppointment(int appointmentId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditAppointment>
+            (_serviceProvider, appointmentId);
+    }
+
+    public frmAddEditPatient Create_frmAddEditPatient()
+    {
+        return _serviceProvider.GetRequiredService<frmAddEditPatient>();
+    }
+
+    public frmAddEditPatient Create_frmAddEditPatient(int patientId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditPatient>
+            (_serviceProvider, patientId);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Dental.Domain.Errors;
+﻿using Dental.Domain.Errors;
 using Dental.Domain.Primitives;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
@@ -8,7 +7,7 @@ namespace Dental.Domain.Entities;
 
 public sealed class DentalInfo : Entity
 {
-    private DentalInfo(){} // EF Core
+    private DentalInfo() { } // EF Core
 
     private DentalInfo(
         Id id,
@@ -47,7 +46,7 @@ public sealed class DentalInfo : Entity
     public string? DoctorName { get; private set; }
     public string? DentalDescription { get; private set; }
     public string? PhoneNumber { get; private set; }
-    public string? PicturePath{ get; private set; }
+    public string? PicturePath { get; private set; }
 
     public static Result<DentalInfo> Create(
         string? doctorName,

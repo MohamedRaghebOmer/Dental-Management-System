@@ -1,7 +1,4 @@
 ﻿using Dental.Application.Abstractions.ServicesInterfaces;
-using Dental.Domain.Repositories;
-using Dental.Infrastructure.Repositories;
-using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
 

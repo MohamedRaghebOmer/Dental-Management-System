@@ -1,9 +1,15 @@
-﻿namespace Dental.WinForms.Views;
+﻿using Dental.WinForms.Abstractions;
+
+namespace Dental.WinForms.Views;
 
 public partial class MainMenuView : UserControl
 {
-    public MainMenuView()
+    private readonly IFormFactory _formFactory;
+
+    public MainMenuView(
+        IFormFactory formFactory)
     {
         InitializeComponent();
+        _formFactory = formFactory;
     }
 }

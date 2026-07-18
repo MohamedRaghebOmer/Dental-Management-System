@@ -17,18 +17,27 @@ public sealed class PatientConfiguration
         AddConstraints(builder);
         AddComments(builder);
         ConfigureIgnoredFields(builder);
+        ConfigureIndexes(builder);
+    }
+
+    private static void ConfigureIndexes(EntityTypeBuilder<Patient> builder)
+    {
+        builder.HasIndex(p => p.FirstName)
+            .HasDatabaseName("IX_Patients_FirstName");
+
+        builder.HasIndex(p => p.LastName)
+            .HasDatabaseName("IX_Patients_LastName");
     }
 
     private static void ConfigureIgnoredFields(EntityTypeBuilder<Patient> builder)
     {
         builder.Ignore(x => x.FullName);
-        builder.Ignore(x => x.Age);
     }
 
     private static void AddComments(EntityTypeBuilder<Patient> builder)
     {
         builder.Property(x => x.Gender)
-            .HasComment("Male = 1, Female = 2");
+            .HasComment("Male = 0, Female = 1");
     }
 
     private static void AddConstraints(EntityTypeBuilder<Patient> builder)
@@ -37,12 +46,17 @@ public sealed class PatientConfiguration
         {
             table.HasCheckConstraint(
                 "CK_Patients_Gender",
-                @"Gender IN (1, 2)"
+                @"Gender IN (0, 1)"
             );
 
             table.HasCheckConstraint(
-                "CK_Patients_PhoneNumberLengthEqualTo11",
-                "length(PhoneNumber) = 11");
+                "CK_Patients_PhoneNumberLength",
+                $"length(PhoneNumber) = {Patient.Constants.PhoneNumberLength}");
+
+            table.HasCheckConstraint(
+                "CK_Patients_AgeRange",
+                $"Age BETWEEN {Patient.Constants.MinimumAllowedAge} AND {Patient.Constants.MaximumAllowedAge}"
+            );
         });
     }
 
@@ -64,12 +78,9 @@ public sealed class PatientConfiguration
             .HasMaxLength(Patient.Constants.LastNameMaxLength)
             .IsRequired();
 
-        builder.Property(x => x.DateOfBirth)
-            .HasConversion(
-                value => value == null ? (DateOnly?)null : value.Value,
-                value => value == null ? null : DateOfBirth.FromDatabase(value.Value))
-            .HasColumnName(nameof(Patient.DateOfBirth))
-            .IsRequired(false);
+        builder.Property(p => p.Age)
+            .HasColumnName(nameof(Patient.Age))
+            .IsRequired();
 
         builder.Property(x => x.Gender)
             .HasConversion<byte>()
@@ -83,11 +94,6 @@ public sealed class PatientConfiguration
                 value => value == null ? null : PhoneNumber.FromDatabase(value))
             .HasColumnName(nameof(Patient.PhoneNumber))
             .HasMaxLength(Patient.Constants.PhoneNumberLength)
-            .IsRequired(false);
-
-        builder.Property(x => x.Address)
-            .HasColumnName(nameof(Patient.Address))
-            .HasMaxLength(Patient.Constants.AddressMaxLength)
             .IsRequired(false);
     }
 }

@@ -43,6 +43,9 @@ public sealed class VisitConfiguration
         builder.HasIndex(p => p.VisitDateTime)
             .HasDatabaseName("UX_Visits_VisitDateTime")
             .IsUnique(true);
+
+        builder.HasIndex(p => p.PatientName)
+            .HasDatabaseName("UX_Visits_PatientName");
     }
 
     private void ConfigureForeignKeys(EntityTypeBuilder<Visit> builder)
@@ -66,6 +69,10 @@ public sealed class VisitConfiguration
                 value => value == null ? null : Id.FromDatabase(value.Value))
             .HasColumnName(nameof(Visit.AppointmentId))
             .IsRequired(false);
+
+        builder.Property(p => p.PatientName)
+            .HasColumnName(nameof(Visit.PatientName))
+            .HasMaxLength(Visit.Constants.PatientNameMaxLength);
 
         builder.Property((p => p.PaidAmount))
             .HasConversion(

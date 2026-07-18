@@ -9,7 +9,7 @@ public interface ITreatmentRepository
     Task<bool> ExistsByNameAsync(
         string name,
         Id? excludedId = null,
-        CancellationToken  cancellationToken = default);
+        CancellationToken cancellationToken = default);
 
     Task<Money?> GetPriceByIdAsync(
         Id id,

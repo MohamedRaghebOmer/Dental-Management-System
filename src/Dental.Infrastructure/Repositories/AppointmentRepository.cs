@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public sealed class AppointmentRepository(DentalDbContext _dbContext) 
-    : Repository<Appointment>(_dbContext), 
+public sealed class AppointmentRepository(DentalDbContext _dbContext)
+    : Repository<Appointment>(_dbContext),
     IAppointmentRepository
 {
     public Task<bool> ExistsByScheduleVisitDateTimeAsync(

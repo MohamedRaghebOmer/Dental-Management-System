@@ -1,5 +1,4 @@
 ﻿using Dental.Domain.Entities;
-using Dental.Domain.Errors;
 using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -67,8 +66,8 @@ public sealed class MaterialConfiguration
 
         builder.Property(m => m.SupplierId)
             .HasConversion(
-                value => value == null? (int?)null : value.Value,
-                value => value == null? null : Id.FromDatabase(value.Value))
+                value => value == null ? (int?)null : value.Value,
+                value => value == null ? null : Id.FromDatabase(value.Value))
             .HasColumnName(nameof(Material.SupplierId))
             .IsRequired(false);
 

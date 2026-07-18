@@ -16,7 +16,7 @@ namespace Dental.Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
 
             modelBuilder.Entity("Dental.Domain.Entities.Appointment", b =>
                 {
@@ -170,14 +170,9 @@ namespace Dental.Infrastructure.Migrations
 
                     SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Address");
-
-                    b.Property<DateOnly?>("DateOfBirth")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("DateOfBirth");
+                    b.Property<int>("Age")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("Age");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -188,7 +183,7 @@ namespace Dental.Infrastructure.Migrations
                     b.Property<byte>("Gender")
                         .HasColumnType("TINYINT")
                         .HasColumnName("Gender")
-                        .HasComment("Male = 1, Female = 2");
+                        .HasComment("Male = 0, Female = 1");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -203,11 +198,19 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FirstName")
+                        .HasDatabaseName("IX_Patients_FirstName");
+
+                    b.HasIndex("LastName")
+                        .HasDatabaseName("IX_Patients_LastName");
+
                     b.ToTable("Patients", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Patients_Gender", "Gender IN (1, 2)");
+                            t.HasCheckConstraint("CK_Patients_AgeRange", "Age BETWEEN 0 AND 99");
 
-                            t.HasCheckConstraint("CK_Patients_PhoneNumberLengthEqualTo11", "length(PhoneNumber) = 11");
+                            t.HasCheckConstraint("CK_Patients_Gender", "Gender IN (0, 1)");
+
+                            t.HasCheckConstraint("CK_Patients_PhoneNumberLength", "length(PhoneNumber) = 11");
                         });
                 });
 
@@ -451,6 +454,11 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("PaidAmount");
 
+                    b.Property<string>("PatientName")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("PatientName");
+
                     b.Property<DateTime>("VisitDateTime")
                         .HasColumnType("TEXT")
                         .HasColumnName("VisitDateTime");
@@ -461,6 +469,9 @@ namespace Dental.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UX_Visits_AppointmentId")
                         .HasFilter("[AppointmentId] IS NOT NULL");
+
+                    b.HasIndex("PatientName")
+                        .HasDatabaseName("UX_Visits_PatientName");
 
                     b.HasIndex("VisitDateTime")
                         .IsUnique()
@@ -508,7 +519,8 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasIndex("TreatmentId");
 
-                    b.HasIndex("VisitId");
+                    b.HasIndex("VisitId")
+                        .HasDatabaseName("IX_VisitTreatments_VisitId");
 
                     b.HasIndex("ToothNumber", "VisitId", "TreatmentId")
                         .IsUnique()
