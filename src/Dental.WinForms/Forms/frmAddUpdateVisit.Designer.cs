@@ -125,7 +125,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             label2.Location = new Point(732, 607);
             label2.Name = "label2";
             label2.Size = new Size(141, 31);
@@ -180,7 +180,7 @@
             txtAppointmentId.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
             txtAppointmentId.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtAppointmentId.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtAppointmentId.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtAppointmentId.Font = new Font("Segoe UI", 10.2F);
             txtAppointmentId.ForeColor = Color.Black;
             txtAppointmentId.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtAppointmentId.Location = new Point(890, 130);
@@ -206,7 +206,7 @@
             txtDiscountAmount.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
             txtDiscountAmount.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtDiscountAmount.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtDiscountAmount.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtDiscountAmount.Font = new Font("Segoe UI", 10.2F);
             txtDiscountAmount.ForeColor = Color.Black;
             txtDiscountAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtDiscountAmount.Location = new Point(890, 290);
@@ -232,7 +232,7 @@
             txtPaidAmount.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
             txtPaidAmount.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtPaidAmount.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPaidAmount.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPaidAmount.Font = new Font("Segoe UI", 10.2F);
             txtPaidAmount.ForeColor = Color.Black;
             txtPaidAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtPaidAmount.Location = new Point(890, 234);
@@ -250,7 +250,7 @@
             // lblTitile
             // 
             lblTitile.AutoSize = true;
-            lblTitile.Font = new Font("Segoe UI", 36F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitile.Font = new Font("Segoe UI", 36F, FontStyle.Bold);
             lblTitile.ForeColor = Color.FromArgb(100, 88, 255);
             lblTitile.Location = new Point(636, 9);
             lblTitile.Name = "lblTitile";
@@ -402,7 +402,7 @@
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnSave.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnSave.FillColor = Color.Orange;
-            btnSave.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSave.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             btnSave.ForeColor = Color.DimGray;
             btnSave.HoverState.FillColor = Color.DarkOrange;
             btnSave.Location = new Point(643, 917);
@@ -417,7 +417,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             label8.Location = new Point(1352, 655);
             label8.Name = "label8";
             label8.Size = new Size(91, 28);
@@ -427,7 +427,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label9.Font = new Font("Segoe UI", 10.2F);
             label9.Location = new Point(858, 658);
             label9.Name = "label9";
             label9.Size = new Size(496, 23);
@@ -446,7 +446,7 @@
             txtRemainingAmount.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtRemainingAmount.Enabled = false;
             txtRemainingAmount.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtRemainingAmount.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtRemainingAmount.Font = new Font("Segoe UI", 10.2F);
             txtRemainingAmount.ForeColor = Color.Black;
             txtRemainingAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtRemainingAmount.Location = new Point(890, 346);
@@ -533,7 +533,7 @@
             txtPatientName.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
             txtPatientName.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtPatientName.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPatientName.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPatientName.Font = new Font("Segoe UI", 10.2F);
             txtPatientName.ForeColor = Color.Black;
             txtPatientName.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtPatientName.Location = new Point(890, 180);
@@ -576,7 +576,7 @@
             Controls.Add(label3);
             Controls.Add(pictureBox1);
             Controls.Add(label1);
-            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Font = new Font("Segoe UI", 12F);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4);
             MaximizeBox = false;

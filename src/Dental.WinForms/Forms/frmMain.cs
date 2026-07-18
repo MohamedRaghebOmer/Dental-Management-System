@@ -1,4 +1,5 @@
 ﻿using Dental.Infrastructure.Constants;
+using Dental.WinForms.Abstractions;
 using Dental.WinForms.Views;
 using Guna.UI2.WinForms;
 using System.Diagnostics;
@@ -10,11 +11,13 @@ public partial class frmMain : Form
 {
     private readonly MainMenuView _mainMenuView = default!;
     private readonly VisitView _VisitView = default!;
+    private readonly IFormFactory _formFactory;
     private Guna2Button? _selectedButton;
 
     public frmMain(
         MainMenuView mainMenuView,
-        VisitView visitView)
+        VisitView visitView,
+        IFormFactory formFactory)
     {
         InitializeComponent();
 
@@ -22,6 +25,7 @@ public partial class frmMain : Form
         _VisitView = visitView;
 
         btnMainMenu_Click(null!, null!);
+        _formFactory = formFactory;
     }
 
     private void ShowView(UserControl view)
@@ -70,5 +74,20 @@ public partial class frmMain : Form
             FileName = DataStoragePaths.LogsFolderPath,
             UseShellExecute = true
         });
+    }
+
+    private async void button2_Click(object sender, EventArgs e)
+    {
+        if (int.TryParse(textBox1.Text, out int value))
+        {
+            using var frm = _formFactory.Create_frmAddEditAppointment(value);
+            await frm.ShowAsync();
+        }
+    }
+
+    private async void button1_Click(object sender, EventArgs e)
+    {
+        using var frm = _formFactory.Create_frmAddEditAppointment();
+        await frm.ShowAsync();
     }
 }
