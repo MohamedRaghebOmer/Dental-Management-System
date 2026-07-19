@@ -77,16 +77,18 @@ public sealed class Appointment : Entity
             return Result.Failure(DomainErrors.Entities.Appointment.ScheduledVisitDateTime.InThePast);
         }
 
-        if (Status != AppointmentStatus.Pending)
+        if (Status is not AppointmentStatus.Pending and AppointmentStatus.Missed)
         {
             if (scheduledVisitDateTime != this.ScheduledVisitDateTime)
             {
-                return Result.Failure(DomainErrors.Entities.Appointment.ScheduledVisitDateTime.CannotBeChangedWhenStatusIsNotPending);
+                return Result.Failure(DomainErrors.Entities.Appointment.ScheduledVisitDateTime
+                    .CannotBeChangedWhenStatusIsNotPendingOrMissed);
             }
 
             if (patientId != this.PatientId)
             {
-                return Result.Failure(DomainErrors.Entities.Appointment.PatientId.CannotBeChangedWhenStatusIsNotPending);
+                return Result.Failure(DomainErrors.Entities.Appointment.PatientId
+                    .CannotBeChangedWhenStatusIsNotPendingOrMissed);
             }
         }
 
@@ -97,9 +99,9 @@ public sealed class Appointment : Entity
             return Result.Failure(DomainErrors.Entities.Appointment.Notes.TooLong);
         }
 
-        this.PatientId = patientId;
-        this.ScheduledVisitDateTime = scheduledVisitDateTime;
-        this.Notes = notes;
+        PatientId = patientId;
+        ScheduledVisitDateTime = scheduledVisitDateTime;
+        Notes = notes;
 
         return Result.Success();
     }

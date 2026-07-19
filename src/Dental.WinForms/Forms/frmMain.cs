@@ -11,16 +11,19 @@ public partial class frmMain : Form
 {
     private readonly MainMenuView _mainMenuView = default!;
     private readonly VisitView _VisitView = default!;
+    private readonly PatientView _patientView = default!;
     private Guna2Button? _selectedButton;
 
     public frmMain(
         MainMenuView mainMenuView,
-        VisitView visitView)
+        VisitView visitView,
+        PatientView patientView)
     {
         InitializeComponent();
 
         _mainMenuView = mainMenuView;
         _VisitView = visitView;
+        _patientView = patientView;
 
         btnMainMenu_Click(null!, null!);
     }
@@ -64,12 +67,11 @@ public partial class frmMain : Form
         Cursor = Cursors.Default;
     }
 
-    private void btnHelp_Click(object sender, EventArgs e)
+    private void btnPatients_Click(object sender, EventArgs e)
     {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = DataStoragePaths.LogsFolderPath,
-            UseShellExecute = true
-        });
+        Cursor = Cursors.WaitCursor;
+        ShowView(_patientView);
+        SelectMenuButton(btnPatients);
+        Cursor = Cursors.Default;
     }
 }

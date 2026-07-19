@@ -42,7 +42,8 @@ public partial class frmAddEditPatient : Form
             if (!IsValidId())
                 return;
 
-            await LoadPatientInfo();
+            if (!await LoadPatientInfo())
+                Close();
         }
     }
 
@@ -63,10 +64,10 @@ public partial class frmAddEditPatient : Form
         return true;
     }
 
-    private async Task LoadPatientInfo()
+    private async Task<bool> LoadPatientInfo()
     {
         if (!_patientId.HasValue)
-            return;
+            return false;
 
         Cursor = Cursors.WaitCursor;
         var patientResult = await _patientService.GetByIdAsync(_patientId.Value);
@@ -75,7 +76,7 @@ public partial class frmAddEditPatient : Form
         if (patientResult.IsFailure)
         {
             HandelGetPatientError(patientResult.Error);
-            return;
+            return false;
         }
 
         txtFirstName.Text = patientResult.Value.FirstName;
@@ -92,6 +93,8 @@ public partial class frmAddEditPatient : Form
             rbFemale.Checked = true;
         }
         txtPhoneNumber.Text = patientResult.Value.PhoneNumber ?? string.Empty;
+
+        return true;
     }
 
     private void HandelGetPatientError(Error error)
@@ -103,11 +106,11 @@ public partial class frmAddEditPatient : Form
                 break;
 
             case "NotFound":
-                MessageBoxExtensions.ShowError($"المريض رقم غير موجود.");
+                MessageBoxExtensions.ShowError($"المريض رقم { _patientId } غير موجود.");
                 break;
 
             default:
-                MessageBoxExtensions.ShowError("حدث خطأ اثناء تحميل بيانات المريض.");
+                MessageBoxExtensions.ShowError("حدث خطأ أثناء تحميل بيانات المريض.");
                 break;
         }
     }

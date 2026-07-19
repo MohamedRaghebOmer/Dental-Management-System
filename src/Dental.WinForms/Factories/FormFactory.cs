@@ -52,9 +52,9 @@ public class FormFactory : IFormFactory
 
     public frmAddEditAppointment Create_frmAddEditAppointment(int appointmentId)
     {
-        return ActivatorUtilities.CreateInstance<frmAddEditAppointment>
-            (_serviceProvider, appointmentId);
+        return ActivatorUtilities.CreateInstance<frmAddEditAppointment>(_serviceProvider, appointmentId);
     }
+
 
     public frmAddEditPatient Create_frmAddEditPatient()
     {

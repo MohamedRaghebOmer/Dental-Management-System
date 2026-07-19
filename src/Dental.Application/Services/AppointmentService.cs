@@ -3,6 +3,7 @@ using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Appointment;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
+using Dental.Domain.Enums;
 using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
@@ -249,5 +250,28 @@ public class AppointmentService
             id, appointment.IsMissed());
 
         return Result.Success(appointment.IsMissed());
+    }
+
+    public async Task<Result<AppointmentStatus>> GetStatusAsync(
+        int id, 
+        CancellationToken cancellationToken = default)
+    {
+        var createIdResult = Id.Create(id);
+        if (createIdResult.IsFailure)
+        {
+            _logger.LogWarning(
+                "Failed to get appointment status: Invalid appointment ID. {Id} {Error}",
+                id, createIdResult.Error);
+            return Result.Failure<AppointmentStatus>(createIdResult.Error);
+        }
+
+        var status = await _repo.GetStatusAsync(createIdResult.Value, cancellationToken);
+        if (status != null) 
+            return Result.Success(status.Value);
+
+        _logger.LogWarning(
+            "Failed to get appointment status: Appointment not found. {AppointmentId}", id);
+        return Result.Failure<AppointmentStatus>(ServiceErrors.NotFound);
+
     }
 }

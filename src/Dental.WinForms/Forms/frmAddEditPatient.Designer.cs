@@ -51,7 +51,6 @@
             rbMale = new RadioButton();
             rbFemale = new RadioButton();
             txtAge = new Guna.UI2.WinForms.Guna2TextBox();
-            label2 = new Label();
             SuspendLayout();
             // 
             // txtLastName
@@ -254,21 +253,11 @@
             txtAge.TabIndex = 6;
             txtAge.KeyPress += txtAge_KeyPress;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(111, 143);
-            label2.Name = "label2";
-            label2.Size = new Size(65, 28);
-            label2.TabIndex = 13;
-            label2.Text = "label2";
-            // 
             // frmAddEditPatient
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(861, 497);
-            Controls.Add(label2);
             Controls.Add(txtAge);
             Controls.Add(rbFemale);
             Controls.Add(rbMale);
@@ -312,6 +301,5 @@
         private RadioButton rbMale;
         private RadioButton rbFemale;
         private Guna.UI2.WinForms.Guna2TextBox txtAge;
-        private Label label2;
     }
 }

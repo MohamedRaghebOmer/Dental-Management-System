@@ -371,6 +371,7 @@ namespace Dental.WinForms
             btnPatients.TabIndex = 4;
             btnPatients.Text = "المرضى";
             btnPatients.UseTransparentBackground = true;
+            btnPatients.Click += btnPatients_Click;
             // 
             // btnAppointments
             // 

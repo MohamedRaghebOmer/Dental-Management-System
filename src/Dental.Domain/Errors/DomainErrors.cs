@@ -38,16 +38,16 @@ public static class DomainErrors
                     "The appointment date cannot be in the past."
                 );
 
-                public static readonly Error CannotBeChangedWhenStatusIsNotPending = new(
-                    "Date.CannotBeChangedWhenStatusIsNotPending",
+                public static readonly Error CannotBeChangedWhenStatusIsNotPendingOrMissed = new(
+                    "Date.CannotBeChangedWhenStatusIsNotPendingOrMissed",
                     "The appointment date cannot be changed when the status is not pending."
                 );
             }
 
             public static class PatientId
             {
-                public static readonly Error CannotBeChangedWhenStatusIsNotPending = new(
-                    "PatientId.CannotBeChangedWhenStatusIsNotPending",
+                public static readonly Error CannotBeChangedWhenStatusIsNotPendingOrMissed = new(
+                    "PatientId.CannotBeChangedWhenStatusIsNotPendingOrMissed",
                     "The appointment patient ID cannot be changed when the status is not pending."
                 );
             }

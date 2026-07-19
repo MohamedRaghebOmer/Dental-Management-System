@@ -1,4 +1,5 @@
 ﻿using Dental.Domain.Entities;
+using Dental.Domain.Enums;
 using Dental.Domain.Repositories;
 using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Persistence;
@@ -18,5 +19,15 @@ public sealed class AppointmentRepository(DentalDbContext _dbContext)
         return _dbContext.Appointments.AnyAsync(
             a => a.ScheduledVisitDateTime == scheduledVisitDateTime && a.Id != excludedId,
             cancellationToken);
+    }
+
+    public Task<AppointmentStatus?> GetStatusAsync(
+        Id id, 
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Appointments
+            .Where(a => a.Id == id)
+            .Select(a => (AppointmentStatus?)a.Status)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 }

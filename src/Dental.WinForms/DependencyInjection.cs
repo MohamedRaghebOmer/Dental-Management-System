@@ -32,6 +32,7 @@ public static class DependencyInjection
     {
         services.AddTransient<MainMenuView>();
         services.AddTransient<VisitView>();
+        services.AddTransient<PatientView>();
 
         return services;
     }
