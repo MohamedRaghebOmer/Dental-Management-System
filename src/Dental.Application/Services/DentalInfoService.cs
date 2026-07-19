@@ -45,7 +45,7 @@ public sealed class DentalInfoService : IDentalInfoService
         if (existingEntity is null)
         {
             _logger.LogCritical("Entity Not found. {Id}", 1);
-            return Result.Failure<DentalInfoDto>(ServiceErrors.NotFound);
+            return Result.Failure<DentalInfoDto>(ServiceErrors.Common.NotFound);
         }
 
         var updatedResult = existingEntity.Update(
@@ -79,7 +79,7 @@ public sealed class DentalInfoService : IDentalInfoService
         if (entity is null)
         {
             _logger.LogCritical("Entity Not found. {Id}", 1);
-            return Result.Failure<DentalInfoDto>(ServiceErrors.NotFound);
+            return Result.Failure<DentalInfoDto>(ServiceErrors.Common.NotFound);
         }
 
         return Result.Success(new DentalInfoDto(

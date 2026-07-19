@@ -96,7 +96,7 @@ public partial class ctrlProfile : UserControl
 
     private static void HandleError(Result updateResult)
     {
-        if (updateResult.Error == ServiceErrors.NotFound)
+        if (updateResult.Error == ServiceErrors.Common.NotFound)
         {
             // this is unexpected, since the profile should always exist
             MessageBox.Show("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
@@ -104,7 +104,7 @@ public partial class ctrlProfile : UserControl
             return;
         }
 
-        if (updateResult.Error == ServiceErrors.InvalidId)
+        if (updateResult.Error == ServiceErrors.Common.InvalidId)
         {
             MessageBox.Show("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
                 "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);

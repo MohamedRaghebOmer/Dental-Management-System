@@ -93,7 +93,7 @@ public sealed class PrescriptionItemService : IPrescriptionItemService
         if (itemIdResult.IsFailure)
         {
             _logger.LogWarning("Invalid Id. {Id}", id);
-            return Result.Failure(ServiceErrors.InvalidId);
+            return Result.Failure(ServiceErrors.Common.InvalidId);
         }
 
         var medicineFrequencyResult = MedicineFrequency.Create(dto.MedicineFrequency, dto.PeriodFrequency);

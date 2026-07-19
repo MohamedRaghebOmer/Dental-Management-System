@@ -71,7 +71,7 @@ public class AppointmentService
             _logger.LogWarning(
                 "Failed to update appointment: Invalid appointment ID. {Id} {Error}",
                 appointmentId, createIdResult.Error);
-            return Result.Failure<Appointment>(ServiceErrors.InvalidId);
+            return Result.Failure<Appointment>(ServiceErrors.Common.InvalidId);
         }
 
         var validEntity = await BuildEntityAndValidateForeignKeys(
@@ -88,7 +88,7 @@ public class AppointmentService
         if (appointment == null)
         {
             _logger.LogWarning("Failed to update appointment: Appointment not found. {AppointmentId}", appointmentId);
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
         }
 
         // Update the appointment properties
@@ -173,7 +173,7 @@ public class AppointmentService
         if (appointment == null)
         {
             _logger.LogWarning("Failed to cancel appointment: Appointment not found. {AppointmentId}", id);
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
         }
 
         var cancelResult = appointment.Cancel();
@@ -208,7 +208,7 @@ public class AppointmentService
         if (appointment == null)
         {
             _logger.LogWarning("Failed to complete appointment: Appointment not found. {AppointmentId}", id);
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
         }
 
         var completeResult = appointment.Complete();
@@ -243,7 +243,7 @@ public class AppointmentService
         if (appointment == null)
         {
             _logger.LogWarning("Failed to check if appointment is missed: Appointment not found. {AppointmentId}", id);
-            return Result.Failure<bool>(ServiceErrors.NotFound);
+            return Result.Failure<bool>(ServiceErrors.Common.NotFound);
         }
 
         _logger.LogInformation("Appointment with ID {id} is {missed}.",
@@ -271,7 +271,7 @@ public class AppointmentService
 
         _logger.LogWarning(
             "Failed to get appointment status: Appointment not found. {AppointmentId}", id);
-        return Result.Failure<AppointmentStatus>(ServiceErrors.NotFound);
+        return Result.Failure<AppointmentStatus>(ServiceErrors.Common.NotFound);
 
     }
 }

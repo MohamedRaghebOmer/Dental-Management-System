@@ -72,7 +72,7 @@ public class TreatmentService
         if (treatment is null)
         {
             _logger.LogWarning("Treatment not found.");
-            return Result.Failure<Treatment>(ServiceErrors.NotFound);
+            return Result.Failure<Treatment>(ServiceErrors.Common.NotFound);
         }
 
         var updateResult = treatment.Update(dto.Name, updatedEntity.Value.Price, dto.Description);

@@ -14,6 +14,12 @@ public sealed class AppointmentConfiguration
     {
         base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
 
+        builder.HasAlternateKey(a => new
+        {
+            a.Id,
+            a.PatientId
+        });
+
         ConfigureForeignKeys(builder);
         ConfigureIndexes(builder);
         AddColumnsComments(builder);

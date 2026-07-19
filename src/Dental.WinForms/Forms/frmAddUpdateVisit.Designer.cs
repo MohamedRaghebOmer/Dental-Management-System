@@ -29,23 +29,20 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            label1 = new Label();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             pictureBox1 = new PictureBox();
             label3 = new Label();
             label4 = new Label();
@@ -54,7 +51,7 @@
             label5 = new Label();
             label6 = new Label();
             label7 = new Label();
-            txtAppointmentId = new Guna.UI2.WinForms.Guna2TextBox();
+            txtId = new Guna.UI2.WinForms.Guna2TextBox();
             txtDiscountAmount = new Guna.UI2.WinForms.Guna2TextBox();
             txtPaidAmount = new Guna.UI2.WinForms.Guna2TextBox();
             lblTitile = new Label();
@@ -76,21 +73,11 @@
             txtNotes = new RichTextBox();
             dateTimePicker = new DateTimePicker();
             timer = new System.Windows.Forms.Timer(components);
-            label12 = new Label();
-            txtPatientName = new Guna.UI2.WinForms.Guna2TextBox();
+            lblid = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
             SuspendLayout();
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(1275, 134);
-            label1.Name = "label1";
-            label1.Size = new Size(170, 28);
-            label1.TabIndex = 0;
-            label1.Text = "رقم الحجز (إن وُجد) :";
             // 
             // pictureBox1
             // 
@@ -145,7 +132,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(1303, 238);
+            label5.Location = new Point(1303, 219);
             label5.Name = "label5";
             label5.Size = new Size(142, 28);
             label5.TabIndex = 8;
@@ -154,7 +141,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(1253, 294);
+            label6.Location = new Point(1253, 275);
             label6.Name = "label6";
             label6.Size = new Size(192, 28);
             label6.TabIndex = 9;
@@ -163,43 +150,43 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(1154, 350);
+            label7.Location = new Point(1154, 332);
             label7.Name = "label7";
             label7.Size = new Size(291, 28);
             label7.TabIndex = 10;
             label7.Text = "القيه المتبقيه (دين علي المريض) :";
             // 
-            // txtAppointmentId
+            // txtId
             // 
-            txtAppointmentId.Animated = true;
-            txtAppointmentId.BorderRadius = 10;
-            txtAppointmentId.CustomizableEdges = customizableEdges1;
-            txtAppointmentId.DefaultText = "";
-            txtAppointmentId.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtAppointmentId.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtAppointmentId.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtAppointmentId.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtAppointmentId.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtAppointmentId.Font = new Font("Segoe UI", 10.2F);
-            txtAppointmentId.ForeColor = Color.Black;
-            txtAppointmentId.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtAppointmentId.Location = new Point(890, 130);
-            txtAppointmentId.Margin = new Padding(3, 5, 3, 5);
-            txtAppointmentId.MaxLength = 6;
-            txtAppointmentId.Name = "txtAppointmentId";
-            txtAppointmentId.PlaceholderText = "";
-            txtAppointmentId.RightToLeft = RightToLeft.Yes;
-            txtAppointmentId.SelectedText = "";
-            txtAppointmentId.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtAppointmentId.Size = new Size(249, 36);
-            txtAppointmentId.TabIndex = 0;
-            txtAppointmentId.KeyPress += txtAppointmentId_KeyPress;
+            txtId.Animated = true;
+            txtId.BorderRadius = 10;
+            txtId.CustomizableEdges = customizableEdges11;
+            txtId.DefaultText = "";
+            txtId.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtId.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtId.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtId.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            txtId.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtId.Font = new Font("Segoe UI", 10.2F);
+            txtId.ForeColor = Color.Black;
+            txtId.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtId.Location = new Point(890, 157);
+            txtId.Margin = new Padding(3, 5, 3, 5);
+            txtId.MaxLength = 6;
+            txtId.Name = "txtId";
+            txtId.PlaceholderText = "";
+            txtId.RightToLeft = RightToLeft.Yes;
+            txtId.SelectedText = "";
+            txtId.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            txtId.Size = new Size(249, 36);
+            txtId.TabIndex = 0;
+            txtId.KeyPress += txtIds_KeyPress;
             // 
             // txtDiscountAmount
             // 
             txtDiscountAmount.Animated = true;
             txtDiscountAmount.BorderRadius = 10;
-            txtDiscountAmount.CustomizableEdges = customizableEdges3;
+            txtDiscountAmount.CustomizableEdges = customizableEdges13;
             txtDiscountAmount.DefaultText = "";
             txtDiscountAmount.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtDiscountAmount.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -209,13 +196,13 @@
             txtDiscountAmount.Font = new Font("Segoe UI", 10.2F);
             txtDiscountAmount.ForeColor = Color.Black;
             txtDiscountAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtDiscountAmount.Location = new Point(890, 290);
+            txtDiscountAmount.Location = new Point(890, 271);
             txtDiscountAmount.Margin = new Padding(3, 5, 3, 5);
             txtDiscountAmount.MaxLength = 9;
             txtDiscountAmount.Name = "txtDiscountAmount";
             txtDiscountAmount.PlaceholderText = "";
             txtDiscountAmount.SelectedText = "";
-            txtDiscountAmount.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            txtDiscountAmount.ShadowDecoration.CustomizableEdges = customizableEdges14;
             txtDiscountAmount.Size = new Size(249, 36);
             txtDiscountAmount.TabIndex = 3;
             txtDiscountAmount.TextChanged += txtMoney_TextChanged;
@@ -225,7 +212,7 @@
             // 
             txtPaidAmount.Animated = true;
             txtPaidAmount.BorderRadius = 10;
-            txtPaidAmount.CustomizableEdges = customizableEdges5;
+            txtPaidAmount.CustomizableEdges = customizableEdges15;
             txtPaidAmount.DefaultText = "";
             txtPaidAmount.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtPaidAmount.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -235,13 +222,13 @@
             txtPaidAmount.Font = new Font("Segoe UI", 10.2F);
             txtPaidAmount.ForeColor = Color.Black;
             txtPaidAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPaidAmount.Location = new Point(890, 234);
+            txtPaidAmount.Location = new Point(890, 215);
             txtPaidAmount.Margin = new Padding(3, 5, 3, 5);
             txtPaidAmount.MaxLength = 9;
             txtPaidAmount.Name = "txtPaidAmount";
             txtPaidAmount.PlaceholderText = "";
             txtPaidAmount.SelectedText = "";
-            txtPaidAmount.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            txtPaidAmount.ShadowDecoration.CustomizableEdges = customizableEdges16;
             txtPaidAmount.Size = new Size(249, 36);
             txtPaidAmount.TabIndex = 2;
             txtPaidAmount.TextChanged += txtMoney_TextChanged;
@@ -263,45 +250,45 @@
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AllowUserToResizeColumns = false;
             dataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = Color.White;
-            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
-            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.BackColor = Color.White;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = Color.White;
+            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
+            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle6.ForeColor = Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             dataGridView.ColumnHeadersHeight = 35;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { colToothNumber, colTreatmentName, colTreatmentPrice, colNotes });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = Color.White;
-            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.White;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle7.ForeColor = Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = Color.White;
+            dataGridViewCellStyle7.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle7;
             dataGridView.GridColor = Color.LightGray;
             dataGridView.Location = new Point(-1, 684);
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = Color.White;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.White;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = Color.White;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.RowTemplate.ContextMenuStrip = contextMenuStrip;
@@ -315,10 +302,10 @@
             dataGridView.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.White;
             dataGridView.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Black;
             dataGridView.ThemeStyle.GridColor = Color.LightGray;
-            dataGridView.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridView.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 12F);
             dataGridView.ThemeStyle.HeaderStyle.Height = 35;
             dataGridView.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridView.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridView.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 12F);
             dataGridView.ThemeStyle.RowsStyle.ForeColor = Color.Black;
             dataGridView.ThemeStyle.RowsStyle.Height = 35;
             dataGridView.ThemeStyle.RowsStyle.SelectionBackColor = Color.White;
@@ -396,7 +383,7 @@
             btnSave.AnimatedGIF = true;
             btnSave.BackColor = SystemColors.Control;
             btnSave.BorderRadius = 15;
-            btnSave.CustomizableEdges = customizableEdges7;
+            btnSave.CustomizableEdges = customizableEdges17;
             btnSave.DisabledState.BorderColor = Color.DarkGray;
             btnSave.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -408,7 +395,7 @@
             btnSave.Location = new Point(643, 917);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnSave.Size = new Size(160, 56);
             btnSave.TabIndex = 8;
             btnSave.Text = "حفظ";
@@ -438,7 +425,7 @@
             // 
             txtRemainingAmount.Animated = true;
             txtRemainingAmount.BorderRadius = 10;
-            txtRemainingAmount.CustomizableEdges = customizableEdges9;
+            txtRemainingAmount.CustomizableEdges = customizableEdges19;
             txtRemainingAmount.DefaultText = "";
             txtRemainingAmount.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtRemainingAmount.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -449,13 +436,13 @@
             txtRemainingAmount.Font = new Font("Segoe UI", 10.2F);
             txtRemainingAmount.ForeColor = Color.Black;
             txtRemainingAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtRemainingAmount.Location = new Point(890, 346);
+            txtRemainingAmount.Location = new Point(890, 328);
             txtRemainingAmount.Margin = new Padding(3, 5, 3, 5);
             txtRemainingAmount.MaxLength = 9;
             txtRemainingAmount.Name = "txtRemainingAmount";
             txtRemainingAmount.PlaceholderText = "";
             txtRemainingAmount.SelectedText = "";
-            txtRemainingAmount.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            txtRemainingAmount.ShadowDecoration.CustomizableEdges = customizableEdges20;
             txtRemainingAmount.Size = new Size(249, 36);
             txtRemainingAmount.TabIndex = 4;
             txtRemainingAmount.KeyPress += txtMoney_KeyPress;
@@ -463,7 +450,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(1328, 406);
+            label10.Location = new Point(1326, 390);
             label10.Name = "label10";
             label10.Size = new Size(117, 28);
             label10.TabIndex = 25;
@@ -472,7 +459,7 @@
             // lblVisitDateTime
             // 
             lblVisitDateTime.AutoSize = true;
-            lblVisitDateTime.Location = new Point(878, 406);
+            lblVisitDateTime.Location = new Point(876, 390);
             lblVisitDateTime.Name = "lblVisitDateTime";
             lblVisitDateTime.RightToLeft = RightToLeft.No;
             lblVisitDateTime.Size = new Size(273, 28);
@@ -482,7 +469,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(1348, 462);
+            label11.Location = new Point(1348, 454);
             label11.Name = "label11";
             label11.Size = new Size(97, 28);
             label11.TabIndex = 27;
@@ -490,7 +477,7 @@
             // 
             // txtNotes
             // 
-            txtNotes.Location = new Point(795, 459);
+            txtNotes.Location = new Point(795, 451);
             txtNotes.MaxLength = 500;
             txtNotes.Name = "txtNotes";
             txtNotes.Size = new Size(344, 120);
@@ -499,11 +486,10 @@
             // 
             // dateTimePicker
             // 
-            dateTimePicker.Location = new Point(538, 406);
+            dateTimePicker.Location = new Point(535, 390);
             dateTimePicker.Name = "dateTimePicker";
             dateTimePicker.RightToLeft = RightToLeft.No;
-            dateTimePicker.ShowUpDown = true;
-            dateTimePicker.Size = new Size(319, 34);
+            dateTimePicker.Size = new Size(320, 34);
             dateTimePicker.TabIndex = 5;
             dateTimePicker.ValueChanged += dateTimePicker_ValueChanged;
             // 
@@ -513,46 +499,21 @@
             timer.Interval = 1000;
             timer.Tick += timer_Tick;
             // 
-            // label12
+            // lblid
             // 
-            label12.AutoSize = true;
-            label12.Location = new Point(1317, 184);
-            label12.Name = "label12";
-            label12.Size = new Size(128, 28);
-            label12.TabIndex = 30;
-            label12.Text = "اسم المريض :";
-            // 
-            // txtPatientName
-            // 
-            txtPatientName.Animated = true;
-            txtPatientName.BorderRadius = 10;
-            txtPatientName.CustomizableEdges = customizableEdges11;
-            txtPatientName.DefaultText = "";
-            txtPatientName.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtPatientName.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtPatientName.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtPatientName.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtPatientName.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPatientName.Font = new Font("Segoe UI", 10.2F);
-            txtPatientName.ForeColor = Color.Black;
-            txtPatientName.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPatientName.Location = new Point(890, 180);
-            txtPatientName.Margin = new Padding(3, 5, 3, 5);
-            txtPatientName.MaxLength = 50;
-            txtPatientName.Name = "txtPatientName";
-            txtPatientName.PlaceholderText = "";
-            txtPatientName.SelectedText = "";
-            txtPatientName.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            txtPatientName.Size = new Size(249, 36);
-            txtPatientName.TabIndex = 1;
+            lblid.AutoSize = true;
+            lblid.Location = new Point(1347, 161);
+            lblid.Name = "lblid";
+            lblid.Size = new Size(98, 28);
+            lblid.TabIndex = 28;
+            lblid.Text = "رقم الحجز :";
             // 
             // frmAddUpdateVisit
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1447, 985);
-            Controls.Add(txtPatientName);
-            Controls.Add(label12);
+            Controls.Add(lblid);
             Controls.Add(dateTimePicker);
             Controls.Add(txtNotes);
             Controls.Add(label11);
@@ -566,7 +527,7 @@
             Controls.Add(lblTitile);
             Controls.Add(txtPaidAmount);
             Controls.Add(txtDiscountAmount);
-            Controls.Add(txtAppointmentId);
+            Controls.Add(txtId);
             Controls.Add(label7);
             Controls.Add(label6);
             Controls.Add(label5);
@@ -575,7 +536,6 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(pictureBox1);
-            Controls.Add(label1);
             Font = new Font("Segoe UI", 12F);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4);
@@ -595,8 +555,6 @@
         }
 
         #endregion
-
-        private Label label1;
         private PictureBox pictureBox1;
         private Label label3;
         private Label label4;
@@ -605,7 +563,7 @@
         private Label label5;
         private Label label6;
         private Label label7;
-        private Guna.UI2.WinForms.Guna2TextBox txtAppointmentId;
+        private Guna.UI2.WinForms.Guna2TextBox txtId;
         private Guna.UI2.WinForms.Guna2TextBox txtDiscountAmount;
         private Guna.UI2.WinForms.Guna2TextBox txtPaidAmount;
         private Label lblTitile;
@@ -627,7 +585,6 @@
         private DataGridViewTextBoxColumn colNotes;
         private DateTimePicker dateTimePicker;
         private System.Windows.Forms.Timer timer;
-        private Label label12;
-        private Guna.UI2.WinForms.Guna2TextBox txtPatientName;
+        private Label lblid;
     }
 }

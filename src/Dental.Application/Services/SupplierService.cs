@@ -70,7 +70,7 @@ public sealed class SupplierService
         var existingEntity = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
         if (existingEntity is null)
         {
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
         }
 
         existingEntity.Update(

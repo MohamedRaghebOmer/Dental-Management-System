@@ -66,7 +66,7 @@ public sealed class MaterialService
         if (existingEntity == null)
         {
             _logger.LogWarning("Material with ID {MaterialId} not found.", materialId);
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
         }
 
         var updatedEntity = entityResult.Value.Update(

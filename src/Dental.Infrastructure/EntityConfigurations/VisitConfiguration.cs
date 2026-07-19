@@ -44,8 +44,8 @@ public sealed class VisitConfiguration
             .HasDatabaseName("UX_Visits_VisitDateTime")
             .IsUnique(true);
 
-        builder.HasIndex(p => p.PatientName)
-            .HasDatabaseName("UX_Visits_PatientName");
+        builder.HasIndex(p => p.PatientId)
+            .HasDatabaseName("UX_Visits_PatientId");
     }
 
     private void ConfigureForeignKeys(EntityTypeBuilder<Visit> builder)
@@ -56,9 +56,31 @@ public sealed class VisitConfiguration
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired(false);
 
+        builder.HasOne(v => v.Patient)
+            .WithMany(p => p.Visits)
+            .HasForeignKey(v => v.PatientId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
         builder.Metadata
             .FindNavigation(nameof(Visit.VisitTreatments))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+
+        builder
+            .HasOne(v => v.Appointment)
+            .WithMany()
+            .HasForeignKey(v => new
+            {
+                v.AppointmentId,
+                v.PatientId
+            })
+            .HasPrincipalKey(a => new
+            {
+                a.Id,
+                a.PatientId
+            })
+            .IsRequired(false);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<Visit> builder)
@@ -70,9 +92,12 @@ public sealed class VisitConfiguration
             .HasColumnName(nameof(Visit.AppointmentId))
             .IsRequired(false);
 
-        builder.Property(p => p.PatientName)
-            .HasColumnName(nameof(Visit.PatientName))
-            .HasMaxLength(Visit.Constants.PatientNameMaxLength);
+        builder.Property(p => p.PatientId)
+            .HasConversion(
+                value => value.Value,
+                value => Id.FromDatabase(value))
+            .HasColumnName(nameof(Visit.PatientId))
+            .IsRequired();
 
         builder.Property((p => p.PaidAmount))
             .HasConversion(

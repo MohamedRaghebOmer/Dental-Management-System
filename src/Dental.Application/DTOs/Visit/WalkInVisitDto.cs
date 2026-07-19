@@ -2,13 +2,11 @@
 
 namespace Dental.Application.DTOs.Visit;
 
-public sealed record VisitRequestDto
+public sealed record WalkInVisitDto
 {
     [Range(1, int.MaxValue)]
-    public int? AppointmentId { get; init; }
-
-    [StringLength(Domain.Entities.Visit.Constants.PatientNameMaxLength)]
-    public string? PatientName { get; init; }
+    [Required]
+    public required int PatientId { get; init; }
 
     [Required]
     [Range(0, double.MaxValue)]
@@ -24,6 +22,5 @@ public sealed record VisitRequestDto
     [DataType(DataType.DateTime)]
     public required DateTime VisitDateTime { get; init; }
 
-    [StringLength(Domain.Entities.Visit.Constants.NotesMaxLength)]
     public string? Notes { get; init; }
 }

@@ -28,7 +28,11 @@ public partial class frmAddUpdateVisit : Form
     private enum Mode { Add, Update }
     private Mode _mode = Mode.Add;
 
+    public enum VisitType { WalkIn, PreAppointment }
+    private readonly VisitType _visitType;
+
     public frmAddUpdateVisit(
+        VisitType visitType,
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
@@ -45,17 +49,20 @@ public partial class frmAddUpdateVisit : Form
         _logger = logger;
         _formFactory = formFactory;
         _mode = Mode.Add;
+        _visitType = visitType;
     }
 
     public frmAddUpdateVisit(
         int visitId,
+        VisitType visitType,
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
         IVisitToothTreatmentsViewService viewService,
         ILogger<frmAddUpdateVisit> logger,
         IFormFactory formFactory)
-        : this(treatmentService,
+        : this(visitType,
+              treatmentService,
               visitService,
               visitToothTreatmentService,
               viewService,
@@ -80,10 +87,6 @@ public partial class frmAddUpdateVisit : Form
         try
         {
             dataGridView.DataError += (_, _) => { };
-            //dataGridView.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle();
-            //dataGridView.ThemeStyle.RowsStyle.ForeColor = Color.Black;
-            //dataGridView.DefaultCellStyle.SelectionForeColor = Color.Black;
-
             InitializeFormTexts();
             await LoadDataGrid();
 
@@ -120,6 +123,7 @@ public partial class frmAddUpdateVisit : Form
         lblTitile.Text = _mode == Mode.Add ? "اضافة زياره جديده" : "تعديل بيانات زياره";
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(DateTime.Now);
         dateTimePicker.MaxDate = DateTime.Now;
+        lblid.Text = _visitType == VisitType.WalkIn ? "رقم المريض" : "رقم الحجز";
     }
 
     private async Task LoadUi()
@@ -188,7 +192,7 @@ public partial class frmAddUpdateVisit : Form
     {
         if (viewResult.IsFailure)
         {
-            if (viewResult.Error == ServiceErrors.InvalidId)
+            if (viewResult.Error == ServiceErrors.Common.InvalidId)
             {
                 MessageBoxExtensions.ShowError($"رقم الزياره {_visitId} غير صالح");
             }
@@ -207,11 +211,11 @@ public partial class frmAddUpdateVisit : Form
     {
         if (visitResult.IsFailure)
         {
-            if (visitResult.Error == ServiceErrors.InvalidId)
+            if (visitResult.Error == ServiceErrors.Common.InvalidId)
             {
                 MessageBoxExtensions.ShowError("رقم الزياره غير صحيح.");
             }
-            else if (visitResult.Error == ServiceErrors.NotFound)
+            else if (visitResult.Error == ServiceErrors.Common.NotFound)
             {
                 MessageBoxExtensions.ShowError($"الزياره رقم {_visitId} غير موجوده.");
             }
@@ -235,8 +239,8 @@ public partial class frmAddUpdateVisit : Form
             return null;
         }
 
-        txtAppointmentId.Text = visitResult.Value.AppointmentId?.ToString() ?? string.Empty;
-        txtPatientName.Text = visitResult.Value.PatientName?.ToString() ?? string.Empty;
+        txtId.Text = visitResult.Value.AppointmentId?.ToString() ?? string.Empty;
+        txtPatientId.Text = visitResult.Value.PatientName?.ToString() ?? string.Empty;
         txtPaidAmount.Text = visitResult.Value.PaidAmount.ToString();
         txtDiscountAmount.Text = visitResult.Value.DiscountAmount.ToString();
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(visitResult.Value.VisitDateTime);
@@ -598,7 +602,7 @@ public partial class frmAddUpdateVisit : Form
         return new VisitRequestDto
         {
             AppointmentId = GetAppointmentIdFromUi(),
-            PatientName = txtPatientName.Text,
+            PatientName = txtPatientId.Text,
             PaidAmount = paidAmount.Value, // Validated before, shouldn't be null.
             DiscountAmount = GetDiscountPriceFromTextbox() ?? 0,
             VisitDateTime = dateTimePicker.Value,
@@ -608,7 +612,7 @@ public partial class frmAddUpdateVisit : Form
 
     private int? GetAppointmentIdFromUi()
     {
-        if (int.TryParse(txtAppointmentId.Text, out int appointmentId))
+        if (int.TryParse(txtId.Text, out int appointmentId))
             return appointmentId;
 
         return null;
@@ -739,12 +743,12 @@ public partial class frmAddUpdateVisit : Form
     private bool ValidateTextboxes()
     {
         // ========================== Appointment Id ==========================
-        if (string.IsNullOrWhiteSpace(txtAppointmentId.Text))
+        if (string.IsNullOrWhiteSpace(txtId.Text))
         {
             // Do Nothing
             // This condition exists to do not check the next condition
         }
-        else if (!int.TryParse(txtAppointmentId.Text, out int appointmentId))
+        else if (!int.TryParse(txtId.Text, out int appointmentId))
         {
             MessageBoxExtensions.ShowError("قيمة رقم الحجز غير صالحه.");
             return false;
@@ -909,7 +913,7 @@ public partial class frmAddUpdateVisit : Form
         }
     }
 
-    private void txtAppointmentId_KeyPress(object sender, KeyPressEventArgs e)
+    private void txtIds_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             e.Handled = true;

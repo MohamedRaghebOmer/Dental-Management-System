@@ -43,6 +43,7 @@ public sealed class Patient : Entity
 
     public ICollection<Appointment> Appointments { get; private set; } = [];
     public ICollection<Prescription> Prescriptions { get; private set; } = [];
+    public ICollection<Visit> Visits { get; private set; } = [];
 
 
     public static Result<Patient> Create(

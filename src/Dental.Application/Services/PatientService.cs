@@ -74,7 +74,7 @@ public class PatientService
         if (patient is null)
         {
             _logger.LogWarning("Patient not found. {Id}", id);
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
         }
 
         var updateResult = patient.Update(
