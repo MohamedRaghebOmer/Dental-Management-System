@@ -49,6 +49,11 @@ public static class ServiceErrors
             "Visit.PatientNotFound",
             "Patient not found."
         );
+
+        public static readonly Error AppointmentNotFound = new(
+            "Visit.AppointmentNotFound",
+            "Appointment not found."
+        );
     }
 
     public static class VisitTreatment

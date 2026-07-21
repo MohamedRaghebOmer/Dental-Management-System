@@ -71,9 +71,8 @@
             lblVisitDateTime = new Label();
             label11 = new Label();
             txtNotes = new RichTextBox();
-            dateTimePicker = new DateTimePicker();
+            lblId = new Label();
             timer = new System.Windows.Forms.Timer(components);
-            lblid = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
@@ -162,9 +161,9 @@
             txtId.BorderRadius = 10;
             txtId.CustomizableEdges = customizableEdges11;
             txtId.DefaultText = "";
-            txtId.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtId.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtId.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtId.DisabledState.BorderColor = Color.FromArgb(213, 218, 223);
+            txtId.DisabledState.FillColor = SystemColors.Window;
+            txtId.DisabledState.ForeColor = Color.Gray;
             txtId.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtId.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtId.Font = new Font("Segoe UI", 10.2F);
@@ -180,7 +179,7 @@
             txtId.ShadowDecoration.CustomizableEdges = customizableEdges12;
             txtId.Size = new Size(249, 36);
             txtId.TabIndex = 0;
-            txtId.KeyPress += txtIds_KeyPress;
+            txtId.KeyPress += txtId_KeyPress;
             // 
             // txtDiscountAmount
             // 
@@ -427,9 +426,9 @@
             txtRemainingAmount.BorderRadius = 10;
             txtRemainingAmount.CustomizableEdges = customizableEdges19;
             txtRemainingAmount.DefaultText = "";
-            txtRemainingAmount.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtRemainingAmount.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtRemainingAmount.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtRemainingAmount.DisabledState.BorderColor = Color.FromArgb(213, 218, 223);
+            txtRemainingAmount.DisabledState.FillColor = Color.White;
+            txtRemainingAmount.DisabledState.ForeColor = Color.Gray;
             txtRemainingAmount.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
             txtRemainingAmount.Enabled = false;
             txtRemainingAmount.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
@@ -484,14 +483,14 @@
             txtNotes.TabIndex = 6;
             txtNotes.Text = "";
             // 
-            // dateTimePicker
+            // lblId
             // 
-            dateTimePicker.Location = new Point(535, 390);
-            dateTimePicker.Name = "dateTimePicker";
-            dateTimePicker.RightToLeft = RightToLeft.No;
-            dateTimePicker.Size = new Size(320, 34);
-            dateTimePicker.TabIndex = 5;
-            dateTimePicker.ValueChanged += dateTimePicker_ValueChanged;
+            lblId.AutoSize = true;
+            lblId.Location = new Point(1347, 161);
+            lblId.Name = "lblId";
+            lblId.Size = new Size(98, 28);
+            lblId.TabIndex = 28;
+            lblId.Text = "رقم الحجز :";
             // 
             // timer
             // 
@@ -499,22 +498,12 @@
             timer.Interval = 1000;
             timer.Tick += timer_Tick;
             // 
-            // lblid
-            // 
-            lblid.AutoSize = true;
-            lblid.Location = new Point(1347, 161);
-            lblid.Name = "lblid";
-            lblid.Size = new Size(98, 28);
-            lblid.TabIndex = 28;
-            lblid.Text = "رقم الحجز :";
-            // 
             // frmAddUpdateVisit
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1447, 985);
-            Controls.Add(lblid);
-            Controls.Add(dateTimePicker);
+            Controls.Add(lblId);
             Controls.Add(txtNotes);
             Controls.Add(label11);
             Controls.Add(lblVisitDateTime);
@@ -579,12 +568,11 @@
         private Label lblVisitDateTime;
         private Label label11;
         private RichTextBox txtNotes;
+        private Label lblId;
         private DataGridViewComboBoxColumn colToothNumber;
         private DataGridViewComboBoxColumn colTreatmentName;
         private DataGridViewTextBoxColumn colTreatmentPrice;
         private DataGridViewTextBoxColumn colNotes;
-        private DateTimePicker dateTimePicker;
         private System.Windows.Forms.Timer timer;
-        private Label lblid;
     }
 }

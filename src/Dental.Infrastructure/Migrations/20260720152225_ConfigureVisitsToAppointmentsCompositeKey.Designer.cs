@@ -4,6 +4,7 @@ using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dental.Infrastructure.Migrations
 {
     [DbContext(typeof(DentalDbContext))]
-    partial class DentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260720152225_ConfigureVisitsToAppointmentsCompositeKey")]
+    partial class ConfigureVisitsToAppointmentsCompositeKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
@@ -55,6 +58,8 @@ namespace Dental.Infrastructure.Migrations
                         .HasComment("Pending = 1, Canceled = 2, Completed = 3, Missed = 4");
 
                     b.HasKey("Id");
+
+                    b.HasAlternateKey("Id", "PatientId");
 
                     b.HasIndex("PatientId")
                         .HasDatabaseName("IX_Appointments_PatientId");
@@ -464,15 +469,15 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppointmentId")
+                        .IsUnique();
+
                     b.HasIndex("PatientId")
                         .HasDatabaseName("UX_Visits_PatientId");
 
                     b.HasIndex("VisitDateTime")
                         .IsUnique()
                         .HasDatabaseName("UX_Visits_VisitDateTime");
-
-                    b.HasIndex("AppointmentId", "PatientId")
-                        .IsUnique();
 
                     b.ToTable("Visits", null, t =>
                         {
@@ -607,17 +612,16 @@ namespace Dental.Infrastructure.Migrations
 
             modelBuilder.Entity("Dental.Domain.Entities.Visit", b =>
                 {
+                    b.HasOne("Dental.Domain.Entities.Appointment", "Appointment")
+                        .WithOne("Visit")
+                        .HasForeignKey("Dental.Domain.Entities.Visit", "AppointmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Dental.Domain.Entities.Patient", "Patient")
                         .WithMany("Visits")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Dental.Domain.Entities.Appointment", "Appointment")
-                        .WithOne("Visit")
-                        .HasForeignKey("Dental.Domain.Entities.Visit", "AppointmentId", "PatientId")
-                        .HasPrincipalKey("Dental.Domain.Entities.Appointment", "Id", "PatientId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Appointment");
 

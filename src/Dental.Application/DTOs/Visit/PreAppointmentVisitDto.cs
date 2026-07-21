@@ -18,9 +18,5 @@ public sealed record PreAppointmentVisitDto
     [DataType(DataType.Currency)]
     public required decimal DiscountAmount { get; init; }
 
-    [Required]
-    [DataType(DataType.DateTime)]
-    public required DateTime VisitDateTime { get; init; }
-
     public string? Notes { get; init; }
 }

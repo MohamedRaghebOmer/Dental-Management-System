@@ -21,7 +21,7 @@ public sealed class Visit : Entity
     public string? Notes { get; private set; }
 
     public Appointment? Appointment { get; private set; } = default;
-    public Patient Patient { get; private set; } = default;
+    public Patient Patient { get; private set; } = default!;
     public Prescription? Prescription { get; private set; } = default;
 
 
@@ -36,14 +36,13 @@ public sealed class Visit : Entity
         Id patientId,
         Money paidAmount,
         Money discountAmount,
-        DateTime visitDateTime,
         string? notes)
     {
         AppointmentId = appointmentId;
         PatientId = patientId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        VisitDateTime = visitDateTime;
+        VisitDateTime = DateTime.Now;
         Notes = notes;
     }
 
@@ -54,18 +53,17 @@ public sealed class Visit : Entity
         Id patientId,
         Money paidAmount,
         Money discountAmount,
-        DateTime visitDateTime,
         string? notes)
     {
         notes = notes?.Trim();
 
-        var validateResult = Validate(notes, visitDateTime);
+        var validateResult = Validate(notes);
         if (validateResult.IsFailure)
         {
             return Result.Failure<Visit>(validateResult.Error);
         }
 
-        return new Visit(appointmentId, patientId, paidAmount, discountAmount, visitDateTime, notes);
+        return new Visit(appointmentId, patientId, paidAmount, discountAmount, notes);
     }
 
     public Result Update(
@@ -88,15 +86,8 @@ public sealed class Visit : Entity
         return Result.Success();
     }
 
-    private static Result Validate(
-        string? notes,
-        DateTime? visitDateTime = null)
+    private static Result Validate(string? notes)
     {
-        if (visitDateTime > DateTime.Now)
-        {
-            return Result.Failure(DomainErrors.Entities.Visit.Date.InThePast);
-        }
-
         if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.Visit.Notes.TooLong);

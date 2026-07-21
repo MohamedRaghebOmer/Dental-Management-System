@@ -5,6 +5,7 @@ using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace Dental.WinForms.Views;
 
@@ -13,15 +14,18 @@ public partial class VisitView : UserControl
     private readonly IFormFactory _formFactory;
     private readonly ILogger<VisitView> _logger;
     private readonly IVisitViewService _visitViewService;
-    private readonly IVisitSummaryService _visitSummaryService;
     private readonly IVisitService _visitService;
 
     private int _selectedRowIndex = -1;
     private bool _isLoading = true;
 
+    private Stopwatch _lastFilteringSince = new();
+
 
     private enum GridColumns
     {
+        VisitId,
+        AppointmentId,
         PatientName,
         VisitDateTime,
         VisitTreatments,
@@ -44,7 +48,6 @@ public partial class VisitView : UserControl
         _formFactory = formFactory;
         _logger = logger;
         _visitViewService = visitViewService;
-        _visitSummaryService = visitSummaryService;
         _visitService = visitService;
     }
 
@@ -55,7 +58,6 @@ public partial class VisitView : UserControl
         {
             await InitializeViewAsync();
             await LoadGridAsync(null);
-            await LoadCardsAsync(GetCardsPeriod());
 
             _isLoading = false;
         }
@@ -71,17 +73,20 @@ public partial class VisitView : UserControl
         cbFilterList.Text = "اسم المريض";
         _currentFilterColumn = GridColumns.PatientName;
 
-        dateTimePicker.Value = DateTime.Now.AddSeconds(-10);
-        dateTimePicker.Visible = false;
+        dtpVisitDateTime.MaxDate = DateTime.Now;
+        dtpSearchAfter.MaxDate = DateTime.Now;
+        dtpVisitDateTime.Value = DateTime.Now.AddSeconds(-1);
+
+        lblSearchAfter.Visible = false;
+        dtpSearchAfter.Visible = false;
 
         txtFilterValue.Clear();
         txtFilterValue.Visible = true;
 
-
         dataGridView.AlternatingRowsDefaultCellStyle = null;
 
         timerUpdateDateTimePckerMaxDate.Start();
-        filterTime.Start();
+        filterTimer.Start();
     }
 
     public async Task LoadGridAsync(Domain.Views.VisitView? filterDTO)
@@ -95,6 +100,7 @@ public partial class VisitView : UserControl
             {
                 v.VisitId,
                 v.AppointmentId,
+                v.PatientId,
                 v.PatientName,
                 v.VisitTreatmentsNames,
                 VisitDateTime = v.VisitDateTime is not null
@@ -110,42 +116,25 @@ public partial class VisitView : UserControl
         dataGridView.DataSource = result;
 
         Cursor = Cursors.Default;
+
+        LoadCards(view);
+
+        _lastFilteringSince = Stopwatch.StartNew();
     }
 
-    public async Task LoadCardsAsync(DateTime? dateTime)
+    private void LoadCards(List<Domain.Views.VisitView> view)
+    {
+        lblTotalVisits.Text = view.Count.ToString();
+        lblTotalPaidAmount.Text = view.Sum(v => v.PaidAmount ?? 0).ToString();
+        lblTotalDiscountAmount.Text = view.Sum(v => v.DiscountAmount ?? 0).ToString();
+        lblTotalRemainedAmount.Text = view.Sum(v => v.RemainedAmount ?? 0).ToString();
+    }
+
+    private async void btnAddWalkInVisit_Click(object sender, EventArgs e)
     {
         Cursor = Cursors.WaitCursor;
 
-        var summary = await _visitSummaryService.GetAsync(dateTime);
-
-        lblTotalVisits.Text = summary.TotalVisitsCount.ToString();
-        lblTotalPaidAmount.Text = summary.TotalVisitsPaidAmount.ToString();
-        lblTotalDiscountAmount.Text = summary.TotalVisitsDiscountAmount.ToString();
-        lblTotalRemainedAmount.Text = summary.TotalVisitsRemainedAmount.ToString();
-
-        Cursor = Cursors.Default;
-    }
-
-    public DateTime? GetCardsPeriod()
-    {
-        if (rbToday.Checked)
-            return DateTime.Today.ToLocalTime();
-
-        if (rbThisWeek.Checked)
-            return DateTime.Today.AddDays(-7).ToLocalTime();
-
-        if (rbThisMonth.Checked)
-            return DateTime.Today.AddMonths(-1).ToLocalTime();
-
-        //if (rbToday.Checked)
-        return null;
-    }
-
-    private async void btnAddVisit_Click(object sender, EventArgs e)
-    {
-        Cursor = Cursors.WaitCursor;
-
-        using var frm = _formFactory.Create_frmAddUpdateVisit();
+        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.WalkIn);
         await frm.ShowDialogAsync();
 
         await Refresh();
@@ -160,40 +149,56 @@ public partial class VisitView : UserControl
 
     private async void RadioButtonsDateTimeFiltering_CheckedChanged(object sender, EventArgs e)
     {
-        await LoadCardsAsync(GetCardsPeriod());
+        dtpSearchAfter.Visible = true;
+        lblSearchAfter.Visible = true;
+
+        if (rbToday.Checked)
+            dtpSearchAfter.Value = DateTime.Today.Date.ToLocalTime();
+        else if (rbThisWeek.Checked)
+            dtpSearchAfter.Value = DateTime.Today.Date.StartOfWeek().ToLocalTime();
+        else if (rbThisMonth.Checked)
+            dtpSearchAfter.Value = DateTime.Today.Date.StartOfMonth().ToLocalTime();
+        else if (rbAllTime.Checked)
+        {
+            dtpSearchAfter.Visible = false;
+            lblSearchAfter.Visible = false;
+            dtpSearchAfter.Value = dtpSearchAfter.MinDate.Date;
+        }
     }
 
-    private async void txtFilterValue_TextChanged(object sender, EventArgs e)
+    private void txtFilterValue_TextChanged(object sender, EventArgs e)
     {
-        filterTime.Stop();
-        filterTime.Start();
+        filterTimer.Stop();
+        filterTimer.Start();
     }
 
     private async Task ApplyRowFilteringAsync()
     {
-        if (_isLoading)
+        if (_isLoading || _lastFilteringSince.ElapsedMilliseconds < 300)
             return;
 
-        await LoadGridAsync(GetFilterDTO());
+        await LoadGridAsync(GetFilterDto());
     }
 
-    private Domain.Views.VisitView? GetFilterDTO()
+    private Domain.Views.VisitView? GetFilterDto()
     {
-        if (!ValidateFilterValue())
-            return null;
-
         var filterValue = txtFilterValue.Text;
-
-        Domain.Views.VisitView? view = new();
+        Domain.Views.VisitView view = new();
 
         switch (_currentFilterColumn)
         {
-            case GridColumns.PatientName:
-                view.PatientName = filterValue;
+            case GridColumns.VisitId:
+                if (int.TryParse(filterValue, out int visitId))
+                    view.VisitId = visitId;
                 break;
 
-            case GridColumns.VisitDateTime:
-                view.VisitDateTime = dateTimePicker.Value;
+            case GridColumns.AppointmentId:
+                if (int.TryParse(filterValue, out int appointmentId))
+                    view.AppointmentId = appointmentId;
+                break;
+
+            case GridColumns.PatientName:
+                view.PatientName = filterValue;
                 break;
 
             case GridColumns.VisitTreatments:
@@ -201,79 +206,55 @@ public partial class VisitView : UserControl
                 break;
 
             case GridColumns.TotalAmount:
-                view.TotalAmount = decimal.Parse(filterValue); // Validated before
+                if (decimal.TryParse(filterValue, out decimal totalAmount))
+                    view.TotalAmount = totalAmount;
                 break;
 
             case GridColumns.PaidAmount:
-                view.PaidAmount = decimal.Parse(filterValue); // Validated before
+                if (decimal.TryParse(filterValue, out decimal paidAmount))
+                    view.PaidAmount = paidAmount;
                 break;
 
             case GridColumns.DiscountAmount:
-                view.DiscountAmount = decimal.Parse(filterValue); // Validated before
+                if (decimal.TryParse(filterValue, out decimal discountAmount))
+                    view.DiscountAmount = discountAmount;
                 break;
 
             case GridColumns.RemainedAmount:
-                view.RemainedAmount = decimal.Parse(filterValue); // Validated before
-                break;
-
-            default:
-                view = null;
+                if (decimal.TryParse(filterValue, out decimal remainedAmount))
+                    view.RemainedAmount = remainedAmount;
                 break;
         }
+
+        if (dtpSearchAfter.Visible)
+        {
+            view.GetViewsAfterDateTime = dtpSearchAfter.Value.Date;
+            return view;
+        }
+
+        if (_currentFilterColumn == GridColumns.VisitDateTime && dtpVisitDateTime.Visible)
+        {
+            view.VisitDateTime = dtpVisitDateTime.Value.Date;
+            return view;
+        }
+
+        if (pnlSearchAtRadioButtons.Visible && rbAllTime.Checked)
+        {
+            view.GetViewsAfterDateTime = null;
+            return view;
+        }
+
 
         return view;
     }
 
-    private bool ValidateFilterValue()
-    {
-        /*
-         
-        PatientName, 
-        VisitDateTime, 
-        VisitTreatments, 
-        TotalAmount, 
-        PaidAmount,
-        DiscountAmount,
-        RemainedAmount
- 
-
-         */
-
-        if (!txtFilterValue.Visible)
-            return true;
-
-        if (_currentFilterColumn
-            is GridColumns.PatientName
-            or GridColumns.VisitTreatments
-            || (_currentFilterColumn == GridColumns.VisitDateTime && dateTimePicker.Visible))
-        {
-            return true;
-        }
-
-        if (_currentFilterColumn
-            is GridColumns.TotalAmount
-            or GridColumns.PaidAmount
-            or GridColumns.DiscountAmount
-            or GridColumns.RemainedAmount)
-        {
-            return txtFilterValueHasValidNumber;
-        }
-
-        if (string.IsNullOrWhiteSpace(txtFilterValue.Text) && txtFilterValue.Visible)
-            return true;
-
-        return false;
-    }
-
-    private bool txtFilterValueHasValidNumber
-    {
-        get =>
-            decimal.TryParse(txtFilterValue.Text, out _);
-    }
-
     private void txtFilterValue_KeyPress(object sender, KeyPressEventArgs e)
     {
-        if (_currentFilterColumn is GridColumns.PaidAmount or GridColumns.DiscountAmount or GridColumns.RemainedAmount or GridColumns.TotalAmount)
+        if (_currentFilterColumn
+            is GridColumns.PaidAmount
+            or GridColumns.DiscountAmount
+            or GridColumns.RemainedAmount
+            or GridColumns.TotalAmount)
         {
             if (!char.IsControl(e.KeyChar)
                 && !char.IsDigit(e.KeyChar)
@@ -282,10 +263,21 @@ public partial class VisitView : UserControl
                 e.Handled = true;
                 return;
             }
-            else if (e.KeyChar == '.' && txtFilterValue.Text.Contains('.'))
+
+            if (e.KeyChar == '.' && txtFilterValue.Text.Contains('.'))
             {
                 e.Handled = true;
                 return;
+            }
+        }
+
+        if (_currentFilterColumn
+            is GridColumns.VisitId
+            or GridColumns.AppointmentId)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
             }
         }
     }
@@ -306,6 +298,8 @@ public partial class VisitView : UserControl
 
         _currentFilterColumn = cbFilterList.Text switch
         {
+            "رقم الزياره" => GridColumns.VisitId,
+            "رقم الحجز" => GridColumns.AppointmentId,
             "اسم المريض" => GridColumns.PatientName,
             "تاريخ الزياره" => GridColumns.VisitDateTime,
             "الخدمات المقدمه" => GridColumns.VisitTreatments,
@@ -320,14 +314,25 @@ public partial class VisitView : UserControl
         if (_currentFilterColumn is GridColumns.VisitDateTime)
         {
             txtFilterValue.Visible = false;
-            dateTimePicker.Visible = true;
-            dateTimePicker.Focus();
+            dtpVisitDateTime.Visible = true;
+            dtpVisitDateTime.Focus();
+
+            DisableSearchAfter();
         }
         else
         {
             txtFilterValue.Visible = true;
             txtFilterValue.Focus();
-            dateTimePicker.Visible = false;
+            dtpVisitDateTime.Visible = false;
+
+            EnableSearchAfter();
+
+            if (rbAllTime.Checked)
+            {
+                lblSearchAfter.Visible = false;
+                dtpSearchAfter.Visible = false;
+            }
+
         }
 
         if (!string.IsNullOrEmpty(txtFilterValue.Text))
@@ -336,9 +341,23 @@ public partial class VisitView : UserControl
             await ApplyRowFilteringAsync();
     }
 
+    private void EnableSearchAfter()
+    {
+        dtpSearchAfter.Visible = true;
+        lblSearchAfter.Visible = true;
+        pnlSearchAtRadioButtons.Visible = true;
+    }
+
+    private void DisableSearchAfter()
+    {
+        dtpSearchAfter.Visible = false;
+        lblSearchAfter.Visible = false;
+        pnlSearchAtRadioButtons.Visible = false;
+    }
+
     private void timer_Tick(object sender, EventArgs e)
     {
-        dateTimePicker.MaxDate = DateTime.Now;
+        dtpSearchAfter.MaxDate = DateTime.Now;
     }
 
     private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -353,9 +372,9 @@ public partial class VisitView : UserControl
         _selectedRowIndex = e.RowIndex;
     }
 
-    private async void filterTime_Tick(object sender, EventArgs e)
+    private async void filterTimer_Tick(object sender, EventArgs e)
     {
-        filterTime.Stop();
+        filterTimer.Stop();
         await ApplyRowFilteringAsync();
     }
 
@@ -371,16 +390,20 @@ public partial class VisitView : UserControl
 
     private async void cmsEdit_Click(object sender, EventArgs e)
     {
+        Cursor = Cursors.WaitCursor;
+
         int? selectedVisitId = SelectedVisitId;
-        int selectedRowIndex = _selectedRowIndex;
 
         if (!selectedVisitId.HasValue)
             return;
+
 
         using var frm = _formFactory.Create_frmAddUpdateVisit(selectedVisitId.Value);
         await frm.ShowDialogAsync();
 
         await Refresh();
+
+        Cursor = Cursors.Default;
     }
 
     private new async Task Refresh()
@@ -392,7 +415,6 @@ public partial class VisitView : UserControl
 
         await InitializeViewAsync();
         await LoadGridAsync(null);
-        await LoadCardsAsync(GetCardsPeriod());
 
         Cursor = Cursors.Default;
         _isLoading = false;
@@ -402,7 +424,7 @@ public partial class VisitView : UserControl
     {
         Cursor = Cursors.WaitCursor;
 
-        using var frm = _formFactory.Create_frmAddUpdateVisit();
+        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.PreAppointment);
         await frm.ShowDialogAsync();
 
         await Refresh();
@@ -460,6 +482,55 @@ public partial class VisitView : UserControl
         }
     }
 
+    private void dataGridView_DoubleClick(object sender, EventArgs e)
+    {
+        var currentRowIndex = dataGridView.CurrentRow?.Index;
+        if (!currentRowIndex.HasValue
+            || currentRowIndex.Value < 0
+            || currentRowIndex.Value >= dataGridView.Rows.Count)
+            return;
+
+        _selectedRowIndex = currentRowIndex.Value;
+        cmsEdit_Click(sender, e);
+    }
+
+    private async void cmsShowPatientDetails_Click(object sender, EventArgs e)
+    {
+        var patientId = SelectedPatientId;
+        if (!patientId.HasValue)
+            return;
+
+        using var frm = _formFactory.Create_frmAddEditPatient(patientId.Value);
+        await frm.ShowDialogAsync();
+    }
+
+    private async void cmsShowAppointmentDetails_Click(object sender, EventArgs e)
+    {
+        var appointmentId = SelectedAppointmentId;
+        if (!appointmentId.HasValue)
+            return;
+
+        using var frm = _formFactory.Create_frmAddEditAppointment(appointmentId.Value);
+        await frm.ShowDialogAsync();
+    }
+
+    private int? SelectedAppointmentId
+    {
+        get
+        {
+            if (_selectedRowIndex == -1 || _selectedRowIndex >= dataGridView.Rows.Count)
+                return null;
+
+            var cellValue =
+                dataGridView.Rows[_selectedRowIndex].Cells[nameof(colAppointmentId)].Value;
+            
+            if (int.TryParse(cellValue?.ToString(), out var appointmentId))
+                return appointmentId;
+
+            return null;
+        }
+    }
+
     private int? SelectedVisitId
     {
         get
@@ -467,13 +538,28 @@ public partial class VisitView : UserControl
             if (_selectedRowIndex == -1 || _selectedRowIndex >= dataGridView.Rows.Count)
                 return null;
 
-            var cellValue = dataGridView.Rows[_selectedRowIndex].Cells[nameof(colVisitId)].Value;
-
-            if (cellValue is null)
-                return null;
+            var cellValue =
+                dataGridView.Rows[_selectedRowIndex].Cells[nameof(colVisitId)].Value;
 
             if (int.TryParse(cellValue?.ToString(), out var visitId))
                 return visitId;
+
+            return null;
+        }
+    }
+
+    private int? SelectedPatientId
+    {
+        get
+        {
+            if (_selectedRowIndex == -1 || _selectedRowIndex >= dataGridView.Rows.Count)
+                return null;
+
+            var cellValue =
+                dataGridView.Rows[_selectedRowIndex].Cells[nameof(colPatientId)].Value;
+
+            if (int.TryParse(cellValue?.ToString(), out var patientId))
+                return patientId;
 
             return null;
         }

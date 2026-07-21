@@ -90,14 +90,6 @@ public static class DomainErrors
 
         public static class Visit
         {
-            public static class Date
-            {
-                public static readonly Error InThePast = new(
-                    "Date.InThePast",
-                    "The visit date cannot be in the future."
-                );
-            }
-
             public static class Notes
             {
                 public static readonly Error TooLong = new(

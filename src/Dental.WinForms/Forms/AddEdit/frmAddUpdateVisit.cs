@@ -21,15 +21,16 @@ public partial class frmAddUpdateVisit : Form
     private readonly IVisitTreatmentService _visitTreatmentService;
     private readonly IVisitToothTreatmentsViewService _viewService;
     private readonly IFormFactory _formFactory;
-    private readonly int _visitId;
+
+    private readonly int? _visitId = null;
     private int _selectedRowIndex = -1;
     private List<TreatmentResponseDto> _treatments = [];
 
     private enum Mode { Add, Update }
-    private Mode _mode = Mode.Add;
+    private readonly Mode _mode = Mode.Add;
 
     public enum VisitType { WalkIn, PreAppointment }
-    private readonly VisitType _visitType;
+    private readonly VisitType? _visitType = null;
 
     public frmAddUpdateVisit(
         VisitType visitType,
@@ -48,29 +49,33 @@ public partial class frmAddUpdateVisit : Form
         _viewService = viewService;
         _logger = logger;
         _formFactory = formFactory;
+
         _mode = Mode.Add;
+        _visitId = null;
         _visitType = visitType;
     }
 
     public frmAddUpdateVisit(
         int visitId,
-        VisitType visitType,
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
         IVisitToothTreatmentsViewService viewService,
         ILogger<frmAddUpdateVisit> logger,
         IFormFactory formFactory)
-        : this(visitType,
-              treatmentService,
-              visitService,
-              visitToothTreatmentService,
-              viewService,
-              logger,
-              formFactory)
     {
+        InitializeComponent();
+
+        _treatmentService = treatmentService;
+        _visitService = visitService;
+        _visitTreatmentService = visitToothTreatmentService;
+        _viewService = viewService;
+        _logger = logger;
+        _formFactory = formFactory;
+
         _visitId = visitId;
         _mode = Mode.Update;
+        _visitType = null;
     }
 
 
@@ -79,17 +84,20 @@ public partial class frmAddUpdateVisit : Form
         await InitializeAsync();
 
         if (_mode == Mode.Update)
+        {
+            SetUpdateUiMode();
             await LoadUi();
+        }
+            
     }
 
     private async Task InitializeAsync()
     {
         try
         {
-            dataGridView.DataError += (_, _) => { };
             InitializeFormTexts();
             await LoadDataGrid();
-
+            
             if (_mode == Mode.Add)
             {
                 InitializeDataGridDefaultValues();
@@ -122,8 +130,17 @@ public partial class frmAddUpdateVisit : Form
         Text = _mode == Mode.Add ? "اضافة زياره" : "تعديل زياره";
         lblTitile.Text = _mode == Mode.Add ? "اضافة زياره جديده" : "تعديل بيانات زياره";
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(DateTime.Now);
-        dateTimePicker.MaxDate = DateTime.Now;
-        lblid.Text = _visitType == VisitType.WalkIn ? "رقم المريض" : "رقم الحجز";
+        lblId.Text = _visitType == VisitType.WalkIn ? "رقم المريض :" : "رقم الحجز :";
+
+        if (_visitType == VisitType.WalkIn)
+        {
+            lblId.Location = new Point(1323, 161);
+        }
+    }
+
+    private void SetUpdateUiMode()
+    {
+        txtId.Enabled = false;
     }
 
     private async Task LoadUi()
@@ -141,7 +158,10 @@ public partial class frmAddUpdateVisit : Form
 
     private async Task LoadVisitToothTreatmentsUi(VisitResponseDto visit)
     {
-        var viewResult = await _viewService.GetAsync(_visitId);
+        if (_mode != Mode.Update || !_visitId.HasValue)
+            return;
+
+        var viewResult = await _viewService.GetAsync(_visitId.Value);
         if (!HandelGetVisitToothTreatmentViewResult(viewResult))
             return;
 
@@ -194,7 +214,7 @@ public partial class frmAddUpdateVisit : Form
         {
             if (viewResult.Error == ServiceErrors.Common.InvalidId)
             {
-                MessageBoxExtensions.ShowError($"رقم الزياره {_visitId} غير صالح");
+                MessageBoxExtensions.ShowError($"رقم الزياره غير صالح");
             }
             else
             {
@@ -232,19 +252,30 @@ public partial class frmAddUpdateVisit : Form
 
     private async Task<VisitResponseDto?> LoadVisitUi()
     {
-        var visitResult = await _visitService.GetByIdAsync(_visitId);
+        if (!_visitId.HasValue)
+            return null;
+
+        var visitResult = await _visitService.GetByIdAsync(_visitId.Value);
         if (!HandelGetVisitResult(visitResult))
         {
             Close();
             return null;
         }
 
-        txtId.Text = visitResult.Value.AppointmentId?.ToString() ?? string.Empty;
-        txtPatientId.Text = visitResult.Value.PatientName?.ToString() ?? string.Empty;
+        if (visitResult.Value.AppointmentId.HasValue)
+        {
+            txtId.Text = visitResult.Value.AppointmentId.Value.ToString();
+            lblId.Text = "رقم الحجز :";
+        }
+        else
+        {
+            txtId.Text = visitResult.Value.PatientId.ToString();
+            lblId.Text = "رقم المريض :";
+        }
+            
         txtPaidAmount.Text = visitResult.Value.PaidAmount.ToString();
         txtDiscountAmount.Text = visitResult.Value.DiscountAmount.ToString();
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(visitResult.Value.VisitDateTime);
-        dateTimePicker.Value = visitResult.Value.VisitDateTime;
         txtNotes.Text = visitResult.Value.Notes ?? string.Empty;
 
         return visitResult.Value;
@@ -253,6 +284,8 @@ public partial class frmAddUpdateVisit : Form
     private void DataGridViewCellValueChanged(
         object sender, DataGridViewCellEventArgs e)
     {
+        // Only handle the event if the changed cell is in the TreatmentName column
+        // and the row index is valid
         if (e is { ColumnIndex: 1, RowIndex: >= 0 } && e.RowIndex < dataGridView.Rows.Count)
         {
             AssignPriceToSelectedTreatment(e);
@@ -262,17 +295,9 @@ public partial class frmAddUpdateVisit : Form
 
     private decimal UpdateTotalPrice()
     {
-        //decimal currentPrice = decimal.Parse(lblTotalPrice.Text);
-
-        //decimal newPrice =
-        //    (dataGridView.Rows.Cast<DataGridViewRow>()
-        //        .Where(row => !row.IsNewRow)
-        //        .Sum(row => GetTreatmentPriceFromGrid(row.Index))) + currentPrice;
-
-        //lblTotalPrice.Text = newPrice.ToString();
-
         int rowsCount = dataGridView.Rows.Count;
         decimal sum = 0;
+
         for (int i = 0; i < rowsCount; i++)
         {
             decimal? rowTreatmentPrice = GetTreatmentPriceFromGrid(i);
@@ -330,8 +355,7 @@ public partial class frmAddUpdateVisit : Form
                 return null;
 
             return _treatments
-                .Where(t => t.Name == selectedTreatmentName)
-                .FirstOrDefault()?.Id;
+                .FirstOrDefault(t => t.Name == selectedTreatmentName)?.Id;
         }
     }
 
@@ -362,80 +386,186 @@ public partial class frmAddUpdateVisit : Form
         if (!MakeSure())
             return;
 
-        VisitRequestDto? visitDto = GetVisitDtoFromUi();
-        if (visitDto is null)
-            return;
+        if (_mode == Mode.Update)
+        {
+            if (await UpdateVisitAndTreatmentsAsync())
+                Close();
 
-        if (_mode == Mode.Add)
-            await CreateVisitAndTreatmentsAsync(visitDto);
-        else
-            await UpdateVisitAndTreatmentsAsync(visitDto);
+            return; // Exist the method whether the update is successful or not.
+        }
+
+        if (_visitType == VisitType.WalkIn)
+        {
+            if (await CreateWalkInVisitAndTreatmentsAsync())
+                Close();
+
+            return; // Exist the method whether the creation is successful or not.
+        }
+
+        if (await CreatePreAppointmentVisitAndTreatmentsAsync())
+            Close();
     }
 
-    private async Task CreateVisitAndTreatmentsAsync(VisitRequestDto visitDto)
+    private async Task<bool> CreatePreAppointmentVisitAndTreatmentsAsync()
     {
-        var addVisitResult = await _visitService.CreateAsync(visitDto);
+        var preAppointmentVisitDto = GetPreAppointmentVisitDtoFromUi();
+        if (preAppointmentVisitDto is null)
+            return false;
+
+        var addVisitResult = await _visitService.CreatePreAppointmentVisitAsync(preAppointmentVisitDto);
         if (addVisitResult.IsFailure)
         {
             HandelCreateAndUpdateVisitResult(addVisitResult.Error);
-            return;
+            return false;
         }
 
         var visitTreatments = GetVisitTreatmentsFromUi(addVisitResult.Value);
         if (visitTreatments is null)
-            return;
+            return false;
 
         var addVisitTreatmentsResult =
             await _visitTreatmentService.CreateManyAsync(visitTreatments.ToArray());
         if (addVisitTreatmentsResult.IsFailure)
         {
             HandelCreateUpdateVisitTreatmentsResult(addVisitTreatmentsResult.Error);
-            return;
+            return false;
         }
 
-        if (MessageBox.Show(
-            "تم حفظ بيانات الزياره بنجاح. هل تود تسجيل الوصفه الطبيه؟", "تم الحفظ",
-            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-        {
-            using var frm = _formFactory.Create_frmAddEditPrescription(addVisitResult.Value);
-            Hide();
-            await frm.ShowDialogAsync();
-            Close();
-        }
-        else
-        {
-            Close();
-        }
+        MessageBoxExtensions.ShowInformation(
+            "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
+
+        return true;
     }
 
-    private async Task UpdateVisitAndTreatmentsAsync(VisitRequestDto visitDto)
+    private PreAppointmentVisitDto? GetPreAppointmentVisitDtoFromUi()
     {
-        var updateVisitResult = await _visitService.UpdateAsync(_visitId, visitDto);
+        var appointmentId = Get_txtId_ValueFromUi();
+        if (!appointmentId.HasValue)
+            return null;
+
+        var paidAmount = GetPaidAmountFromTextbox();
+        if (!paidAmount.HasValue)
+            return null;
+
+        var discountAmount = GetDiscountPriceFromTextbox();
+        if (!discountAmount.HasValue)
+            return null;
+
+        return new PreAppointmentVisitDto
+        {
+            AppointmentId = appointmentId.Value,
+            PaidAmount = paidAmount.Value,
+            DiscountAmount = discountAmount.Value,
+            Notes = txtNotes.Text
+        };
+    }
+
+    private async Task<bool> CreateWalkInVisitAndTreatmentsAsync()
+    {
+        var walkInVisitDto = GetWalkInVisitDtoFromUi();
+        if (walkInVisitDto is null)
+            return false;
+
+        var addVisitResult = await _visitService.CreateWalkInVisitAsync(walkInVisitDto);
+        if (addVisitResult.IsFailure)
+        {
+            HandelCreateAndUpdateVisitResult(addVisitResult.Error);
+            return false;
+        }
+
+        var visitTreatments = GetVisitTreatmentsFromUi(addVisitResult.Value);
+        if (visitTreatments is null)
+            return false;
+
+        var addVisitTreatmentsResult =
+            await _visitTreatmentService.CreateManyAsync(visitTreatments.ToArray());
+        if (addVisitTreatmentsResult.IsFailure)
+        {
+            HandelCreateUpdateVisitTreatmentsResult(addVisitTreatmentsResult.Error);
+            return false;
+        }
+
+        MessageBoxExtensions.ShowInformation(
+            "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
+
+        return true;
+    }
+
+    private WalkInVisitDto? GetWalkInVisitDtoFromUi()
+    {
+        var patientId = Get_txtId_ValueFromUi();
+        if (!patientId.HasValue)
+            return null;
+
+        var paidAmount = GetPaidAmountFromTextbox();
+        if (!paidAmount.HasValue)
+            return null;
+
+        var discountAmount = GetDiscountPriceFromTextbox();
+        if (!discountAmount.HasValue)
+            return null;
+
+        return new WalkInVisitDto
+        {
+            PatientId = patientId.Value,
+            PaidAmount = paidAmount.Value,
+            DiscountAmount = discountAmount.Value,
+            Notes = txtNotes.Text
+        };
+    }
+
+    private async Task<bool> UpdateVisitAndTreatmentsAsync()
+    {
+        if (!_visitId.HasValue)
+            return false;
+
+        var updateDto = GetUpdateVisitDtoFromUi();
+        if (updateDto is null)
+            return false;
+
+        var updateVisitResult = await _visitService.UpdateAsync(_visitId.Value, updateDto);
         if (updateVisitResult.IsFailure)
         {
             HandelCreateAndUpdateVisitResult(updateVisitResult.Error);
-            return;
+            return false;
         }
 
-        var visitTreatments = GetVisitTreatmentsFromUi(_visitId);
+        var visitTreatments = GetVisitTreatmentsFromUi(_visitId.Value);
         if (visitTreatments is null)
-            return;
+            return false;
 
         var updateVisitTreatmentsResult =
             await _visitTreatmentService.SetAllVisitTreatmentsAsync(
-                _visitId, visitTreatments.ToArray());
+                _visitId.Value, visitTreatments.ToArray());
 
         if (updateVisitTreatmentsResult.IsFailure)
         {
             HandelCreateUpdateVisitTreatmentsResult(updateVisitTreatmentsResult.Error);
-            return;
+            return false;
         }
 
         MessageBox.Show(
             "تم تعديل بيانات الزياره بنجاح.", "تم التعديل",
             MessageBoxButtons.OK, MessageBoxIcon.Information);
+        return true;
+    }
 
-        Close();
+    private UpdateVisitDto? GetUpdateVisitDtoFromUi()
+    {
+        var paidAmount = GetPaidAmountFromTextbox();
+        if (!paidAmount.HasValue)
+            return null;
+
+        var discountAmount = GetDiscountPriceFromTextbox();
+        if (!discountAmount.HasValue)
+            return null;
+
+        return new UpdateVisitDto
+        {
+            PaidAmount = paidAmount.Value,
+            DiscountAmount = discountAmount.Value,
+            Notes = txtNotes.Text
+        };
     }
 
     private void HandelCreateUpdateVisitTreatmentsResult(Error addVisitTreatmentsResult)
@@ -460,8 +590,20 @@ public partial class frmAddUpdateVisit : Form
     {
         switch (addVisitResultError.Code)
         {
+            case "Id.LessThanOrEqualToZero":
+                MessageBoxExtensions.ShowError("رقم الزياره يجب ان يكون اكبر من صفر.");
+                break;
+
             case "Notes.TooLong":
                 MessageBoxExtensions.ShowError("ملاحظات الزياره طويله جدا");
+                break;
+
+            case "Visit.AppointmentNotFound":
+                MessageBoxExtensions.ShowError("رقم الحجز غير موجود.");
+                break;
+
+            case "Visit.PatientNotFound":
+                MessageBoxExtensions.ShowError("رقم المريض غير موجود.");
                 break;
 
             case "PatientName.TooLong":
@@ -479,6 +621,10 @@ public partial class frmAddUpdateVisit : Form
 
             case "Status.CannotBeCompletedWhenCanceled":
                 MessageBoxExtensions.ShowError("تم الغاء الحجز صاحب الرقم المُعطي.");
+                break;
+
+            case "Common.UnexpectedError":
+                MessageBoxExtensions.ShowError("حدث خطأ غير متوقع اثناء حفظ بيانات الزياره."); 
                 break;
 
             default:
@@ -590,27 +736,7 @@ public partial class frmAddUpdateVisit : Form
         return null;
     }
 
-    private VisitRequestDto? GetVisitDtoFromUi()
-    {
-        var paidAmount = GetPaidAmountFromTextbox();
-        if (!paidAmount.HasValue)
-        {
-            MessageBoxExtensions.ShowError("القيمه المدفوعه غير صالحه.");
-            return null;
-        }
-
-        return new VisitRequestDto
-        {
-            AppointmentId = GetAppointmentIdFromUi(),
-            PatientName = txtPatientId.Text,
-            PaidAmount = paidAmount.Value, // Validated before, shouldn't be null.
-            DiscountAmount = GetDiscountPriceFromTextbox() ?? 0,
-            VisitDateTime = dateTimePicker.Value,
-            Notes = txtNotes.Text,
-        };
-    }
-
-    private int? GetAppointmentIdFromUi()
+    private int? Get_txtId_ValueFromUi()
     {
         if (int.TryParse(txtId.Text, out int appointmentId))
             return appointmentId;
@@ -745,8 +871,15 @@ public partial class frmAddUpdateVisit : Form
         // ========================== Appointment Id ==========================
         if (string.IsNullOrWhiteSpace(txtId.Text))
         {
-            // Do Nothing
-            // This condition exists to do not check the next condition
+            if (_mode == Mode.Add)
+            {
+                string message = _visitType == VisitType.WalkIn ?
+                    "رقم المريض لا يجب ان يكون فارغ." :
+                    "رقم الحجز لا يجب ان يكون فارغ.";
+
+                MessageBoxExtensions.ShowError(message);
+                return false;
+            }
         }
         else if (!int.TryParse(txtId.Text, out int appointmentId))
         {
@@ -808,13 +941,6 @@ public partial class frmAddUpdateVisit : Form
         else if (remainingAmount < 0)
         {
             MessageBoxExtensions.ShowError("القيمه المتبقيه لا يجب ان تكون سالبه.");
-            return false;
-        }
-
-        // ========================== Appointment Date Time ==========================
-        if (dateTimePicker.Value > DateTime.Now)
-        {
-            MessageBoxExtensions.ShowError("تاريخ الزياره لا يمكن ان يكون في المستقبل.");
             return false;
         }
 
@@ -913,7 +1039,7 @@ public partial class frmAddUpdateVisit : Form
         }
     }
 
-    private void txtIds_KeyPress(object sender, KeyPressEventArgs e)
+    private void txtId_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             e.Handled = true;
@@ -924,8 +1050,11 @@ public partial class frmAddUpdateVisit : Form
         if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && e.KeyChar != '.')
             e.Handled = true;
 
-        if (e.KeyChar == '.' && txtPaidAmount.Text.Contains('.'))
-            e.Handled = true;
+        if (sender is TextBox textBox)
+        {
+            if (e.KeyChar == '.' && textBox.Text.Contains('.'))
+                e.Handled = true;
+        }
     }
 
     private void txtMoney_TextChanged(object sender, EventArgs e)
@@ -973,14 +1102,12 @@ public partial class frmAddUpdateVisit : Form
         return null;
     }
 
-    private void dateTimePicker_ValueChanged(object sender, EventArgs e)
-    {
-        lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(dateTimePicker.Value);
-    }
-
     private void timer_Tick(object sender, EventArgs e)
     {
-        dateTimePicker.MaxDate = DateTime.Now;
+        if (_mode == Mode.Add)
+        {
+            lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(DateTime.Now);
+        }
     }
 
     private void dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)

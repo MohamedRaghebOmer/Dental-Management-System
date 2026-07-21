@@ -83,7 +83,7 @@ public sealed class VisitService
                     "CreateWalkInVisitAsync failed. Patient with Id {PatientId} was not found.",
                     walkInVisitDto.PatientId);
 
-                return Result.Failure<int>(ServiceErrors.Common.NotFound);
+                return Result.Failure<int>(ServiceErrors.Visit.PatientNotFound);
             }
 
             // Adjust this to your actual Money factory/constructor
@@ -112,7 +112,6 @@ public sealed class VisitService
                 patientId: patientIdResult.Value,
                 paidAmount: paidAmount.Value,
                 discountAmount: discountAmount.Value,
-                visitDateTime: walkInVisitDto.VisitDateTime,
                 notes: walkInVisitDto.Notes);
 
             if (visitResult.IsFailure)
@@ -190,14 +189,15 @@ public sealed class VisitService
                 return Result.Failure<int>(appointmentIdResult.Error);
             }
 
-            var appointment = await _appointmentRepo.GetByIdAsync(appointmentIdResult.Value, cancellationToken);
+            var appointment = await _appointmentRepo.GetByIdAsync(
+                appointmentIdResult.Value, cancellationToken);
             if (appointment is null)
             {
                 _logger.LogWarning(
                     "CreatePreAppointmentVisitAsync failed. Appointment with Id {AppointmentId} was not found.",
                     preAppointmentVisitDto.AppointmentId);
 
-                return Result.Failure<int>(ServiceErrors.Common.NotFound);
+                return Result.Failure<int>(ServiceErrors.Visit.AppointmentNotFound);
             }
 
             if (await _visitRepo.ExistsByAppointmentIdAsync(
@@ -236,7 +236,6 @@ public sealed class VisitService
                 patientId: appointment.PatientId,
                 paidAmount: paidAmount.Value,
                 discountAmount: discountAmount.Value,
-                visitDateTime: preAppointmentVisitDto.VisitDateTime,
                 notes: preAppointmentVisitDto.Notes);
 
             if (visitResult.IsFailure)

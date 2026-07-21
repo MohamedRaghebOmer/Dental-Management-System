@@ -35,11 +35,6 @@ public sealed class VisitConfiguration
 
     private void ConfigureIndexes(EntityTypeBuilder<Visit> builder)
     {
-        builder.HasIndex(p => p.AppointmentId)
-            .HasDatabaseName("UX_Visits_AppointmentId")
-            .HasFilter("[AppointmentId] IS NOT NULL")
-            .IsUnique(true);
-
         builder.HasIndex(p => p.VisitDateTime)
             .HasDatabaseName("UX_Visits_VisitDateTime")
             .IsUnique(true);
@@ -67,19 +62,19 @@ public sealed class VisitConfiguration
             .SetPropertyAccessMode(PropertyAccessMode.Field);
 
 
-        builder
-            .HasOne(v => v.Appointment)
-            .WithMany()
-            .HasForeignKey(v => new
+        builder.HasOne(v => v.Appointment)
+            .WithOne(a => a.Visit)
+            .HasForeignKey<Visit>(v => new
             {
                 v.AppointmentId,
                 v.PatientId
             })
-            .HasPrincipalKey(a => new
+            .HasPrincipalKey<Appointment>(a => new
             {
                 a.Id,
                 a.PatientId
             })
+            .OnDelete(DeleteBehavior.Restrict)
             .IsRequired(false);
     }
 

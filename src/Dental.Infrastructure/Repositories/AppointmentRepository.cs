@@ -7,10 +7,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public sealed class AppointmentRepository(DentalDbContext _dbContext)
-    : Repository<Appointment>(_dbContext),
+public sealed class AppointmentRepository
+    : Repository<Appointment>,
     IAppointmentRepository
 {
+    private readonly DentalDbContext _dbContext;
+
+    public AppointmentRepository(DentalDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public Task<bool> ExistsByScheduleVisitDateTimeAsync(
         DateTime scheduledVisitDateTime,
         Id? excludedId = null,
