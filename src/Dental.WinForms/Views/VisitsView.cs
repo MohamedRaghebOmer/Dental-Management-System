@@ -9,10 +9,10 @@ using System.Diagnostics;
 
 namespace Dental.WinForms.Views;
 
-public partial class VisitView : UserControl
+public partial class VisitsView : UserControl
 {
     private readonly IFormFactory _formFactory;
-    private readonly ILogger<VisitView> _logger;
+    private readonly ILogger<VisitsView> _logger;
     private readonly IVisitViewService _visitViewService;
     private readonly IVisitService _visitService;
 
@@ -36,9 +36,9 @@ public partial class VisitView : UserControl
     }
     private GridColumns _currentFilterColumn = GridColumns.PatientName;
 
-    public VisitView(
+    public VisitsView(
         IFormFactory formFactory,
-        ILogger<VisitView> logger,
+        ILogger<VisitsView> logger,
         IVisitViewService visitViewService,
         IVisitSummaryService visitSummaryService,
         IVisitService visitService)
@@ -420,17 +420,6 @@ public partial class VisitView : UserControl
         _isLoading = false;
     }
 
-    private async void cmsAdd_Click(object sender, EventArgs e)
-    {
-        Cursor = Cursors.WaitCursor;
-
-        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.PreAppointment);
-        await frm.ShowDialogAsync();
-
-        await Refresh();
-
-        Cursor = Cursors.Default;
-    }
 
     private async void cmsRefreshGrid_Click(object sender, EventArgs e)
     {
@@ -445,7 +434,7 @@ public partial class VisitView : UserControl
             return;
 
         if (MessageBox.Show(
-            "هل انت متأكد من حذف جميع بيانات الزياره؟\nهذا الفعل لا يمكن التراجع عنه.",
+            "هل انت متأكد من حذف جميع بيانات الزياره؟",
             "تحذير",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning,
@@ -458,7 +447,7 @@ public partial class VisitView : UserControl
             }
             else
             {
-                MessageBoxExtensions.ShowInformation("تم حذف الزياره بنجاح.", "تم الحذف");
+                MessageBoxExtensions.ShowInfo("تم حذف الزياره بنجاح.", "تم الحذف");
                 await Refresh();
             }
         }
@@ -510,7 +499,25 @@ public partial class VisitView : UserControl
         if (!appointmentId.HasValue)
             return;
 
-        using var frm = _formFactory.Create_frmAddEditAppointment(appointmentId.Value);
+        using var frm = _formFactory.Create_frmAppointmentInfo(appointmentId.Value);
+        await frm.ShowDialogAsync();
+    }
+
+    private async void cmsAddNewWalkInVisitToTheSamePatientToolStripMenuItem_Click(
+        object sender, EventArgs e)
+    {
+        var selectedPatientId = SelectedPatientId;
+        if (!selectedPatientId.HasValue)
+            return;
+
+        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.WalkIn);
+        frm.Id = selectedPatientId.Value;
+        await frm.ShowDialogAsync();
+    }
+
+    private async void btnCreatePreAppointmentVisit_Click(object sender, EventArgs e)
+    {
+        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.PreAppointment);
         await frm.ShowDialogAsync();
     }
 
@@ -523,7 +530,7 @@ public partial class VisitView : UserControl
 
             var cellValue =
                 dataGridView.Rows[_selectedRowIndex].Cells[nameof(colAppointmentId)].Value;
-            
+
             if (int.TryParse(cellValue?.ToString(), out var appointmentId))
                 return appointmentId;
 

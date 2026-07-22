@@ -1,39 +1,46 @@
+using Dental.Domain.Views;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Factories;
 using Dental.WinForms.Forms;
 using Dental.WinForms.Views;
 using Microsoft.Extensions.DependencyInjection;
+using VisitsView = Dental.WinForms.Views.VisitsView;
 
 namespace Dental.WinForms;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWinForms(this IServiceCollection services)
+    extension(IServiceCollection services)
     {
-        services.AddTransient<IFormFactory, FormFactory>();
-        services.AddForms();
-        services.AddViews();
+        public IServiceCollection AddWinForms()
+        {
+            services.AddTransient<IFormFactory, FormFactory>();
+            services.AddForms();
+            services.AddViews();
 
-        return services;
-    }
+            return services;
+        }
 
-    private static IServiceCollection AddForms(this IServiceCollection services)
-    {
-        services.AddTransient<frmMain>();
-        services.AddTransient<frmAddUpdateVisit>();
-        services.AddTransient<frmAddEditTreatment>();
-        services.AddTransient<frmAddEditAppointment>();
-        services.AddTransient<frmAddEditPatient>();
+        private IServiceCollection AddForms()
+        {
+            services.AddTransient<frmMain>();
+            services.AddTransient<frmAddUpdateVisit>();
+            services.AddTransient<frmAddEditTreatment>();
+            services.AddTransient<frmAddEditAppointment>();
+            services.AddTransient<frmAddEditPatient>();
 
-        return services;
-    }
+            return services;
+        }
 
-    private static IServiceCollection AddViews(this IServiceCollection services)
-    {
-        services.AddTransient<MainMenuView>();
-        services.AddTransient<VisitView>();
-        services.AddTransient<PatientView>();
+        private IServiceCollection AddViews()
+        {
+            services.AddTransient<MainMenuView>();
+            services.AddTransient<VisitsView>();
+            services.AddTransient<PatientsView>();
+            services.AddTransient<AppointmentInfo>();
+            services.AddTransient<AppointmentsView>();
 
-        return services;
+            return services;
+        }
     }
 }

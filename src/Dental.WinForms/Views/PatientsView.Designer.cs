@@ -1,6 +1,6 @@
 ﻿namespace Dental.WinForms.Views
 {
-    partial class PatientView
+    partial class PatientsView
     {
         /// <summary> 
         /// Required designer variable.

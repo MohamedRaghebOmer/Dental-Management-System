@@ -10,20 +10,23 @@ namespace Dental.WinForms;
 public partial class frmMain : Form
 {
     private readonly MainMenuView _mainMenuView = default!;
-    private readonly VisitView _VisitView = default!;
-    private readonly PatientView _patientView = default!;
+    private readonly VisitsView _VisitView = default!;
+    private readonly PatientsView _patientView = default!;
+    private readonly AppointmentsView _appointmentsView = default!;
     private Guna2Button? _selectedButton;
 
     public frmMain(
         MainMenuView mainMenuView,
-        VisitView visitView,
-        PatientView patientView)
+        VisitsView visitView,
+        PatientsView patientView,
+        AppointmentsView appointmentsView)
     {
         InitializeComponent();
 
         _mainMenuView = mainMenuView;
         _VisitView = visitView;
         _patientView = patientView;
+        _appointmentsView = appointmentsView;
 
         btnMainMenu_Click(null!, null!);
     }
@@ -72,6 +75,14 @@ public partial class frmMain : Form
         Cursor = Cursors.WaitCursor;
         ShowView(_patientView);
         SelectMenuButton(btnPatients);
+        Cursor = Cursors.Default;
+    }
+
+    private void btnAppointments_Click(object sender, EventArgs e)
+    {
+        Cursor = Cursors.WaitCursor;
+        ShowView(_appointmentsView);
+        SelectMenuButton(btnAppointments);
         Cursor = Cursors.Default;
     }
 }

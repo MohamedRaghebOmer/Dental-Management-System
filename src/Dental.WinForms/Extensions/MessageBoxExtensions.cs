@@ -25,7 +25,7 @@ public static class MessageBoxExtensions
         return MessageBox.Show(question, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
     }
 
-    public static void ShowInformation(string message, string caption = "ملحوظه")
+    public static void ShowInfo(string message, string caption = "ملحوظه")
     {
         MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
     }

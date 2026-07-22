@@ -10,6 +10,8 @@ public partial class frmAddEditPatient : Form
     private readonly IPatientService _patientService;
     private readonly int? _patientId = null;
 
+    public event EventHandler<int>? PatientAdded;
+
     private enum Mode { Add, Update }
     private Mode _mode = Mode.Add;
 
@@ -169,7 +171,8 @@ public partial class frmAddEditPatient : Form
             }
         }
 
-        if (txtPhoneNumber.Text.Length != 11)
+        if (!string.IsNullOrWhiteSpace(txtPhoneNumber.Text) && txtPhoneNumber.Text?
+            .Trim().Length != 11)
         {
             MessageBoxExtensions.ShowError("رقم الهاتف يجب ان يكون 11 رقم.");
             return false;
@@ -194,7 +197,8 @@ public partial class frmAddEditPatient : Form
             return;
         }
 
-        MessageBoxExtensions.ShowInformation("تم إضافة المريض بنجاح.");
+        MessageBoxExtensions.ShowInfo("تم إضافة المريض بنجاح.");
+        OnPatientAdded(saveResult.Value);
     }
 
     private void HandelAddPatientError(Error error)
@@ -259,7 +263,7 @@ public partial class frmAddEditPatient : Form
             return;
         }
 
-        MessageBoxExtensions.ShowInformation("تم تعديل بيانات المريض بنجاح.");
+        MessageBoxExtensions.ShowInfo("تم تعديل بيانات المريض بنجاح.");
     }
 
     private void HandelUpdatePatientError(Error error)
@@ -290,7 +294,7 @@ public partial class frmAddEditPatient : Form
             LastName = txtLastName.Text,
             Age = age,
             Gender = rbMale.Checked ? Domain.Enums.Gender.Male : Domain.Enums.Gender.Female,
-            PhoneNumber = txtPhoneNumber.Text
+            PhoneNumber = txtPhoneNumber.Text.Trim()
         };
     }
 
@@ -300,5 +304,10 @@ public partial class frmAddEditPatient : Form
         {
             e.Handled = true;
         }
+    }
+
+    protected virtual void OnPatientAdded(int patientId)
+    {
+        PatientAdded?.Invoke(this, patientId);
     }
 }

@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges71 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges72 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges73 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges74 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges75 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges76 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle29 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle30 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle31 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle32 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges77 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges78 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges79 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges80 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             pictureBox1 = new PictureBox();
             label3 = new Label();
             label4 = new Label();
@@ -73,6 +73,8 @@
             txtNotes = new RichTextBox();
             lblId = new Label();
             timer = new System.Windows.Forms.Timer(components);
+            btnSearch = new FontAwesome.Sharp.IconButton();
+            btnAddPatientOrAppointment = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
@@ -159,7 +161,7 @@
             // 
             txtId.Animated = true;
             txtId.BorderRadius = 10;
-            txtId.CustomizableEdges = customizableEdges11;
+            txtId.CustomizableEdges = customizableEdges71;
             txtId.DefaultText = "";
             txtId.DisabledState.BorderColor = Color.FromArgb(213, 218, 223);
             txtId.DisabledState.FillColor = SystemColors.Window;
@@ -176,7 +178,7 @@
             txtId.PlaceholderText = "";
             txtId.RightToLeft = RightToLeft.Yes;
             txtId.SelectedText = "";
-            txtId.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            txtId.ShadowDecoration.CustomizableEdges = customizableEdges72;
             txtId.Size = new Size(249, 36);
             txtId.TabIndex = 0;
             txtId.KeyPress += txtId_KeyPress;
@@ -185,7 +187,7 @@
             // 
             txtDiscountAmount.Animated = true;
             txtDiscountAmount.BorderRadius = 10;
-            txtDiscountAmount.CustomizableEdges = customizableEdges13;
+            txtDiscountAmount.CustomizableEdges = customizableEdges73;
             txtDiscountAmount.DefaultText = "";
             txtDiscountAmount.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtDiscountAmount.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -201,7 +203,7 @@
             txtDiscountAmount.Name = "txtDiscountAmount";
             txtDiscountAmount.PlaceholderText = "";
             txtDiscountAmount.SelectedText = "";
-            txtDiscountAmount.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtDiscountAmount.ShadowDecoration.CustomizableEdges = customizableEdges74;
             txtDiscountAmount.Size = new Size(249, 36);
             txtDiscountAmount.TabIndex = 3;
             txtDiscountAmount.TextChanged += txtMoney_TextChanged;
@@ -211,7 +213,7 @@
             // 
             txtPaidAmount.Animated = true;
             txtPaidAmount.BorderRadius = 10;
-            txtPaidAmount.CustomizableEdges = customizableEdges15;
+            txtPaidAmount.CustomizableEdges = customizableEdges75;
             txtPaidAmount.DefaultText = "";
             txtPaidAmount.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtPaidAmount.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -227,7 +229,7 @@
             txtPaidAmount.Name = "txtPaidAmount";
             txtPaidAmount.PlaceholderText = "";
             txtPaidAmount.SelectedText = "";
-            txtPaidAmount.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            txtPaidAmount.ShadowDecoration.CustomizableEdges = customizableEdges76;
             txtPaidAmount.Size = new Size(249, 36);
             txtPaidAmount.TabIndex = 2;
             txtPaidAmount.TextChanged += txtMoney_TextChanged;
@@ -249,45 +251,45 @@
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AllowUserToResizeColumns = false;
             dataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle5.BackColor = Color.White;
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = Color.White;
-            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
-            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle29.BackColor = Color.White;
+            dataGridViewCellStyle29.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle29.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle29.SelectionBackColor = Color.White;
+            dataGridViewCellStyle29.SelectionForeColor = Color.Black;
+            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle29;
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle6.ForeColor = Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle30.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle30.BackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle30.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle30.ForeColor = Color.White;
+            dataGridViewCellStyle30.SelectionBackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle30.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle30.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle30;
             dataGridView.ColumnHeadersHeight = 35;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { colToothNumber, colTreatmentName, colTreatmentPrice, colNotes });
-            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = Color.White;
-            dataGridViewCellStyle7.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle7.ForeColor = Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = Color.White;
-            dataGridViewCellStyle7.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle31.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle31.BackColor = Color.White;
+            dataGridViewCellStyle31.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle31.ForeColor = Color.Black;
+            dataGridViewCellStyle31.SelectionBackColor = Color.White;
+            dataGridViewCellStyle31.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle31.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle31;
             dataGridView.GridColor = Color.LightGray;
             dataGridView.Location = new Point(-1, 684);
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = Color.White;
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle8.SelectionBackColor = Color.White;
-            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
-            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle32.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle32.BackColor = Color.White;
+            dataGridViewCellStyle32.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle32.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle32.SelectionBackColor = Color.White;
+            dataGridViewCellStyle32.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle32.WrapMode = DataGridViewTriState.True;
+            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle32;
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.RowTemplate.ContextMenuStrip = contextMenuStrip;
@@ -382,7 +384,7 @@
             btnSave.AnimatedGIF = true;
             btnSave.BackColor = SystemColors.Control;
             btnSave.BorderRadius = 15;
-            btnSave.CustomizableEdges = customizableEdges17;
+            btnSave.CustomizableEdges = customizableEdges77;
             btnSave.DisabledState.BorderColor = Color.DarkGray;
             btnSave.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -394,7 +396,7 @@
             btnSave.Location = new Point(643, 917);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges78;
             btnSave.Size = new Size(160, 56);
             btnSave.TabIndex = 8;
             btnSave.Text = "حفظ";
@@ -424,7 +426,7 @@
             // 
             txtRemainingAmount.Animated = true;
             txtRemainingAmount.BorderRadius = 10;
-            txtRemainingAmount.CustomizableEdges = customizableEdges19;
+            txtRemainingAmount.CustomizableEdges = customizableEdges79;
             txtRemainingAmount.DefaultText = "";
             txtRemainingAmount.DisabledState.BorderColor = Color.FromArgb(213, 218, 223);
             txtRemainingAmount.DisabledState.FillColor = Color.White;
@@ -441,7 +443,7 @@
             txtRemainingAmount.Name = "txtRemainingAmount";
             txtRemainingAmount.PlaceholderText = "";
             txtRemainingAmount.SelectedText = "";
-            txtRemainingAmount.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            txtRemainingAmount.ShadowDecoration.CustomizableEdges = customizableEdges80;
             txtRemainingAmount.Size = new Size(249, 36);
             txtRemainingAmount.TabIndex = 4;
             txtRemainingAmount.KeyPress += txtMoney_KeyPress;
@@ -457,13 +459,12 @@
             // 
             // lblVisitDateTime
             // 
-            lblVisitDateTime.AutoSize = true;
-            lblVisitDateTime.Location = new Point(876, 390);
+            lblVisitDateTime.Location = new Point(809, 390);
             lblVisitDateTime.Name = "lblVisitDateTime";
-            lblVisitDateTime.RightToLeft = RightToLeft.No;
-            lblVisitDateTime.Size = new Size(273, 28);
+            lblVisitDateTime.RightToLeft = RightToLeft.Yes;
+            lblVisitDateTime.Size = new Size(330, 28);
             lblVisitDateTime.TabIndex = 26;
-            lblVisitDateTime.Text = "اليوم dd/MM/yyyy hh:mm pm";
+            lblVisitDateTime.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // label11
             // 
@@ -485,12 +486,12 @@
             // 
             // lblId
             // 
-            lblId.AutoSize = true;
-            lblId.Location = new Point(1347, 161);
+            lblId.Location = new Point(1303, 161);
             lblId.Name = "lblId";
-            lblId.Size = new Size(98, 28);
+            lblId.Size = new Size(142, 28);
             lblId.TabIndex = 28;
             lblId.Text = "رقم الحجز :";
+            lblId.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // timer
             // 
@@ -498,11 +499,42 @@
             timer.Interval = 1000;
             timer.Tick += timer_Tick;
             // 
+            // btnSearch
+            // 
+            btnSearch.BackgroundImageLayout = ImageLayout.Stretch;
+            btnSearch.IconChar = FontAwesome.Sharp.IconChar.Search;
+            btnSearch.IconColor = Color.DodgerBlue;
+            btnSearch.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnSearch.ImageAlign = ContentAlignment.TopCenter;
+            btnSearch.Location = new Point(833, 150);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new Size(51, 50);
+            btnSearch.TabIndex = 29;
+            btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
+            // 
+            // btnAddPatientOrAppointment
+            // 
+            btnAddPatientOrAppointment.BackgroundImageLayout = ImageLayout.Stretch;
+            btnAddPatientOrAppointment.IconChar = FontAwesome.Sharp.IconChar.CirclePlus;
+            btnAddPatientOrAppointment.IconColor = Color.MediumSeaGreen;
+            btnAddPatientOrAppointment.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnAddPatientOrAppointment.ImageAlign = ContentAlignment.TopCenter;
+            btnAddPatientOrAppointment.Location = new Point(766, 150);
+            btnAddPatientOrAppointment.Name = "btnAddPatientOrAppointment";
+            btnAddPatientOrAppointment.Size = new Size(51, 50);
+            btnAddPatientOrAppointment.TabIndex = 30;
+            btnAddPatientOrAppointment.UseVisualStyleBackColor = true;
+            btnAddPatientOrAppointment.Visible = false;
+            btnAddPatientOrAppointment.Click += btnAddPatientOrAppointment_Click;
+            // 
             // frmAddUpdateVisit
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1447, 985);
+            Controls.Add(btnAddPatientOrAppointment);
+            Controls.Add(btnSearch);
             Controls.Add(lblId);
             Controls.Add(txtNotes);
             Controls.Add(label11);
@@ -574,5 +606,7 @@
         private DataGridViewTextBoxColumn colTreatmentPrice;
         private DataGridViewTextBoxColumn colNotes;
         private System.Windows.Forms.Timer timer;
+        private FontAwesome.Sharp.IconButton btnSearch;
+        private FontAwesome.Sharp.IconButton btnAddPatientOrAppointment;
     }
 }

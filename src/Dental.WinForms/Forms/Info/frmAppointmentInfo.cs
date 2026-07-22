@@ -1,18 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+﻿using Dental.Application.ViewsStuff.Interfaces;
+using Dental.WinForms.Extensions;
 
-namespace Dental.WinForms.Forms
+namespace Dental.WinForms.Forms;
+
+public partial class frmAppointmentInfo : Form
 {
-    public partial class frmAppointmentInfo : Form
+    private readonly int _appointmentId;
+    private readonly IAppointmentInfoService _appointmentInfoService;
+
+    public frmAppointmentInfo(
+        int appointmentId,
+        IAppointmentInfoService appointmentInfoService)
     {
-        public frmAppointmentInfo()
+        InitializeComponent();
+        _appointmentId = appointmentId;
+        _appointmentInfoService = appointmentInfoService;
+
+        ctrlAppointmentInfo1.WhenAppointmentIsNotFound += (s, args) => Close();
+    }
+
+    private void frmAppointmentInfo_Load(object sender, EventArgs e)
+    {
+        if (_appointmentId <= 0)
         {
-            InitializeComponent();
+            MessageBoxExtensions.ShowError("رقم الحجز يجب ان يكون اكبر من الصفر.");
+            Close();
+            return;
         }
+
+        ctrlAppointmentInfo1.Initialize(_appointmentId, _appointmentInfoService);
     }
 }

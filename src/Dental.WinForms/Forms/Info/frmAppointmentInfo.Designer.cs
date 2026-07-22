@@ -28,12 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "frmAppointmentInfo";
+            ctrlAppointmentInfo1 = new Dental.WinForms.UserControls.Info.ctrlAppointmentInfo();
+            SuspendLayout();
+            // 
+            // ctrlAppointmentInfo1
+            // 
+            ctrlAppointmentInfo1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ctrlAppointmentInfo1.Location = new Point(-2, 13);
+            ctrlAppointmentInfo1.Margin = new Padding(4);
+            ctrlAppointmentInfo1.MaximumSize = new Size(942, 287);
+            ctrlAppointmentInfo1.MinimumSize = new Size(942, 287);
+            ctrlAppointmentInfo1.Name = "ctrlAppointmentInfo1";
+            ctrlAppointmentInfo1.RightToLeft = RightToLeft.Yes;
+            ctrlAppointmentInfo1.Size = new Size(942, 287);
+            ctrlAppointmentInfo1.TabIndex = 0;
+            // 
+            // frmAppointmentInfo
+            // 
+            AutoScaleDimensions = new SizeF(11F, 28F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(942, 316);
+            Controls.Add(ctrlAppointmentInfo1);
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4);
+            MaximizeBox = false;
+            Name = "frmAppointmentInfo";
+            RightToLeft = RightToLeft.Yes;
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "تفاصيل الحجز";
+            Load += frmAppointmentInfo_Load;
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private UserControls.Info.ctrlAppointmentInfo ctrlAppointmentInfo1;
     }
 }

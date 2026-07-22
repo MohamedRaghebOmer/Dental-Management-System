@@ -10,6 +10,7 @@ using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel;
 
 namespace Dental.WinForms.Forms;
 
@@ -26,7 +27,7 @@ public partial class frmAddUpdateVisit : Form
     private int _selectedRowIndex = -1;
     private List<TreatmentResponseDto> _treatments = [];
 
-    private enum Mode { Add, Update }
+    public enum Mode { Add, Update }
     private readonly Mode _mode = Mode.Add;
 
     public enum VisitType { WalkIn, PreAppointment }
@@ -73,11 +74,26 @@ public partial class frmAddUpdateVisit : Form
         _logger = logger;
         _formFactory = formFactory;
 
-        _visitId = visitId;
         _mode = Mode.Update;
+        _visitId = visitId;
         _visitType = null;
     }
 
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int? Id
+    {
+        get
+        {
+            if (int.TryParse(txtId.Text, out int id))
+                return id;
+
+            return null;
+        }
+
+        set =>
+            txtId.Text = value.HasValue ? value.Value.ToString() : string.Empty;
+    }
 
     private async void AddUpdateVisit_Load(object sender, EventArgs e)
     {
@@ -88,7 +104,7 @@ public partial class frmAddUpdateVisit : Form
             SetUpdateUiMode();
             await LoadUi();
         }
-            
+
     }
 
     private async Task InitializeAsync()
@@ -97,7 +113,7 @@ public partial class frmAddUpdateVisit : Form
         {
             InitializeFormTexts();
             await LoadDataGrid();
-            
+
             if (_mode == Mode.Add)
             {
                 InitializeDataGridDefaultValues();
@@ -131,11 +147,7 @@ public partial class frmAddUpdateVisit : Form
         lblTitile.Text = _mode == Mode.Add ? "اضافة زياره جديده" : "تعديل بيانات زياره";
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(DateTime.Now);
         lblId.Text = _visitType == VisitType.WalkIn ? "رقم المريض :" : "رقم الحجز :";
-
-        if (_visitType == VisitType.WalkIn)
-        {
-            lblId.Location = new Point(1323, 161);
-        }
+        btnAddPatientOrAppointment.Visible = _mode == Mode.Add;
     }
 
     private void SetUpdateUiMode()
@@ -272,7 +284,7 @@ public partial class frmAddUpdateVisit : Form
             txtId.Text = visitResult.Value.PatientId.ToString();
             lblId.Text = "رقم المريض :";
         }
-            
+
         txtPaidAmount.Text = visitResult.Value.PaidAmount.ToString();
         txtDiscountAmount.Text = visitResult.Value.DiscountAmount.ToString();
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(visitResult.Value.VisitDateTime);
@@ -431,7 +443,7 @@ public partial class frmAddUpdateVisit : Form
             return false;
         }
 
-        MessageBoxExtensions.ShowInformation(
+        MessageBoxExtensions.ShowInfo(
             "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
 
         return true;
@@ -485,7 +497,7 @@ public partial class frmAddUpdateVisit : Form
             return false;
         }
 
-        MessageBoxExtensions.ShowInformation(
+        MessageBoxExtensions.ShowInfo(
             "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
 
         return true;
@@ -624,7 +636,7 @@ public partial class frmAddUpdateVisit : Form
                 break;
 
             case "Common.UnexpectedError":
-                MessageBoxExtensions.ShowError("حدث خطأ غير متوقع اثناء حفظ بيانات الزياره."); 
+                MessageBoxExtensions.ShowError("حدث خطأ غير متوقع اثناء حفظ بيانات الزياره.");
                 break;
 
             default:
@@ -1118,5 +1130,64 @@ public partial class frmAddUpdateVisit : Form
             e.RowIndex, e.ColumnIndex);
 
         e.ThrowException = false;
+    }
+
+    private async void btnSearch_Click(object sender, EventArgs e)
+    {
+        if (!int.TryParse(txtId.Text, out int id) || id <= 0)
+            return;
+
+        if (_mode == Mode.Add)
+        {
+            if (_visitType == VisitType.WalkIn)
+            {
+                using var frm = _formFactory.Create_frmAddEditPatient(id);
+                await frm.ShowDialogAsync();
+            }
+            else // PreAppointment
+            {
+                using var frm = _formFactory.Create_frmAppointmentInfo(id);
+                await frm.ShowDialogAsync();
+            }
+        }
+        else // Update
+        {
+            if (lblId.Text.Contains("حجز") || lblId.Text.Contains("موعد")) // Appointment ID
+            {
+                using var frm = _formFactory.Create_frmAppointmentInfo(id);
+                await frm.ShowDialogAsync();
+            }
+            else // Patient ID
+            {
+                using var frm = _formFactory.Create_frmAddEditPatient(id);
+                await frm.ShowDialogAsync();
+            }
+        }
+    }
+
+    private void btnAddPatientOrAppointment_Click(object sender, EventArgs e)
+    {
+        if (_mode != Mode.Add)
+            return;
+
+        if (_visitType == VisitType.WalkIn)
+        {
+            using var frm = _formFactory.Create_frmAddEditPatient();
+            frm.PatientAdded += (s, patientId) =>
+            {
+                txtId.Text = patientId.ToString();
+            };
+
+            frm.ShowDialog();
+        }
+        else // PreAppointment
+        {
+            using var frm = _formFactory.Create_frmAddEditAppointment();
+            frm.AppointmentAdded += (s, appointmentId) =>
+            {
+                txtId.Text = appointmentId.ToString();
+            };
+            frm.ShowDialog();
+        }
     }
 }

@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<IVisitToothTreatmentsViewService, VisitToothTreatmentsViewService>();
         services.AddScoped<IVisitViewService, VisitViewService>();
         services.AddScoped<IVisitSummaryService, VisitSummaryService>();
+        services.AddScoped<IAppointmentInfoService, AppointmentInfoService>();
 
         return services;
     }

@@ -3,6 +3,7 @@ using Dental.Application.DTOs.Appointment;
 using Dental.Domain.Enums;
 using Dental.Domain.Shared;
 using Dental.WinForms.Extensions;
+using System.Reflection.Emit;
 
 namespace Dental.WinForms.Forms;
 
@@ -11,7 +12,9 @@ public partial class frmAddEditAppointment : Form
     private readonly IAppointmentService _appointmentService;
     private readonly int? _appointmentId = null;
 
-    private enum Mode { Add, Update }
+    public event EventHandler<int>? AppointmentAdded;
+
+    public enum Mode { Add, Update }
     private readonly Mode _mode = Mode.Add;
 
 
@@ -27,9 +30,20 @@ public partial class frmAddEditAppointment : Form
 
     public frmAddEditAppointment(
         int appointmentId,
-        IAppointmentService appointmentService) : this(appointmentService)
+        Mode mode,
+        IAppointmentService appointmentService)
     {
-        _mode = Mode.Update;
+        InitializeComponent();
+
+        _appointmentService = appointmentService;
+        _mode = mode;
+
+        if (_mode == Mode.Add)
+        {
+            txtPatientId.Text = appointmentId.ToString();
+            return;
+        }
+
         _appointmentId = appointmentId;
     }
 
@@ -128,19 +142,37 @@ public partial class frmAddEditAppointment : Form
             return;
 
         Cursor = Cursors.WaitCursor;
-        var saveResult = _mode == Mode.Add
-            ? await _appointmentService.CreateAsync(appointmentDto)
-            : await _appointmentService.UpdateAsync(_appointmentId!.Value, appointmentDto);
-        Cursor = Cursors.Default;
-
-        if (saveResult.IsFailure)
+        if (_mode == Mode.Add)
         {
-            HandleSaveResult(saveResult.Error);
-            return;
+            var saveResult = await _appointmentService.CreateAsync(appointmentDto);
+            if (saveResult.IsFailure)
+                HandleSaveResult(saveResult.Error);
+            else
+            {
+                MessageBoxExtensions.ShowInfo("تم حفظ الموعد بنجاح.");
+                OnAppointmentAdded(saveResult.Value);
+                Close();
+            }
         }
+        else // Mode.Update
+        {
+            if (!_appointmentId.HasValue)
+            {
+                MessageBoxExtensions.ShowError("رقم الموعد غير صالح.");
+                return;
+            }
 
-        MessageBox.Show("تم حفظ الموعد بنجاح.", "نجاح", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        Close();
+            var saveResult = 
+                await _appointmentService.UpdateAsync(_appointmentId.Value, appointmentDto);
+            if (saveResult.IsFailure)
+                HandleSaveResult(saveResult.Error);
+            else
+            {
+                MessageBoxExtensions.ShowInfo("تم حفظ الموعد بنجاح.");
+                Close();
+            }
+        }
+        Cursor = Cursors.Default;
     }
 
     private void HandleSaveResult(Error saveResultError)
@@ -246,5 +278,10 @@ public partial class frmAddEditAppointment : Form
         }
 
         return true;
+    }
+
+    protected virtual void OnAppointmentAdded(int appointmentId)
+    {
+        AppointmentAdded?.Invoke(this, appointmentId);
     }
 }

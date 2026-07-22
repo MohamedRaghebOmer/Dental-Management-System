@@ -1,6 +1,6 @@
 ﻿namespace Dental.WinForms.Views
 {
-    partial class VisitView
+    partial class VisitsView
     {
         /// <summary> 
         /// Required designer variable.
@@ -33,7 +33,7 @@
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VisitView));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VisitsView));
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -44,13 +44,25 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             dataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
+            colVisitId = new DataGridViewTextBoxColumn();
+            colAppointmentId = new DataGridViewTextBoxColumn();
+            colPatientId = new DataGridViewTextBoxColumn();
+            colPatientName = new DataGridViewTextBoxColumn();
+            colVisitDateTime = new DataGridViewTextBoxColumn();
+            colVisitTreatments = new DataGridViewTextBoxColumn();
+            colTotalAmount = new DataGridViewTextBoxColumn();
+            colPaidAmount = new DataGridViewTextBoxColumn();
+            colDiscountAmount = new DataGridViewTextBoxColumn();
+            colRemainedAmount = new DataGridViewTextBoxColumn();
             contextMenuStrip = new ContextMenuStrip(components);
             cmsEdit = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             cmsDelete = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
-            cmsNewAppointmentToTheSamePatient = new ToolStripMenuItem();
+            cmsNewWalkInVisitToTheSamePatient = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
             cmsShowPatientDetails = new ToolStripMenuItem();
             cmsShowAppointmentDetails = new ToolStripMenuItem();
@@ -82,16 +94,7 @@
             lblSearchAfter = new Label();
             btnAddWalkInVisit = new Guna.UI2.WinForms.Guna2Button();
             dtpVisitDateTime = new Guna.UI2.WinForms.Guna2DateTimePicker();
-            colVisitId = new DataGridViewTextBoxColumn();
-            colAppointmentId = new DataGridViewTextBoxColumn();
-            colPatientId = new DataGridViewTextBoxColumn();
-            colPatientName = new DataGridViewTextBoxColumn();
-            colVisitDateTime = new DataGridViewTextBoxColumn();
-            colVisitTreatments = new DataGridViewTextBoxColumn();
-            colTotalAmount = new DataGridViewTextBoxColumn();
-            colPaidAmount = new DataGridViewTextBoxColumn();
-            colDiscountAmount = new DataGridViewTextBoxColumn();
-            colRemainedAmount = new DataGridViewTextBoxColumn();
+            btnCreatePreAppointmentVisit = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
             pnlTotalVisits.SuspendLayout();
@@ -176,27 +179,128 @@
             dataGridView.DataError += dataGridView_DataError;
             dataGridView.DoubleClick += dataGridView_DoubleClick;
             // 
+            // colVisitId
+            // 
+            colVisitId.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colVisitId.DataPropertyName = "VisitId";
+            colVisitId.HeaderText = "رقم الزياره";
+            colVisitId.MinimumWidth = 2;
+            colVisitId.Name = "colVisitId";
+            colVisitId.ReadOnly = true;
+            colVisitId.Width = 122;
+            // 
+            // colAppointmentId
+            // 
+            colAppointmentId.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colAppointmentId.DataPropertyName = "AppointmentId";
+            colAppointmentId.HeaderText = "رقم الحجز";
+            colAppointmentId.MinimumWidth = 2;
+            colAppointmentId.Name = "colAppointmentId";
+            colAppointmentId.ReadOnly = true;
+            colAppointmentId.Width = 116;
+            // 
+            // colPatientId
+            // 
+            colPatientId.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colPatientId.DataPropertyName = "PatientId";
+            colPatientId.HeaderText = "رقم المريض";
+            colPatientId.MinimumWidth = 2;
+            colPatientId.Name = "colPatientId";
+            colPatientId.ReadOnly = true;
+            colPatientId.Width = 140;
+            // 
+            // colPatientName
+            // 
+            colPatientName.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colPatientName.DataPropertyName = "PatientName";
+            colPatientName.HeaderText = "اسم المريض";
+            colPatientName.MinimumWidth = 200;
+            colPatientName.Name = "colPatientName";
+            colPatientName.ReadOnly = true;
+            colPatientName.Width = 200;
+            // 
+            // colVisitDateTime
+            // 
+            colVisitDateTime.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            colVisitDateTime.DataPropertyName = "VisitDateTime";
+            colVisitDateTime.HeaderText = "تاريخ الزياره";
+            colVisitDateTime.MinimumWidth = 2;
+            colVisitDateTime.Name = "colVisitDateTime";
+            colVisitDateTime.ReadOnly = true;
+            colVisitDateTime.Width = 2;
+            // 
+            // colVisitTreatments
+            // 
+            colVisitTreatments.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colVisitTreatments.DataPropertyName = "VisitTreatmentsNames";
+            colVisitTreatments.HeaderText = "الخدمات المقدمه";
+            colVisitTreatments.MinimumWidth = 200;
+            colVisitTreatments.Name = "colVisitTreatments";
+            colVisitTreatments.ReadOnly = true;
+            colVisitTreatments.ToolTipText = "الخدمات المقدمه للمريض في الزياره";
+            // 
+            // colTotalAmount
+            // 
+            colTotalAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colTotalAmount.DataPropertyName = "TotalAmount";
+            colTotalAmount.HeaderText = "المبلغ الكلي";
+            colTotalAmount.MinimumWidth = 100;
+            colTotalAmount.Name = "colTotalAmount";
+            colTotalAmount.ReadOnly = true;
+            colTotalAmount.Width = 140;
+            // 
+            // colPaidAmount
+            // 
+            colPaidAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colPaidAmount.DataPropertyName = "PaidAmount";
+            colPaidAmount.HeaderText = "المبلغ المدفوع";
+            colPaidAmount.MinimumWidth = 100;
+            colPaidAmount.Name = "colPaidAmount";
+            colPaidAmount.ReadOnly = true;
+            colPaidAmount.Width = 160;
+            // 
+            // colDiscountAmount
+            // 
+            colDiscountAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colDiscountAmount.DataPropertyName = "DiscountAmount";
+            colDiscountAmount.HeaderText = "مبلغ الخصم";
+            colDiscountAmount.MinimumWidth = 100;
+            colDiscountAmount.Name = "colDiscountAmount";
+            colDiscountAmount.ReadOnly = true;
+            colDiscountAmount.Width = 138;
+            // 
+            // colRemainedAmount
+            // 
+            colRemainedAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colRemainedAmount.DataPropertyName = "RemainedAmount";
+            colRemainedAmount.HeaderText = "المبلغ المتبقي";
+            colRemainedAmount.MinimumWidth = 100;
+            colRemainedAmount.Name = "colRemainedAmount";
+            colRemainedAmount.ReadOnly = true;
+            colRemainedAmount.Width = 159;
+            // 
             // contextMenuStrip
             // 
             contextMenuStrip.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip.Items.AddRange(new ToolStripItem[] { cmsEdit, toolStripSeparator1, cmsDelete, toolStripSeparator4, cmsNewAppointmentToTheSamePatient, toolStripSeparator3, cmsShowPatientDetails, cmsShowAppointmentDetails, toolStripSeparator2, cmsRefreshGrid });
+            contextMenuStrip.Items.AddRange(new ToolStripItem[] { cmsEdit, toolStripSeparator1, cmsDelete, toolStripSeparator4, cmsNewWalkInVisitToTheSamePatient, toolStripSeparator3, cmsShowPatientDetails, cmsShowAppointmentDetails, toolStripSeparator2, cmsRefreshGrid });
             contextMenuStrip.Name = "contextMenuStrip1";
             contextMenuStrip.RightToLeft = RightToLeft.Yes;
-            contextMenuStrip.Size = new Size(313, 184);
+            contextMenuStrip.Size = new Size(266, 212);
             // 
             // cmsEdit
             // 
             cmsEdit.Image = Properties.Resources.pen_512;
             cmsEdit.Name = "cmsEdit";
             cmsEdit.ShortcutKeys = Keys.Control | Keys.E;
-            cmsEdit.Size = new Size(312, 26);
+            cmsEdit.ShowShortcutKeys = false;
+            cmsEdit.Size = new Size(265, 26);
             cmsEdit.Text = "تعديل الزياره";
             cmsEdit.Click += cmsEdit_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(309, 6);
+            toolStripSeparator1.Size = new Size(262, 6);
             // 
             // cmsDelete
             // 
@@ -204,34 +308,38 @@
             cmsDelete.Name = "cmsDelete";
             cmsDelete.RightToLeftAutoMirrorImage = true;
             cmsDelete.ShortcutKeys = Keys.Delete;
-            cmsDelete.Size = new Size(312, 26);
+            cmsDelete.ShowShortcutKeys = false;
+            cmsDelete.Size = new Size(265, 26);
             cmsDelete.Text = "حذف الزياره";
             cmsDelete.Click += cmsDelete_Click;
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(309, 6);
+            toolStripSeparator4.Size = new Size(262, 6);
             // 
-            // cmsNewAppointmentToTheSamePatient
+            // cmsNewWalkInVisitToTheSamePatient
             // 
-            cmsNewAppointmentToTheSamePatient.Image = Properties.Resources.plus_512;
-            cmsNewAppointmentToTheSamePatient.Name = "cmsNewAppointmentToTheSamePatient";
-            cmsNewAppointmentToTheSamePatient.ShortcutKeys = Keys.Control | Keys.N;
-            cmsNewAppointmentToTheSamePatient.Size = new Size(312, 26);
-            cmsNewAppointmentToTheSamePatient.Text = "انشاء حجز اخر لنفس المريض";
+            cmsNewWalkInVisitToTheSamePatient.Image = Properties.Resources.plus_512;
+            cmsNewWalkInVisitToTheSamePatient.Name = "cmsNewWalkInVisitToTheSamePatient";
+            cmsNewWalkInVisitToTheSamePatient.ShortcutKeys = Keys.Control | Keys.N;
+            cmsNewWalkInVisitToTheSamePatient.ShowShortcutKeys = false;
+            cmsNewWalkInVisitToTheSamePatient.Size = new Size(265, 26);
+            cmsNewWalkInVisitToTheSamePatient.Text = "انشاء زياره اخرى لنفس المريض";
+            cmsNewWalkInVisitToTheSamePatient.Click += cmsAddNewWalkInVisitToTheSamePatientToolStripMenuItem_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(309, 6);
+            toolStripSeparator3.Size = new Size(262, 6);
             // 
             // cmsShowPatientDetails
             // 
             cmsShowPatientDetails.Image = (Image)resources.GetObject("cmsShowPatientDetails.Image");
             cmsShowPatientDetails.Name = "cmsShowPatientDetails";
             cmsShowPatientDetails.ShortcutKeys = Keys.Control | Keys.Shift | Keys.P;
-            cmsShowPatientDetails.Size = new Size(312, 26);
+            cmsShowPatientDetails.ShowShortcutKeys = false;
+            cmsShowPatientDetails.Size = new Size(265, 26);
             cmsShowPatientDetails.Text = "عرض بيانات المريض";
             cmsShowPatientDetails.Click += cmsShowPatientDetails_Click;
             // 
@@ -240,21 +348,23 @@
             cmsShowAppointmentDetails.Image = Properties.Resources.details_512;
             cmsShowAppointmentDetails.Name = "cmsShowAppointmentDetails";
             cmsShowAppointmentDetails.ShortcutKeys = Keys.Control | Keys.Shift | Keys.A;
-            cmsShowAppointmentDetails.Size = new Size(312, 26);
+            cmsShowAppointmentDetails.ShowShortcutKeys = false;
+            cmsShowAppointmentDetails.Size = new Size(265, 26);
             cmsShowAppointmentDetails.Text = "عرض بيانات الحجز";
             cmsShowAppointmentDetails.Click += cmsShowAppointmentDetails_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(309, 6);
+            toolStripSeparator2.Size = new Size(262, 6);
             // 
             // cmsRefreshGrid
             // 
             cmsRefreshGrid.Image = Properties.Resources.Refresh_32;
             cmsRefreshGrid.Name = "cmsRefreshGrid";
             cmsRefreshGrid.ShortcutKeys = Keys.F5;
-            cmsRefreshGrid.Size = new Size(312, 26);
+            cmsRefreshGrid.ShowShortcutKeys = false;
+            cmsRefreshGrid.Size = new Size(265, 26);
             cmsRefreshGrid.Text = "تحديث";
             cmsRefreshGrid.Click += cmsRefreshGrid_Click;
             // 
@@ -570,13 +680,13 @@
             btnAddWalkInVisit.DisabledState.CustomBorderColor = Color.DarkGray;
             btnAddWalkInVisit.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnAddWalkInVisit.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnAddWalkInVisit.FillColor = Color.DarkBlue;
+            btnAddWalkInVisit.FillColor = Color.FromArgb(0, 0, 150);
             btnAddWalkInVisit.Font = new Font("Segoe UI", 13.8F);
             btnAddWalkInVisit.ForeColor = Color.White;
             btnAddWalkInVisit.HoverState.FillColor = Color.MediumBlue;
-            btnAddWalkInVisit.Location = new Point(1265, 497);
+            btnAddWalkInVisit.Location = new Point(1271, 427);
             btnAddWalkInVisit.Name = "btnAddWalkInVisit";
-            btnAddWalkInVisit.PressedColor = Color.MediumBlue;
+            btnAddWalkInVisit.PressedColor = Color.FromArgb(0, 0, 165);
             btnAddWalkInVisit.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnAddWalkInVisit.Size = new Size(288, 57);
             btnAddWalkInVisit.TabIndex = 11;
@@ -613,112 +723,36 @@
             dtpVisitDateTime.Visible = false;
             dtpVisitDateTime.ValueChanged += dateTimePicker_ValueChanged;
             // 
-            // colVisitId
+            // btnCreatePreAppointmentVisit
             // 
-            colVisitId.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colVisitId.DataPropertyName = "VisitId";
-            colVisitId.HeaderText = "رقم الزياره";
-            colVisitId.MinimumWidth = 2;
-            colVisitId.Name = "colVisitId";
-            colVisitId.ReadOnly = true;
-            colVisitId.Width = 122;
+            btnCreatePreAppointmentVisit.Animated = true;
+            btnCreatePreAppointmentVisit.AnimatedGIF = true;
+            btnCreatePreAppointmentVisit.BackColor = Color.Transparent;
+            btnCreatePreAppointmentVisit.BorderRadius = 7;
+            btnCreatePreAppointmentVisit.CustomizableEdges = customizableEdges11;
+            btnCreatePreAppointmentVisit.DisabledState.BorderColor = Color.DarkGray;
+            btnCreatePreAppointmentVisit.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnCreatePreAppointmentVisit.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnCreatePreAppointmentVisit.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnCreatePreAppointmentVisit.FillColor = Color.FromArgb(0, 0, 150);
+            btnCreatePreAppointmentVisit.Font = new Font("Segoe UI", 13.8F);
+            btnCreatePreAppointmentVisit.ForeColor = Color.White;
+            btnCreatePreAppointmentVisit.HoverState.FillColor = Color.MediumBlue;
+            btnCreatePreAppointmentVisit.Location = new Point(1271, 504);
+            btnCreatePreAppointmentVisit.Name = "btnCreatePreAppointmentVisit";
+            btnCreatePreAppointmentVisit.PressedColor = Color.FromArgb(0, 0, 165);
+            btnCreatePreAppointmentVisit.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnCreatePreAppointmentVisit.Size = new Size(288, 57);
+            btnCreatePreAppointmentVisit.TabIndex = 13;
+            btnCreatePreAppointmentVisit.Text = "ابدأ زياره بحجز مسبق";
+            btnCreatePreAppointmentVisit.Click += btnCreatePreAppointmentVisit_Click;
             // 
-            // colAppointmentId
-            // 
-            colAppointmentId.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colAppointmentId.DataPropertyName = "AppointmentId";
-            colAppointmentId.HeaderText = "رقم الحجز";
-            colAppointmentId.MinimumWidth = 2;
-            colAppointmentId.Name = "colAppointmentId";
-            colAppointmentId.ReadOnly = true;
-            colAppointmentId.Width = 116;
-            // 
-            // colPatientId
-            // 
-            colPatientId.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colPatientId.DataPropertyName = "PatientId";
-            colPatientId.HeaderText = "رقم المريض";
-            colPatientId.MinimumWidth = 2;
-            colPatientId.Name = "colPatientId";
-            colPatientId.ReadOnly = true;
-            colPatientId.Visible = false;
-            colPatientId.Width = 140;
-            // 
-            // colPatientName
-            // 
-            colPatientName.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colPatientName.DataPropertyName = "PatientName";
-            colPatientName.HeaderText = "اسم المريض";
-            colPatientName.MinimumWidth = 200;
-            colPatientName.Name = "colPatientName";
-            colPatientName.ReadOnly = true;
-            colPatientName.Width = 200;
-            // 
-            // colVisitDateTime
-            // 
-            colVisitDateTime.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            colVisitDateTime.DataPropertyName = "VisitDateTime";
-            colVisitDateTime.HeaderText = "تاريخ الزياره";
-            colVisitDateTime.MinimumWidth = 2;
-            colVisitDateTime.Name = "colVisitDateTime";
-            colVisitDateTime.ReadOnly = true;
-            colVisitDateTime.Width = 2;
-            // 
-            // colVisitTreatments
-            // 
-            colVisitTreatments.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colVisitTreatments.DataPropertyName = "VisitTreatmentsNames";
-            colVisitTreatments.HeaderText = "الخدمات المقدمه";
-            colVisitTreatments.MinimumWidth = 200;
-            colVisitTreatments.Name = "colVisitTreatments";
-            colVisitTreatments.ReadOnly = true;
-            colVisitTreatments.ToolTipText = "الخدمات المقدمه للمريض في الزياره";
-            // 
-            // colTotalAmount
-            // 
-            colTotalAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colTotalAmount.DataPropertyName = "TotalAmount";
-            colTotalAmount.HeaderText = "المبلغ الكلي";
-            colTotalAmount.MinimumWidth = 100;
-            colTotalAmount.Name = "colTotalAmount";
-            colTotalAmount.ReadOnly = true;
-            colTotalAmount.Width = 140;
-            // 
-            // colPaidAmount
-            // 
-            colPaidAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colPaidAmount.DataPropertyName = "PaidAmount";
-            colPaidAmount.HeaderText = "المبلغ المدفوع";
-            colPaidAmount.MinimumWidth = 100;
-            colPaidAmount.Name = "colPaidAmount";
-            colPaidAmount.ReadOnly = true;
-            colPaidAmount.Width = 160;
-            // 
-            // colDiscountAmount
-            // 
-            colDiscountAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colDiscountAmount.DataPropertyName = "DiscountAmount";
-            colDiscountAmount.HeaderText = "مبلغ الخصم";
-            colDiscountAmount.MinimumWidth = 100;
-            colDiscountAmount.Name = "colDiscountAmount";
-            colDiscountAmount.ReadOnly = true;
-            colDiscountAmount.Width = 138;
-            // 
-            // colRemainedAmount
-            // 
-            colRemainedAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colRemainedAmount.DataPropertyName = "RemainedAmount";
-            colRemainedAmount.HeaderText = "المبلغ المتبقي";
-            colRemainedAmount.MinimumWidth = 100;
-            colRemainedAmount.Name = "colRemainedAmount";
-            colRemainedAmount.ReadOnly = true;
-            colRemainedAmount.Width = 159;
-            // 
-            // VisitView
+            // VisitsView
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkCyan;
+            Controls.Add(btnCreatePreAppointmentVisit);
             Controls.Add(dtpVisitDateTime);
             Controls.Add(btnAddWalkInVisit);
             Controls.Add(lblSearchAfter);
@@ -736,7 +770,7 @@
             Margin = new Padding(4);
             MaximumSize = new Size(1562, 956);
             MinimumSize = new Size(1562, 956);
-            Name = "VisitView";
+            Name = "VisitsView";
             RightToLeft = RightToLeft.Yes;
             Size = new Size(1562, 956);
             Load += VisitView_Load;
@@ -791,7 +825,7 @@
         private Label lblSearchAfter;
         private Guna.UI2.WinForms.Guna2Button btnAddWalkInVisit;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpVisitDateTime;
-        private ToolStripMenuItem cmsNewAppointmentToTheSamePatient;
+        private ToolStripMenuItem cmsNewWalkInVisitToTheSamePatient;
         private ToolStripMenuItem cmsShowPatientDetails;
         private ToolStripMenuItem cmsShowAppointmentDetails;
         private ToolStripSeparator toolStripSeparator4;
@@ -806,5 +840,6 @@
         private DataGridViewTextBoxColumn colPaidAmount;
         private DataGridViewTextBoxColumn colDiscountAmount;
         private DataGridViewTextBoxColumn colRemainedAmount;
+        private Guna.UI2.WinForms.Guna2Button btnCreatePreAppointmentVisit;
     }
 }

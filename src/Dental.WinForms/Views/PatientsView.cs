@@ -1,8 +1,8 @@
 ﻿namespace Dental.WinForms.Views;
 
-public partial class PatientView : UserControl
+public partial class PatientsView : UserControl
 {
-    public PatientView()
+    public PatientsView()
     {
         InitializeComponent();
     }

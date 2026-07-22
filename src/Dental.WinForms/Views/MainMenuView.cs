@@ -1,4 +1,5 @@
 ﻿using Dental.WinForms.Abstractions;
+using Dental.WinForms.Forms;
 
 namespace Dental.WinForms.Views;
 
@@ -21,7 +22,10 @@ public partial class MainMenuView : UserControl
 
     private async void button2_Click(object sender, EventArgs e)
     {
-        using var frm = _formFactory.Create_frmAddEditAppointment(int.Parse(textBox1.Text));
-        await frm.ShowDialogAsync();
+        if (int.TryParse(textBox1.Text, out var id))
+        {
+            using var frm = _formFactory.Create_frmAddEditAppointment(id);
+            await frm.ShowDialogAsync();
+        }
     }
 }
