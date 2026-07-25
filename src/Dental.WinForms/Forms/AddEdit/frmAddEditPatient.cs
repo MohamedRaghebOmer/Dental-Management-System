@@ -81,8 +81,7 @@ public partial class frmAddEditPatient : Form
             return false;
         }
 
-        txtFirstName.Text = patientResult.Value.FirstName;
-        txtLastName.Text = patientResult.Value.LastName;
+        txtName.Text = patientResult.Value.Name;
         txtAge.Text = patientResult.Value.Age.ToString();
         if (patientResult.Value.Gender == Domain.Enums.Gender.Male)
         {
@@ -108,7 +107,7 @@ public partial class frmAddEditPatient : Form
                 break;
 
             case "NotFound":
-                MessageBoxExtensions.ShowError($"المريض رقم { _patientId } غير موجود.");
+                MessageBoxExtensions.ShowError($"المريض رقم {_patientId} غير موجود.");
                 break;
 
             default:
@@ -128,25 +127,28 @@ public partial class frmAddEditPatient : Form
             message, "تأكيد") == DialogResult.No)
             return;
 
-        if (_mode == Mode.Add)
-            await AddPatient();
-        else
-            await UpdatePatient();
+        bool isSuccess = false;
 
-        Close();
+        if (_mode == Mode.Add)
+            isSuccess = await AddPatient();
+        else
+            isSuccess = await UpdatePatientAsync();
+
+        if (isSuccess)
+            Close();
     }
 
     private bool ValidateToSave()
     {
-        if (string.IsNullOrWhiteSpace(txtFirstName.Text))
+        if (string.IsNullOrWhiteSpace(txtName.Text))
         {
-            MessageBoxExtensions.ShowError("الإسم الأول مطلوب.");
+            MessageBoxExtensions.ShowError("الإسم مطلوب.");
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(txtLastName.Text))
+        if (txtName.Text.Length > 100)
         {
-            MessageBoxExtensions.ShowError("الإسم الأخير مطلوب.");
+            MessageBoxExtensions.ShowError("الإسم طويل جدا.");
             return false;
         }
 
@@ -181,11 +183,11 @@ public partial class frmAddEditPatient : Form
         return true;
     }
 
-    private async Task AddPatient()
+    private async Task<bool> AddPatient()
     {
         PatientRequestDto? patientInfo = GetPatientInfoFromUi();
         if (patientInfo is null)
-            return;
+            return false;
 
         Cursor = Cursors.WaitCursor;
         var saveResult = await _patientService.CreateAsync(patientInfo);
@@ -194,31 +196,25 @@ public partial class frmAddEditPatient : Form
         if (saveResult.IsFailure)
         {
             HandelAddPatientError(saveResult.Error);
-            return;
+            return false;
         }
 
         MessageBoxExtensions.ShowInfo("تم إضافة المريض بنجاح.");
         OnPatientAdded(saveResult.Value);
+
+        return true;
     }
 
     private void HandelAddPatientError(Error error)
     {
         switch (error.Code)
         {
-            case "FirstName.Empty":
-                MessageBoxExtensions.ShowError("الإسم الأول مطلوب.");
+            case "Patient.DuplicateName":
+                MessageBoxExtensions.ShowError("المريض موجود مسبقا.");
                 break;
 
-            case "FirstName.TooLong":
-                MessageBoxExtensions.ShowError("الإسم الأول طويل جدا.");
-                break;
-
-            case "LastName.Empty":
-                MessageBoxExtensions.ShowError("الإسم الأخير مطلوب.");
-                break;
-
-            case "LastName.TooLong":
-                MessageBoxExtensions.ShowError("الإسم الأخير طويل جدا.");
+            case "Name.TooLong":
+                MessageBoxExtensions.ShowError("الإسم طويل جدا.");
                 break;
 
             case "DateOfBirth.LessThanMinimumAllowedAge":
@@ -239,19 +235,19 @@ public partial class frmAddEditPatient : Form
                 break;
 
             default:
-                MessageBoxExtensions.ShowError("بيانات غير صحيحه.");
+                MessageBoxExtensions.ShowError("بيانات غير صحيحه. {0}", error.Code);
                 break;
         }
     }
 
-    private async Task UpdatePatient()
+    private async Task<bool> UpdatePatientAsync()
     {
         if (!_patientId.HasValue)
-            return;
+            return false;
 
         var patientInfo = GetPatientInfoFromUi();
         if (patientInfo is null)
-            return;
+            return false;
 
         Cursor = Cursors.WaitCursor;
         var saveResult = await _patientService.UpdateAsync(_patientId.Value, patientInfo);
@@ -260,10 +256,12 @@ public partial class frmAddEditPatient : Form
         if (saveResult.IsFailure)
         {
             HandelUpdatePatientError(saveResult.Error);
-            return;
+            return false;
         }
 
         MessageBoxExtensions.ShowInfo("تم تعديل بيانات المريض بنجاح.");
+
+        return true;
     }
 
     private void HandelUpdatePatientError(Error error)
@@ -290,8 +288,7 @@ public partial class frmAddEditPatient : Form
 
         return new PatientRequestDto
         {
-            FirstName = txtFirstName.Text,
-            LastName = txtLastName.Text,
+            Name = txtName.Text,
             Age = age,
             Gender = rbMale.Checked ? Domain.Enums.Gender.Male : Domain.Enums.Gender.Female,
             PhoneNumber = txtPhoneNumber.Text.Trim()

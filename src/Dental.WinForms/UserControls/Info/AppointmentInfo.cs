@@ -1,7 +1,7 @@
-﻿using Dental.Application.ViewsStuff.Interfaces;
-using Dental.Domain.Enums;
-using Dental.Domain.Views;
+﻿using Dental.Application.ViewsStuff.Interfaces.Appointments;
+using Dental.Domain.Views.Appointment;
 using Dental.WinForms.Extensions;
+using Dental.WinForms.Global.Helpers;
 using Dental.WinForms.Helpers;
 
 namespace Dental.WinForms.UserControls.Info;
@@ -9,13 +9,14 @@ namespace Dental.WinForms.UserControls.Info;
 public partial class ctrlAppointmentInfo : UserControl
 {
     private int _appointmentId = -1;
-    private IAppointmentInfoService _appointmentInfoService;
+    private IAppointmentInfoService? _appointmentInfoService = null;
 
     public event EventHandler<int>? WhenAppointmentIsNotFound;
 
     public ctrlAppointmentInfo()
     {
         InitializeComponent();
+        _appointmentInfoService = null;
     }
 
     public void Initialize(int appointmentId, IAppointmentInfoService appointmentInfoService)
@@ -27,6 +28,9 @@ public partial class ctrlAppointmentInfo : UserControl
 
     private async void LoadControl()
     {
+        if (_appointmentInfoService is null)
+            return;
+
         var appointmentInfo =
             await _appointmentInfoService.GetAppointmentInfoAsync(_appointmentId);
 
@@ -48,9 +52,9 @@ public partial class ctrlAppointmentInfo : UserControl
 
     private void LoadAppointmentInfoUi(AppointmentInfo appointmentInfoValue)
     {
-        lblAppointmentId.Text = appointmentInfoValue.Id?.ToString();
-        lblPatientId.Text = appointmentInfoValue.PatientId?.ToString();
-        lblPatientName.Text = appointmentInfoValue.PatientName?? string.Empty;
+        lblAppointmentId.Text = appointmentInfoValue.Id?.ToString() ?? string.Empty;
+        lblPatientId.Text = appointmentInfoValue.PatientId?.ToString() ?? string.Empty;
+        lblPatientName.Text = appointmentInfoValue.PatientName ?? string.Empty;
 
         lblCreatedAt.Text = appointmentInfoValue.CreatedAt.HasValue
             ? DateTimeHelper.GetArabicDateTime(appointmentInfoValue.CreatedAt.Value)
@@ -64,22 +68,8 @@ public partial class ctrlAppointmentInfo : UserControl
             ? DateTimeHelper.GetArabicDateTime(appointmentInfoValue.ActualVisitDateTime.Value)
             : "لم يتم الحضور بعد";
 
-        if (appointmentInfoValue.Status is AppointmentStatus.Pending)
-        {
-            lblAppointmentStatus.Text = "قيد الانتظار";
-        }
-        else if (appointmentInfoValue.Status is AppointmentStatus.Completed)
-        {
-            lblAppointmentStatus.Text = "تم الحضور";
-        }
-        else if (appointmentInfoValue.Status is AppointmentStatus.Canceled)
-        {
-            lblAppointmentStatus.Text = "ملغي";
-        }
-        else if (appointmentInfoValue.Status is AppointmentStatus.Missed)
-        {
-            lblAppointmentStatus.Text = "لم يحضر";
-        }
+        lblAppointmentStatus.Text = appointmentInfoValue.Status.HasValue ? AppointmentStatusHelper.AppointmentStatusToString(appointmentInfoValue.Status.Value)
+            : string.Empty;
 
         lblNotes.Text = appointmentInfoValue.Notes ?? string.Empty;
     }

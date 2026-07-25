@@ -19,7 +19,7 @@ public sealed class VisitConfiguration
         ConfigureIndexes(builder);
     }
 
-    private void ConfigureCheckConstraints(EntityTypeBuilder<Visit> builder)
+    private static void ConfigureCheckConstraints(EntityTypeBuilder<Visit> builder)
     {
         builder.ToTable(table =>
         {
@@ -33,7 +33,7 @@ public sealed class VisitConfiguration
         });
     }
 
-    private void ConfigureIndexes(EntityTypeBuilder<Visit> builder)
+    private static void ConfigureIndexes(EntityTypeBuilder<Visit> builder)
     {
         builder.HasIndex(p => p.VisitDateTime)
             .HasDatabaseName("UX_Visits_VisitDateTime")
@@ -43,7 +43,7 @@ public sealed class VisitConfiguration
             .HasDatabaseName("UX_Visits_PatientId");
     }
 
-    private void ConfigureForeignKeys(EntityTypeBuilder<Visit> builder)
+    private static void ConfigureForeignKeys(EntityTypeBuilder<Visit> builder)
     {
         builder.HasOne(v => v.Appointment)
             .WithOne(a => a.Visit)

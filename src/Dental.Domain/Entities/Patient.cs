@@ -10,8 +10,7 @@ public sealed class Patient : Entity
 {
     public static class Constants
     {
-        public const int FirstNameMaxLength = FirstName.MaxLength;
-        public const int LastNameMaxLength = LastName.MaxLength;
+        public const int NameMaxLength = 100;
         public const int MinimumAllowedAge = 0;
         public const int MaximumAllowedAge = 99;
         public const int PhoneNumberLength = PhoneNumber.Length;
@@ -20,23 +19,19 @@ public sealed class Patient : Entity
     private Patient() { } // EF Core
 
     private Patient(
-        FirstName firstName,
-        LastName lastName,
+        string name,
         int age,
         Gender gender,
         PhoneNumber? phoneNumber)
     {
-        FirstName = firstName;
-        LastName = lastName;
+        Name = name;
         Age = age;
         Gender = gender;
         PhoneNumber = phoneNumber;
     }
 
 
-    public FirstName FirstName { get; private set; } = default!;
-    public LastName LastName { get; private set; } = default!;
-    public string FullName => $"{FirstName.Value} {LastName.Value}";
+    public string Name { get; set; } = string.Empty;
     public int Age { get; private set; }
     public Gender Gender { get; private set; }
     public PhoneNumber? PhoneNumber { get; private set; } = default!;
@@ -47,32 +42,31 @@ public sealed class Patient : Entity
 
 
     public static Result<Patient> Create(
-        FirstName firstName,
-        LastName lastName,
+        string name,
         int age,
         Gender gender,
         PhoneNumber? phoneNumber)
     {
-        var validateResult = Validate(age);
+        name = name.Trim();
+
+        var validateResult = Validate(age, name);
         if (validateResult.IsFailure)
             return Result.Failure<Patient>(validateResult.Error);
 
-        return new Patient(firstName, lastName, age, gender, phoneNumber);
+        return new Patient(name, age, gender, phoneNumber);
     }
 
     public Result Update(
-        FirstName firstName,
-        LastName lastName,
+        string name,
         int age,
         Gender gender,
         PhoneNumber? phoneNumber)
     {
-        var validateResult = Validate(age);
+        var validateResult = Validate(age, name);
         if (validateResult.IsFailure)
             return Result.Failure(validateResult.Error);
 
-        this.FirstName = firstName;
-        this.LastName = lastName;
+        this.Name = name;
         this.Age = age;
         this.Gender = gender;
         this.PhoneNumber = phoneNumber;
@@ -81,7 +75,7 @@ public sealed class Patient : Entity
     }
 
 
-    private static Result Validate(int age)
+    private static Result Validate(int age, string name)
     {
         if (age < Constants.MinimumAllowedAge)
         {
@@ -91,6 +85,16 @@ public sealed class Patient : Entity
         if (age > Constants.MaximumAllowedAge)
         {
             return Result.Failure(DomainErrors.Entities.Patient.Age.GreaterThanMaximumAllowedAge);
+        }
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return Result.Failure(DomainErrors.Entities.Patient.Name.Empty);
+        }
+
+        if (name.Length > Constants.NameMaxLength)
+        {
+            return Result.Failure(DomainErrors.Entities.Patient.Name.TooLong);
         }
 
         return Result.Success();

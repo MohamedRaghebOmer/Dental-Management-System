@@ -154,6 +154,62 @@ public class AppointmentService
         return appointmentResult.Value;
     }
 
+    public new async Task<Result<AppointmentResponseDto>> GetByIdAsync(
+        int id,
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("AppointmentService.GetByIdAsync is called. {AppointmentId}", id);
+        var createIdResult = Id.Create(id);
+        if (createIdResult.IsFailure)
+        {
+            _logger.LogWarning(
+                "Failed to get appointment: Invalid appointment ID. {Id} {Error}",
+                id, createIdResult.Error);
+            return Result.Failure<AppointmentResponseDto>(createIdResult.Error);
+        }
+
+        var appointment = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
+        if (appointment == null)
+        {
+            _logger.LogWarning("Failed to get appointment: Appointment not found. {AppointmentId}", id);
+            return Result.Failure<AppointmentResponseDto>(ServiceErrors.Common.NotFound);
+        }
+
+        var dto = new AppointmentResponseDto(
+            appointment.Id.Value,
+            appointment.PatientId.Value,
+            appointment.CreatedAt,
+            appointment.ScheduledVisitDateTime,
+            appointment.ActualVisitDateTime,
+            appointment.EffectiveStatus,
+            appointment.Notes);
+
+        _logger.LogInformation("Appointment retrieved successfully. {AppointmentId}", id);
+        return Result.Success(dto);
+    }
+
+    public new async Task<List<AppointmentResponseDto>> GetAllAsync(
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("AppointmentService.GetAllAsync is called.");
+
+        var appointments = await _repo.GetAllAsync(cancellationToken);
+
+        var dtos =
+            appointments.Select(appointment => new AppointmentResponseDto(
+            appointment.Id.Value,
+            appointment.PatientId.Value,
+            appointment.CreatedAt,
+            appointment.ScheduledVisitDateTime,
+            appointment.ActualVisitDateTime,
+            appointment.EffectiveStatus, // Use EffectiveStatus instead of Status
+            appointment.Notes))
+            .ToList();
+
+        _logger.LogInformation("Appointments retrieved successfully. Count: {Count}", dtos.Count);
+        return dtos;
+    }
+
     public async Task<Result> CancelAsync(
         int id,
         CancellationToken cancellationToken = default)
@@ -190,40 +246,6 @@ public class AppointmentService
         return Result.Success(cancellationToken);
     }
 
-    public async Task<Result> CompleteAsync(
-        int id,
-        CancellationToken cancellationToken = default)
-    {
-        _logger.LogInformation("AppointmentService.CompleteAsync is called. {AppointmentId}", id);
-
-        var createIdResult = Id.Create(id);
-        if (createIdResult.IsFailure)
-        {
-            _logger.LogWarning(
-                "Invalid appointment ID. {Id} {Error}", id, createIdResult.Error);
-            return Result.Failure(createIdResult.Error);
-        }
-
-        var appointment = await _repo.GetByIdAsync(createIdResult.Value, cancellationToken);
-        if (appointment == null)
-        {
-            _logger.LogWarning("Failed to complete appointment: Appointment not found. {AppointmentId}", id);
-            return Result.Failure(ServiceErrors.Common.NotFound);
-        }
-
-        var completeResult = appointment.Complete();
-        if (completeResult.IsFailure)
-        {
-            _logger.LogWarning("Failed to complete appointment: {error}", completeResult.Error);
-            return Result.Failure(completeResult.Error);
-        }
-
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        _logger.LogInformation("Appointment completed successfully. {AppointmentId}", id);
-
-        return Result.Success(cancellationToken);
-    }
-
     public async Task<Result<bool>> IsMissed(
         int id,
         CancellationToken cancellationToken = default)
@@ -253,7 +275,7 @@ public class AppointmentService
     }
 
     public async Task<Result<AppointmentStatus>> GetStatusAsync(
-        int id, 
+        int id,
         CancellationToken cancellationToken = default)
     {
         var createIdResult = Id.Create(id);
@@ -266,7 +288,7 @@ public class AppointmentService
         }
 
         var status = await _repo.GetStatusAsync(createIdResult.Value, cancellationToken);
-        if (status != null) 
+        if (status != null)
             return Result.Success(status.Value);
 
         _logger.LogWarning(

@@ -3,7 +3,6 @@ using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Visit;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
-using Dental.Domain.Errors;
 using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
@@ -200,14 +199,14 @@ public sealed class VisitService
                 return Result.Failure<int>(ServiceErrors.Visit.AppointmentNotFound);
             }
 
-            if (await _visitRepo.ExistsByAppointmentIdAsync(
-                appointmentIdResult.Value, null, cancellationToken))
+            var completeResult = appointment.Complete();
+            if (completeResult.IsFailure)
             {
-                _logger.LogWarning(
-                    "CreatePreAppointmentVisitAsync failed. A visit already exists for AppointmentId {AppointmentId}.",
-                    preAppointmentVisitDto.AppointmentId);
+                _logger.LogWarning("CreatePreAppointmentVisitAsync failed. Appointment with Id {AppointmentId} could not be completed. Error: {Error}",
+                    preAppointmentVisitDto.AppointmentId,
+                    completeResult.Error);
 
-                return Result.Failure<int>(ServiceErrors.Visit.DuplicatedAppointmentId);
+                return Result.Failure<int>(completeResult.Error);
             }
 
             // Adjust this to your actual Money factory/constructor

@@ -16,22 +16,14 @@ public sealed class PatientConfiguration
 
         AddConstraints(builder);
         AddComments(builder);
-        ConfigureIgnoredFields(builder);
         ConfigureIndexes(builder);
     }
 
     private static void ConfigureIndexes(EntityTypeBuilder<Patient> builder)
     {
-        builder.HasIndex(p => p.FirstName)
-            .HasDatabaseName("IX_Patients_FirstName");
-
-        builder.HasIndex(p => p.LastName)
-            .HasDatabaseName("IX_Patients_LastName");
-    }
-
-    private static void ConfigureIgnoredFields(EntityTypeBuilder<Patient> builder)
-    {
-        builder.Ignore(x => x.FullName);
+        builder.HasIndex(p => p.Name)
+            .HasDatabaseName("UX_Patients_Name")
+            .IsUnique();
     }
 
     private static void AddComments(EntityTypeBuilder<Patient> builder)
@@ -62,20 +54,9 @@ public sealed class PatientConfiguration
 
     protected override void ConfigureProperties(EntityTypeBuilder<Patient> builder)
     {
-        builder.Property(x => x.FirstName)
-            .HasConversion(
-                value => value.Value,
-                value => FirstName.FromDatabase(value))
-            .HasColumnName(nameof(Patient.FirstName))
-            .HasMaxLength(Patient.Constants.FirstNameMaxLength)
-            .IsRequired();
-
-        builder.Property(x => x.LastName)
-            .HasConversion(
-                value => value.Value,
-                value => LastName.FromDatabase(value))
-            .HasColumnName(nameof(Patient.LastName))
-            .HasMaxLength(Patient.Constants.LastNameMaxLength)
+        builder.Property(p => p.Name)
+            .HasColumnName(nameof(Patient.Name))
+            .HasMaxLength(Patient.Constants.NameMaxLength)
             .IsRequired();
 
         builder.Property(p => p.Age)

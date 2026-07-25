@@ -1,4 +1,4 @@
-using Dental.Domain.Views;
+using Dental.Domain.Views.Appointment;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Factories;
 using Dental.WinForms.Forms;

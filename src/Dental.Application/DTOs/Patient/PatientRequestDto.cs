@@ -6,12 +6,7 @@ namespace Dental.Application.DTOs.Patient;
 public sealed record PatientRequestDto()
 {
     [Required]
-    [StringLength(Domain.ValueObjects.FirstName.MaxLength)]
-    public required string FirstName { get; init; }
-
-    [Required]
-    [StringLength(Domain.ValueObjects.LastName.MaxLength)]
-    public required string LastName { get; init; }
+    public required string Name { get; init; }
 
     [Required]
     public required int Age { get; init; }

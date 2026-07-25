@@ -1,8 +1,5 @@
-﻿using Dental.Infrastructure.Constants;
-using Dental.WinForms.Abstractions;
-using Dental.WinForms.Views;
+﻿using Dental.WinForms.Views;
 using Guna.UI2.WinForms;
-using System.Diagnostics;
 using Color = System.Drawing.Color;
 
 namespace Dental.WinForms;
@@ -62,6 +59,7 @@ public partial class frmMain : Form
         Cursor = Cursors.Default;
     }
 
+    // CHAT GPT: This is the event handler for the Visits button click event.
     private void btnVisits_Click(object sender, EventArgs e)
     {
         Cursor = Cursors.WaitCursor;

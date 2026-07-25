@@ -3,7 +3,6 @@ using Dental.Application.DTOs.Appointment;
 using Dental.Domain.Enums;
 using Dental.Domain.Shared;
 using Dental.WinForms.Extensions;
-using System.Reflection.Emit;
 
 namespace Dental.WinForms.Forms;
 
@@ -60,7 +59,7 @@ public partial class frmAddEditAppointment : Form
                 Close();
                 return;
             }
-                
+
         }
 
         InitializeForm();
@@ -92,7 +91,7 @@ public partial class frmAddEditAppointment : Form
             return null;
         }
 
-        if (appointmentStatusResult.Value.Status 
+        if (appointmentStatusResult.Value.Status
             is AppointmentStatus.Canceled or AppointmentStatus.Completed)
         {
             MessageBoxExtensions.ShowWarning("لا يمكن تعديل بيانات الحجز لأنه ليس في حالة الإنتظار.");
@@ -162,7 +161,7 @@ public partial class frmAddEditAppointment : Form
                 return;
             }
 
-            var saveResult = 
+            var saveResult =
                 await _appointmentService.UpdateAsync(_appointmentId.Value, appointmentDto);
             if (saveResult.IsFailure)
                 HandleSaveResult(saveResult.Error);
@@ -194,7 +193,7 @@ public partial class frmAddEditAppointment : Form
 
             case "Date.CannotBeChangedWhenStatusIsNotPendingOrMissed":
             case "PatientId.CannotBeChangedWhenStatusIsNotPendingOrMissed":
-                MessageBoxExtensions.ShowError("لا يمكن تعديل بيانات الحجز لأنه ليس في حالة الإنتظار. \nتم ربط الحجز بزياره او تم الغاء الحجز."); 
+                MessageBoxExtensions.ShowError("لا يمكن تعديل بيانات الحجز لأنه ليس في حالة الإنتظار. \nتم ربط الحجز بزياره او تم الغاء الحجز.");
                 break;
 
             case "Appointment.PatientNotFound":
@@ -206,7 +205,7 @@ public partial class frmAddEditAppointment : Form
                 MessageBoxExtensions.ShowError("تاريخ الموعد غير صالح. يرجى اختيار تاريخ في المستقبل.");
                 dtpVisitDate.Focus();
                 break;
-            
+
             case "Notes.TooLong":
                 MessageBoxExtensions.ShowError("الملاحظات طويلة جدًا. يرجى تقليل طول الملاحظات.");
                 txtNotes.Focus();
@@ -216,7 +215,7 @@ public partial class frmAddEditAppointment : Form
                 MessageBoxExtensions.ShowError($"حدث خطأ أثناء حفظ الموعد: {saveResultError.Message}");
                 break;
         }
-    }   
+    }
 
     private AppointmentRequestDto? GetAppointmentDtoFromUi()
     {
@@ -274,6 +273,12 @@ public partial class frmAddEditAppointment : Form
         {
             MessageBox.Show("تاريخ الموعد يجب أن يكون في المستقبل.", "خطأ في التحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             dtpVisitDate.Focus();
+            return false;
+        }
+
+        if (MessageBoxExtensions.ShowQuestion(
+            "هل أنت متأكد أنك تريد حفظ الموعد؟", "تأكيد الحفظ") != DialogResult.Yes)
+        {
             return false;
         }
 

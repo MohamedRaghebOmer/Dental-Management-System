@@ -18,10 +18,6 @@ public interface IAppointmentService
         int id,
         CancellationToken cancellationToken = default);
 
-    Task<Result> CompleteAsync(
-        int id,
-        CancellationToken cancellationToken = default);
-
     Task<Result<bool>> IsMissed(
         int id,
         CancellationToken cancellationToken = default);

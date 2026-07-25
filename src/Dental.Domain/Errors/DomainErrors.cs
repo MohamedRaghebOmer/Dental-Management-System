@@ -183,6 +183,19 @@ public static class DomainErrors
                     "Age.GreaterThanMaximumAllowedAge",
                     $"Age must less than or equal to{Domain.Entities.Patient.Constants.MaximumAllowedAge}");
             }
+
+            public static class Name
+            {
+                public static readonly Error Empty = new(
+                    "Name.Empty",
+                    "The patient name is required."
+                );
+
+                public static readonly Error TooLong = new(
+                    "Name.TooLong",
+                    $"The patient name cannot be longer than {Domain.Entities.Patient.Constants.NameMaxLength} characters."
+                );
+            }
         }
 
         public static class Supplier
@@ -329,7 +342,7 @@ public static class DomainErrors
 
             public static readonly Error TooLong = new(
                 "FirstName.TooLong",
-                $"The first name cannot be longer than {Domain.Entities.Patient.Constants.FirstNameMaxLength} characters."
+                $"The first name cannot be longer than {Domain.ValueObjects.FirstName.MaxLength} characters."
             );
         }
 
@@ -341,7 +354,7 @@ public static class DomainErrors
 
             public static readonly Error TooLong = new(
                 "LastName.TooLong",
-                $"The last name cannot be longer than {Domain.Entities.Patient.Constants.LastNameMaxLength} characters."
+                $"The last name cannot be longer than {Domain.ValueObjects.LastName.MaxLength} characters."
             );
         }
 

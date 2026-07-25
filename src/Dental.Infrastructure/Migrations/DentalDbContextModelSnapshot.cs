@@ -174,22 +174,16 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("Age");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("FirstName");
-
                     b.Property<byte>("Gender")
                         .HasColumnType("TINYINT")
                         .HasColumnName("Gender")
                         .HasComment("Male = 0, Female = 1");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT")
-                        .HasColumnName("LastName");
+                        .HasColumnName("Name");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11)
@@ -198,11 +192,9 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FirstName")
-                        .HasDatabaseName("IX_Patients_FirstName");
-
-                    b.HasIndex("LastName")
-                        .HasDatabaseName("IX_Patients_LastName");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Patients_Name");
 
                     b.ToTable("Patients", null, t =>
                         {

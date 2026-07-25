@@ -3,9 +3,11 @@ using Dental.Application.DTOs.Treatment;
 using Dental.Application.DTOs.Visit;
 using Dental.Application.DTOs.VisitToothNumber;
 using Dental.Application.Errors;
-using Dental.Application.ViewsStuff.Interfaces;
+using Dental.Application.ViewsStuff.Interfaces.Appointments;
+using Dental.Application.ViewsStuff.Interfaces.Patients;
+using Dental.Application.ViewsStuff.Interfaces.Visits;
 using Dental.Domain.Shared;
-using Dental.Domain.Views;
+using Dental.Domain.Views.Visit;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
@@ -20,7 +22,7 @@ public partial class frmAddUpdateVisit : Form
     private readonly ILogger<frmAddUpdateVisit> _logger;
     private readonly IVisitService _visitService;
     private readonly IVisitTreatmentService _visitTreatmentService;
-    private readonly IVisitToothTreatmentsViewService _viewService;
+    private readonly IVisitTreatmentsViewService _visitTreatmentsViewService;
     private readonly IFormFactory _formFactory;
 
     private readonly int? _visitId = null;
@@ -33,13 +35,16 @@ public partial class frmAddUpdateVisit : Form
     public enum VisitType { WalkIn, PreAppointment }
     private readonly VisitType? _visitType = null;
 
+
     public frmAddUpdateVisit(
-        VisitType visitType,
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
-        IVisitToothTreatmentsViewService viewService,
+        IVisitTreatmentsViewService visitTreatmentsViewService,
         ILogger<frmAddUpdateVisit> logger,
+        IAppointmentInfoService appointmentInfoService,
+        IPatientService patientService,
+        IPatientViewService patientViewService,
         IFormFactory formFactory)
     {
         InitializeComponent();
@@ -47,10 +52,41 @@ public partial class frmAddUpdateVisit : Form
         _treatmentService = treatmentService;
         _visitService = visitService;
         _visitTreatmentService = visitToothTreatmentService;
-        _viewService = viewService;
+        _visitTreatmentsViewService = visitTreatmentsViewService;
         _logger = logger;
         _formFactory = formFactory;
+        _mode = Mode.Add;
+        _visitId = null;
 
+
+        ctrlSearchAppointment1.Initialize(formFactory, appointmentInfoService);
+        ctrlSearchPatient1.Initialize(patientViewService, patientService, formFactory);
+
+        ctrlSearchAppointment1.AppointmentSelected += CtrlSearchAppointment1_AppointmentSelected;
+        ctrlSearchPatient1.PatientSelected += CtrlSearchPatient1_PatientSelected;
+    }
+
+    public frmAddUpdateVisit(
+        VisitType visitType,
+        ITreatmentService treatmentService,
+        IVisitService visitService,
+        IVisitTreatmentService visitToothTreatmentService,
+        IVisitTreatmentsViewService visitTreatmentsViewService,
+        ILogger<frmAddUpdateVisit> logger,
+        IAppointmentInfoService appointmentInfoService,
+        IPatientService patientService,
+        IPatientViewService patientViewService,
+        IFormFactory formFactory) : this(
+            treatmentService,
+            visitService,
+            visitToothTreatmentService,
+            visitTreatmentsViewService,
+            logger,
+            appointmentInfoService,
+            patientService,
+            patientViewService,
+            formFactory)
+    {
         _mode = Mode.Add;
         _visitId = null;
         _visitType = visitType;
@@ -61,23 +97,51 @@ public partial class frmAddUpdateVisit : Form
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
-        IVisitToothTreatmentsViewService viewService,
+        IVisitTreatmentsViewService visitTreatmentsViewService,
         ILogger<frmAddUpdateVisit> logger,
-        IFormFactory formFactory)
+        IAppointmentInfoService appointmentInfoService,
+        IPatientService patientService,
+        IPatientViewService patientViewService,
+        IFormFactory formFactory) : this(
+            treatmentService,
+            visitService,
+            visitToothTreatmentService,
+            visitTreatmentsViewService,
+            logger,
+            appointmentInfoService,
+            patientService,
+            patientViewService,
+            formFactory)
     {
-        InitializeComponent();
-
-        _treatmentService = treatmentService;
-        _visitService = visitService;
-        _visitTreatmentService = visitToothTreatmentService;
-        _viewService = viewService;
-        _logger = logger;
-        _formFactory = formFactory;
-
         _mode = Mode.Update;
         _visitId = visitId;
         _visitType = null;
     }
+
+
+    private void CtrlSearchPatient1_PatientSelected(object? sender, Application.DTOs.Patient.PatientResponseDto e)
+    {
+        txtId.Text = e.Id.ToString();
+    }
+
+    private void CtrlSearchAppointment1_AppointmentSelected(
+        object? sender, Domain.Views.Appointment.ShortAppointmentInfo e)
+    {
+        if (e.Status == Domain.Enums.AppointmentStatus.Completed)
+        {
+            MessageBoxExtensions.ShowWarning("هذا الحجز مكتمل بالفعل ولا يمكن انشاء زياره له.");
+            return;
+        }
+
+        if (e.Status == Domain.Enums.AppointmentStatus.Canceled)
+        {
+            MessageBoxExtensions.ShowWarning("هذا الحجز ملغي ولا يمكن انشاء زياره له.");
+            return;
+        }
+
+        txtId.Text = e.AppointmentId?.ToString() ?? string.Empty;
+    }
+
 
     [Browsable(false)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -94,6 +158,7 @@ public partial class frmAddUpdateVisit : Form
         set =>
             txtId.Text = value.HasValue ? value.Value.ToString() : string.Empty;
     }
+
 
     private async void AddUpdateVisit_Load(object sender, EventArgs e)
     {
@@ -147,7 +212,26 @@ public partial class frmAddUpdateVisit : Form
         lblTitile.Text = _mode == Mode.Add ? "اضافة زياره جديده" : "تعديل بيانات زياره";
         lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(DateTime.Now);
         lblId.Text = _visitType == VisitType.WalkIn ? "رقم المريض :" : "رقم الحجز :";
-        btnAddPatientOrAppointment.Visible = _mode == Mode.Add;
+
+        if (_mode == Mode.Add)
+        {
+            if (_visitType == VisitType.WalkIn)
+            {
+                ctrlSearchPatient1.Visible = true;
+                ctrlSearchAppointment1.Visible = false;
+            }
+            else if (_visitType == VisitType.PreAppointment)
+            {
+                ctrlSearchPatient1.Visible = false;
+                ctrlSearchAppointment1.Visible = true;
+            }
+        }
+        else // Mode.Update
+        {
+            ctrlSearchPatient1.Visible = false;
+            ctrlSearchAppointment1.Visible = false;
+            btnSearch.Visible = true;
+        }
     }
 
     private void SetUpdateUiMode()
@@ -173,7 +257,7 @@ public partial class frmAddUpdateVisit : Form
         if (_mode != Mode.Update || !_visitId.HasValue)
             return;
 
-        var viewResult = await _viewService.GetAsync(_visitId.Value);
+        var viewResult = await _visitTreatmentsViewService.GetAsync(_visitId.Value);
         if (!HandelGetVisitToothTreatmentViewResult(viewResult))
             return;
 
@@ -461,7 +545,7 @@ public partial class frmAddUpdateVisit : Form
 
         var discountAmount = GetDiscountPriceFromTextbox();
         if (!discountAmount.HasValue)
-            return null;
+            discountAmount = 0;
 
         return new PreAppointmentVisitDto
         {
@@ -515,7 +599,7 @@ public partial class frmAddUpdateVisit : Form
 
         var discountAmount = GetDiscountPriceFromTextbox();
         if (!discountAmount.HasValue)
-            return null;
+            discountAmount = 0;
 
         return new WalkInVisitDto
         {
@@ -570,7 +654,7 @@ public partial class frmAddUpdateVisit : Form
 
         var discountAmount = GetDiscountPriceFromTextbox();
         if (!discountAmount.HasValue)
-            return null;
+            discountAmount = 0;
 
         return new UpdateVisitDto
         {
@@ -606,6 +690,10 @@ public partial class frmAddUpdateVisit : Form
                 MessageBoxExtensions.ShowError("رقم الزياره يجب ان يكون اكبر من صفر.");
                 break;
 
+            case "Status.CannotBeCompletedWhenCanceled":
+                MessageBoxExtensions.ShowError($"الحجز رقم {txtId.Text} ملغي ولا يمكن انشاء زياره له.");
+                break;
+
             case "Notes.TooLong":
                 MessageBoxExtensions.ShowError("ملاحظات الزياره طويله جدا");
                 break;
@@ -627,12 +715,8 @@ public partial class frmAddUpdateVisit : Form
                 break;
 
             case "Visit.DuplicatedAppointmentId":
-            case "AppointmentStatus.CannotBeCompletedWhenAlreadyCompleted":
+            case "Status.CannotBeCompletedWhenAlreadyCompleted":
                 MessageBoxExtensions.ShowError("رقم الحجز مستخدم في زياره اخري.");
-                break;
-
-            case "Status.CannotBeCompletedWhenCanceled":
-                MessageBoxExtensions.ShowError("تم الغاء الحجز صاحب الرقم المُعطي.");
                 break;
 
             case "Common.UnexpectedError":
@@ -1189,5 +1273,10 @@ public partial class frmAddUpdateVisit : Form
             };
             frm.ShowDialog();
         }
+    }
+
+    private void btnClose_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }

@@ -74,6 +74,8 @@ public sealed class AppointmentConfiguration
             .HasColumnType("TINYINT")
             .HasColumnName(nameof(Appointment.Status));
 
+        builder.Ignore(p => p.EffectiveStatus);
+
         builder.Property(p => p.Notes)
             .HasColumnName(nameof(Appointment.Notes))
             .HasMaxLength(Appointment.Constants.NotesMaxLength)

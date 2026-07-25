@@ -83,6 +83,8 @@
             lblTotalRemainedAmount = new Label();
             label4 = new Label();
             pnlSearchAtRadioButtons = new Guna.UI2.WinForms.Guna2Panel();
+            label6 = new Label();
+            label5 = new Label();
             rbThisWeek = new RadioButton();
             rbThisMonth = new RadioButton();
             rbAllTime = new RadioButton();
@@ -95,6 +97,7 @@
             btnAddWalkInVisit = new Guna.UI2.WinForms.Guna2Button();
             dtpVisitDateTime = new Guna.UI2.WinForms.Guna2DateTimePicker();
             btnCreatePreAppointmentVisit = new Guna.UI2.WinForms.Guna2Button();
+            LoadDataFirstTimeTimer = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
             pnlTotalVisits.SuspendLayout();
@@ -158,7 +161,7 @@
             dataGridView.ShowCellErrors = false;
             dataGridView.ShowRowErrors = false;
             dataGridView.Size = new Size(1562, 379);
-            dataGridView.TabIndex = 9;
+            dataGridView.TabIndex = 12;
             dataGridView.ThemeStyle.AlternatingRowsStyle.BackColor = Color.Transparent;
             dataGridView.ThemeStyle.AlternatingRowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridView.ThemeStyle.AlternatingRowsStyle.ForeColor = SystemColors.ControlText;
@@ -207,7 +210,8 @@
             colPatientId.MinimumWidth = 2;
             colPatientId.Name = "colPatientId";
             colPatientId.ReadOnly = true;
-            colPatientId.Width = 140;
+            colPatientId.Visible = false;
+            colPatientId.Width = 125;
             // 
             // colPatientName
             // 
@@ -285,7 +289,7 @@
             contextMenuStrip.Items.AddRange(new ToolStripItem[] { cmsEdit, toolStripSeparator1, cmsDelete, toolStripSeparator4, cmsNewWalkInVisitToTheSamePatient, toolStripSeparator3, cmsShowPatientDetails, cmsShowAppointmentDetails, toolStripSeparator2, cmsRefreshGrid });
             contextMenuStrip.Name = "contextMenuStrip1";
             contextMenuStrip.RightToLeft = RightToLeft.Yes;
-            contextMenuStrip.Size = new Size(266, 212);
+            contextMenuStrip.Size = new Size(266, 184);
             // 
             // cmsEdit
             // 
@@ -400,7 +404,7 @@
             cbFilterList.Location = new Point(477, 508);
             cbFilterList.Name = "cbFilterList";
             cbFilterList.Size = new Size(301, 36);
-            cbFilterList.TabIndex = 8;
+            cbFilterList.TabIndex = 11;
             cbFilterList.SelectedIndexChanged += cbFilterList_SelectedIndexChanged;
             // 
             // pnlTotalVisits
@@ -419,13 +423,13 @@
             // 
             // lblTotalVisits
             // 
-            lblTotalVisits.AutoSize = true;
             lblTotalVisits.ForeColor = Color.Black;
-            lblTotalVisits.Location = new Point(136, 55);
+            lblTotalVisits.Location = new Point(3, 55);
             lblTotalVisits.Name = "lblTotalVisits";
-            lblTotalVisits.Size = new Size(23, 28);
+            lblTotalVisits.Size = new Size(289, 28);
             lblTotalVisits.TabIndex = 4;
             lblTotalVisits.Text = "0";
+            lblTotalVisits.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
             // 
@@ -454,13 +458,13 @@
             // 
             // lblTotalPaidAmount
             // 
-            lblTotalPaidAmount.AutoSize = true;
             lblTotalPaidAmount.ForeColor = Color.Black;
-            lblTotalPaidAmount.Location = new Point(136, 55);
+            lblTotalPaidAmount.Location = new Point(3, 55);
             lblTotalPaidAmount.Name = "lblTotalPaidAmount";
-            lblTotalPaidAmount.Size = new Size(23, 28);
+            lblTotalPaidAmount.Size = new Size(289, 28);
             lblTotalPaidAmount.TabIndex = 0;
             lblTotalPaidAmount.Text = "0";
+            lblTotalPaidAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
@@ -489,13 +493,13 @@
             // 
             // lblTotalDiscountAmount
             // 
-            lblTotalDiscountAmount.AutoSize = true;
             lblTotalDiscountAmount.ForeColor = Color.Black;
-            lblTotalDiscountAmount.Location = new Point(136, 55);
+            lblTotalDiscountAmount.Location = new Point(3, 55);
             lblTotalDiscountAmount.Name = "lblTotalDiscountAmount";
-            lblTotalDiscountAmount.Size = new Size(23, 28);
+            lblTotalDiscountAmount.Size = new Size(289, 28);
             lblTotalDiscountAmount.TabIndex = 6;
             lblTotalDiscountAmount.Text = "0";
+            lblTotalDiscountAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
@@ -524,13 +528,13 @@
             // 
             // lblTotalRemainedAmount
             // 
-            lblTotalRemainedAmount.AutoSize = true;
             lblTotalRemainedAmount.ForeColor = Color.Black;
-            lblTotalRemainedAmount.Location = new Point(136, 55);
+            lblTotalRemainedAmount.Location = new Point(3, 55);
             lblTotalRemainedAmount.Name = "lblTotalRemainedAmount";
-            lblTotalRemainedAmount.Size = new Size(23, 28);
+            lblTotalRemainedAmount.Size = new Size(289, 28);
             lblTotalRemainedAmount.TabIndex = 7;
             lblTotalRemainedAmount.Text = "0";
+            lblTotalRemainedAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label4
             // 
@@ -548,23 +552,46 @@
             pnlSearchAtRadioButtons.BackColor = Color.Transparent;
             pnlSearchAtRadioButtons.BorderColor = Color.Navy;
             pnlSearchAtRadioButtons.BorderRadius = 30;
-            pnlSearchAtRadioButtons.BorderThickness = 2;
+            pnlSearchAtRadioButtons.BorderThickness = 3;
+            pnlSearchAtRadioButtons.Controls.Add(label6);
+            pnlSearchAtRadioButtons.Controls.Add(label5);
             pnlSearchAtRadioButtons.Controls.Add(rbThisWeek);
             pnlSearchAtRadioButtons.Controls.Add(rbThisMonth);
             pnlSearchAtRadioButtons.Controls.Add(rbAllTime);
             pnlSearchAtRadioButtons.Controls.Add(rbToday);
             pnlSearchAtRadioButtons.CustomizableEdges = customizableEdges3;
-            pnlSearchAtRadioButtons.Location = new Point(1287, 18);
+            pnlSearchAtRadioButtons.Location = new Point(1222, 18);
             pnlSearchAtRadioButtons.Name = "pnlSearchAtRadioButtons";
             pnlSearchAtRadioButtons.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            pnlSearchAtRadioButtons.Size = new Size(272, 168);
-            pnlSearchAtRadioButtons.TabIndex = 1;
+            pnlSearchAtRadioButtons.Size = new Size(337, 168);
+            pnlSearchAtRadioButtons.TabIndex = 0;
             pnlSearchAtRadioButtons.UseTransparentBackground = true;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(9, 99);
+            label6.Name = "label6";
+            label6.Size = new Size(202, 23);
+            label6.TabIndex = 5;
+            label6.Text = "بداية من اول يوم في الشهر";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(28, 61);
+            label5.Name = "label5";
+            label5.Size = new Size(151, 23);
+            label5.TabIndex = 4;
+            label5.Text = "بداية من يوم السبت";
             // 
             // rbThisWeek
             // 
+            rbThisWeek.Anchor = AnchorStyles.Right;
             rbThisWeek.AutoSize = true;
-            rbThisWeek.Location = new Point(137, 51);
+            rbThisWeek.Location = new Point(196, 52);
             rbThisWeek.Name = "rbThisWeek";
             rbThisWeek.Size = new Size(129, 32);
             rbThisWeek.TabIndex = 1;
@@ -574,8 +601,9 @@
             // 
             // rbThisMonth
             // 
+            rbThisMonth.Anchor = AnchorStyles.Right;
             rbThisMonth.AutoSize = true;
-            rbThisMonth.Location = new Point(153, 89);
+            rbThisMonth.Location = new Point(212, 90);
             rbThisMonth.Name = "rbThisMonth";
             rbThisMonth.Size = new Size(113, 32);
             rbThisMonth.TabIndex = 2;
@@ -585,9 +613,10 @@
             // 
             // rbAllTime
             // 
+            rbAllTime.Anchor = AnchorStyles.Right;
             rbAllTime.AutoSize = true;
             rbAllTime.Checked = true;
-            rbAllTime.Location = new Point(178, 124);
+            rbAllTime.Location = new Point(237, 125);
             rbAllTime.Name = "rbAllTime";
             rbAllTime.Size = new Size(88, 32);
             rbAllTime.TabIndex = 3;
@@ -598,8 +627,9 @@
             // 
             // rbToday
             // 
+            rbToday.Anchor = AnchorStyles.Right;
             rbToday.AutoSize = true;
-            rbToday.Location = new Point(192, 13);
+            rbToday.Location = new Point(251, 14);
             rbToday.Name = "rbToday";
             rbToday.Size = new Size(74, 32);
             rbToday.TabIndex = 0;
@@ -631,7 +661,7 @@
             dtpSearchAfter.ShadowDecoration.CustomizableEdges = customizableEdges6;
             dtpSearchAfter.ShadowDecoration.Shadow = new Padding(0);
             dtpSearchAfter.Size = new Size(301, 45);
-            dtpSearchAfter.TabIndex = 7;
+            dtpSearchAfter.TabIndex = 8;
             dtpSearchAfter.TextAlign = HorizontalAlignment.Center;
             dtpSearchAfter.Value = new DateTime(2026, 7, 17, 17, 48, 32, 351);
             dtpSearchAfter.ValueChanged += dateTimePicker_ValueChanged;
@@ -655,7 +685,7 @@
             btnRefresh.Location = new Point(3, 3);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(47, 49);
-            btnRefresh.TabIndex = 0;
+            btnRefresh.TabIndex = 1;
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 
@@ -666,7 +696,7 @@
             lblSearchAfter.Location = new Point(915, 427);
             lblSearchAfter.Name = "lblSearchAfter";
             lblSearchAfter.Size = new Size(221, 31);
-            lblSearchAfter.TabIndex = 4;
+            lblSearchAfter.TabIndex = 7;
             lblSearchAfter.Text = "ابحث بعد تاريخ معين :";
             // 
             // btnAddWalkInVisit
@@ -689,7 +719,7 @@
             btnAddWalkInVisit.PressedColor = Color.FromArgb(0, 0, 165);
             btnAddWalkInVisit.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btnAddWalkInVisit.Size = new Size(288, 57);
-            btnAddWalkInVisit.TabIndex = 11;
+            btnAddWalkInVisit.TabIndex = 6;
             btnAddWalkInVisit.Text = "ابدأ زياره بدون حجز مسبق";
             btnAddWalkInVisit.Click += btnAddWalkInVisit_Click;
             // 
@@ -717,7 +747,7 @@
             dtpVisitDateTime.ShadowDecoration.CustomizableEdges = customizableEdges10;
             dtpVisitDateTime.ShadowDecoration.Shadow = new Padding(0);
             dtpVisitDateTime.Size = new Size(301, 45);
-            dtpVisitDateTime.TabIndex = 12;
+            dtpVisitDateTime.TabIndex = 10;
             dtpVisitDateTime.TextAlign = HorizontalAlignment.Center;
             dtpVisitDateTime.Value = new DateTime(2026, 7, 17, 17, 48, 32, 351);
             dtpVisitDateTime.Visible = false;
@@ -743,9 +773,14 @@
             btnCreatePreAppointmentVisit.PressedColor = Color.FromArgb(0, 0, 165);
             btnCreatePreAppointmentVisit.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnCreatePreAppointmentVisit.Size = new Size(288, 57);
-            btnCreatePreAppointmentVisit.TabIndex = 13;
+            btnCreatePreAppointmentVisit.TabIndex = 9;
             btnCreatePreAppointmentVisit.Text = "ابدأ زياره بحجز مسبق";
             btnCreatePreAppointmentVisit.Click += btnCreatePreAppointmentVisit_Click;
+            // 
+            // LoadDataFirstTimeTimer
+            // 
+            LoadDataFirstTimeTimer.Interval = 2;
+            LoadDataFirstTimeTimer.Tick += LoadDataFirstTimeTimer_Tick;
             // 
             // VisitsView
             // 
@@ -753,7 +788,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkCyan;
             Controls.Add(btnCreatePreAppointmentVisit);
-            Controls.Add(dtpVisitDateTime);
             Controls.Add(btnAddWalkInVisit);
             Controls.Add(lblSearchAfter);
             Controls.Add(btnRefresh);
@@ -763,9 +797,10 @@
             Controls.Add(guna2ShadowPanel1);
             Controls.Add(pnlTotalVisits);
             Controls.Add(cbFilterList);
-            Controls.Add(txtFilterValue);
             Controls.Add(dataGridView);
             Controls.Add(dtpSearchAfter);
+            Controls.Add(dtpVisitDateTime);
+            Controls.Add(txtFilterValue);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4);
             MaximumSize = new Size(1562, 956);
@@ -830,6 +865,7 @@
         private ToolStripMenuItem cmsShowAppointmentDetails;
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripSeparator toolStripSeparator2;
+        private Guna.UI2.WinForms.Guna2Button btnCreatePreAppointmentVisit;
         private DataGridViewTextBoxColumn colVisitId;
         private DataGridViewTextBoxColumn colAppointmentId;
         private DataGridViewTextBoxColumn colPatientId;
@@ -840,6 +876,8 @@
         private DataGridViewTextBoxColumn colPaidAmount;
         private DataGridViewTextBoxColumn colDiscountAmount;
         private DataGridViewTextBoxColumn colRemainedAmount;
-        private Guna.UI2.WinForms.Guna2Button btnCreatePreAppointmentVisit;
+        private System.Windows.Forms.Timer LoadDataFirstTimeTimer;
+        private Label label5;
+        private Label label6;
     }
 }

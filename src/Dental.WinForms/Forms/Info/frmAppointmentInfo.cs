@@ -1,4 +1,4 @@
-﻿using Dental.Application.ViewsStuff.Interfaces;
+﻿using Dental.Application.ViewsStuff.Interfaces.Appointments;
 using Dental.WinForms.Extensions;
 
 namespace Dental.WinForms.Forms;

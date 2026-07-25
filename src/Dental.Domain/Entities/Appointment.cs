@@ -18,6 +18,12 @@ public sealed class Appointment : Entity
     public DateTime ScheduledVisitDateTime { get; private set; }
     public DateTime? ActualVisitDateTime { get; private set; }
     public AppointmentStatus Status { get; private set; }
+    public AppointmentStatus EffectiveStatus =>
+        Status == AppointmentStatus.Pending &&
+        ScheduledVisitDateTime < DateTime.Now
+        && ActualVisitDateTime == null
+            ? AppointmentStatus.Missed
+            : Status;
     public string? Notes { get; private set; }
 
     public Patient Patient { get; private set; } = default!;

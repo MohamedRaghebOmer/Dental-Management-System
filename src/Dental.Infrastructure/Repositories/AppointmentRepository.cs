@@ -29,12 +29,20 @@ public sealed class AppointmentRepository
     }
 
     public Task<AppointmentStatus?> GetStatusAsync(
-        Id id, 
+        Id id,
         CancellationToken cancellationToken = default)
     {
+        var now = DateTime.Now;
+
         return _dbContext.Appointments
             .Where(a => a.Id == id)
-            .Select(a => (AppointmentStatus?)a.Status)
+            .Select(a =>
+                (AppointmentStatus?)(
+                    a.Status == AppointmentStatus.Pending &&
+                    a.ScheduledVisitDateTime < now &&
+                    a.ActualVisitDateTime == null
+                        ? AppointmentStatus.Missed
+                        : a.Status))
             .FirstOrDefaultAsync(cancellationToken);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Dental.Application.Abstractions.ServicesInterfaces;
-using Dental.Application.ViewsStuff.Interfaces;
+using Dental.Application.ViewsStuff.Interfaces.Visits;
 using Dental.Domain.Shared;
+using Dental.Domain.Views.Visit;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
@@ -40,7 +41,6 @@ public partial class VisitsView : UserControl
         IFormFactory formFactory,
         ILogger<VisitsView> logger,
         IVisitViewService visitViewService,
-        IVisitSummaryService visitSummaryService,
         IVisitService visitService)
     {
         InitializeComponent();
@@ -57,8 +57,6 @@ public partial class VisitsView : UserControl
         try
         {
             await InitializeViewAsync();
-            await LoadGridAsync(null);
-
             _isLoading = false;
         }
         catch (Exception ex)
@@ -87,14 +85,18 @@ public partial class VisitsView : UserControl
 
         timerUpdateDateTimePckerMaxDate.Start();
         filterTimer.Start();
+        LoadDataFirstTimeTimer.Start();
+
+        rbToday.Checked = false;
+        rbThisMonth.Checked = false;
+        rbAllTime.Checked = true;
     }
 
-    public async Task LoadGridAsync(Domain.Views.VisitView? filterDTO)
+    public async Task LoadGridAsync(VisitView? filterDTO)
     {
         Cursor = Cursors.WaitCursor;
 
         var view = await _visitViewService.GetAsync(filterDTO);
-
         var result = view
             .Select(v => new
             {
@@ -118,11 +120,10 @@ public partial class VisitsView : UserControl
         Cursor = Cursors.Default;
 
         LoadCards(view);
-
         _lastFilteringSince = Stopwatch.StartNew();
     }
 
-    private void LoadCards(List<Domain.Views.VisitView> view)
+    private void LoadCards(List<VisitView> view)
     {
         lblTotalVisits.Text = view.Count.ToString();
         lblTotalPaidAmount.Text = view.Sum(v => v.PaidAmount ?? 0).ToString();
@@ -180,10 +181,10 @@ public partial class VisitsView : UserControl
         await LoadGridAsync(GetFilterDto());
     }
 
-    private Domain.Views.VisitView? GetFilterDto()
+    private VisitView? GetFilterDto()
     {
         var filterValue = txtFilterValue.Text;
-        Domain.Views.VisitView view = new();
+        VisitView view = new();
 
         switch (_currentFilterColumn)
         {
@@ -420,7 +421,6 @@ public partial class VisitsView : UserControl
         _isLoading = false;
     }
 
-
     private async void cmsRefreshGrid_Click(object sender, EventArgs e)
     {
         await Refresh();
@@ -513,12 +513,20 @@ public partial class VisitsView : UserControl
         using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.WalkIn);
         frm.Id = selectedPatientId.Value;
         await frm.ShowDialogAsync();
+        await Refresh();
     }
 
     private async void btnCreatePreAppointmentVisit_Click(object sender, EventArgs e)
     {
         using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.PreAppointment);
         await frm.ShowDialogAsync();
+        await Refresh();
+    }
+
+    private async void LoadDataFirstTimeTimer_Tick(object sender, EventArgs e)
+    {
+        LoadDataFirstTimeTimer.Stop();
+        await LoadGridAsync(null!);
     }
 
     private int? SelectedAppointmentId

@@ -54,6 +54,11 @@ public static class ServiceErrors
             "Visit.AppointmentNotFound",
             "Appointment not found."
         );
+
+        public static readonly Error AppointmentAlreadyUsedBefore = new(
+            "Visit.AppointmentAlreadyUsedBefore",
+            "Appointment is already used before."
+        );
     }
 
     public static class VisitTreatment
@@ -125,5 +130,11 @@ public static class ServiceErrors
 
         public static readonly Error DuplicateName =
             new("Material.DuplicateName", "A material with the same name already exists.");
+    }
+
+    public static class Patient
+    {
+        public static readonly Error DuplicateName =
+            new("Patient.DuplicateName", "A patient with the same name already exists.");
     }
 }

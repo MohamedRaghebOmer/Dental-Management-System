@@ -53,9 +53,4 @@ public class Repository<TEntity>(DentalDbContext _dbContext)
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
-
-    public Task BeginTransactionAsync(CancellationToken cancellationToken = default)
-    {
-        return _dbContext.Database.BeginTransactionAsync(cancellationToken);
-    }
 }
