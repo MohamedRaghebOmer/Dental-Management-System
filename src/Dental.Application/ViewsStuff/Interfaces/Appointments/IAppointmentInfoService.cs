@@ -9,7 +9,7 @@ public interface IAppointmentInfoService
         int appointmentId, CancellationToken cancellationToken = default);
 
     Task<List<AppointmentInfo>> GetAllAppointmentsInfoAsync(
-        AppointmentInfo? filterInfo,
+        AppointmentInfo? filterInfo = null,
         CancellationToken cancellationToken = default);
 
     Task<List<ShortAppointmentInfo>> GetAllShortAppointmentsInfoAsync(

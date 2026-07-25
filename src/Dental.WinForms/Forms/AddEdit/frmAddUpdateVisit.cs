@@ -36,7 +36,7 @@ public partial class frmAddUpdateVisit : Form
     private readonly VisitType? _visitType = null;
 
 
-    public frmAddUpdateVisit(
+    private frmAddUpdateVisit(
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
@@ -716,7 +716,7 @@ public partial class frmAddUpdateVisit : Form
 
             case "Visit.DuplicatedAppointmentId":
             case "Status.CannotBeCompletedWhenAlreadyCompleted":
-                MessageBoxExtensions.ShowError("رقم الحجز مستخدم في زياره اخري.");
+                MessageBoxExtensions.ShowError($"الحجز رقم {txtId.Text} مستخدم في زياره اخري.");
                 break;
 
             case "Common.UnexpectedError":

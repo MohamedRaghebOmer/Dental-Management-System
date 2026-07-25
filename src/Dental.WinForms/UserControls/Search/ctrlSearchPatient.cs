@@ -268,15 +268,15 @@ public partial class ctrlSearchPatient : UserControl
 
         return new PatientViewDto
         {
-            Id = GetSelectedPatientIdFromGrid(selectedRowIndex.Value),
-            Name = GetSelectedPatientNameFromGrid(selectedRowIndex.Value),
-            Age = GetSelectedPatientAgeFromGrid(selectedRowIndex.Value),
-            Gender = GetSelectedPatientGenderFromGrid(selectedRowIndex.Value),
-            PhoneNumber = GetSelectedPatientPhoneNumberFromGrid(selectedRowIndex.Value)
+            Id = GetPatientIdFromGrid(selectedRowIndex.Value),
+            Name = GetPatientNameFromGrid(selectedRowIndex.Value),
+            Age = GetPatientAgeFromGrid(selectedRowIndex.Value),
+            Gender = GetPatientGenderFromGrid(selectedRowIndex.Value),
+            PhoneNumber = GetPatientPhoneNumberFromGrid(selectedRowIndex.Value)
         };
     }
 
-    private int? GetSelectedPatientIdFromGrid(int rowIndex)
+    private int? GetPatientIdFromGrid(int rowIndex)
     {
         if (rowIndex < 0 || rowIndex >= dataGridView.Rows.Count)
             return null;
@@ -289,7 +289,7 @@ public partial class ctrlSearchPatient : UserControl
         return null;
     }
 
-    private string? GetSelectedPatientNameFromGrid(int rowIndex)
+    private string? GetPatientNameFromGrid(int rowIndex)
     {
         if (rowIndex < 0 || rowIndex >= dataGridView.Rows.Count)
             return null;
@@ -297,7 +297,7 @@ public partial class ctrlSearchPatient : UserControl
         return cellValue?.ToString();
     }
 
-    private int? GetSelectedPatientAgeFromGrid(int rowIndex)
+    private int? GetPatientAgeFromGrid(int rowIndex)
     {
         if (rowIndex < 0 || rowIndex >= dataGridView.Rows.Count)
             return null;
@@ -307,7 +307,7 @@ public partial class ctrlSearchPatient : UserControl
         return null;
     }
 
-    private Gender? GetSelectedPatientGenderFromGrid(int rowIndex)
+    private Gender? GetPatientGenderFromGrid(int rowIndex)
     {
         if (rowIndex < 0 || rowIndex >= dataGridView.Rows.Count)
             return null;
@@ -319,7 +319,7 @@ public partial class ctrlSearchPatient : UserControl
         return GenderHelper.GenderFromString(cellValue.ToString()!);
     }
 
-    private string? GetSelectedPatientPhoneNumberFromGrid(int rowIndex)
+    private string? GetPatientPhoneNumberFromGrid(int rowIndex)
     {
         if (rowIndex < 0 || rowIndex >= dataGridView.Rows.Count)
             return null;
@@ -339,5 +339,63 @@ public partial class ctrlSearchPatient : UserControl
     private async void cbGender_SelectedIndexChanged(object sender, EventArgs e)
     {
         await ApplySearchAsync();
+    }
+
+    private async void tsmiEditPatient_Click(object sender, EventArgs e)
+    {
+        if (_formFactory == null)
+            return;
+
+        var selectedRowIndex = dataGridView.CurrentRow?.Index;
+        if (!selectedRowIndex.HasValue)
+            return;
+
+        var currentPatientId = GetPatientIdFromGrid(selectedRowIndex.Value);
+        if (!currentPatientId.HasValue)
+            return;
+
+        using var frm = _formFactory.Create_frmAddEditPatient(currentPatientId.Value);
+        await frm.ShowDialogAsync();
+    }
+
+    private async void tsmiDeletePatient_Click(object sender, EventArgs e)
+    {
+        if (_patientService is null)
+            return;
+
+        var selectedRowIndex = dataGridView.CurrentRow?.Index;
+        if (!selectedRowIndex.HasValue)
+            return;
+
+        var currentPatientId = GetPatientIdFromGrid(selectedRowIndex.Value);
+        if (!currentPatientId.HasValue)
+            return;
+
+        if (MessageBox.Show(
+            "هل أنت متأكد من حذف المريض؟ سيتم حذف جميع البيانات المتعلقه بالمريض بما فيها الحجوزات والزيارات.", "تأكيد الحذف", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            return;
+
+        var deleteResult = await _patientService.DeleteAsync(currentPatientId.Value);
+        if (deleteResult.IsSuccess)
+        {
+            MessageBoxExtensions.ShowInfo("تم حذف المريض بنجاح.");
+            ctrlSearchPatient_Load(null!, null!); // Reload the data after deletion
+            return;
+        }
+    }
+
+    private void tsmiAddPatient_Click(object sender, EventArgs e)
+    {
+        btnAddNewPatient_Click(null!, null!);
+    }
+
+    private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Right && e.RowIndex >= 0 && e.RowIndex < dataGridView.Rows.Count)
+        {
+            dataGridView.ClearSelection();
+            dataGridView.Rows[e.RowIndex].Selected = true;
+            dataGridView.CurrentCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
+        }
     }
 }

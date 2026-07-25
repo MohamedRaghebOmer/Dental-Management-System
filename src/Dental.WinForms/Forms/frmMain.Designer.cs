@@ -29,6 +29,14 @@ namespace Dental.WinForms
         /// </summary>
         private void InitializeComponent()
         {
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -41,17 +49,13 @@ namespace Dental.WinForms
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             splitContainer1 = new SplitContainer();
             tableLayoutPanel1 = new TableLayoutPanel();
+            btnSettings = new Guna.UI2.WinForms.Guna2Button();
+            btnCashCount = new Guna.UI2.WinForms.Guna2Button();
+            btnSuppliers = new Guna.UI2.WinForms.Guna2Button();
+            btnTreatments = new Guna.UI2.WinForms.Guna2Button();
             btnPatients = new Guna.UI2.WinForms.Guna2Button();
             btnAppointments = new Guna.UI2.WinForms.Guna2Button();
             btnVisits = new Guna.UI2.WinForms.Guna2Button();
@@ -63,10 +67,6 @@ namespace Dental.WinForms
             guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
             ctrlDateTime1 = new Dental.WinForms.UserControls.ctrlDateTime();
             ctrlProfile1 = new Dental.WinForms.UserControls.ctrlProfile();
-            btnTreatments = new Guna.UI2.WinForms.Guna2Button();
-            btnSuppliers = new Guna.UI2.WinForms.Guna2Button();
-            btnCashCount = new Guna.UI2.WinForms.Guna2Button();
-            btnSettings = new Guna.UI2.WinForms.Guna2Button();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -130,6 +130,138 @@ namespace Dental.WinForms
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.Size = new Size(350, 774);
             tableLayoutPanel1.TabIndex = 0;
+            // 
+            // btnSettings
+            // 
+            btnSettings.Animated = true;
+            btnSettings.AnimatedGIF = true;
+            btnSettings.AutoRoundedCorners = true;
+            btnSettings.BackColor = Color.Transparent;
+            btnSettings.BackgroundImageLayout = ImageLayout.None;
+            btnSettings.BorderRadius = 36;
+            btnSettings.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            btnSettings.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
+            btnSettings.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnSettings.Cursor = Cursors.Hand;
+            btnSettings.CustomizableEdges = customizableEdges1;
+            btnSettings.DisabledState.BorderColor = Color.DarkGray;
+            btnSettings.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnSettings.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
+            btnSettings.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
+            btnSettings.Dock = DockStyle.Fill;
+            btnSettings.FillColor = Color.FromArgb(243, 244, 246);
+            btnSettings.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            btnSettings.ForeColor = Color.FromArgb(55, 65, 81);
+            btnSettings.HoverState.FillColor = Color.Gainsboro;
+            btnSettings.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnSettings.ImageAlign = HorizontalAlignment.Left;
+            btnSettings.Location = new Point(3, 696);
+            btnSettings.Name = "btnSettings";
+            btnSettings.PressedColor = Color.FromArgb(229, 231, 235);
+            btnSettings.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            btnSettings.Size = new Size(344, 75);
+            btnSettings.TabIndex = 20;
+            btnSettings.Text = "الإعدادات";
+            btnSettings.UseTransparentBackground = true;
+            // 
+            // btnCashCount
+            // 
+            btnCashCount.Animated = true;
+            btnCashCount.AnimatedGIF = true;
+            btnCashCount.AutoRoundedCorners = true;
+            btnCashCount.BackColor = Color.Transparent;
+            btnCashCount.BackgroundImageLayout = ImageLayout.None;
+            btnCashCount.BorderRadius = 34;
+            btnCashCount.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            btnCashCount.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
+            btnCashCount.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnCashCount.Cursor = Cursors.Hand;
+            btnCashCount.CustomizableEdges = customizableEdges3;
+            btnCashCount.DisabledState.BorderColor = Color.DarkGray;
+            btnCashCount.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnCashCount.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
+            btnCashCount.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
+            btnCashCount.Dock = DockStyle.Fill;
+            btnCashCount.FillColor = Color.FromArgb(243, 244, 246);
+            btnCashCount.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            btnCashCount.ForeColor = Color.FromArgb(55, 65, 81);
+            btnCashCount.HoverState.FillColor = Color.Gainsboro;
+            btnCashCount.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnCashCount.ImageAlign = HorizontalAlignment.Left;
+            btnCashCount.Location = new Point(3, 619);
+            btnCashCount.Name = "btnCashCount";
+            btnCashCount.PressedColor = Color.FromArgb(229, 231, 235);
+            btnCashCount.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnCashCount.Size = new Size(344, 71);
+            btnCashCount.TabIndex = 19;
+            btnCashCount.Text = "الخامات والأدوات";
+            btnCashCount.UseTransparentBackground = true;
+            // 
+            // btnSuppliers
+            // 
+            btnSuppliers.Animated = true;
+            btnSuppliers.AnimatedGIF = true;
+            btnSuppliers.AutoRoundedCorners = true;
+            btnSuppliers.BackColor = Color.Transparent;
+            btnSuppliers.BackgroundImageLayout = ImageLayout.None;
+            btnSuppliers.BorderRadius = 34;
+            btnSuppliers.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            btnSuppliers.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
+            btnSuppliers.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnSuppliers.Cursor = Cursors.Hand;
+            btnSuppliers.CustomizableEdges = customizableEdges5;
+            btnSuppliers.DisabledState.BorderColor = Color.DarkGray;
+            btnSuppliers.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnSuppliers.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
+            btnSuppliers.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
+            btnSuppliers.Dock = DockStyle.Fill;
+            btnSuppliers.FillColor = Color.FromArgb(243, 244, 246);
+            btnSuppliers.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            btnSuppliers.ForeColor = Color.FromArgb(55, 65, 81);
+            btnSuppliers.HoverState.FillColor = Color.Gainsboro;
+            btnSuppliers.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnSuppliers.ImageAlign = HorizontalAlignment.Left;
+            btnSuppliers.Location = new Point(3, 542);
+            btnSuppliers.Name = "btnSuppliers";
+            btnSuppliers.PressedColor = Color.FromArgb(229, 231, 235);
+            btnSuppliers.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnSuppliers.Size = new Size(344, 71);
+            btnSuppliers.TabIndex = 18;
+            btnSuppliers.Text = "معاملات المعامل";
+            btnSuppliers.UseTransparentBackground = true;
+            // 
+            // btnTreatments
+            // 
+            btnTreatments.Animated = true;
+            btnTreatments.AnimatedGIF = true;
+            btnTreatments.AutoRoundedCorners = true;
+            btnTreatments.BackColor = Color.Transparent;
+            btnTreatments.BackgroundImageLayout = ImageLayout.None;
+            btnTreatments.BorderRadius = 34;
+            btnTreatments.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            btnTreatments.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
+            btnTreatments.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnTreatments.Cursor = Cursors.Hand;
+            btnTreatments.CustomizableEdges = customizableEdges7;
+            btnTreatments.DisabledState.BorderColor = Color.DarkGray;
+            btnTreatments.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnTreatments.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
+            btnTreatments.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
+            btnTreatments.Dock = DockStyle.Fill;
+            btnTreatments.FillColor = Color.FromArgb(243, 244, 246);
+            btnTreatments.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            btnTreatments.ForeColor = Color.FromArgb(55, 65, 81);
+            btnTreatments.HoverState.FillColor = Color.Gainsboro;
+            btnTreatments.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnTreatments.ImageAlign = HorizontalAlignment.Left;
+            btnTreatments.Location = new Point(3, 465);
+            btnTreatments.Name = "btnTreatments";
+            btnTreatments.PressedColor = Color.FromArgb(229, 231, 235);
+            btnTreatments.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnTreatments.Size = new Size(344, 71);
+            btnTreatments.TabIndex = 17;
+            btnTreatments.Text = "الخدمات الطبيه";
+            btnTreatments.UseTransparentBackground = true;
             // 
             // btnPatients
             // 
@@ -195,7 +327,7 @@ namespace Dental.WinForms
             btnAppointments.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnAppointments.Size = new Size(344, 71);
             btnAppointments.TabIndex = 3;
-            btnAppointments.Text = "المواعيد";
+            btnAppointments.Text = "الحجوزات و المواعيد";
             btnAppointments.UseTransparentBackground = true;
             btnAppointments.Click += btnAppointments_Click;
             // 
@@ -349,138 +481,6 @@ namespace Dental.WinForms
             ctrlProfile1.RightToLeft = RightToLeft.Yes;
             ctrlProfile1.Size = new Size(378, 100);
             ctrlProfile1.TabIndex = 0;
-            // 
-            // btnTreatments
-            // 
-            btnTreatments.Animated = true;
-            btnTreatments.AnimatedGIF = true;
-            btnTreatments.AutoRoundedCorners = true;
-            btnTreatments.BackColor = Color.Transparent;
-            btnTreatments.BackgroundImageLayout = ImageLayout.None;
-            btnTreatments.BorderRadius = 34;
-            btnTreatments.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnTreatments.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnTreatments.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnTreatments.Cursor = Cursors.Hand;
-            btnTreatments.CustomizableEdges = customizableEdges7;
-            btnTreatments.DisabledState.BorderColor = Color.DarkGray;
-            btnTreatments.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnTreatments.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnTreatments.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnTreatments.Dock = DockStyle.Fill;
-            btnTreatments.FillColor = Color.FromArgb(243, 244, 246);
-            btnTreatments.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnTreatments.ForeColor = Color.FromArgb(55, 65, 81);
-            btnTreatments.HoverState.FillColor = Color.Gainsboro;
-            btnTreatments.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnTreatments.ImageAlign = HorizontalAlignment.Left;
-            btnTreatments.Location = new Point(3, 465);
-            btnTreatments.Name = "btnTreatments";
-            btnTreatments.PressedColor = Color.FromArgb(229, 231, 235);
-            btnTreatments.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            btnTreatments.Size = new Size(344, 71);
-            btnTreatments.TabIndex = 17;
-            btnTreatments.Text = "الخدمات الطبيه";
-            btnTreatments.UseTransparentBackground = true;
-            // 
-            // btnSuppliers
-            // 
-            btnSuppliers.Animated = true;
-            btnSuppliers.AnimatedGIF = true;
-            btnSuppliers.AutoRoundedCorners = true;
-            btnSuppliers.BackColor = Color.Transparent;
-            btnSuppliers.BackgroundImageLayout = ImageLayout.None;
-            btnSuppliers.BorderRadius = 34;
-            btnSuppliers.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnSuppliers.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnSuppliers.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnSuppliers.Cursor = Cursors.Hand;
-            btnSuppliers.CustomizableEdges = customizableEdges5;
-            btnSuppliers.DisabledState.BorderColor = Color.DarkGray;
-            btnSuppliers.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnSuppliers.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnSuppliers.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnSuppliers.Dock = DockStyle.Fill;
-            btnSuppliers.FillColor = Color.FromArgb(243, 244, 246);
-            btnSuppliers.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnSuppliers.ForeColor = Color.FromArgb(55, 65, 81);
-            btnSuppliers.HoverState.FillColor = Color.Gainsboro;
-            btnSuppliers.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnSuppliers.ImageAlign = HorizontalAlignment.Left;
-            btnSuppliers.Location = new Point(3, 542);
-            btnSuppliers.Name = "btnSuppliers";
-            btnSuppliers.PressedColor = Color.FromArgb(229, 231, 235);
-            btnSuppliers.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnSuppliers.Size = new Size(344, 71);
-            btnSuppliers.TabIndex = 18;
-            btnSuppliers.Text = "معاملات المعامل";
-            btnSuppliers.UseTransparentBackground = true;
-            // 
-            // btnCashCount
-            // 
-            btnCashCount.Animated = true;
-            btnCashCount.AnimatedGIF = true;
-            btnCashCount.AutoRoundedCorners = true;
-            btnCashCount.BackColor = Color.Transparent;
-            btnCashCount.BackgroundImageLayout = ImageLayout.None;
-            btnCashCount.BorderRadius = 34;
-            btnCashCount.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnCashCount.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnCashCount.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnCashCount.Cursor = Cursors.Hand;
-            btnCashCount.CustomizableEdges = customizableEdges3;
-            btnCashCount.DisabledState.BorderColor = Color.DarkGray;
-            btnCashCount.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnCashCount.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnCashCount.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnCashCount.Dock = DockStyle.Fill;
-            btnCashCount.FillColor = Color.FromArgb(243, 244, 246);
-            btnCashCount.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnCashCount.ForeColor = Color.FromArgb(55, 65, 81);
-            btnCashCount.HoverState.FillColor = Color.Gainsboro;
-            btnCashCount.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnCashCount.ImageAlign = HorizontalAlignment.Left;
-            btnCashCount.Location = new Point(3, 619);
-            btnCashCount.Name = "btnCashCount";
-            btnCashCount.PressedColor = Color.FromArgb(229, 231, 235);
-            btnCashCount.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnCashCount.Size = new Size(344, 71);
-            btnCashCount.TabIndex = 19;
-            btnCashCount.Text = "الخامات والأدوات";
-            btnCashCount.UseTransparentBackground = true;
-            // 
-            // btnSettings
-            // 
-            btnSettings.Animated = true;
-            btnSettings.AnimatedGIF = true;
-            btnSettings.AutoRoundedCorners = true;
-            btnSettings.BackColor = Color.Transparent;
-            btnSettings.BackgroundImageLayout = ImageLayout.None;
-            btnSettings.BorderRadius = 36;
-            btnSettings.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnSettings.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnSettings.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnSettings.Cursor = Cursors.Hand;
-            btnSettings.CustomizableEdges = customizableEdges1;
-            btnSettings.DisabledState.BorderColor = Color.DarkGray;
-            btnSettings.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnSettings.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnSettings.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnSettings.Dock = DockStyle.Fill;
-            btnSettings.FillColor = Color.FromArgb(243, 244, 246);
-            btnSettings.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnSettings.ForeColor = Color.FromArgb(55, 65, 81);
-            btnSettings.HoverState.FillColor = Color.Gainsboro;
-            btnSettings.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnSettings.ImageAlign = HorizontalAlignment.Left;
-            btnSettings.Location = new Point(3, 696);
-            btnSettings.Name = "btnSettings";
-            btnSettings.PressedColor = Color.FromArgb(229, 231, 235);
-            btnSettings.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnSettings.Size = new Size(344, 75);
-            btnSettings.TabIndex = 20;
-            btnSettings.Text = "الإعدادات";
-            btnSettings.UseTransparentBackground = true;
             // 
             // frmMain
             // 

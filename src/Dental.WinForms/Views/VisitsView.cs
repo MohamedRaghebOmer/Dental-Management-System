@@ -73,6 +73,7 @@ public partial class VisitsView : UserControl
 
         dtpVisitDateTime.MaxDate = DateTime.Now;
         dtpSearchAfter.MaxDate = DateTime.Now;
+        // Set to one second before now to avoid future date issues
         dtpVisitDateTime.Value = DateTime.Now.AddSeconds(-1);
 
         lblSearchAfter.Visible = false;
@@ -83,13 +84,12 @@ public partial class VisitsView : UserControl
 
         dataGridView.AlternatingRowsDefaultCellStyle = null;
 
-        timerUpdateDateTimePckerMaxDate.Start();
-        filterTimer.Start();
-        LoadDataFirstTimeTimer.Start();
-
         rbToday.Checked = false;
         rbThisMonth.Checked = false;
         rbAllTime.Checked = true;
+
+        timerUpdateDateTimePckerMaxDate.Start();
+        LoadDataFirstTimeTimer.Start();
     }
 
     public async Task LoadGridAsync(VisitView? filterDTO)
@@ -126,9 +126,10 @@ public partial class VisitsView : UserControl
     private void LoadCards(List<VisitView> view)
     {
         lblTotalVisits.Text = view.Count.ToString();
-        lblTotalPaidAmount.Text = view.Sum(v => v.PaidAmount ?? 0).ToString();
-        lblTotalDiscountAmount.Text = view.Sum(v => v.DiscountAmount ?? 0).ToString();
-        lblTotalRemainedAmount.Text = view.Sum(v => v.RemainedAmount ?? 0).ToString();
+        lblSumOfTotalAmount.Text = view.Sum(v => v.TotalAmount ?? 0).ToString();
+        lblSumOfPaidAmount.Text = view.Sum(v => v.PaidAmount ?? 0).ToString();
+        lblSumOfDiscountAmount.Text = view.Sum(v => v.DiscountAmount ?? 0).ToString();
+        lblSumOfRemainedAmount.Text = view.Sum(v => v.RemainedAmount ?? 0).ToString();
     }
 
     private async void btnAddWalkInVisit_Click(object sender, EventArgs e)
@@ -169,7 +170,6 @@ public partial class VisitsView : UserControl
 
     private void txtFilterValue_TextChanged(object sender, EventArgs e)
     {
-        filterTimer.Stop();
         filterTimer.Start();
     }
 
@@ -409,16 +409,14 @@ public partial class VisitsView : UserControl
 
     private new async Task Refresh()
     {
-        _isLoading = true;
         Cursor = Cursors.WaitCursor;
 
+        _isLoading = true;
         base.Refresh();
-
         await InitializeViewAsync();
-        await LoadGridAsync(null);
+        _isLoading = false;
 
         Cursor = Cursors.Default;
-        _isLoading = false;
     }
 
     private async void cmsRefreshGrid_Click(object sender, EventArgs e)

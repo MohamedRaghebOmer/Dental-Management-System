@@ -47,6 +47,8 @@
             txtAge = new Guna.UI2.WinForms.Guna2TextBox();
             label12 = new Label();
             txtName = new Guna.UI2.WinForms.Guna2TextBox();
+            lblPatientId = new Label();
+            lblPatientIdValue = new Label();
             SuspendLayout();
             // 
             // txtPhoneNumber
@@ -63,7 +65,7 @@
             txtPhoneNumber.Font = new Font("Segoe UI", 10.2F);
             txtPhoneNumber.ForeColor = Color.Black;
             txtPhoneNumber.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPhoneNumber.Location = new Point(447, 291);
+            txtPhoneNumber.Location = new Point(444, 324);
             txtPhoneNumber.Margin = new Padding(3, 5, 3, 5);
             txtPhoneNumber.MaxLength = 11;
             txtPhoneNumber.Name = "txtPhoneNumber";
@@ -87,27 +89,33 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(752, 295);
+            label7.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label7.ForeColor = Color.FromArgb(0, 0, 192);
+            label7.Location = new Point(747, 328);
             label7.Name = "label7";
-            label7.Size = new Size(108, 28);
+            label7.Size = new Size(111, 28);
             label7.TabIndex = 10;
             label7.Text = "رقم الهاتف :";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(798, 240);
+            label6.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label6.ForeColor = Color.FromArgb(0, 0, 192);
+            label6.Location = new Point(793, 273);
             label6.Name = "label6";
-            label6.Size = new Size(62, 28);
+            label6.Size = new Size(64, 28);
             label6.TabIndex = 7;
             label6.Text = "النوع :";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(797, 185);
+            label5.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label5.ForeColor = Color.FromArgb(0, 0, 192);
+            label5.Location = new Point(792, 218);
             label5.Name = "label5";
-            label5.Size = new Size(63, 28);
+            label5.Size = new Size(65, 28);
             label5.TabIndex = 5;
             label5.Text = "السن :";
             // 
@@ -126,7 +134,7 @@
             btnSave.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             btnSave.ForeColor = Color.DimGray;
             btnSave.HoverState.FillColor = Color.DarkOrange;
-            btnSave.Location = new Point(350, 385);
+            btnSave.Location = new Point(347, 436);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
             btnSave.ShadowDecoration.CustomizableEdges = customizableEdges4;
@@ -139,7 +147,7 @@
             // 
             rbMale.AutoSize = true;
             rbMale.Checked = true;
-            rbMale.Location = new Point(611, 238);
+            rbMale.Location = new Point(608, 271);
             rbMale.Name = "rbMale";
             rbMale.Size = new Size(61, 32);
             rbMale.TabIndex = 8;
@@ -150,7 +158,7 @@
             // rbFemale
             // 
             rbFemale.AutoSize = true;
-            rbFemale.Location = new Point(484, 238);
+            rbFemale.Location = new Point(481, 271);
             rbFemale.Name = "rbFemale";
             rbFemale.Size = new Size(69, 32);
             rbFemale.TabIndex = 9;
@@ -171,7 +179,7 @@
             txtAge.Font = new Font("Segoe UI", 10.2F);
             txtAge.ForeColor = Color.Black;
             txtAge.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtAge.Location = new Point(447, 181);
+            txtAge.Location = new Point(444, 214);
             txtAge.Margin = new Padding(3, 5, 3, 5);
             txtAge.MaxLength = 2;
             txtAge.Name = "txtAge";
@@ -185,9 +193,11 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(793, 130);
+            label12.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            label12.ForeColor = Color.FromArgb(0, 0, 192);
+            label12.Location = new Point(788, 163);
             label12.Name = "label12";
-            label12.Size = new Size(67, 28);
+            label12.Size = new Size(69, 28);
             label12.TabIndex = 3;
             label12.Text = "الإسم :";
             // 
@@ -205,7 +215,7 @@
             txtName.Font = new Font("Segoe UI", 10.2F);
             txtName.ForeColor = Color.Black;
             txtName.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtName.Location = new Point(447, 126);
+            txtName.Location = new Point(444, 159);
             txtName.Margin = new Padding(3, 5, 3, 5);
             txtName.MaxLength = 100;
             txtName.Name = "txtName";
@@ -215,11 +225,33 @@
             txtName.Size = new Size(249, 36);
             txtName.TabIndex = 4;
             // 
+            // lblPatientId
+            // 
+            lblPatientId.AutoSize = true;
+            lblPatientId.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
+            lblPatientId.ForeColor = Color.FromArgb(0, 0, 192);
+            lblPatientId.Location = new Point(733, 106);
+            lblPatientId.Name = "lblPatientId";
+            lblPatientId.Size = new Size(125, 28);
+            lblPatientId.TabIndex = 1;
+            lblPatientId.Text = "رقم المريض :";
+            // 
+            // lblPatientIdValue
+            // 
+            lblPatientIdValue.Location = new Point(444, 106);
+            lblPatientIdValue.Name = "lblPatientIdValue";
+            lblPatientIdValue.Size = new Size(249, 28);
+            lblPatientIdValue.TabIndex = 2;
+            lblPatientIdValue.Text = "0";
+            lblPatientIdValue.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // frmAddEditPatient
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(861, 453);
+            ClientSize = new Size(861, 504);
+            Controls.Add(lblPatientIdValue);
+            Controls.Add(lblPatientId);
             Controls.Add(txtAge);
             Controls.Add(rbFemale);
             Controls.Add(rbMale);
@@ -258,5 +290,7 @@
         private Guna.UI2.WinForms.Guna2TextBox txtAge;
         private Label label12;
         private Guna.UI2.WinForms.Guna2TextBox txtName;
+        private Label lblPatientId;
+        private Label lblPatientIdValue;
     }
 }

@@ -53,6 +53,8 @@ public partial class frmAddEditPatient : Form
     {
         Text = _mode == Mode.Add ? "إضافة مريض جديد" : "تعديل بيانات المريض";
         lblTitile.Text = _mode == Mode.Add ? "إضافة مريض جديد" : "تعديل بيانات المريض";
+        lblPatientId.Visible = _mode == Mode.Update;
+        lblPatientIdValue.Visible = _mode == Mode.Update;
     }
 
     private bool IsValidId()
@@ -81,6 +83,7 @@ public partial class frmAddEditPatient : Form
             return false;
         }
 
+        lblPatientIdValue.Text = patientResult.Value.Id.ToString();
         txtName.Text = patientResult.Value.Name;
         txtAge.Text = patientResult.Value.Age.ToString();
         if (patientResult.Value.Gender == Domain.Enums.Gender.Male)

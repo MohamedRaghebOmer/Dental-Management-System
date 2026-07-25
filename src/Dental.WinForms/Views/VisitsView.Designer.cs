@@ -29,23 +29,23 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VisitsView));
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges37 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges38 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges39 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges40 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges41 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges42 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges43 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges44 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges45 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges46 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges47 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges48 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             dataGridView = new Guna.UI2.WinForms.Guna2DataGridView();
             colVisitId = new DataGridViewTextBoxColumn();
             colAppointmentId = new DataGridViewTextBoxColumn();
@@ -74,13 +74,13 @@
             lblTotalVisits = new Label();
             label1 = new Label();
             guna2ShadowPanel1 = new Guna.UI2.WinForms.Guna2ShadowPanel();
-            lblTotalPaidAmount = new Label();
+            lblSumOfPaidAmount = new Label();
             label2 = new Label();
             guna2ShadowPanel2 = new Guna.UI2.WinForms.Guna2ShadowPanel();
-            lblTotalDiscountAmount = new Label();
+            lblSumOfDiscountAmount = new Label();
             label3 = new Label();
             guna2ShadowPanel3 = new Guna.UI2.WinForms.Guna2ShadowPanel();
-            lblTotalRemainedAmount = new Label();
+            lblSumOfRemainedAmount = new Label();
             label4 = new Label();
             pnlSearchAtRadioButtons = new Guna.UI2.WinForms.Guna2Panel();
             label6 = new Label();
@@ -98,6 +98,11 @@
             dtpVisitDateTime = new Guna.UI2.WinForms.Guna2DateTimePicker();
             btnCreatePreAppointmentVisit = new Guna.UI2.WinForms.Guna2Button();
             LoadDataFirstTimeTimer = new System.Windows.Forms.Timer(components);
+            guna2ShadowPanel4 = new Guna.UI2.WinForms.Guna2ShadowPanel();
+            lblSumOfTotalAmount = new Label();
+            label8 = new Label();
+            label7 = new Label();
+            label9 = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
             pnlTotalVisits.SuspendLayout();
@@ -105,6 +110,7 @@
             guna2ShadowPanel2.SuspendLayout();
             guna2ShadowPanel3.SuspendLayout();
             pnlSearchAtRadioButtons.SuspendLayout();
+            guna2ShadowPanel4.SuspendLayout();
             SuspendLayout();
             // 
             // dataGridView
@@ -113,31 +119,31 @@
             dataGridView.AllowUserToDeleteRows = false;
             dataGridView.AllowUserToOrderColumns = true;
             dataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = Color.Transparent;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = Color.White;
-            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
-            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.BackColor = Color.Transparent;
+            dataGridViewCellStyle13.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle13.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle13.SelectionBackColor = Color.White;
+            dataGridViewCellStyle13.SelectionForeColor = Color.Black;
+            dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle13;
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle14.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle14.ForeColor = Color.White;
+            dataGridViewCellStyle14.SelectionBackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle14.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle14.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
             dataGridView.ColumnHeadersHeight = 35;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { colVisitId, colAppointmentId, colPatientId, colPatientName, colVisitDateTime, colVisitTreatments, colTotalAmount, colPaidAmount, colDiscountAmount, colRemainedAmount });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle3.ForeColor = Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = Color.DodgerBlue;
-            dataGridViewCellStyle3.SelectionForeColor = Color.White;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = Color.White;
+            dataGridViewCellStyle15.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle15.ForeColor = Color.Black;
+            dataGridViewCellStyle15.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle15.SelectionForeColor = Color.White;
+            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle15;
             dataGridView.Dock = DockStyle.Bottom;
             dataGridView.GridColor = Color.LightGray;
             dataGridView.Location = new Point(0, 577);
@@ -145,14 +151,14 @@
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = Color.White;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = Color.White;
+            dataGridViewCellStyle16.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle16.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle16.SelectionBackColor = Color.White;
+            dataGridViewCellStyle16.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle16.WrapMode = DataGridViewTriState.True;
+            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidth = 51;
             dataGridView.RowTemplate.ContextMenuStrip = contextMenuStrip;
@@ -375,7 +381,7 @@
             // txtFilterValue
             // 
             txtFilterValue.BorderRadius = 7;
-            txtFilterValue.CustomizableEdges = customizableEdges1;
+            txtFilterValue.CustomizableEdges = customizableEdges37;
             txtFilterValue.DefaultText = "";
             txtFilterValue.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtFilterValue.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -385,12 +391,12 @@
             txtFilterValue.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtFilterValue.ForeColor = Color.Black;
             txtFilterValue.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtFilterValue.Location = new Point(785, 508);
+            txtFilterValue.Location = new Point(785, 472);
             txtFilterValue.Margin = new Padding(4, 6, 4, 6);
             txtFilterValue.Name = "txtFilterValue";
             txtFilterValue.PlaceholderText = "ابحث هنا";
             txtFilterValue.SelectedText = "";
-            txtFilterValue.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            txtFilterValue.ShadowDecoration.CustomizableEdges = customizableEdges38;
             txtFilterValue.Size = new Size(301, 36);
             txtFilterValue.TabIndex = 9;
             txtFilterValue.TextChanged += txtFilterValue_TextChanged;
@@ -401,7 +407,7 @@
             cbFilterList.DropDownStyle = ComboBoxStyle.DropDownList;
             cbFilterList.FormattingEnabled = true;
             cbFilterList.Items.AddRange(new object[] { "رقم الزياره", "رقم الحجز", "اسم المريض", "تاريخ الزياره", "الخدمات المقدمه", "المبلغ الكلي", "المبلغ المدفوع", "مبلغ الخصم", "المبلغ المتبقي" });
-            cbFilterList.Location = new Point(477, 508);
+            cbFilterList.Location = new Point(477, 472);
             cbFilterList.Name = "cbFilterList";
             cbFilterList.Size = new Size(301, 36);
             cbFilterList.TabIndex = 11;
@@ -413,12 +419,12 @@
             pnlTotalVisits.Controls.Add(lblTotalVisits);
             pnlTotalVisits.Controls.Add(label1);
             pnlTotalVisits.FillColor = Color.White;
-            pnlTotalVisits.Location = new Point(1234, 219);
+            pnlTotalVisits.Location = new Point(1274, 219);
             pnlTotalVisits.Name = "pnlTotalVisits";
             pnlTotalVisits.Radius = 10;
             pnlTotalVisits.ShadowColor = Color.Black;
             pnlTotalVisits.ShadowDepth = 150;
-            pnlTotalVisits.Size = new Size(295, 125);
+            pnlTotalVisits.Size = new Size(266, 125);
             pnlTotalVisits.TabIndex = 2;
             // 
             // lblTotalVisits
@@ -426,7 +432,7 @@
             lblTotalVisits.ForeColor = Color.Black;
             lblTotalVisits.Location = new Point(3, 55);
             lblTotalVisits.Name = "lblTotalVisits";
-            lblTotalVisits.Size = new Size(289, 28);
+            lblTotalVisits.Size = new Size(260, 28);
             lblTotalVisits.TabIndex = 4;
             lblTotalVisits.Text = "0";
             lblTotalVisits.TextAlign = ContentAlignment.MiddleCenter;
@@ -436,7 +442,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.FromArgb(255, 128, 0);
-            label1.Location = new Point(122, 8);
+            label1.Location = new Point(93, 8);
             label1.Name = "label1";
             label1.Size = new Size(165, 28);
             label1.TabIndex = 3;
@@ -445,33 +451,33 @@
             // guna2ShadowPanel1
             // 
             guna2ShadowPanel1.BackColor = Color.Transparent;
-            guna2ShadowPanel1.Controls.Add(lblTotalPaidAmount);
+            guna2ShadowPanel1.Controls.Add(lblSumOfPaidAmount);
             guna2ShadowPanel1.Controls.Add(label2);
             guna2ShadowPanel1.FillColor = Color.White;
-            guna2ShadowPanel1.Location = new Point(834, 219);
+            guna2ShadowPanel1.Location = new Point(648, 219);
             guna2ShadowPanel1.Name = "guna2ShadowPanel1";
             guna2ShadowPanel1.Radius = 10;
             guna2ShadowPanel1.ShadowColor = Color.Black;
             guna2ShadowPanel1.ShadowDepth = 150;
-            guna2ShadowPanel1.Size = new Size(295, 125);
+            guna2ShadowPanel1.Size = new Size(266, 125);
             guna2ShadowPanel1.TabIndex = 3;
             // 
-            // lblTotalPaidAmount
+            // lblSumOfPaidAmount
             // 
-            lblTotalPaidAmount.ForeColor = Color.Black;
-            lblTotalPaidAmount.Location = new Point(3, 55);
-            lblTotalPaidAmount.Name = "lblTotalPaidAmount";
-            lblTotalPaidAmount.Size = new Size(289, 28);
-            lblTotalPaidAmount.TabIndex = 0;
-            lblTotalPaidAmount.Text = "0";
-            lblTotalPaidAmount.TextAlign = ContentAlignment.MiddleCenter;
+            lblSumOfPaidAmount.ForeColor = Color.Black;
+            lblSumOfPaidAmount.Location = new Point(3, 55);
+            lblSumOfPaidAmount.Name = "lblSumOfPaidAmount";
+            lblSumOfPaidAmount.Size = new Size(260, 28);
+            lblSumOfPaidAmount.TabIndex = 0;
+            lblSumOfPaidAmount.Text = "0";
+            lblSumOfPaidAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(255, 128, 0);
-            label2.Location = new Point(74, 8);
+            label2.Location = new Point(45, 8);
             label2.Name = "label2";
             label2.Size = new Size(213, 28);
             label2.TabIndex = 3;
@@ -480,33 +486,33 @@
             // guna2ShadowPanel2
             // 
             guna2ShadowPanel2.BackColor = Color.Transparent;
-            guna2ShadowPanel2.Controls.Add(lblTotalDiscountAmount);
+            guna2ShadowPanel2.Controls.Add(lblSumOfDiscountAmount);
             guna2ShadowPanel2.Controls.Add(label3);
             guna2ShadowPanel2.FillColor = Color.White;
-            guna2ShadowPanel2.Location = new Point(434, 219);
+            guna2ShadowPanel2.Location = new Point(335, 219);
             guna2ShadowPanel2.Name = "guna2ShadowPanel2";
             guna2ShadowPanel2.Radius = 10;
             guna2ShadowPanel2.ShadowColor = Color.Black;
             guna2ShadowPanel2.ShadowDepth = 150;
-            guna2ShadowPanel2.Size = new Size(295, 125);
+            guna2ShadowPanel2.Size = new Size(266, 125);
             guna2ShadowPanel2.TabIndex = 4;
             // 
-            // lblTotalDiscountAmount
+            // lblSumOfDiscountAmount
             // 
-            lblTotalDiscountAmount.ForeColor = Color.Black;
-            lblTotalDiscountAmount.Location = new Point(3, 55);
-            lblTotalDiscountAmount.Name = "lblTotalDiscountAmount";
-            lblTotalDiscountAmount.Size = new Size(289, 28);
-            lblTotalDiscountAmount.TabIndex = 6;
-            lblTotalDiscountAmount.Text = "0";
-            lblTotalDiscountAmount.TextAlign = ContentAlignment.MiddleCenter;
+            lblSumOfDiscountAmount.ForeColor = Color.Black;
+            lblSumOfDiscountAmount.Location = new Point(3, 55);
+            lblSumOfDiscountAmount.Name = "lblSumOfDiscountAmount";
+            lblSumOfDiscountAmount.Size = new Size(260, 28);
+            lblSumOfDiscountAmount.TabIndex = 6;
+            lblSumOfDiscountAmount.Text = "0";
+            lblSumOfDiscountAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.FromArgb(255, 128, 0);
-            label3.Location = new Point(62, 8);
+            label3.Location = new Point(33, 8);
             label3.Name = "label3";
             label3.Size = new Size(225, 28);
             label3.TabIndex = 3;
@@ -515,33 +521,33 @@
             // guna2ShadowPanel3
             // 
             guna2ShadowPanel3.BackColor = Color.Transparent;
-            guna2ShadowPanel3.Controls.Add(lblTotalRemainedAmount);
+            guna2ShadowPanel3.Controls.Add(lblSumOfRemainedAmount);
             guna2ShadowPanel3.Controls.Add(label4);
             guna2ShadowPanel3.FillColor = Color.White;
-            guna2ShadowPanel3.Location = new Point(34, 219);
+            guna2ShadowPanel3.Location = new Point(22, 219);
             guna2ShadowPanel3.Name = "guna2ShadowPanel3";
             guna2ShadowPanel3.Radius = 10;
             guna2ShadowPanel3.ShadowColor = Color.Black;
             guna2ShadowPanel3.ShadowDepth = 150;
-            guna2ShadowPanel3.Size = new Size(295, 125);
+            guna2ShadowPanel3.Size = new Size(266, 125);
             guna2ShadowPanel3.TabIndex = 5;
             // 
-            // lblTotalRemainedAmount
+            // lblSumOfRemainedAmount
             // 
-            lblTotalRemainedAmount.ForeColor = Color.Black;
-            lblTotalRemainedAmount.Location = new Point(3, 55);
-            lblTotalRemainedAmount.Name = "lblTotalRemainedAmount";
-            lblTotalRemainedAmount.Size = new Size(289, 28);
-            lblTotalRemainedAmount.TabIndex = 7;
-            lblTotalRemainedAmount.Text = "0";
-            lblTotalRemainedAmount.TextAlign = ContentAlignment.MiddleCenter;
+            lblSumOfRemainedAmount.ForeColor = Color.Black;
+            lblSumOfRemainedAmount.Location = new Point(3, 55);
+            lblSumOfRemainedAmount.Name = "lblSumOfRemainedAmount";
+            lblSumOfRemainedAmount.Size = new Size(260, 28);
+            lblSumOfRemainedAmount.TabIndex = 7;
+            lblSumOfRemainedAmount.Text = "0";
+            lblSumOfRemainedAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.FromArgb(255, 128, 0);
-            label4.Location = new Point(85, 8);
+            label4.Location = new Point(56, 8);
             label4.Name = "label4";
             label4.Size = new Size(202, 28);
             label4.TabIndex = 3;
@@ -559,10 +565,10 @@
             pnlSearchAtRadioButtons.Controls.Add(rbThisMonth);
             pnlSearchAtRadioButtons.Controls.Add(rbAllTime);
             pnlSearchAtRadioButtons.Controls.Add(rbToday);
-            pnlSearchAtRadioButtons.CustomizableEdges = customizableEdges3;
-            pnlSearchAtRadioButtons.Location = new Point(1222, 18);
+            pnlSearchAtRadioButtons.CustomizableEdges = customizableEdges39;
+            pnlSearchAtRadioButtons.Location = new Point(1210, 10);
             pnlSearchAtRadioButtons.Name = "pnlSearchAtRadioButtons";
-            pnlSearchAtRadioButtons.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            pnlSearchAtRadioButtons.ShadowDecoration.CustomizableEdges = customizableEdges40;
             pnlSearchAtRadioButtons.Size = new Size(337, 168);
             pnlSearchAtRadioButtons.TabIndex = 0;
             pnlSearchAtRadioButtons.UseTransparentBackground = true;
@@ -571,7 +577,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(9, 99);
+            label6.Location = new Point(7, 99);
             label6.Name = "label6";
             label6.Size = new Size(202, 23);
             label6.TabIndex = 5;
@@ -591,7 +597,7 @@
             // 
             rbThisWeek.Anchor = AnchorStyles.Right;
             rbThisWeek.AutoSize = true;
-            rbThisWeek.Location = new Point(196, 52);
+            rbThisWeek.Location = new Point(190, 51);
             rbThisWeek.Name = "rbThisWeek";
             rbThisWeek.Size = new Size(129, 32);
             rbThisWeek.TabIndex = 1;
@@ -603,7 +609,7 @@
             // 
             rbThisMonth.Anchor = AnchorStyles.Right;
             rbThisMonth.AutoSize = true;
-            rbThisMonth.Location = new Point(212, 90);
+            rbThisMonth.Location = new Point(206, 89);
             rbThisMonth.Name = "rbThisMonth";
             rbThisMonth.Size = new Size(113, 32);
             rbThisMonth.TabIndex = 2;
@@ -616,7 +622,7 @@
             rbAllTime.Anchor = AnchorStyles.Right;
             rbAllTime.AutoSize = true;
             rbAllTime.Checked = true;
-            rbAllTime.Location = new Point(237, 125);
+            rbAllTime.Location = new Point(231, 124);
             rbAllTime.Name = "rbAllTime";
             rbAllTime.Size = new Size(88, 32);
             rbAllTime.TabIndex = 3;
@@ -629,7 +635,7 @@
             // 
             rbToday.Anchor = AnchorStyles.Right;
             rbToday.AutoSize = true;
-            rbToday.Location = new Point(251, 14);
+            rbToday.Location = new Point(245, 13);
             rbToday.Name = "rbToday";
             rbToday.Size = new Size(74, 32);
             rbToday.TabIndex = 0;
@@ -644,7 +650,7 @@
             dtpSearchAfter.BorderColor = Color.White;
             dtpSearchAfter.BorderRadius = 15;
             dtpSearchAfter.Checked = true;
-            dtpSearchAfter.CustomizableEdges = customizableEdges5;
+            dtpSearchAfter.CustomizableEdges = customizableEdges41;
             dtpSearchAfter.FillColor = Color.White;
             dtpSearchAfter.FocusedColor = Color.White;
             dtpSearchAfter.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -652,13 +658,13 @@
             dtpSearchAfter.HoverState.BorderColor = Color.White;
             dtpSearchAfter.HoverState.FillColor = Color.White;
             dtpSearchAfter.HoverState.ForeColor = Color.Black;
-            dtpSearchAfter.Location = new Point(595, 422);
+            dtpSearchAfter.Location = new Point(511, 386);
             dtpSearchAfter.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpSearchAfter.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpSearchAfter.Name = "dtpSearchAfter";
             dtpSearchAfter.RightToLeft = RightToLeft.No;
             dtpSearchAfter.ShadowDecoration.BorderRadius = 30;
-            dtpSearchAfter.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            dtpSearchAfter.ShadowDecoration.CustomizableEdges = customizableEdges42;
             dtpSearchAfter.ShadowDecoration.Shadow = new Padding(0);
             dtpSearchAfter.Size = new Size(301, 45);
             dtpSearchAfter.TabIndex = 8;
@@ -693,7 +699,7 @@
             // 
             lblSearchAfter.AutoSize = true;
             lblSearchAfter.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblSearchAfter.Location = new Point(915, 427);
+            lblSearchAfter.Location = new Point(831, 391);
             lblSearchAfter.Name = "lblSearchAfter";
             lblSearchAfter.Size = new Size(221, 31);
             lblSearchAfter.TabIndex = 7;
@@ -705,7 +711,7 @@
             btnAddWalkInVisit.AnimatedGIF = true;
             btnAddWalkInVisit.BackColor = Color.Transparent;
             btnAddWalkInVisit.BorderRadius = 7;
-            btnAddWalkInVisit.CustomizableEdges = customizableEdges7;
+            btnAddWalkInVisit.CustomizableEdges = customizableEdges43;
             btnAddWalkInVisit.DisabledState.BorderColor = Color.DarkGray;
             btnAddWalkInVisit.DisabledState.CustomBorderColor = Color.DarkGray;
             btnAddWalkInVisit.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -714,10 +720,10 @@
             btnAddWalkInVisit.Font = new Font("Segoe UI", 13.8F);
             btnAddWalkInVisit.ForeColor = Color.White;
             btnAddWalkInVisit.HoverState.FillColor = Color.MediumBlue;
-            btnAddWalkInVisit.Location = new Point(1271, 427);
+            btnAddWalkInVisit.Location = new Point(1259, 379);
             btnAddWalkInVisit.Name = "btnAddWalkInVisit";
             btnAddWalkInVisit.PressedColor = Color.FromArgb(0, 0, 165);
-            btnAddWalkInVisit.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnAddWalkInVisit.ShadowDecoration.CustomizableEdges = customizableEdges44;
             btnAddWalkInVisit.Size = new Size(288, 57);
             btnAddWalkInVisit.TabIndex = 6;
             btnAddWalkInVisit.Text = "ابدأ زياره بدون حجز مسبق";
@@ -730,7 +736,7 @@
             dtpVisitDateTime.BorderColor = Color.White;
             dtpVisitDateTime.BorderRadius = 15;
             dtpVisitDateTime.Checked = true;
-            dtpVisitDateTime.CustomizableEdges = customizableEdges9;
+            dtpVisitDateTime.CustomizableEdges = customizableEdges45;
             dtpVisitDateTime.FillColor = Color.White;
             dtpVisitDateTime.FocusedColor = Color.White;
             dtpVisitDateTime.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -738,13 +744,13 @@
             dtpVisitDateTime.HoverState.BorderColor = Color.White;
             dtpVisitDateTime.HoverState.FillColor = Color.White;
             dtpVisitDateTime.HoverState.ForeColor = Color.Black;
-            dtpVisitDateTime.Location = new Point(785, 504);
+            dtpVisitDateTime.Location = new Point(785, 468);
             dtpVisitDateTime.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpVisitDateTime.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpVisitDateTime.Name = "dtpVisitDateTime";
             dtpVisitDateTime.RightToLeft = RightToLeft.No;
             dtpVisitDateTime.ShadowDecoration.BorderRadius = 30;
-            dtpVisitDateTime.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            dtpVisitDateTime.ShadowDecoration.CustomizableEdges = customizableEdges46;
             dtpVisitDateTime.ShadowDecoration.Shadow = new Padding(0);
             dtpVisitDateTime.Size = new Size(301, 45);
             dtpVisitDateTime.TabIndex = 10;
@@ -759,7 +765,7 @@
             btnCreatePreAppointmentVisit.AnimatedGIF = true;
             btnCreatePreAppointmentVisit.BackColor = Color.Transparent;
             btnCreatePreAppointmentVisit.BorderRadius = 7;
-            btnCreatePreAppointmentVisit.CustomizableEdges = customizableEdges11;
+            btnCreatePreAppointmentVisit.CustomizableEdges = customizableEdges47;
             btnCreatePreAppointmentVisit.DisabledState.BorderColor = Color.DarkGray;
             btnCreatePreAppointmentVisit.DisabledState.CustomBorderColor = Color.DarkGray;
             btnCreatePreAppointmentVisit.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -768,10 +774,10 @@
             btnCreatePreAppointmentVisit.Font = new Font("Segoe UI", 13.8F);
             btnCreatePreAppointmentVisit.ForeColor = Color.White;
             btnCreatePreAppointmentVisit.HoverState.FillColor = Color.MediumBlue;
-            btnCreatePreAppointmentVisit.Location = new Point(1271, 504);
+            btnCreatePreAppointmentVisit.Location = new Point(1259, 456);
             btnCreatePreAppointmentVisit.Name = "btnCreatePreAppointmentVisit";
             btnCreatePreAppointmentVisit.PressedColor = Color.FromArgb(0, 0, 165);
-            btnCreatePreAppointmentVisit.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnCreatePreAppointmentVisit.ShadowDecoration.CustomizableEdges = customizableEdges48;
             btnCreatePreAppointmentVisit.Size = new Size(288, 57);
             btnCreatePreAppointmentVisit.TabIndex = 9;
             btnCreatePreAppointmentVisit.Text = "ابدأ زياره بحجز مسبق";
@@ -782,11 +788,68 @@
             LoadDataFirstTimeTimer.Interval = 2;
             LoadDataFirstTimeTimer.Tick += LoadDataFirstTimeTimer_Tick;
             // 
+            // guna2ShadowPanel4
+            // 
+            guna2ShadowPanel4.BackColor = Color.Transparent;
+            guna2ShadowPanel4.Controls.Add(lblSumOfTotalAmount);
+            guna2ShadowPanel4.Controls.Add(label8);
+            guna2ShadowPanel4.FillColor = Color.White;
+            guna2ShadowPanel4.Location = new Point(961, 219);
+            guna2ShadowPanel4.Name = "guna2ShadowPanel4";
+            guna2ShadowPanel4.Radius = 10;
+            guna2ShadowPanel4.ShadowColor = Color.Black;
+            guna2ShadowPanel4.ShadowDepth = 150;
+            guna2ShadowPanel4.Size = new Size(266, 125);
+            guna2ShadowPanel4.TabIndex = 8;
+            // 
+            // lblSumOfTotalAmount
+            // 
+            lblSumOfTotalAmount.ForeColor = Color.Black;
+            lblSumOfTotalAmount.Location = new Point(3, 55);
+            lblSumOfTotalAmount.Name = "lblSumOfTotalAmount";
+            lblSumOfTotalAmount.Size = new Size(260, 28);
+            lblSumOfTotalAmount.TabIndex = 7;
+            lblSumOfTotalAmount.Text = "0";
+            lblSumOfTotalAmount.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.ForeColor = Color.FromArgb(255, 128, 0);
+            label8.Location = new Point(75, 8);
+            label8.Name = "label8";
+            label8.Size = new Size(183, 28);
+            label8.TabIndex = 3;
+            label8.Text = "مجموع المبالغ الكليه";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label7.Location = new Point(1459, 543);
+            label7.Name = "label7";
+            label7.Size = new Size(103, 31);
+            label7.TabIndex = 13;
+            label7.Text = "ملحوظه :";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(889, 544);
+            label9.Name = "label9";
+            label9.Size = new Size(566, 28);
+            label9.TabIndex = 14;
+            label9.Text = "اضغط علي الصف ضغطتين متتاليتين لعرض أو تعديل بيانات الزياره.";
+            // 
             // VisitsView
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkCyan;
+            Controls.Add(label9);
+            Controls.Add(label7);
+            Controls.Add(guna2ShadowPanel4);
             Controls.Add(btnCreatePreAppointmentVisit);
             Controls.Add(btnAddWalkInVisit);
             Controls.Add(lblSearchAfter);
@@ -821,6 +884,8 @@
             guna2ShadowPanel3.PerformLayout();
             pnlSearchAtRadioButtons.ResumeLayout(false);
             pnlSearchAtRadioButtons.PerformLayout();
+            guna2ShadowPanel4.ResumeLayout(false);
+            guna2ShadowPanel4.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -844,9 +909,9 @@
         private RadioButton rbThisMonth;
         private RadioButton rbAllTime;
         private Label lblTotalVisits;
-        private Label lblTotalPaidAmount;
-        private Label lblTotalDiscountAmount;
-        private Label lblTotalRemainedAmount;
+        private Label lblSumOfPaidAmount;
+        private Label lblSumOfDiscountAmount;
+        private Label lblSumOfRemainedAmount;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpSearchAfter;
         private System.Windows.Forms.Timer timerUpdateDateTimePckerMaxDate;
         private ContextMenuStrip contextMenuStrip;
@@ -879,5 +944,10 @@
         private System.Windows.Forms.Timer LoadDataFirstTimeTimer;
         private Label label5;
         private Label label6;
+        private Guna.UI2.WinForms.Guna2ShadowPanel guna2ShadowPanel4;
+        private Label lblSumOfTotalAmount;
+        private Label label8;
+        private Label label7;
+        private Label label9;
     }
 }

@@ -44,7 +44,7 @@ public sealed class AppointmentInfoService : IAppointmentInfoService
     }
 
     public async Task<List<AppointmentInfo>> GetAllAppointmentsInfoAsync(
-        AppointmentInfo? filterInfo,
+        AppointmentInfo? filterInfo = null,
         CancellationToken cancellationToken = default)
     {
         var appointments = await _appointmentInfoRepository.GetAllAppointmentsInfoAsync(filterInfo, cancellationToken);

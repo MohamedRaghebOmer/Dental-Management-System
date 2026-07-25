@@ -1,7 +1,9 @@
 ﻿using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Appointment;
+using Dental.Application.ViewsStuff.Interfaces.Patients;
 using Dental.Domain.Enums;
 using Dental.Domain.Shared;
+using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 
 namespace Dental.WinForms.Forms;
@@ -17,7 +19,11 @@ public partial class frmAddEditAppointment : Form
     private readonly Mode _mode = Mode.Add;
 
 
-    public frmAddEditAppointment(IAppointmentService appointmentService)
+    public frmAddEditAppointment(
+        IFormFactory formFactory,
+        IAppointmentService appointmentService,
+        IPatientViewService patientViewService,
+        IPatientService patientService)
     {
         InitializeComponent();
 
@@ -25,25 +31,24 @@ public partial class frmAddEditAppointment : Form
 
         _mode = Mode.Add;
         _appointmentId = null;
+
+        ctrlSearchPatient1.Initialize(patientViewService, patientService, formFactory);
+        ctrlSearchPatient1.PatientSelected += (s, e) =>
+        {
+            txtPatientId.Text = e.Id.ToString();
+        };
     }
 
     public frmAddEditAppointment(
         int appointmentId,
-        Mode mode,
-        IAppointmentService appointmentService)
+        IFormFactory formFactory,
+        IAppointmentService appointmentService,
+        IPatientViewService patientViewService,
+        IPatientService patientService)
+        : this(formFactory, appointmentService, patientViewService, patientService)
     {
-        InitializeComponent();
-
-        _appointmentService = appointmentService;
-        _mode = mode;
-
-        if (_mode == Mode.Add)
-        {
-            txtPatientId.Text = appointmentId.ToString();
-            return;
-        }
-
         _appointmentId = appointmentId;
+        _mode = Mode.Update;
     }
 
 
@@ -59,7 +64,6 @@ public partial class frmAddEditAppointment : Form
                 Close();
                 return;
             }
-
         }
 
         InitializeForm();
@@ -70,6 +74,7 @@ public partial class frmAddEditAppointment : Form
 
     private void LoadAppointmentInfo(AppointmentResponseDto appointment)
     {
+        lblAppointmentIdValue.Text = appointment.Id.ToString();
         txtPatientId.Text = appointment.PatientId.ToString();
         dtpVisitDate.Value = appointment.ScheduledVisitDateTime.Date;
         dtpVisitTime.Value = appointment.ScheduledVisitDateTime;
@@ -105,7 +110,7 @@ public partial class frmAddEditAppointment : Form
     {
         if (error.Code == "NotFound")
         {
-            MessageBoxExtensions.ShowError("الموعد غير موجود. يرجى التحقق من الرقم وإعادة المحاولة.");
+            MessageBoxExtensions.ShowError("الحجز غير موجود. يرجى التحقق من الرقم وإعادة المحاولة.");
         }
         else
         {
@@ -119,8 +124,17 @@ public partial class frmAddEditAppointment : Form
         dtpVisitDate.Format = DateTimePickerFormat.Custom;
         dtpVisitDate.CustomFormat = "MM/dd/yyyy dddd";
 
-        lblTitile.Text = _mode == Mode.Add ? "إضافة موعد جديد" : "تعديل موعد";
-        Text = _mode == Mode.Add ? "إضافة موعد جديد" : "تعديل موعد";
+        lblTitile.Text = _mode == Mode.Add ? "إضافة حجز جديد" : "تعديل حجز";
+        Text = _mode == Mode.Add ? "إضافة حجز جديد" : "تعديل حجز";
+
+        lblAppointmentId.Visible = false;
+        lblAppointmentIdValue.Visible = false;
+
+        if (_mode == Mode.Update)
+        {
+            lblAppointmentId.Visible = true;
+            lblAppointmentIdValue.Visible = true;
+        }
     }
 
     private void txtPatientId_KeyPress(object sender, KeyPressEventArgs e)
@@ -148,7 +162,7 @@ public partial class frmAddEditAppointment : Form
                 HandleSaveResult(saveResult.Error);
             else
             {
-                MessageBoxExtensions.ShowInfo("تم حفظ الموعد بنجاح.");
+                MessageBoxExtensions.ShowInfo("تم حفظ الحجز بنجاح.");
                 OnAppointmentAdded(saveResult.Value);
                 Close();
             }
@@ -157,7 +171,7 @@ public partial class frmAddEditAppointment : Form
         {
             if (!_appointmentId.HasValue)
             {
-                MessageBoxExtensions.ShowError("رقم الموعد غير صالح.");
+                MessageBoxExtensions.ShowError("رقم الحجز غير صالح.");
                 return;
             }
 
@@ -167,7 +181,7 @@ public partial class frmAddEditAppointment : Form
                 HandleSaveResult(saveResult.Error);
             else
             {
-                MessageBoxExtensions.ShowInfo("تم حفظ الموعد بنجاح.");
+                MessageBoxExtensions.ShowInfo("تم حفظ الحجز بنجاح.");
                 Close();
             }
         }
@@ -188,7 +202,7 @@ public partial class frmAddEditAppointment : Form
                 break;
 
             case "NotFound":
-                MessageBoxExtensions.ShowError("الموعد غير موجود. يرجى التحقق من الرقم وإعادة المحاولة.");
+                MessageBoxExtensions.ShowError("الحجز غير موجود. يرجى التحقق من الرقم وإعادة المحاولة.");
                 break;
 
             case "Date.CannotBeChangedWhenStatusIsNotPendingOrMissed":
@@ -202,7 +216,7 @@ public partial class frmAddEditAppointment : Form
                 break;
 
             case "Date.InThePast":
-                MessageBoxExtensions.ShowError("تاريخ الموعد غير صالح. يرجى اختيار تاريخ في المستقبل.");
+                MessageBoxExtensions.ShowError("تاريخ الحجز غير صالح. يرجى اختيار تاريخ في المستقبل.");
                 dtpVisitDate.Focus();
                 break;
 
@@ -212,7 +226,7 @@ public partial class frmAddEditAppointment : Form
                 break;
 
             default:
-                MessageBoxExtensions.ShowError($"حدث خطأ أثناء حفظ الموعد: {saveResultError.Message}");
+                MessageBoxExtensions.ShowError($"حدث خطأ أثناء حفظ الحجز: {saveResultError.Message}");
                 break;
         }
     }
@@ -271,13 +285,13 @@ public partial class frmAddEditAppointment : Form
 
         if (visitDateTime < DateTime.Now)
         {
-            MessageBox.Show("تاريخ الموعد يجب أن يكون في المستقبل.", "خطأ في التحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show("تاريخ الحجز يجب أن يكون في المستقبل.", "خطأ في التحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             dtpVisitDate.Focus();
             return false;
         }
 
         if (MessageBoxExtensions.ShowQuestion(
-            "هل أنت متأكد أنك تريد حفظ الموعد؟", "تأكيد الحفظ") != DialogResult.Yes)
+            "هل أنت متأكد أنك تريد حفظ الحجز؟", "تأكيد الحفظ") != DialogResult.Yes)
         {
             return false;
         }

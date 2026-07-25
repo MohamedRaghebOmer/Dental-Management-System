@@ -17,7 +17,8 @@ public sealed class AppointmentInfoRepository : IAppointmentInfoRepository
         _dbContext = dbContext;
 
     public Task<AppointmentInfo?> GetAppointmentInfoAsync(
-        Id appointmentId, CancellationToken cancellationToken = default)
+        Id appointmentId,
+        CancellationToken cancellationToken = default)
     {
         return _dbContext.Appointments
             .AsNoTracking()
@@ -125,10 +126,9 @@ public sealed class AppointmentInfoRepository : IAppointmentInfoRepository
                 a.CreatedAt,
                 a.ScheduledVisitDateTime,
                 a.ActualVisitDateTime,
-                a.Status,
-                a.Notes
-            FROM Appointments AS a
-            INNER JOIN Patients AS p ON a.PatientId = p.Id");
+                a.Status
+            FROM Appointments a
+            INNER JOIN Patients p ON a.PatientId = p.Id");
 
         if (whereClauses.Count > 0)
             sql.Append(" WHERE ").Append(string.Join(" AND ", whereClauses));
