@@ -1,11 +1,11 @@
-﻿using System.ComponentModel;
-using Dental.Application.Abstractions.ServicesInterfaces;
+﻿using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Appointment;
 using Dental.Application.ViewsStuff.Interfaces.Patients;
 using Dental.Domain.Enums;
 using Dental.Domain.Shared;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
+using System.ComponentModel;
 
 namespace Dental.WinForms.Forms;
 
@@ -296,14 +296,18 @@ public partial class frmAddEditAppointment : Form
 
         if (string.IsNullOrWhiteSpace(patientId))
         {
-            MessageBox.Show("من فضلك أدخل رقم المريض.", "خطأ في التحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBoxExtensions.ShowWarning(
+                "من فضلك أدخل رقم المريض.",
+                "خطأ في التحقق");
             txtPatientId.Focus();
             return false;
         }
 
         if (!int.TryParse(patientId, out int patientIdValue) || patientIdValue <= 0)
         {
-            MessageBox.Show("رقم المريض يجب أن يكون رقمًا صحيحًا أكبر من صفر.", "خطأ في التحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBoxExtensions.ShowWarning(
+                "رقم المريض يجب أن يكون رقمًا صحيحًا أكبر من صفر.",
+                "خطأ في التحقق");
             txtPatientId.Focus();
             return false;
         }
@@ -312,7 +316,7 @@ public partial class frmAddEditAppointment : Form
 
         if (visitDateTime < DateTime.Now)
         {
-            MessageBox.Show("تاريخ الحجز يجب أن يكون في المستقبل.", "خطأ في التحقق", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBoxExtensions.ShowWarning("تاريخ الحجز يجب أن يكون في المستقبل.", "خطأ في التحقق");
             dtpVisitDate.Focus();
             return false;
         }

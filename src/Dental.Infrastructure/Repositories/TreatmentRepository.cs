@@ -36,6 +36,18 @@ public sealed class TreatmentRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
+    public Task<List<Treatment>> GetAllAsync(
+        string? filterTreatmentName = null,
+        CancellationToken cancellationToken = default)
+    {
+        IQueryable<Treatment> query = _dbContext.Treatments;
+
+        if (!string.IsNullOrWhiteSpace(filterTreatmentName))
+            query = query.Where(t => t.Name.Contains(filterTreatmentName));
+
+        return query.ToListAsync(cancellationToken);
+    }
+
     public Task<Dictionary<int, decimal>> GetPricesByIdsAsync(
         IEnumerable<Id> ids,
         CancellationToken cancellationToken = default)
@@ -58,5 +70,19 @@ public sealed class TreatmentRepository
                 t => t.Id.Value,
                 t => t.Price.Value,
                 cancellationToken);
+    }
+
+    public Task<bool> CanDeleteAsync(
+        Id idResultValue,
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.VisitTreatments
+            .AsNoTracking()
+            .AnyAsync(vt => vt.TreatmentId == idResultValue, cancellationToken)
+            .ContinueWith(
+                static t => !t.Result,
+                cancellationToken,
+                TaskContinuationOptions.ExecuteSynchronously,
+                TaskScheduler.Default);
     }
 }

@@ -10,13 +10,15 @@ public partial class frmMain : Form
     private readonly VisitsView _VisitView = default!;
     private readonly PatientsView _patientView = default!;
     private readonly AppointmentsView _appointmentsView = default!;
+    private readonly TreatmentsView _treatmentsView = default!;
     private Guna2Button? _selectedButton;
 
     public frmMain(
         MainMenuView mainMenuView,
         VisitsView visitView,
         PatientsView patientView,
-        AppointmentsView appointmentsView)
+        AppointmentsView appointmentsView,
+        TreatmentsView treatmentsView)
     {
         InitializeComponent();
 
@@ -24,6 +26,7 @@ public partial class frmMain : Form
         _VisitView = visitView;
         _patientView = patientView;
         _appointmentsView = appointmentsView;
+        _treatmentsView = treatmentsView;
 
         btnMainMenu_Click(null!, null!);
     }
@@ -81,6 +84,14 @@ public partial class frmMain : Form
         Cursor = Cursors.WaitCursor;
         ShowView(_appointmentsView);
         SelectMenuButton(btnAppointments);
+        Cursor = Cursors.Default;
+    }
+
+    private void btnTreatments_Click(object sender, EventArgs e)
+    {
+        Cursor = Cursors.WaitCursor;
+        ShowView(_treatmentsView);
+        SelectMenuButton(btnTreatments);
         Cursor = Cursors.Default;
     }
 }

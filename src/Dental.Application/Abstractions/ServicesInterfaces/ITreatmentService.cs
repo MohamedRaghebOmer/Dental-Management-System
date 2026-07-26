@@ -20,10 +20,14 @@ public interface ITreatmentService
 
 
     Task<List<TreatmentResponseDto>> GetAllAsync(
+        string? filterTreatmentName = null,
         CancellationToken cancellationToken = default);
 
-
     Task<Result> DeleteAsync(
+        int id,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<bool>> CanDeleteAsync(
         int id,
         CancellationToken cancellationToken = default);
 }

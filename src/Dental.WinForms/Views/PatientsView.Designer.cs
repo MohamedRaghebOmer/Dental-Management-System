@@ -133,7 +133,7 @@
             guna2ShadowPanel2.ShadowColor = Color.Black;
             guna2ShadowPanel2.ShadowDepth = 150;
             guna2ShadowPanel2.Size = new Size(298, 125);
-            guna2ShadowPanel2.TabIndex = 19;
+            guna2ShadowPanel2.TabIndex = 4;
             // 
             // lblChilderensPercentage
             // 
@@ -194,7 +194,7 @@
             btnAddNewPatient.PressedColor = Color.FromArgb(0, 0, 165);
             btnAddNewPatient.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnAddNewPatient.Size = new Size(216, 57);
-            btnAddNewPatient.TabIndex = 26;
+            btnAddNewPatient.TabIndex = 5;
             btnAddNewPatient.Text = "إنشاء مريض جديد";
             btnAddNewPatient.Click += btnAddNewPatient_Click;
             // 
@@ -207,7 +207,7 @@
             btnRefresh.Location = new Point(3, 2);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(47, 49);
-            btnRefresh.TabIndex = 16;
+            btnRefresh.TabIndex = 0;
             btnRefresh.UseVisualStyleBackColor = true;
             btnRefresh.Click += btnRefresh_Click;
             // 
@@ -228,7 +228,7 @@
             guna2ShadowPanel4.ShadowColor = Color.Black;
             guna2ShadowPanel4.ShadowDepth = 150;
             guna2ShadowPanel4.Size = new Size(298, 125);
-            guna2ShadowPanel4.TabIndex = 23;
+            guna2ShadowPanel4.TabIndex = 2;
             // 
             // lblTodayPatientCount
             // 
@@ -253,11 +253,11 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(947, 543);
+            label9.Location = new Point(945, 543);
             label9.Name = "label9";
-            label9.Size = new Size(510, 28);
-            label9.TabIndex = 31;
-            label9.Text = "اضغط علي الصف ضغطتين متتاليتين لعرض بيانات المريض.";
+            label9.Size = new Size(514, 28);
+            label9.TabIndex = 10;
+            label9.Text = "اضغط علي الصف ضغطتين متتاليتين لتعديل بيانات المريض.";
             // 
             // lblMalePercentage
             // 
@@ -322,7 +322,7 @@
             dataGridView.ShowCellErrors = false;
             dataGridView.ShowRowErrors = false;
             dataGridView.Size = new Size(1562, 379);
-            dataGridView.TabIndex = 29;
+            dataGridView.TabIndex = 12;
             dataGridView.ThemeStyle.AlternatingRowsStyle.BackColor = Color.Transparent;
             dataGridView.ThemeStyle.AlternatingRowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridView.ThemeStyle.AlternatingRowsStyle.ForeColor = SystemColors.ControlText;
@@ -427,27 +427,27 @@
             contextMenuStrip1.Items.AddRange(new ToolStripItem[] { تعديلبياناتالمريضToolStripMenuItem, toolStripSeparator1, tsmiCreateAppointment, tsmiCreateVisit, toolStripSeparator2, tsmiCopyPhoneNumber, toolStripSeparator3, tsmiRefresh });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.RightToLeft = RightToLeft.Yes;
-            contextMenuStrip1.Size = new Size(215, 180);
+            contextMenuStrip1.Size = new Size(181, 152);
             contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             // 
             // تعديلبياناتالمريضToolStripMenuItem
             // 
             تعديلبياناتالمريضToolStripMenuItem.Image = Properties.Resources.pen_512;
             تعديلبياناتالمريضToolStripMenuItem.Name = "تعديلبياناتالمريضToolStripMenuItem";
-            تعديلبياناتالمريضToolStripMenuItem.Size = new Size(214, 26);
+            تعديلبياناتالمريضToolStripMenuItem.Size = new Size(180, 26);
             تعديلبياناتالمريضToolStripMenuItem.Text = "تعديل";
             تعديلبياناتالمريضToolStripMenuItem.Click += dataGridView_DoubleClick;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(211, 6);
+            toolStripSeparator1.Size = new Size(177, 6);
             // 
             // tsmiCreateAppointment
             // 
             tsmiCreateAppointment.Image = Properties.Resources.plus_512;
             tsmiCreateAppointment.Name = "tsmiCreateAppointment";
-            tsmiCreateAppointment.Size = new Size(214, 26);
+            tsmiCreateAppointment.Size = new Size(180, 26);
             tsmiCreateAppointment.Text = "إنشاء حجز";
             tsmiCreateAppointment.Click += tsmiCreateAppointment_Click;
             // 
@@ -455,33 +455,33 @@
             // 
             tsmiCreateVisit.Image = Properties.Resources.plus_512;
             tsmiCreateVisit.Name = "tsmiCreateVisit";
-            tsmiCreateVisit.Size = new Size(214, 26);
+            tsmiCreateVisit.Size = new Size(180, 26);
             tsmiCreateVisit.Text = "إنشاء زياره";
             tsmiCreateVisit.Click += tsmiCreateVisit_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(211, 6);
+            toolStripSeparator2.Size = new Size(177, 6);
             // 
             // tsmiCopyPhoneNumber
             // 
             tsmiCopyPhoneNumber.Image = (Image)resources.GetObject("tsmiCopyPhoneNumber.Image");
             tsmiCopyPhoneNumber.Name = "tsmiCopyPhoneNumber";
-            tsmiCopyPhoneNumber.Size = new Size(214, 26);
+            tsmiCopyPhoneNumber.Size = new Size(180, 26);
             tsmiCopyPhoneNumber.Text = "نسخ رقم الهاتف";
             tsmiCopyPhoneNumber.Click += tsmiCopyPhoneNumber_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(211, 6);
+            toolStripSeparator3.Size = new Size(177, 6);
             // 
             // tsmiRefresh
             // 
             tsmiRefresh.Image = Properties.Resources.Refresh_32;
             tsmiRefresh.Name = "tsmiRefresh";
-            tsmiRefresh.Size = new Size(214, 26);
+            tsmiRefresh.Size = new Size(180, 26);
             tsmiRefresh.Text = "تحديث";
             tsmiRefresh.Click += tsmiRefresh_Click;
             // 
@@ -500,7 +500,7 @@
             guna2ShadowPanel1.ShadowColor = Color.Black;
             guna2ShadowPanel1.ShadowDepth = 150;
             guna2ShadowPanel1.Size = new Size(298, 125);
-            guna2ShadowPanel1.TabIndex = 18;
+            guna2ShadowPanel1.TabIndex = 3;
             // 
             // lblFemalePercentage
             // 
@@ -554,7 +554,7 @@
             pnlTotalVisits.ShadowColor = Color.Black;
             pnlTotalVisits.ShadowDepth = 150;
             pnlTotalVisits.Size = new Size(298, 125);
-            pnlTotalVisits.TabIndex = 17;
+            pnlTotalVisits.TabIndex = 1;
             // 
             // lblPatietnsCount
             // 
@@ -584,7 +584,7 @@
             cbFilterList.Location = new Point(477, 471);
             cbFilterList.Name = "cbFilterList";
             cbFilterList.Size = new Size(301, 36);
-            cbFilterList.TabIndex = 28;
+            cbFilterList.TabIndex = 9;
             cbFilterList.SelectedIndexChanged += cbFilterList_SelectedIndexChanged;
             // 
             // txtFilterValue
@@ -607,7 +607,7 @@
             txtFilterValue.SelectedText = "";
             txtFilterValue.ShadowDecoration.CustomizableEdges = customizableEdges4;
             txtFilterValue.Size = new Size(301, 36);
-            txtFilterValue.TabIndex = 25;
+            txtFilterValue.TabIndex = 6;
             txtFilterValue.TextChanged += txtFilterValue_TextChanged;
             txtFilterValue.VisibleChanged += txtFilterValue_VisibleChanged;
             // 
@@ -635,7 +635,7 @@
             dateTimerPicker.ShadowDecoration.CustomizableEdges = customizableEdges6;
             dateTimerPicker.ShadowDecoration.Shadow = new Padding(0);
             dateTimerPicker.Size = new Size(301, 45);
-            dateTimerPicker.TabIndex = 27;
+            dateTimerPicker.TabIndex = 7;
             dateTimerPicker.TextAlign = HorizontalAlignment.Center;
             dateTimerPicker.Value = new DateTime(2026, 7, 17, 17, 48, 32, 351);
             dateTimerPicker.Visible = false;
@@ -650,7 +650,7 @@
             cbGender.Location = new Point(785, 471);
             cbGender.Name = "cbGender";
             cbGender.Size = new Size(301, 36);
-            cbGender.TabIndex = 32;
+            cbGender.TabIndex = 8;
             cbGender.SelectedIndexChanged += cbGender_SelectedIndexChanged;
             cbGender.VisibleChanged += cbGender_VisibleChanged;
             // 

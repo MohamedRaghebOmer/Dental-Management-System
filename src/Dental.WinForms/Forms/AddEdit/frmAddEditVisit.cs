@@ -640,9 +640,8 @@ public partial class frmAddEditVisit : Form
             return false;
         }
 
-        MessageBox.Show(
-            "تم تعديل بيانات الزياره بنجاح.", "تم التعديل",
-            MessageBoxButtons.OK, MessageBoxIcon.Information);
+        MessageBoxExtensions.ShowInfo(
+            "تم تعديل بيانات الزياره بنجاح.", "تم التعديل");
         return true;
     }
 
@@ -1099,7 +1098,7 @@ public partial class frmAddEditVisit : Form
 
         if (dataGridView.Rows.Count is 1)
         {
-            MessageBox.Show("يجب ان يكون هناك صف واحد علي الأقل", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("يجب ان يكون هناك صف واحد علي الأقل", "خطأ");
 
             return false;
         }
@@ -1115,8 +1114,7 @@ public partial class frmAddEditVisit : Form
         }
         else
         {
-            MessageBox.Show("لا يمكن حذف الصف الفارغ. هذا الصف غير مؤثر يمكنك تجاهله.", "خطأ", MessageBoxButtons.OK,
-                MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("لا يمكن حذف الصف الفارغ. هذا الصف غير مؤثر يمكنك تجاهله.", "خطأ");
         }
 
         return false;

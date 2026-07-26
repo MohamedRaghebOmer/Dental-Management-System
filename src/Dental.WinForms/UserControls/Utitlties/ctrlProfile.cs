@@ -3,6 +3,7 @@ using Dental.Application.DTOs.DentalInfo;
 using Dental.Application.Errors;
 using Dental.Domain.Errors;
 using Dental.Domain.Shared;
+using Dental.WinForms.Extensions;
 using Dental.WinForms.Properties;
 using Microsoft.Extensions.Logging;
 
@@ -99,43 +100,43 @@ public partial class ctrlProfile : UserControl
         if (updateResult.Error == ServiceErrors.Common.NotFound)
         {
             // this is unexpected, since the profile should always exist
-            MessageBox.Show("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
-                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
+                "خطأ");
             return;
         }
 
         if (updateResult.Error == ServiceErrors.Common.InvalidId)
         {
-            MessageBox.Show("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
-                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
+                "خطأ");
             return;
         }
 
         if (updateResult.Error == DomainErrors.Entities.DentalInfo.DoctorNameTooLong)
         {
-            MessageBox.Show("اسم الطبيب طويل جداً، برجاء إدخال اسم أقصر.",
-                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("اسم الطبيب طويل جداً، برجاء إدخال اسم أقصر.",
+                "خطأ");
             return;
         }
 
         if (updateResult.Error == DomainErrors.Entities.DentalInfo.DentalDescriptionTooLong)
         {
-            MessageBox.Show("وصف العيادة طويل جداً، برجاء إدخال وصف أقصر.",
-                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("وصف العيادة طويل جداً، برجاء إدخال وصف أقصر.",
+                "خطأ");
             return;
         }
 
         if (updateResult.Error == DomainErrors.Entities.DentalInfo.PhoneNumberTooLong)
         {
-            MessageBox.Show("رقم الهاتف طويل جداً، برجاء إدخال رقم هاتف أقصر.",
-                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("رقم الهاتف طويل جداً، برجاء إدخال رقم هاتف أقصر.",
+                "خطأ");
             return;
         }
 
         if (updateResult.Error == DomainErrors.Entities.DentalInfo.PicturePathTooLong)
         {
-            MessageBox.Show("مسار الصورة طويل جداً، برجاء إدخال مسار أقصر.",
-                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBoxExtensions.ShowError("مسار الصورة طويل جداً، برجاء إدخال مسار أقصر.",
+                "خطأ");
             return;
         }
     }
