@@ -36,11 +36,10 @@ public sealed class VisitConfiguration
     private static void ConfigureIndexes(EntityTypeBuilder<Visit> builder)
     {
         builder.HasIndex(p => p.VisitDateTime)
-            .HasDatabaseName("UX_Visits_VisitDateTime")
-            .IsUnique(true);
+            .HasDatabaseName("IX_Visits_VisitDateTime");
 
         builder.HasIndex(p => p.PatientId)
-            .HasDatabaseName("UX_Visits_PatientId");
+            .HasDatabaseName("IX_Visits_PatientId");
     }
 
     private static void ConfigureForeignKeys(EntityTypeBuilder<Visit> builder)

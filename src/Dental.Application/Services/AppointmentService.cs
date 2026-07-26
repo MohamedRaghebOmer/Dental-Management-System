@@ -122,17 +122,6 @@ public class AppointmentService
             return Result.Failure<Appointment>(patientIdResult.Error);
         }
 
-        if (await _repo.ExistsByScheduleVisitDateTimeAsync(
-                requestDto.ScheduledVisitDateTime,
-                id,
-                cancellationToken))
-        {
-            _logger.LogWarning(
-                "Failed to create appointment: There is already an appointment for the given date. {Date}",
-                requestDto.ScheduledVisitDateTime);
-            return Result.Failure<Appointment>(ServiceErrors.Appointment.DateIsTaken);
-        }
-
         if (!await _patientRepo.ExistsAsync(patientIdResult.Value, cancellationToken))
         {
             _logger.LogWarning("Failed to create appointment: Patient not found. {PatientId}", requestDto.PatientId);

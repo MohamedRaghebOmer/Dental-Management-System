@@ -12,14 +12,14 @@ public class FormFactory : IFormFactory
        => _serviceProvider = serviceProvider;
 
 
-    public frmAddUpdateVisit Create_frmAddUpdateVisit(frmAddUpdateVisit.VisitType visitType)
+    public frmAddEditVisit Create_frmAddEditVisit(frmAddEditVisit.VisitType visitType)
     {
-        return ActivatorUtilities.CreateInstance<frmAddUpdateVisit>(_serviceProvider, visitType);
+        return ActivatorUtilities.CreateInstance<frmAddEditVisit>(_serviceProvider, visitType);
     }
 
-    public frmAddUpdateVisit Create_frmAddUpdateVisit(int visitId)
+    public frmAddEditVisit Create_frmAddEditVisit(int visitId)
     {
-        return ActivatorUtilities.CreateInstance<frmAddUpdateVisit>(_serviceProvider, visitId);
+        return ActivatorUtilities.CreateInstance<frmAddEditVisit>(_serviceProvider, visitId);
     }
 
 

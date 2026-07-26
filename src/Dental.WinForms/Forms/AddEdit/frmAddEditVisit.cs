@@ -16,10 +16,10 @@ using System.ComponentModel;
 
 namespace Dental.WinForms.Forms;
 
-public partial class frmAddUpdateVisit : Form
+public partial class frmAddEditVisit : Form
 {
     private readonly ITreatmentService _treatmentService;
-    private readonly ILogger<frmAddUpdateVisit> _logger;
+    private readonly ILogger<frmAddEditVisit> _logger;
     private readonly IVisitService _visitService;
     private readonly IVisitTreatmentService _visitTreatmentService;
     private readonly IVisitTreatmentsViewService _visitTreatmentsViewService;
@@ -36,12 +36,12 @@ public partial class frmAddUpdateVisit : Form
     private readonly VisitType? _visitType = null;
 
 
-    private frmAddUpdateVisit(
+    private frmAddEditVisit(
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
         IVisitTreatmentsViewService visitTreatmentsViewService,
-        ILogger<frmAddUpdateVisit> logger,
+        ILogger<frmAddEditVisit> logger,
         IAppointmentInfoService appointmentInfoService,
         IPatientService patientService,
         IPatientViewService patientViewService,
@@ -66,13 +66,13 @@ public partial class frmAddUpdateVisit : Form
         ctrlSearchPatient1.PatientSelected += CtrlSearchPatient1_PatientSelected;
     }
 
-    public frmAddUpdateVisit(
+    public frmAddEditVisit(
         VisitType visitType,
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
         IVisitTreatmentsViewService visitTreatmentsViewService,
-        ILogger<frmAddUpdateVisit> logger,
+        ILogger<frmAddEditVisit> logger,
         IAppointmentInfoService appointmentInfoService,
         IPatientService patientService,
         IPatientViewService patientViewService,
@@ -92,13 +92,13 @@ public partial class frmAddUpdateVisit : Form
         _visitType = visitType;
     }
 
-    public frmAddUpdateVisit(
+    public frmAddEditVisit(
         int visitId,
         ITreatmentService treatmentService,
         IVisitService visitService,
         IVisitTreatmentService visitToothTreatmentService,
         IVisitTreatmentsViewService visitTreatmentsViewService,
-        ILogger<frmAddUpdateVisit> logger,
+        ILogger<frmAddEditVisit> logger,
         IAppointmentInfoService appointmentInfoService,
         IPatientService patientService,
         IPatientViewService patientViewService,
@@ -187,7 +187,7 @@ public partial class frmAddUpdateVisit : Form
         catch (Exception ex)
         {
             _logger.LogError(
-                ex, "Error occurred while initializing visit data. Error Occurred in {ClassName}", nameof(frmAddUpdateVisit));
+                ex, "Error occurred while initializing visit data. Error Occurred in {ClassName}", nameof(frmAddEditVisit));
 
             MessageBoxExtensions.ShowError(
                 "حدث خطأ أثناء تهيئة بيانات الزياره برجاء التواصل مع المطور.");

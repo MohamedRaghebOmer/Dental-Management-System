@@ -1,7 +1,6 @@
 ﻿using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.ViewsStuff.Interfaces.Appointments;
 using Dental.Domain.Enums;
-using Dental.Domain.Shared;
 using Dental.Domain.Views.Appointment;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
@@ -403,6 +402,9 @@ public partial class AppointmentsView : UserControl
                 tsmiEditAppointment.Enabled = false;
                 tsmiStartVisit.Enabled = false;
                 tsmiCancelAppointment.Enabled = false;
+
+                if (currentAppStatus == AppointmentStatus.Completed)
+                    tsmiDeleteAppointment.Enabled = false;
                 break;
         }
     }
@@ -417,23 +419,6 @@ public partial class AppointmentsView : UserControl
             return null;
 
         return AppointmentStatusHelper.AppointmentStatusFromString(cellValue.ToString()!);
-    }
-
-    private void HandelGetAppointmentStatusResult(
-        Result<AppointmentStatus> statusResult, out string s)
-    {
-        switch (statusResult.Error.Code)
-        {
-            case "Id.LessThanOrEqualToZero":
-                s = "رقم الحجز يجب أن يكون أكبر من الصفر.";
-                break;
-
-            case "NotFound":
-                s = "الحجز غير موجود.";
-                break;
-        }
-
-        s = "حدث خطأ أثناء الحصول على حالة الحجز.";
     }
 
     private int? GetAppointmentIdFromGrid(int currentRowIndex)
@@ -499,6 +484,7 @@ public partial class AppointmentsView : UserControl
 
         using var frm = _formFactory.Create_frmAddEditAppointment(currentAppId.Value);
         await frm.ShowDialogAsync();
+        Refresh();
     }
 
     private async void tsmiStartVisit_Click(object sender, EventArgs e)
@@ -511,10 +497,11 @@ public partial class AppointmentsView : UserControl
         if (!currentAppId.HasValue)
             return;
 
-        using var frm = _formFactory.Create_frmAddUpdateVisit(
-            Forms.frmAddUpdateVisit.VisitType.PreAppointment);
+        using var frm = _formFactory.Create_frmAddEditVisit(
+            Forms.frmAddEditVisit.VisitType.PreAppointment);
         frm.Id = currentAppId.Value;
         await frm.ShowDialogAsync();
+        Refresh();
     }
 
     private async void tsmiCancelAppointment_Click(object sender, EventArgs e)
@@ -532,24 +519,31 @@ public partial class AppointmentsView : UserControl
             "تأكيد الإلغاء") != DialogResult.Yes)
             return;
 
-        var cancelResult = await _appointmentService.CancelAsync(currentAppId.Value);
-        if (cancelResult.IsSuccess)
+        try
         {
-            MessageBoxExtensions.ShowInfo("تم إلغاء الحجز بنجاح.");
-            Refresh();
-        }
-        else
-        {
-            var errorMessage = cancelResult.Error.Code switch
+            var cancelResult = await _appointmentService.CancelAsync(currentAppId.Value);
+            if (cancelResult.IsSuccess)
             {
-                "Id.LessThanOrEqualToZero" => "رقم الحجز يجب أن يكون أكبر من الصفر.",
-                "NotFound" => "الحجز غير موجود.",
-                "Status.CannotBeCanceledWhenAlreadyCanceled" => "الحجز ملغي بالفعل.",
-                "Status.CannotBeCanceledWhenCompleted" => $"لا يمكن إلغاء الحجز عندما يكون مكتمل.",
-                _ => $"حدث خطأ أثناء إلغاء الحجز. {cancelResult.Error}"
-            };
+                MessageBoxExtensions.ShowInfo("تم إلغاء الحجز بنجاح.");
+                Refresh();
+            }
+            else
+            {
+                var errorMessage = cancelResult.Error.Code switch
+                {
+                    "Id.LessThanOrEqualToZero" => "رقم الحجز يجب أن يكون أكبر من الصفر.",
+                    "NotFound" => "الحجز غير موجود.",
+                    "Status.CannotBeCanceledWhenAlreadyCanceled" => "الحجز ملغي بالفعل.",
+                    "Status.CannotBeCanceledWhenCompleted" => $"لا يمكن إلغاء الحجز عندما يكون مكتمل.",
+                    _ => $"حدث خطأ أثناء إلغاء الحجز. {cancelResult.Error}"
+                };
 
-            MessageBoxExtensions.ShowError(errorMessage);
+                MessageBoxExtensions.ShowError(errorMessage);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBoxExtensions.ShowError($"حدث خطأ أثناء إلغاء الحجز. {ex.Message}");
         }
     }
 
@@ -558,6 +552,15 @@ public partial class AppointmentsView : UserControl
         var currentRowIndex = dataGridView.CurrentRow?.Index;
         if (!currentRowIndex.HasValue)
             return;
+
+        var currentAppStatus = GetAppointmentStatusFromGrid(currentRowIndex.Value);
+        if (currentAppStatus is AppointmentStatus.Completed)
+        {
+            MessageBoxExtensions.ShowWarning(
+                "لا يمكن حذف الحجز إذا كان مكتمل.",
+                "تحذير");
+            return;
+        }
 
         var currentAppId = GetAppointmentIdFromGrid(currentRowIndex.Value);
         if (!currentAppId.HasValue)
@@ -568,22 +571,29 @@ public partial class AppointmentsView : UserControl
                 "تأكيد الحذف") != DialogResult.Yes)
             return;
 
-        var deleteResult = await _appointmentService.DeleteAsync(currentAppId.Value);
-        if (deleteResult.IsSuccess)
+        try
         {
-            MessageBoxExtensions.ShowInfo("تم حذف الحجز بنجاح.");
-            Refresh();
-        }
-        else
-        {
-            var errorMessage = deleteResult.Error.Code switch
+            var deleteResult = await _appointmentService.DeleteAsync(currentAppId.Value);
+            if (deleteResult.IsSuccess)
             {
-                "Id.LessThanOrEqualToZero" => "رقم الحجز يجب أن يكون أكبر من الصفر.",
-                "NotFound" => "الحجز غير موجود.",
-                _ => $"حدث خطأ أثناء حذف الحجز. {deleteResult.Error}"
-            };
+                MessageBoxExtensions.ShowInfo("تم حذف الحجز بنجاح.");
+                Refresh();
+            }
+            else
+            {
+                var errorMessage = deleteResult.Error.Code switch
+                {
+                    "Id.LessThanOrEqualToZero" => "رقم الحجز يجب أن يكون أكبر من الصفر.",
+                    "NotFound" => "الحجز غير موجود.",
+                    _ => $"حدث خطأ أثناء حذف الحجز. {deleteResult.Error}"
+                };
 
-            MessageBoxExtensions.ShowError(errorMessage);
+                MessageBoxExtensions.ShowError(errorMessage);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBoxExtensions.ShowError($"حدث خطأ أثناء حذف الحجز. {ex.Message}");
         }
     }
 

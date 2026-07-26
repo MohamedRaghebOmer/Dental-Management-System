@@ -136,7 +136,7 @@ public partial class VisitsView : UserControl
     {
         Cursor = Cursors.WaitCursor;
 
-        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.WalkIn);
+        using var frm = _formFactory.Create_frmAddEditVisit(Forms.frmAddEditVisit.VisitType.WalkIn);
         await frm.ShowDialogAsync();
 
         await Refresh();
@@ -399,7 +399,7 @@ public partial class VisitsView : UserControl
             return;
 
 
-        using var frm = _formFactory.Create_frmAddUpdateVisit(selectedVisitId.Value);
+        using var frm = _formFactory.Create_frmAddEditVisit(selectedVisitId.Value);
         await frm.ShowDialogAsync();
 
         await Refresh();
@@ -501,22 +501,9 @@ public partial class VisitsView : UserControl
         await frm.ShowDialogAsync();
     }
 
-    private async void cmsAddNewWalkInVisitToTheSamePatientToolStripMenuItem_Click(
-        object sender, EventArgs e)
-    {
-        var selectedPatientId = SelectedPatientId;
-        if (!selectedPatientId.HasValue)
-            return;
-
-        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.WalkIn);
-        frm.Id = selectedPatientId.Value;
-        await frm.ShowDialogAsync();
-        await Refresh();
-    }
-
     private async void btnCreatePreAppointmentVisit_Click(object sender, EventArgs e)
     {
-        using var frm = _formFactory.Create_frmAddUpdateVisit(Forms.frmAddUpdateVisit.VisitType.PreAppointment);
+        using var frm = _formFactory.Create_frmAddEditVisit(Forms.frmAddEditVisit.VisitType.PreAppointment);
         await frm.ShowDialogAsync();
         await Refresh();
     }

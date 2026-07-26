@@ -12,4 +12,16 @@ public sealed class PatientViewService(IPatientViewRepository _repo) : IPatientV
     {
         return _repo.GetAsync(filterDto, cancellationToken);
     }
+
+    public Task<List<PatientDetailedInfoDto>> GetPatientDetailedInfoDtosAsync(
+        PatientDetailedInfoDto? filterDto = null,
+        CancellationToken cancellationToken = default)
+    {
+        return _repo.GetDetailedInfoAsync(filterDto, cancellationToken);
+    }
+
+    public Task<PatientInfoCards> GetInfoCardsAsync(CancellationToken cancellationToken = default)
+    {
+        return _repo.GetInfoCardsAsync(cancellationToken);
+    }
 }

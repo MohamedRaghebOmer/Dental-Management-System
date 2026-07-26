@@ -14,6 +14,7 @@ public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext)
         CancellationToken cancellationToken = default)
     {
         var query = dbContext.VisitTreatments
+            .AsNoTracking()
             .Where(vtt => vtt.VisitId == visitId)
             .Include(vtt => vtt.Treatment)
             .Select(
@@ -23,9 +24,8 @@ public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext)
                    Name = vtt.Treatment.Name,
                    Price = vtt.Treatment.Price.Value,
                    Notes = vtt.Notes
-               })
-            .AsNoTracking();
+               });
 
-        return query.ToListAsync();
+        return query.ToListAsync(cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Dental.Application.Abstractions.ServicesInterfaces;
+﻿using System.ComponentModel;
+using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Appointment;
 using Dental.Application.ViewsStuff.Interfaces.Patients;
 using Dental.Domain.Enums;
@@ -50,6 +51,32 @@ public partial class frmAddEditAppointment : Form
         _appointmentId = appointmentId;
         _mode = Mode.Update;
     }
+
+
+    /// <summary>
+    /// Used in 'Add Mode' to set the patient ID when a patient is selected from the search control.
+    /// </summary>
+    [Browsable(false)]
+    [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public int? Id
+    {
+        get
+        {
+            if (int.TryParse(txtPatientId.Text, out int id))
+                return id;
+
+            return null;
+        }
+
+        set
+        {
+            if (value.HasValue)
+                txtPatientId.Text = value.Value.ToString();
+            else
+                txtPatientId.Text = string.Empty;
+        }
+    }
+
 
 
     private async void frmAddAppointment_Load(object sender, EventArgs e)

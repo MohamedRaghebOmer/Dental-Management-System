@@ -1,6 +1,6 @@
 ﻿namespace Dental.WinForms.Forms
 {
-    partial class frmAddUpdateVisit
+    partial class frmAddEditVisit
     {
         /// <summary>
         /// Required designer variable.

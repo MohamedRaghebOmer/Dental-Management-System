@@ -24,7 +24,7 @@ public static class DependencyInjection
         private IServiceCollection AddForms()
         {
             services.AddTransient<frmMain>();
-            services.AddTransient<frmAddUpdateVisit>();
+            services.AddTransient<frmAddEditVisit>();
             services.AddTransient<frmAddEditTreatment>();
             services.AddTransient<frmAddEditAppointment>();
             services.AddTransient<frmAddEditPatient>();

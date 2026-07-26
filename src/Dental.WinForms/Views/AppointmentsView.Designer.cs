@@ -502,14 +502,14 @@
             contextMenuStrip.Items.AddRange(new ToolStripItem[] { tsmiShowDetails, tsmiEditAppointment, toolStripSeparator2, tsmiStartVisit, tsmiCancelAppointment, toolStripSeparator3, tsmiDeleteAppointment });
             contextMenuStrip.Name = "contextMenuStrip1";
             contextMenuStrip.RightToLeft = RightToLeft.Yes;
-            contextMenuStrip.Size = new Size(198, 146);
+            contextMenuStrip.Size = new Size(177, 146);
             contextMenuStrip.Opening += contextMenuStrip_Opening;
             // 
             // tsmiShowDetails
             // 
             tsmiShowDetails.Image = Properties.Resources.details_512;
             tsmiShowDetails.Name = "tsmiShowDetails";
-            tsmiShowDetails.Size = new Size(197, 26);
+            tsmiShowDetails.Size = new Size(176, 26);
             tsmiShowDetails.Text = "عرض التفاصيل";
             tsmiShowDetails.Click += tsmiShowDetails_Click;
             // 
@@ -517,20 +517,20 @@
             // 
             tsmiEditAppointment.Image = Properties.Resources.pen_512;
             tsmiEditAppointment.Name = "tsmiEditAppointment";
-            tsmiEditAppointment.Size = new Size(197, 26);
-            tsmiEditAppointment.Text = "تعديل بيانات الحجز";
+            tsmiEditAppointment.Size = new Size(176, 26);
+            tsmiEditAppointment.Text = "تعديل";
             tsmiEditAppointment.Click += tsmiEditAppointment_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(194, 6);
+            toolStripSeparator2.Size = new Size(173, 6);
             // 
             // tsmiStartVisit
             // 
             tsmiStartVisit.Image = (Image)resources.GetObject("tsmiStartVisit.Image");
             tsmiStartVisit.Name = "tsmiStartVisit";
-            tsmiStartVisit.Size = new Size(197, 26);
+            tsmiStartVisit.Size = new Size(176, 26);
             tsmiStartVisit.Text = "ابدأ الزياره";
             tsmiStartVisit.Click += tsmiStartVisit_Click;
             // 
@@ -538,20 +538,20 @@
             // 
             tsmiCancelAppointment.Image = (Image)resources.GetObject("tsmiCancelAppointment.Image");
             tsmiCancelAppointment.Name = "tsmiCancelAppointment";
-            tsmiCancelAppointment.Size = new Size(197, 26);
+            tsmiCancelAppointment.Size = new Size(176, 26);
             tsmiCancelAppointment.Text = "إلغاء الحجز";
             tsmiCancelAppointment.Click += tsmiCancelAppointment_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(194, 6);
+            toolStripSeparator3.Size = new Size(173, 6);
             // 
             // tsmiDeleteAppointment
             // 
             tsmiDeleteAppointment.Image = Properties.Resources.bin_512;
             tsmiDeleteAppointment.Name = "tsmiDeleteAppointment";
-            tsmiDeleteAppointment.Size = new Size(197, 26);
+            tsmiDeleteAppointment.Size = new Size(176, 26);
             tsmiDeleteAppointment.Text = "حذف الحجز";
             tsmiDeleteAppointment.Click += tsmiDeleteAppointment_Click;
             // 
