@@ -87,6 +87,31 @@ public class TreatmentService
         return Result.Success();
     }
 
+    public async Task<List<TreatmentResponseDto>> GetAllAsync(
+        string? filterTreatmentName = null,
+        CancellationToken cancellationToken = default)
+    {
+        var entities =
+            await _treatmentRepo.GetAllAsync(filterTreatmentName, cancellationToken);
+
+        return [.. entities.Select(TreatmentResponseDto.ToResponseDto)];
+    }
+
+    public async Task<Result<bool>> CanDeleteAsync(
+        int id,
+        CancellationToken cancellationToken = default)
+    {
+        var idResult = Id.Create(id);
+        if (idResult.IsFailure)
+        {
+            _logger.LogWarning("Invalid Id. {Id} {Error}", id, idResult.Error);
+            return Result.Failure<bool>(ServiceErrors.Common.InvalidId);
+        }
+
+        bool canDelete = await _treatmentRepo.CanDeleteAsync(idResult.Value, cancellationToken);
+        return Result.Success(canDelete);
+    }
+
     private async Task<Result<Treatment>> BuildEntityAsync(
         TreatmentRequestDto dto,
         CancellationToken cancellationToken,

@@ -262,6 +262,7 @@ namespace Dental.WinForms
             btnTreatments.TabIndex = 17;
             btnTreatments.Text = "الخدمات الطبيه";
             btnTreatments.UseTransparentBackground = true;
+            btnTreatments.Click += btnTreatments_Click;
             // 
             // btnPatients
             // 

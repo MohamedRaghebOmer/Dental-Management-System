@@ -15,6 +15,10 @@ public interface ITreatmentRepository
         Id id,
         CancellationToken cancellation = default);
 
+    Task<List<Treatment>> GetAllAsync(
+        string? filterTreatmentName = null,
+        CancellationToken cancellationToken = default);
+
     Task<Dictionary<int, decimal>> GetPricesByIdsAsync(
         IEnumerable<Id> ids,
         CancellationToken cancellationToken = default);
@@ -22,4 +26,7 @@ public interface ITreatmentRepository
     Task<Dictionary<int, decimal>> GetAllIdsAndPricesAsync(
     CancellationToken cancellationToken = default);
 
+    Task<bool> CanDeleteAsync(
+        Id idResultValue,
+        CancellationToken cancellationToken = default);
 }

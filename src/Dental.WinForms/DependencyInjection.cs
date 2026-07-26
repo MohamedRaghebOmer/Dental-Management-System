@@ -39,6 +39,7 @@ public static class DependencyInjection
             services.AddTransient<PatientsView>();
             services.AddTransient<AppointmentInfo>();
             services.AddTransient<AppointmentsView>();
+            services.AddTransient<TreatmentsView>();
 
             return services;
         }

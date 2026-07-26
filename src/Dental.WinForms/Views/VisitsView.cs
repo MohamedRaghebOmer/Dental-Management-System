@@ -436,7 +436,8 @@ public partial class VisitsView : UserControl
             "تحذير",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning,
-            MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            MessageBoxDefaultButton.Button2,
+            MessageBoxOptions.RtlReading) == DialogResult.Yes)
         {
             var deleteResult = await _visitService.DeleteAsync(selectedVisitId.Value);
             if (deleteResult.IsFailure)
@@ -456,7 +457,7 @@ public partial class VisitsView : UserControl
         switch (error.Code)
         {
             case "InvalidId":
-                MessageBox.Show("يرجي تحديد زياره صالحه.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBoxExtensions.ShowError("يرجي تحديد زياره صالحه.", "خطأ");
                 break;
 
             case "NotFound":
@@ -464,7 +465,7 @@ public partial class VisitsView : UserControl
                 break;
 
             default:
-                MessageBoxExtensions.ShowError("يرجي تحديد زياره صالحه");
+                MessageBoxExtensions.ShowError("يرجي تحديد زياره صالحه", "خطأ");
                 break;
         }
     }

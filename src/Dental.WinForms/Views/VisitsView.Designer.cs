@@ -59,11 +59,12 @@
             colRemainedAmount = new DataGridViewTextBoxColumn();
             contextMenuStrip = new ContextMenuStrip(components);
             cmsEdit = new ToolStripMenuItem();
-            cmsDelete = new ToolStripMenuItem();
             toolStripSeparator4 = new ToolStripSeparator();
             cmsShowPatientDetails = new ToolStripMenuItem();
             cmsShowAppointmentDetails = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
+            cmsDelete = new ToolStripMenuItem();
+            toolStripSeparator3 = new ToolStripSeparator();
             cmsRefreshGrid = new ToolStripMenuItem();
             txtFilterValue = new Guna.UI2.WinForms.Guna2TextBox();
             cbFilterList = new ComboBox();
@@ -100,7 +101,6 @@
             label8 = new Label();
             label7 = new Label();
             label9 = new Label();
-            toolStripSeparator3 = new ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
             pnlTotalVisits.SuspendLayout();
@@ -305,17 +305,6 @@
             cmsEdit.Text = "تعديل";
             cmsEdit.Click += cmsEdit_Click;
             // 
-            // cmsDelete
-            // 
-            cmsDelete.Image = Properties.Resources.bin_512;
-            cmsDelete.Name = "cmsDelete";
-            cmsDelete.RightToLeftAutoMirrorImage = true;
-            cmsDelete.ShortcutKeys = Keys.Delete;
-            cmsDelete.ShowShortcutKeys = false;
-            cmsDelete.Size = new Size(202, 26);
-            cmsDelete.Text = "حذف";
-            cmsDelete.Click += cmsDelete_Click;
-            // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
@@ -345,6 +334,22 @@
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(199, 6);
+            // 
+            // cmsDelete
+            // 
+            cmsDelete.Image = Properties.Resources.bin_512;
+            cmsDelete.Name = "cmsDelete";
+            cmsDelete.RightToLeftAutoMirrorImage = true;
+            cmsDelete.ShortcutKeys = Keys.Delete;
+            cmsDelete.ShowShortcutKeys = false;
+            cmsDelete.Size = new Size(202, 26);
+            cmsDelete.Text = "حذف";
+            cmsDelete.Click += cmsDelete_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(199, 6);
             // 
             // cmsRefreshGrid
             // 
@@ -814,16 +819,11 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(889, 544);
+            label9.Location = new Point(961, 544);
             label9.Name = "label9";
-            label9.Size = new Size(566, 28);
+            label9.Size = new Size(496, 28);
             label9.TabIndex = 14;
-            label9.Text = "اضغط علي الصف ضغطتين متتاليتين لعرض أو تعديل بيانات الزياره.";
-            // 
-            // toolStripSeparator3
-            // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(199, 6);
+            label9.Text = "اضغط علي الصف ضغطتين متتاليتين لتعديل بيانات الزياره.";
             // 
             // VisitsView
             // 

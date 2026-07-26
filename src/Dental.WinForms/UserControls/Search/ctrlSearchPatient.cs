@@ -372,7 +372,7 @@ public partial class ctrlSearchPatient : UserControl
             return;
 
         if (MessageBox.Show(
-            "هل أنت متأكد من حذف المريض؟ سيتم حذف جميع البيانات المتعلقه بالمريض بما فيها الحجوزات والزيارات.", "تأكيد الحذف", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            "هل أنت متأكد من حذف المريض؟ سيتم حذف جميع البيانات المتعلقه بالمريض بما فيها الحجوزات والزيارات.", "تأكيد الحذف", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2, MessageBoxOptions.RtlReading) != DialogResult.Yes)
             return;
 
         var deleteResult = await _patientService.DeleteAsync(currentPatientId.Value);

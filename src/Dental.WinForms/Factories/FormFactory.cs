@@ -34,17 +34,6 @@ public class FormFactory : IFormFactory
     }
 
 
-    public frmAddEditPrescription Create_frmAddEditPrescription()
-    {
-        return _serviceProvider.GetRequiredService<frmAddEditPrescription>();
-    }
-
-    public frmAddEditPrescription Create_frmAddEditPrescription(int visitId)
-    {
-        return ActivatorUtilities.CreateInstance<frmAddEditPrescription>(_serviceProvider, visitId);
-    }
-
-
     public frmAddEditAppointment Create_frmAddEditAppointment()
     {
         return _serviceProvider.GetRequiredService<frmAddEditAppointment>();
