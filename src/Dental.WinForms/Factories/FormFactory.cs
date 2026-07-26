@@ -1,5 +1,6 @@
 ﻿using Dental.WinForms.Abstractions;
 using Dental.WinForms.Forms;
+using Dental.WinForms.Forms.AddEdit;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dental.WinForms.Factories;
@@ -62,5 +63,16 @@ public class FormFactory : IFormFactory
     {
         return ActivatorUtilities.CreateInstance<frmAppointmentInfo>
             (_serviceProvider, appointmentInfo);
+    }
+
+    public frmAddEditLabTransaction Create_frmAddEditLabTransaction()
+    {
+        return _serviceProvider.GetRequiredService<frmAddEditLabTransaction>();
+    }
+
+    public frmAddEditLabTransaction Create_frmAddEditLabTransaction(int labTranId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditLabTransaction>
+            (_serviceProvider, labTranId);
     }
 }

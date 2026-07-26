@@ -3,9 +3,11 @@ using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Treatment;
 using Dental.Application.Services;
 using Dental.Application.ViewsStuff.Interfaces.Appointments;
+using Dental.Application.ViewsStuff.Interfaces.LabTransactions;
 using Dental.Application.ViewsStuff.Interfaces.Patients;
 using Dental.Application.ViewsStuff.Interfaces.Visits;
 using Dental.Application.ViewsStuff.Services.Appointments;
+using Dental.Application.ViewsStuff.Services.LabTransaction;
 using Dental.Application.ViewsStuff.Services.Patients;
 using Dental.Application.ViewsStuff.Services.Visits;
 using Dental.Domain.Entities;
@@ -37,6 +39,8 @@ public static class DependencyInjection
         services.AddScoped<IVisitSummaryService, VisitSummaryService>();
         services.AddScoped<IAppointmentInfoService, AppointmentInfoService>();
         services.AddScoped<IPatientViewService, PatientViewService>();
+        services.AddScoped<ILabTransactionService, LabTransactionService>();
+        services.AddScoped<ILabTransactionViewService, LabTransactionViewService>();
 
         return services;
     }

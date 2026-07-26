@@ -213,7 +213,7 @@
             // 
             // LoadDataFirstTimeTimer
             // 
-            LoadDataFirstTimeTimer.Interval = 2;
+            LoadDataFirstTimeTimer.Interval = 10;
             LoadDataFirstTimeTimer.Tick += LoadDataFirstTimeTimer_Tick;
             // 
             // guna2ShadowPanel4

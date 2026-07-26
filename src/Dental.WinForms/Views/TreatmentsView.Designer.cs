@@ -351,7 +351,7 @@
             // 
             // loadDataTimer
             // 
-            loadDataTimer.Interval = 2;
+            loadDataTimer.Interval = 10;
             loadDataTimer.Tick += loadDataTimer_Tick;
             // 
             // TreatmentsView

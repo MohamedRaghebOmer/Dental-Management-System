@@ -1,10 +1,12 @@
 ﻿using Dental.Domain.Repositories;
 using Dental.Domain.Repositories.Views.Appointments;
+using Dental.Domain.Repositories.Views.LabTransactions;
 using Dental.Domain.Repositories.Views.Patients;
 using Dental.Domain.Repositories.Views.Visits;
 using Dental.Infrastructure.Persistence;
 using Dental.Infrastructure.Repositories;
 using Dental.Infrastructure.Repositories.Views.Appointment;
+using Dental.Infrastructure.Repositories.Views.LabTransactions;
 using Dental.Infrastructure.Repositories.Views.Patient;
 using Dental.Infrastructure.Repositories.Views.Visit;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +44,8 @@ public static class DependencyInjection
         services.AddScoped<IVisitSummaryRepository, VisitSummaryRepository>();
         services.AddScoped<IAppointmentInfoRepository, AppointmentInfoRepository>();
         services.AddScoped<IPatientViewRepository, PatientViewRepository>();
+        services.AddScoped<ILabTransactionRepository, LabTransactionRepository>();
+        services.AddScoped<ILabTransactionViewRepository, LabTransactionViewRepository>();
 
         return services;
     }
