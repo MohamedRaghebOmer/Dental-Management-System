@@ -4,6 +4,7 @@ using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dental.Infrastructure.Migrations
 {
     [DbContext(typeof(DentalDbContext))]
-    partial class DentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260726170149_CreateLabTransactionsTable")]
+    partial class CreateLabTransactionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
@@ -631,7 +634,7 @@ namespace Dental.Infrastructure.Migrations
 
                             b1.HasKey("PrescriptionItemId");
 
-                            b1.ToTable("PrescriptionItems", (string)null);
+                            b1.ToTable("PrescriptionItems");
 
                             b1.WithOwner()
                                 .HasForeignKey("PrescriptionItemId");

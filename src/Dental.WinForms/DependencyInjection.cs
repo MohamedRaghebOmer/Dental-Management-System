@@ -2,6 +2,7 @@ using Dental.Domain.Views.Appointment;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Factories;
 using Dental.WinForms.Forms;
+using Dental.WinForms.Forms.AddEdit;
 using Dental.WinForms.Views;
 using Microsoft.Extensions.DependencyInjection;
 using VisitsView = Dental.WinForms.Views.VisitsView;
@@ -28,6 +29,7 @@ public static class DependencyInjection
             services.AddTransient<frmAddEditTreatment>();
             services.AddTransient<frmAddEditAppointment>();
             services.AddTransient<frmAddEditPatient>();
+            services.AddTransient<frmAddEditLabTransaction>();
 
             return services;
         }
@@ -40,6 +42,7 @@ public static class DependencyInjection
             services.AddTransient<AppointmentInfo>();
             services.AddTransient<AppointmentsView>();
             services.AddTransient<TreatmentsView>();
+            services.AddTransient<LabTransactionsView>();
 
             return services;
         }

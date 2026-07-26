@@ -316,6 +316,27 @@ public static class DomainErrors
                 $"The picture path cannot be longer than {Domain.Entities.DentalInfo.Constants.PicturePathMaxLength} characters."
             );
         }
+
+        public static class LabTransaction
+        {
+            public static class LabName
+            {
+                public static readonly Error Empty = new(
+                    "LabName.Empty",
+                    "The lab name cannot be empty.");
+                public static readonly Error TooLong = new(
+                    "LabName.TooLong",
+                    $"The lab name cannot be longer than {Domain.Entities.LabTransaction.Constants.LabNameMaxLength} characters."
+                );
+            }
+            public static class Treatments
+            {
+                public static readonly Error TooLong = new(
+                    "Treatments.TooLong",
+                    $"The treatments cannot be longer than {Domain.Entities.LabTransaction.Constants.TreatmentsMaxLength} characters."
+                );
+            }
+        }
     }
 
     public static class ValueObjects

@@ -1,4 +1,5 @@
 ﻿using Dental.WinForms.Forms;
+using Dental.WinForms.Forms.AddEdit;
 
 namespace Dental.WinForms.Abstractions;
 
@@ -16,6 +17,9 @@ public interface IFormFactory
     frmAddEditPatient Create_frmAddEditPatient();
     frmAddEditPatient Create_frmAddEditPatient(int patientId);
 
-
     frmAppointmentInfo Create_frmAppointmentInfo(int appointmentInfo);
+
+
+    frmAddEditLabTransaction Create_frmAddEditLabTransaction();
+    frmAddEditLabTransaction Create_frmAddEditLabTransaction(int labTranId);
 }
