@@ -1,4 +1,5 @@
 ﻿using Dental.Application.DTOs.Appointment;
+using Dental.Domain.Enums;
 using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;
@@ -17,15 +18,15 @@ public interface IAppointmentService
         int id,
         CancellationToken cancellationToken = default);
 
-    Task<Result> CompleteAsync(
-        int id,
-        CancellationToken cancellationToken = default);
-
     Task<Result<bool>> IsMissed(
         int id,
         CancellationToken cancellationToken = default);
 
     Task<Result<AppointmentResponseDto>> GetByIdAsync(
+        int id,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<AppointmentStatus>> GetStatusAsync(
         int id,
         CancellationToken cancellationToken = default);
 

@@ -12,14 +12,14 @@ public class FormFactory : IFormFactory
        => _serviceProvider = serviceProvider;
 
 
-    public frmAddUpdateVisit Create_frmAddUpdateVisit()
+    public frmAddEditVisit Create_frmAddEditVisit(frmAddEditVisit.VisitType visitType)
     {
-        return _serviceProvider.GetRequiredService<frmAddUpdateVisit>();
+        return ActivatorUtilities.CreateInstance<frmAddEditVisit>(_serviceProvider, visitType);
     }
 
-    public frmAddUpdateVisit Create_frmAddUpdateVisit(int visitId)
+    public frmAddEditVisit Create_frmAddEditVisit(int visitId)
     {
-        return ActivatorUtilities.CreateInstance<frmAddUpdateVisit>(_serviceProvider, visitId);
+        return ActivatorUtilities.CreateInstance<frmAddEditVisit>(_serviceProvider, visitId);
     }
 
 
@@ -52,9 +52,10 @@ public class FormFactory : IFormFactory
 
     public frmAddEditAppointment Create_frmAddEditAppointment(int appointmentId)
     {
-        return ActivatorUtilities.CreateInstance<frmAddEditAppointment>
-            (_serviceProvider, appointmentId);
+        return ActivatorUtilities.CreateInstance<frmAddEditAppointment>(
+            _serviceProvider, appointmentId);
     }
+
 
     public frmAddEditPatient Create_frmAddEditPatient()
     {
@@ -65,5 +66,12 @@ public class FormFactory : IFormFactory
     {
         return ActivatorUtilities.CreateInstance<frmAddEditPatient>
             (_serviceProvider, patientId);
+    }
+
+
+    public frmAppointmentInfo Create_frmAppointmentInfo(int appointmentInfo)
+    {
+        return ActivatorUtilities.CreateInstance<frmAppointmentInfo>
+            (_serviceProvider, appointmentInfo);
     }
 }

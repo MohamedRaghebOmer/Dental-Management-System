@@ -1,8 +1,5 @@
-﻿using Dental.Infrastructure.Constants;
-using Dental.WinForms.Abstractions;
-using Dental.WinForms.Views;
+﻿using Dental.WinForms.Views;
 using Guna.UI2.WinForms;
-using System.Diagnostics;
 using Color = System.Drawing.Color;
 
 namespace Dental.WinForms;
@@ -10,17 +7,23 @@ namespace Dental.WinForms;
 public partial class frmMain : Form
 {
     private readonly MainMenuView _mainMenuView = default!;
-    private readonly VisitView _VisitView = default!;
+    private readonly VisitsView _VisitView = default!;
+    private readonly PatientsView _patientView = default!;
+    private readonly AppointmentsView _appointmentsView = default!;
     private Guna2Button? _selectedButton;
 
     public frmMain(
         MainMenuView mainMenuView,
-        VisitView visitView)
+        VisitsView visitView,
+        PatientsView patientView,
+        AppointmentsView appointmentsView)
     {
         InitializeComponent();
 
         _mainMenuView = mainMenuView;
         _VisitView = visitView;
+        _patientView = patientView;
+        _appointmentsView = appointmentsView;
 
         btnMainMenu_Click(null!, null!);
     }
@@ -56,6 +59,7 @@ public partial class frmMain : Form
         Cursor = Cursors.Default;
     }
 
+    // CHAT GPT: This is the event handler for the Visits button click event.
     private void btnVisits_Click(object sender, EventArgs e)
     {
         Cursor = Cursors.WaitCursor;
@@ -64,12 +68,19 @@ public partial class frmMain : Form
         Cursor = Cursors.Default;
     }
 
-    private void btnHelp_Click(object sender, EventArgs e)
+    private void btnPatients_Click(object sender, EventArgs e)
     {
-        Process.Start(new ProcessStartInfo
-        {
-            FileName = DataStoragePaths.LogsFolderPath,
-            UseShellExecute = true
-        });
+        Cursor = Cursors.WaitCursor;
+        ShowView(_patientView);
+        SelectMenuButton(btnPatients);
+        Cursor = Cursors.Default;
+    }
+
+    private void btnAppointments_Click(object sender, EventArgs e)
+    {
+        Cursor = Cursors.WaitCursor;
+        ShowView(_appointmentsView);
+        SelectMenuButton(btnAppointments);
+        Cursor = Cursors.Default;
     }
 }

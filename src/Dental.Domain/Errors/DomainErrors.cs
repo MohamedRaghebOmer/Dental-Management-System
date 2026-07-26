@@ -38,16 +38,16 @@ public static class DomainErrors
                     "The appointment date cannot be in the past."
                 );
 
-                public static readonly Error CannotBeChangedWhenStatusIsNotPending = new(
-                    "Date.CannotBeChangedWhenStatusIsNotPending",
+                public static readonly Error CannotBeChangedWhenStatusIsNotPendingOrMissed = new(
+                    "Date.CannotBeChangedWhenStatusIsNotPendingOrMissed",
                     "The appointment date cannot be changed when the status is not pending."
                 );
             }
 
             public static class PatientId
             {
-                public static readonly Error CannotBeChangedWhenStatusIsNotPending = new(
-                    "PatientId.CannotBeChangedWhenStatusIsNotPending",
+                public static readonly Error CannotBeChangedWhenStatusIsNotPendingOrMissed = new(
+                    "PatientId.CannotBeChangedWhenStatusIsNotPendingOrMissed",
                     "The appointment patient ID cannot be changed when the status is not pending."
                 );
             }
@@ -90,14 +90,6 @@ public static class DomainErrors
 
         public static class Visit
         {
-            public static class Date
-            {
-                public static readonly Error InThePast = new(
-                    "Date.InThePast",
-                    "The visit date cannot be in the future."
-                );
-            }
-
             public static class Notes
             {
                 public static readonly Error TooLong = new(
@@ -190,6 +182,19 @@ public static class DomainErrors
                 public static readonly Error GreaterThanMaximumAllowedAge = new(
                     "Age.GreaterThanMaximumAllowedAge",
                     $"Age must less than or equal to{Domain.Entities.Patient.Constants.MaximumAllowedAge}");
+            }
+
+            public static class Name
+            {
+                public static readonly Error Empty = new(
+                    "Name.Empty",
+                    "The patient name is required."
+                );
+
+                public static readonly Error TooLong = new(
+                    "Name.TooLong",
+                    $"The patient name cannot be longer than {Domain.Entities.Patient.Constants.NameMaxLength} characters."
+                );
             }
         }
 
@@ -337,7 +342,7 @@ public static class DomainErrors
 
             public static readonly Error TooLong = new(
                 "FirstName.TooLong",
-                $"The first name cannot be longer than {Domain.Entities.Patient.Constants.FirstNameMaxLength} characters."
+                $"The first name cannot be longer than {Domain.ValueObjects.FirstName.MaxLength} characters."
             );
         }
 
@@ -349,7 +354,7 @@ public static class DomainErrors
 
             public static readonly Error TooLong = new(
                 "LastName.TooLong",
-                $"The last name cannot be longer than {Domain.Entities.Patient.Constants.LastNameMaxLength} characters."
+                $"The last name cannot be longer than {Domain.ValueObjects.LastName.MaxLength} characters."
             );
         }
 

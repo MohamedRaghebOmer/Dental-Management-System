@@ -32,12 +32,14 @@
             // 
             // MainMenuView
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkCyan;
-            MaximumSize = new Size(1568, 1055);
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Margin = new Padding(4);
+            MaximumSize = new Size(2156, 1477);
             Name = "MainMenuView";
-            Size = new Size(1381, 836);
+            Size = new Size(1221, 757);
             ResumeLayout(false);
         }
 

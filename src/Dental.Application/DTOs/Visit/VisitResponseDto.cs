@@ -5,7 +5,7 @@ namespace Dental.Application.DTOs.Visit;
 public sealed record VisitResponseDto(
     int Id,
     int? AppointmentId,
-    string? PatientName,
+    int PatientId,
     decimal PaidAmount,
     decimal DiscountAmount,
     DateTime VisitDateTime,
@@ -17,7 +17,7 @@ public sealed record VisitResponseDto(
         return new VisitResponseDto(
             Id: entity.Id.Value,
             AppointmentId: entity.AppointmentId?.Value,
-            PatientName: entity.PatientName,
+            PatientId: entity.PatientId.Value,
             PaidAmount: entity.PaidAmount.Value,
             DiscountAmount: entity.DiscountAmount.Value,
             VisitDateTime: entity.VisitDateTime,

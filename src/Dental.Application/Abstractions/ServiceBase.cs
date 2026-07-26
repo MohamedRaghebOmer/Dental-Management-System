@@ -42,7 +42,7 @@ public abstract class ServiceBase<TEntity, TResponseDto>
         var entity = await _repo.GetByIdAsync(idResult.Value, cancellationToken);
         if (entity is null)
         {
-            return Result.Failure<TResponseDto>(ServiceErrors.NotFound);
+            return Result.Failure<TResponseDto>(ServiceErrors.Common.NotFound);
         }
 
         return TResponseDto.ToResponseDto(entity);
@@ -79,13 +79,13 @@ public abstract class ServiceBase<TEntity, TResponseDto>
             _logger.LogWarning(
                 "Attempted to delete an entity of type {EntityType} with an invalid ID." +
                 "{Id} {Error}", typeof(TEntity).Name, id, idResult.Error);
-            return Result.Failure(ServiceErrors.InvalidId);
+            return Result.Failure(ServiceErrors.Common.InvalidId);
         }
 
         var isDeleted = await _repo.RemoveAsync(idResult.Value, cancellationToken);
         if (!isDeleted)
         {
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
         }
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);

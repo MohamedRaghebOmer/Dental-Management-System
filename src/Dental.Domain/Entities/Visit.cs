@@ -13,14 +13,15 @@ public sealed class Visit : Entity
         public const int PatientNameMaxLength = 50;
     }
 
-
     public Id? AppointmentId { get; private set; } = default;
-    public string? PatientName { get; private set; }
+    public Id PatientId { get; private set; } = default!;
     public Money PaidAmount { get; private set; } = default!;
     public Money DiscountAmount { get; private set; } = default!;
     public DateTime VisitDateTime { get; private set; }
     public string? Notes { get; private set; }
+
     public Appointment? Appointment { get; private set; } = default;
+    public Patient Patient { get; private set; } = default!;
     public Prescription? Prescription { get; private set; } = default;
 
 
@@ -32,17 +33,16 @@ public sealed class Visit : Entity
 
     private Visit(
         Id? appointmentId,
-        string? patientName,
+        Id patientId,
         Money paidAmount,
         Money discountAmount,
-        DateTime visitDateTime,
         string? notes)
     {
         AppointmentId = appointmentId;
-        PatientName = patientName;
+        PatientId = patientId;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        VisitDateTime = visitDateTime;
+        VisitDateTime = DateTime.Now;
         Notes = notes;
     }
 
@@ -50,77 +50,47 @@ public sealed class Visit : Entity
 
     public static Result<Visit> Create(
         Id? appointmentId,
-        string? patientName,
+        Id patientId,
         Money paidAmount,
         Money discountAmount,
-        DateTime visitDateTime,
         string? notes)
     {
         notes = notes?.Trim();
-        patientName = patientName?.Trim();
 
-        var validateResult = Validate(visitDateTime, patientName, notes);
+        var validateResult = Validate(notes);
         if (validateResult.IsFailure)
         {
             return Result.Failure<Visit>(validateResult.Error);
         }
 
-        return new Visit(appointmentId, patientName, paidAmount, discountAmount, visitDateTime, notes);
+        return new Visit(appointmentId, patientId, paidAmount, discountAmount, notes);
     }
 
     public Result Update(
-        Id? appointmentId,
-        string? patientName,
         Money paidAmount,
         Money discountAmount,
-        DateTime visitDateTime,
         string? notes)
     {
         notes = notes?.Trim();
-        patientName = patientName?.Trim();
 
-        var validateResult = Validate(visitDateTime, patientName, notes);
+        var validateResult = Validate(notes);
         if (validateResult.IsFailure)
         {
             return Result.Failure(validateResult.Error);
         }
 
-        if (appointmentId != AppointmentId && Appointment is not null)
-        {
-            var changeStatusResult = Appointment.ChangeStatusToPending();
-            if (changeStatusResult.IsFailure)
-            {
-                return Result.Failure(changeStatusResult.Error);
-            }
-        }
-
-        AppointmentId = appointmentId;
-        PatientName = patientName;
         PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
-        VisitDateTime = visitDateTime;
         Notes = notes;
 
         return Result.Success();
     }
 
-    private static Result Validate(
-        DateTime visitDateTime, string? patientName,
-        string? notes)
+    private static Result Validate(string? notes)
     {
-        if (visitDateTime > DateTime.Now)
-        {
-            return Result.Failure(DomainErrors.Entities.Visit.Date.InThePast);
-        }
-
         if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.Visit.Notes.TooLong);
-        }
-
-        if (patientName?.Length > Constants.PatientNameMaxLength)
-        {
-            return Result.Failure(DomainErrors.Entities.Visit.PatientName.TooLong);
         }
 
         return Result.Success();

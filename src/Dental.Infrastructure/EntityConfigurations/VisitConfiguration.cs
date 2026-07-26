@@ -19,7 +19,7 @@ public sealed class VisitConfiguration
         ConfigureIndexes(builder);
     }
 
-    private void ConfigureCheckConstraints(EntityTypeBuilder<Visit> builder)
+    private static void ConfigureCheckConstraints(EntityTypeBuilder<Visit> builder)
     {
         builder.ToTable(table =>
         {
@@ -33,22 +33,16 @@ public sealed class VisitConfiguration
         });
     }
 
-    private void ConfigureIndexes(EntityTypeBuilder<Visit> builder)
+    private static void ConfigureIndexes(EntityTypeBuilder<Visit> builder)
     {
-        builder.HasIndex(p => p.AppointmentId)
-            .HasDatabaseName("UX_Visits_AppointmentId")
-            .HasFilter("[AppointmentId] IS NOT NULL")
-            .IsUnique(true);
-
         builder.HasIndex(p => p.VisitDateTime)
-            .HasDatabaseName("UX_Visits_VisitDateTime")
-            .IsUnique(true);
+            .HasDatabaseName("IX_Visits_VisitDateTime");
 
-        builder.HasIndex(p => p.PatientName)
-            .HasDatabaseName("UX_Visits_PatientName");
+        builder.HasIndex(p => p.PatientId)
+            .HasDatabaseName("IX_Visits_PatientId");
     }
 
-    private void ConfigureForeignKeys(EntityTypeBuilder<Visit> builder)
+    private static void ConfigureForeignKeys(EntityTypeBuilder<Visit> builder)
     {
         builder.HasOne(v => v.Appointment)
             .WithOne(a => a.Visit)
@@ -56,9 +50,31 @@ public sealed class VisitConfiguration
             .OnDelete(DeleteBehavior.Restrict)
             .IsRequired(false);
 
+        builder.HasOne(v => v.Patient)
+            .WithMany(p => p.Visits)
+            .HasForeignKey(v => v.PatientId)
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired();
+
         builder.Metadata
             .FindNavigation(nameof(Visit.VisitTreatments))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+
+        builder.HasOne(v => v.Appointment)
+            .WithOne(a => a.Visit)
+            .HasForeignKey<Visit>(v => new
+            {
+                v.AppointmentId,
+                v.PatientId
+            })
+            .HasPrincipalKey<Appointment>(a => new
+            {
+                a.Id,
+                a.PatientId
+            })
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<Visit> builder)
@@ -70,9 +86,12 @@ public sealed class VisitConfiguration
             .HasColumnName(nameof(Visit.AppointmentId))
             .IsRequired(false);
 
-        builder.Property(p => p.PatientName)
-            .HasColumnName(nameof(Visit.PatientName))
-            .HasMaxLength(Visit.Constants.PatientNameMaxLength);
+        builder.Property(p => p.PatientId)
+            .HasConversion(
+                value => value.Value,
+                value => Id.FromDatabase(value))
+            .HasColumnName(nameof(Visit.PatientId))
+            .IsRequired();
 
         builder.Property((p => p.PaidAmount))
             .HasConversion(

@@ -41,6 +41,13 @@ public class PatientService
             return Result.Failure<int>(entityResult.Error);
         }
 
+        if (await _repo.ExistsByNameAsync(
+            entityResult.Value.Name, cancellationToken: cancellationToken))
+        {
+            _logger.LogWarning("Patient with the same name already exists. {Name}", entityResult.Value.Name);
+            return Result.Failure<int>(ServiceErrors.Patient.DuplicateName);
+        }
+
         _repo.Add(entityResult.Value);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         _logger.LogInformation("Patient created successfully. {PatientId}", entityResult.Value.Id);
@@ -74,12 +81,20 @@ public class PatientService
         if (patient is null)
         {
             _logger.LogWarning("Patient not found. {Id}", id);
-            return Result.Failure(ServiceErrors.NotFound);
+            return Result.Failure(ServiceErrors.Common.NotFound);
+        }
+
+        if (await _repo.ExistsByNameAsync(
+            buildEntityResult.Value.Name,
+            excludedId: createIdResult.Value,
+            cancellationToken: cancellationToken))
+        {
+            _logger.LogWarning("Patient with the same name already exists. {Name}", buildEntityResult.Value.Name);
+            return Result.Failure(ServiceErrors.Patient.DuplicateName);
         }
 
         var updateResult = patient.Update(
-            buildEntityResult.Value.FirstName,
-            buildEntityResult.Value.LastName,
+            buildEntityResult.Value.Name,
             buildEntityResult.Value.Age,
             dto.Gender,
             buildEntityResult.Value.PhoneNumber);
@@ -96,22 +111,23 @@ public class PatientService
         return Result.Success();
     }
 
+    public async Task<PatientResponseDto?> GetByNameAsync(
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        var patient = await _repo.GetByNameAsync(name, cancellationToken);
+
+        if (patient is null)
+        {
+            _logger.LogWarning("Patient not found by name. {Name}", name);
+            return null;
+        }
+
+        return PatientResponseDto.ToResponseDto(patient);
+    }
+
     private Result<Patient> BuildEntity(PatientRequestDto dto)
     {
-        var firstNameResult = FirstName.Create(dto.FirstName);
-        if (firstNameResult.IsFailure)
-        {
-            _logger.LogWarning("Failed to create patient due to invalid first name. {FirstName}", dto.FirstName);
-            return Result.Failure<Patient>(firstNameResult.Error);
-        }
-
-        var lastNameResult = LastName.Create(dto.LastName);
-        if (lastNameResult.IsFailure)
-        {
-            _logger.LogWarning("Failed to create patient due to invalid last name. {LastName}", dto.LastName);
-            return Result.Failure<Patient>(lastNameResult.Error);
-        }
-
         PhoneNumber? phoneNumber = null;
         if (!string.IsNullOrWhiteSpace(dto.PhoneNumber))
         {
@@ -127,8 +143,7 @@ public class PatientService
         }
 
         var patientResult = Patient.Create(
-            firstNameResult.Value,
-            lastNameResult.Value,
+            dto.Name,
             dto.Age,
             dto.Gender,
             phoneNumber);

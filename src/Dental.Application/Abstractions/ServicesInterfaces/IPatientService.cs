@@ -18,6 +18,9 @@ public interface IPatientService
         int id,
         CancellationToken cancellationToken = default);
 
+    Task<PatientResponseDto?> GetByNameAsync(
+        string name,
+        CancellationToken cancellationToken = default);
 
     Task<List<PatientResponseDto>> GetAllAsync(
         CancellationToken cancellationToken = default);

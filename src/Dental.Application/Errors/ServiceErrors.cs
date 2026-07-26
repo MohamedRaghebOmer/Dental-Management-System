@@ -4,11 +4,24 @@ namespace Dental.Application.Errors;
 
 public static class ServiceErrors
 {
-    public static readonly Error NotFound =
-        new("NotFound", "The requested entity not found.");
+    public static class Common
+    {
+        public static readonly Error ValidationFailed = new(
+            "Common.ValidationFailed",
+            "The provided data failed validation."
+        );
 
-    public static readonly Error InvalidId =
-        new("InvalidId", "ID must be greater than zero.");
+        public static readonly Error NotFound =
+            new("NotFound", "The requested entity not found.");
+
+        public static readonly Error InvalidId =
+            new("InvalidId", "ID must be greater than zero.");
+
+        public static readonly Error UnexpectedError = new(
+            "Common.UnexpectedError",
+            "An unexpected error occurred."
+        );
+    }
 
     public static class Visit
     {
@@ -31,6 +44,21 @@ public static class ServiceErrors
         public static readonly Error DuplicatedAppointmentId = new(
             "Visit.DuplicatedAppointmentId",
             "There is already a visit with the same appointment ID.");
+
+        public static readonly Error PatientNotFound = new(
+            "Visit.PatientNotFound",
+            "Patient not found."
+        );
+
+        public static readonly Error AppointmentNotFound = new(
+            "Visit.AppointmentNotFound",
+            "Appointment not found."
+        );
+
+        public static readonly Error AppointmentAlreadyUsedBefore = new(
+            "Visit.AppointmentAlreadyUsedBefore",
+            "Appointment is already used before."
+        );
     }
 
     public static class VisitTreatment
@@ -102,5 +130,11 @@ public static class ServiceErrors
 
         public static readonly Error DuplicateName =
             new("Material.DuplicateName", "A material with the same name already exists.");
+    }
+
+    public static class Patient
+    {
+        public static readonly Error DuplicateName =
+            new("Patient.DuplicateName", "A patient with the same name already exists.");
     }
 }

@@ -2,8 +2,12 @@
 using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Treatment;
 using Dental.Application.Services;
-using Dental.Application.ViewsStuff.Interfaces;
-using Dental.Application.ViewsStuff.Services;
+using Dental.Application.ViewsStuff.Interfaces.Appointments;
+using Dental.Application.ViewsStuff.Interfaces.Patients;
+using Dental.Application.ViewsStuff.Interfaces.Visits;
+using Dental.Application.ViewsStuff.Services.Appointments;
+using Dental.Application.ViewsStuff.Services.Patients;
+using Dental.Application.ViewsStuff.Services.Visits;
 using Dental.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,9 +32,11 @@ public static class DependencyInjection
         services.AddScoped<ISupplierService, SupplierService>();
 
         // Dental.Application.ViewsStuff
-        services.AddScoped<IVisitToothTreatmentsViewService, VisitToothTreatmentsViewService>();
+        services.AddScoped<IVisitTreatmentsViewService, VisitTreatmentsViewService>();
         services.AddScoped<IVisitViewService, VisitViewService>();
         services.AddScoped<IVisitSummaryService, VisitSummaryService>();
+        services.AddScoped<IAppointmentInfoService, AppointmentInfoService>();
+        services.AddScoped<IPatientViewService, PatientViewService>();
 
         return services;
     }

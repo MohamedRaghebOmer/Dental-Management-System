@@ -14,6 +14,12 @@ public sealed class AppointmentConfiguration
     {
         base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
 
+        builder.HasAlternateKey(a => new
+        {
+            a.Id,
+            a.PatientId
+        });
+
         ConfigureForeignKeys(builder);
         ConfigureIndexes(builder);
         AddColumnsComments(builder);
@@ -67,6 +73,8 @@ public sealed class AppointmentConfiguration
             .HasConversion<byte>()
             .HasColumnType("TINYINT")
             .HasColumnName(nameof(Appointment.Status));
+
+        builder.Ignore(p => p.EffectiveStatus);
 
         builder.Property(p => p.Notes)
             .HasColumnName(nameof(Appointment.Notes))

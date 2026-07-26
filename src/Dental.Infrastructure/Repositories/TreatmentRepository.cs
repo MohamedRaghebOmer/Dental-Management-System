@@ -6,10 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public sealed class TreatmentRepository(DentalDbContext _dbContext)
-    : Repository<Treatment>(_dbContext),
+public sealed class TreatmentRepository
+    : Repository<Treatment>,
         ITreatmentRepository
 {
+    private readonly DentalDbContext _dbContext;
+
+    public TreatmentRepository(DentalDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public Task<bool> ExistsByNameAsync(
         string name,
         Id? excludedId = null,

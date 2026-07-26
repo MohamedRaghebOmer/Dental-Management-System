@@ -6,7 +6,9 @@ using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
+using Dental.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dental.Application.Services;
 
@@ -16,245 +18,370 @@ public sealed class VisitService
 {
     private readonly IVisitRepository _visitRepo;
     private readonly IAppointmentRepository _appointmentRepo;
+    private readonly IPatientRepository _patientRepo;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<VisitService> _logger;
 
     public VisitService(
         IVisitRepository repo,
         IAppointmentRepository appointmentRepository,
+        IPatientRepository patientRepository,
         IUnitOfWork unitOfWork,
         ILogger<VisitService> logger)
         : base(repo, unitOfWork, logger)
     {
         _visitRepo = repo;
         _appointmentRepo = appointmentRepository;
+        _patientRepo = patientRepository;
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
 
-    public async Task<Result<int>> CreateAsync(
-        VisitRequestDto dto,
+    public async Task<Result<int>> CreateWalkInVisitAsync(
+        WalkInVisitDto walkInVisitDto,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("VisitService.CreateAsync is called. {CreateVisitDto}", dto);
-
-        var entityResult = await BuildEntityAndEnsureForeignKeys(
-            dto,
-            null,
-            cancellationToken);
-        if (entityResult.IsFailure)
+        try
         {
-            return Result.Failure<int>(entityResult.Error);
+            _logger.LogInformation(
+                "VisitService.CreateWalkInVisitAsync is called. {WalkInVisitDto}",
+                walkInVisitDto);
+
+            // Optional but recommended: validate DTO attributes here too
+            var validationContext = new ValidationContext(walkInVisitDto);
+            var validationResults = new List<ValidationResult>();
+
+            if (!Validator.TryValidateObject(
+                    walkInVisitDto,
+                    validationContext,
+                    validationResults,
+                    validateAllProperties: true))
+            {
+                var validationMessage = string.Join(" | ", validationResults.Select(r => r.ErrorMessage));
+
+                _logger.LogWarning(
+                    "CreateWalkInVisitAsync failed because of invalid DTO. Errors: {Errors}",
+                    validationMessage);
+
+                return Result.Failure<int>(ServiceErrors.Common.ValidationFailed);
+            }
+
+            var patientIdResult = Id.Create(walkInVisitDto.PatientId);
+            if (patientIdResult.IsFailure)
+            {
+                _logger.LogWarning(
+                    "CreateWalkInVisitAsync failed. Invalid PatientId: {PatientId}.",
+                    walkInVisitDto.PatientId);
+                return Result.Failure<int>(patientIdResult.Error);
+            }
+
+            if (!await _patientRepo.ExistsAsync(patientIdResult.Value, cancellationToken))
+            {
+                _logger.LogWarning(
+                    "CreateWalkInVisitAsync failed. Patient with Id {PatientId} was not found.",
+                    walkInVisitDto.PatientId);
+
+                return Result.Failure<int>(ServiceErrors.Visit.PatientNotFound);
+            }
+
+            // Adjust this to your actual Money factory/constructor
+            var paidAmount = Money.Create(walkInVisitDto.PaidAmount);
+            if (paidAmount.IsFailure)
+            {
+                _logger.LogWarning(
+                    "CreateWalkInVisitAsync failed. Invalid PaidAmount: {PaidAmount}.",
+                    walkInVisitDto.PaidAmount);
+
+                return Result.Failure<int>(paidAmount.Error);
+            }
+
+            var discountAmount = Money.Create(walkInVisitDto.DiscountAmount);
+            if (discountAmount.IsFailure)
+            {
+                _logger.LogWarning(
+                    "CreateWalkInVisitAsync failed. Invalid DiscountAmount: {DiscountAmount}.",
+                    walkInVisitDto.DiscountAmount);
+
+                return Result.Failure<int>(discountAmount.Error);
+            }
+
+            var visitResult = Visit.Create(
+                appointmentId: null,
+                patientId: patientIdResult.Value,
+                paidAmount: paidAmount.Value,
+                discountAmount: discountAmount.Value,
+                notes: walkInVisitDto.Notes);
+
+            if (visitResult.IsFailure)
+            {
+                _logger.LogWarning(
+                    "CreateWalkInVisitAsync failed while creating Visit for PatientId {PatientId}. Error: {Error}",
+                    walkInVisitDto.PatientId,
+                    visitResult.Error);
+
+                return Result.Failure<int>(visitResult.Error);
+            }
+
+            var visit = visitResult.Value;
+
+            _visitRepo.Add(visit);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Success(visit.Id.Value);
         }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation(
+                "CreateWalkInVisitAsync was canceled for PatientId {PatientId}.",
+                walkInVisitDto?.PatientId);
 
-        _visitRepo.Add(entityResult.Value);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+            return Result.Failure<int>(ServiceErrors.Common.UnexpectedError);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Unexpected error occurred in CreateWalkInVisitAsync for PatientId {PatientId}.",
+                walkInVisitDto?.PatientId);
 
-        _logger.LogInformation("Visit created successfully with ID {id}.", entityResult.Value.Id);
-        return entityResult.Value.Id.Value;
+            return Result.Failure<int>(ServiceErrors.Common.UnexpectedError);
+        }
     }
 
-    public async Task<Result> UpdateAsync(
-        int visitId,
-        VisitRequestDto dto,
+    public async Task<Result<int>> CreatePreAppointmentVisitAsync(
+        PreAppointmentVisitDto preAppointmentVisitDto,
         CancellationToken cancellationToken = default)
     {
-        var visitIdResult = Id.Create(visitId);
-        if (visitIdResult.IsFailure)
+        try
         {
-            _logger.LogWarning("Invalid Id. {Id} {Error}", visitId, visitIdResult.Error);
-            return Result.Failure<Visit>(visitIdResult.Error);
-        }
+            _logger.LogInformation(
+                "VisitService.CreatePreAppointmentVisitAsync is called. {PreAppointmentVisitDto}",
+                preAppointmentVisitDto);
 
-        var entityResult = await BuildEntityAndEnsureForeignKeys(
-            dto,
-            visitIdResult.Value,
-            cancellationToken);
-        if (entityResult.IsFailure)
-        {
-            return Result.Failure<int>(entityResult.Error);
-        }
+            // Optional but recommended: validate DTO attributes here too
+            var validationContext = new ValidationContext(preAppointmentVisitDto);
+            var validationResults = new List<ValidationResult>();
 
-        var visit = await _visitRepo.GetByIdAsync(visitIdResult.Value, cancellationToken);
-        if (visit == null)
-        {
-            _logger.LogWarning("Failed to update visit: Visit not found. {VisitId}", visitId);
-            return Result.Failure<int>(ServiceErrors.NotFound);
-        }
+            if (!Validator.TryValidateObject(
+                    preAppointmentVisitDto,
+                    validationContext,
+                    validationResults,
+                    validateAllProperties: true))
+            {
+                var validationMessage = string.Join(" | ", validationResults.Select(r => r.ErrorMessage));
 
-        var visitUpdateResult = visit.Update(
-            entityResult.Value.AppointmentId,
-            entityResult.Value.PatientName,
-            entityResult.Value.PaidAmount,
-            entityResult.Value.DiscountAmount,
-            dto.VisitDateTime,
-            dto.Notes);
-        if (visitUpdateResult.IsFailure)
-        {
-            _logger.LogWarning("Failed to update visit: {Error}", visitUpdateResult.Error);
-            return Result.Failure<int>(visitUpdateResult.Error);
-        }
+                _logger.LogWarning(
+                    "CreatePreAppointmentVisitAsync failed because of invalid DTO. Errors: {Errors}",
+                    validationMessage);
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        _logger.LogInformation("Visit updated successfully. {VisitId}", visitId);
+                return Result.Failure<int>(ServiceErrors.Common.ValidationFailed);
+            }
 
-        return Result.Success();
-    }
-
-    private async Task<Result<Visit>> BuildEntityAndEnsureForeignKeys(
-        VisitRequestDto dto,
-        Id? visitId,
-        CancellationToken cancellationToken)
-    {
-        Result<Id> appointmentIdResult = null!;
-        if (dto.AppointmentId.HasValue)
-        {
-            appointmentIdResult = Id.Create(dto.AppointmentId.Value);
+            var appointmentIdResult = Id.Create(preAppointmentVisitDto.AppointmentId);
             if (appointmentIdResult.IsFailure)
             {
                 _logger.LogWarning(
-                    "Failed to create visit: Invalid appointment ID. {AppointmentId} {Error}", dto.AppointmentId, appointmentIdResult.Error);
-                return Result.Failure<Visit>(appointmentIdResult.Error);
-            }
-        }
+                    "CreatePreAppointmentVisitAsync failed. Invalid AppointmentId: {AppointmentId}.",
+                    preAppointmentVisitDto.AppointmentId);
 
-        var paidAmountResult = Money.Create(dto.PaidAmount);
-        if (paidAmountResult.IsFailure)
-        {
-            _logger.LogWarning("Failed to create visit: Invalid paid amount. {PaidAmount} {PaidAmountResult}",
-                dto.PaidAmount, paidAmountResult);
-
-            return Result.Failure<Visit>(paidAmountResult.Error);
-        }
-
-        var discountAmountResult = Money.Create(dto.DiscountAmount);
-        if (discountAmountResult.IsFailure)
-        {
-            _logger.LogWarning("Failed to create visit: Invalid discount amount. {DiscountAmount} {DiscountAmountResult}",
-                dto.DiscountAmount, discountAmountResult);
-            return Result.Failure<Visit>(discountAmountResult.Error);
-        }
-
-        var visitResult = Visit.Create(
-            appointmentIdResult?.Value,
-            dto.PatientName,
-            paidAmountResult.Value,
-            discountAmountResult.Value,
-            dto.VisitDateTime,
-            dto.Notes);
-
-        if (visitResult.IsFailure)
-        {
-            _logger.LogWarning("Failed to create visit: {visitResult}", visitResult);
-            return Result.Failure<Visit>(visitResult.Error);
-        }
-
-        if (appointmentIdResult != null)
-        {
-            Appointment? appointment = null!;
-            if ((appointment = await _appointmentRepo.GetByIdAsync(
-                    appointmentIdResult.Value, cancellationToken)) == null)
-            {
-                _logger.LogWarning(
-                    "Failed to create visit: Appointment not found. {AppointmentId}", appointmentIdResult.Value);
-                return Result.Failure<Visit>(ServiceErrors.NotFound);
+                return Result.Failure<int>(appointmentIdResult.Error);
             }
 
-            if (await _visitRepo.ExistsByAppointmentIdAsync(
-                appointmentIdResult.Value, visitId, cancellationToken))
+            var appointment = await _appointmentRepo.GetByIdAsync(
+                appointmentIdResult.Value, cancellationToken);
+            if (appointment is null)
             {
                 _logger.LogWarning(
-                    "Attempted to create a visit with duplicated appointment Id." +
-                    " {AppointmentId} {Error}", appointmentIdResult.Value.Value, appointmentIdResult.Error);
+                    "CreatePreAppointmentVisitAsync failed. Appointment with Id {AppointmentId} was not found.",
+                    preAppointmentVisitDto.AppointmentId);
 
-                return Result.Failure<Visit>(ServiceErrors.Visit.DuplicatedAppointmentId);
+                return Result.Failure<int>(ServiceErrors.Visit.AppointmentNotFound);
             }
 
             var completeResult = appointment.Complete();
             if (completeResult.IsFailure)
             {
-                _logger.LogWarning("Failed to complete an Appointment. {AppointmentId} {Error}",
-                    appointmentIdResult.Value.Value, completeResult.Error);
+                _logger.LogWarning("CreatePreAppointmentVisitAsync failed. Appointment with Id {AppointmentId} could not be completed. Error: {Error}",
+                    preAppointmentVisitDto.AppointmentId,
+                    completeResult.Error);
 
-                return Result.Failure<Visit>(completeResult.Error);
+                return Result.Failure<int>(completeResult.Error);
             }
-        }
 
-        return Result.Success(visitResult.Value);
+            // Adjust this to your actual Money factory/constructor
+            var paidAmount = Money.Create(preAppointmentVisitDto.PaidAmount);
+            if (paidAmount.IsFailure)
+            {
+                _logger.LogWarning(
+                    "CreatePreAppointmentVisitAsync failed. Invalid PaidAmount: {PaidAmount}.",
+                    preAppointmentVisitDto.PaidAmount);
+
+                return Result.Failure<int>(paidAmount.Error);
+            }
+
+            var discountAmount = Money.Create(preAppointmentVisitDto.DiscountAmount);
+            if (discountAmount.IsFailure)
+            {
+                _logger.LogWarning(
+                    "CreatePreAppointmentVisitAsync failed. Invalid DiscountAmount: {DiscountAmount}.",
+                    preAppointmentVisitDto.DiscountAmount);
+
+                return Result.Failure<int>(discountAmount.Error);
+            }
+
+            var visitResult = Visit.Create(
+                appointmentId: appointmentIdResult.Value,
+                patientId: appointment.PatientId,
+                paidAmount: paidAmount.Value,
+                discountAmount: discountAmount.Value,
+                notes: preAppointmentVisitDto.Notes);
+
+            if (visitResult.IsFailure)
+            {
+                _logger.LogWarning(
+                    "CreatePreAppointmentVisitAsync failed while creating Visit for AppointmentId {AppointmentId}. Error: {Error}",
+                    preAppointmentVisitDto.AppointmentId,
+                    visitResult.Error);
+
+                return Result.Failure<int>(visitResult.Error);
+            }
+
+            var visit = visitResult.Value;
+
+            _visitRepo.Add(visit);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Success(visit.Id.Value);
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation(
+                "CreatePreAppointmentVisitAsync was canceled for AppointmentId {AppointmentId}.",
+                preAppointmentVisitDto?.AppointmentId);
+
+            return Result.Failure<int>(ServiceErrors.Common.UnexpectedError);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Unexpected error occurred in CreatePreAppointmentVisitAsync for AppointmentId {AppointmentId}.",
+                preAppointmentVisitDto?.AppointmentId);
+
+            return Result.Failure<int>(ServiceErrors.Common.UnexpectedError);
+        }
     }
 
+    public async Task<Result> UpdateAsync(
+         int visitId,
+         UpdateVisitDto updateVisitDto,
+         CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            _logger.LogInformation(
+                "VisitService.UpdateAsync is called. {UpdateVisitDto}",
+                updateVisitDto);
 
-    //public async Task<Result<int>> AddVisitWithManyTreatmentsAsync(
-    //    VisitRequestDto dto,
-    //    List<VisitTreatmentRequestDto> treatments,
-    //    CancellationToken cancellationToken = default)
-    //{
-    //    var visitResult = await BuildEntityAndEnsureForeignKeys(
-    //        dto, cancellationToken);
+            // Optional but recommended: validate DTO attributes here too
+            var validationContext = new ValidationContext(updateVisitDto);
+            var validationResults = new List<ValidationResult>();
 
-    //    await _visitRepo.Add(visitResult.Value);
+            if (!Validator.TryValidateObject(
+                    updateVisitDto,
+                    validationContext,
+                    validationResults,
+                    validateAllProperties: true))
+            {
+                var validationMessage = string.Join(" | ", validationResults.Select(r => r.ErrorMessage));
 
-    //    foreach (var treatment in treatments)
-    //    {
-    //        var addTreatmentResult = await AddTreatmentAsync(visitResult.Value, treatment, cancellationToken);
-    //        if (addTreatmentResult.IsFailure)
-    //        {
-    //            return Result.Failure<int>(addTreatmentResult.Error);
-    //        }
-    //    }
+                _logger.LogWarning(
+                    "UpdateAsync failed because of invalid DTO. VisitId: {VisitId}. Errors: {Errors}",
+                    visitId,
+                    validationMessage);
 
-    //    await _unitOfWork.SaveChangesAsync(cancellationToken);
-    //    _logger.LogInformation("Visit and VisitTreatment was added successfully. {VisitId}", visitResult.Value.Id.Value);
+                return Result.Failure(ServiceErrors.Common.ValidationFailed);
+            }
 
-    //    return visitResult.Value.Id.Value;
-    //}
+            var visitIdResult = Id.Create(visitId);
+            if (visitIdResult.IsFailure)
+            {
+                _logger.LogWarning(
+                    "UpdateAsync failed. Invalid VisitId: {VisitId}.",
+                    visitId);
 
-    //private async Task<Result> AddTreatmentAsync(
-    //    Visit visit,
-    //    VisitTreatmentRequestDto treatment,
-    //    CancellationToken cancellationToken)
-    //{
-    //    var toothNumberResult = ToothNumber.Create(treatment.ToothNumber);
-    //    if (toothNumberResult.IsFailure)
-    //    {
-    //        _logger.LogWarning("Invalid Tooth Number. {ToothNumber}", treatment.ToothNumber);
-    //        return Result.Failure<int>(ServiceErrors.Visit.InvalidToothNumber);
-    //    }
+                return Result.Failure(visitIdResult.Error);
+            }
 
-    //    var treatmentIdResult = Id.Create(treatment.TreatmentId);
-    //    if (treatmentIdResult.IsFailure)
-    //    {
-    //        _logger.LogWarning("Invalid Treatment Id. {Id}", treatment.TreatmentId);
-    //        return Result.Failure(ServiceErrors.Visit.InvalidTreatmentId);
-    //    }
+            var visit = await _visitRepo.GetByIdAsync(visitIdResult.Value, cancellationToken);
+            if (visit is null)
+            {
+                _logger.LogWarning(
+                    "UpdateAsync failed. Visit with Id {VisitId} was not found.",
+                    visitId);
 
-    //    var priceResult = Money.Create(treatment.TreatmentId);
-    //    if (priceResult.IsFailure)
-    //    {
-    //        _logger.LogWarning("Invalid Treatment Id. {Id}", treatment.TreatmentId);
-    //        return Result.Failure(ServiceErrors.Visit.InvalidTreatmentId);
-    //    }
+                return Result.Failure(ServiceErrors.Common.NotFound);
+            }
 
-    //    var price = await _treatmentRepo.GetPriceByIdAsync(treatmentIdResult.Value, cancellationToken);
-    //    if (price == null)
-    //    {
-    //        _logger.LogWarning("Treatment not found. {Id}", treatmentIdResult.Value);
-    //        return Result.Failure(ServiceErrors.Visit.TreatmentNotFound);
-    //    }
+            // Adjust this to your actual Money factory/constructor
+            var paidAmount = Money.Create(updateVisitDto.PaidAmount);
+            if (paidAmount.IsFailure)
+            {
+                _logger.LogWarning(
+                    "UpdateAsync failed. Invalid PaidAmount: {PaidAmount}. VisitId: {VisitId}.",
+                    updateVisitDto.PaidAmount,
+                    visitId);
 
-    //    var addTreatmentsResult = visit.AddVisitTreatment(
-    //        toothNumberResult.Value,
-    //        treatmentIdResult.Value,
-    //        price,
-    //        treatment.Notes);
+                return Result.Failure(paidAmount.Error);
+            }
 
-    //    if (addTreatmentsResult.IsFailure)
-    //    {
-    //        _logger.LogWarning("Failed to add VisitTreatment due to Domain business rules.");
-    //        return Result.Failure(addTreatmentsResult.Error);
-    //    }
+            var discountAmount = Money.Create(updateVisitDto.DiscountAmount);
+            if (discountAmount.IsFailure)
+            {
+                _logger.LogWarning(
+                    "UpdateAsync failed. Invalid DiscountAmount: {DiscountAmount}. VisitId: {VisitId}.",
+                    updateVisitDto.DiscountAmount,
+                    visitId);
 
-    //    return Result.Success();
-    //}
+                return Result.Failure(discountAmount.Error);
+            }
+
+            var updateResult = visit.Update(
+                paidAmount: paidAmount.Value,
+                discountAmount: discountAmount.Value,
+                notes: updateVisitDto.Notes);
+
+            if (updateResult.IsFailure)
+            {
+                _logger.LogWarning(
+                    "UpdateAsync failed while updating VisitId {VisitId}. Error: {Error}",
+                    visitId,
+                    updateResult.Error);
+
+                return Result.Failure(updateResult.Error);
+            }
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.LogInformation(
+                "UpdateAsync was canceled for VisitId {VisitId}.",
+                visitId);
+
+            return Result.Failure(ServiceErrors.Common.UnexpectedError);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "Unexpected error occurred in UpdateAsync for VisitId {VisitId}.",
+                visitId);
+
+            return Result.Failure(ServiceErrors.Common.UnexpectedError);
+        }
+    }
 }

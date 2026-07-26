@@ -174,22 +174,16 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("Age");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("FirstName");
-
                     b.Property<byte>("Gender")
                         .HasColumnType("TINYINT")
                         .HasColumnName("Gender")
                         .HasComment("Male = 0, Female = 1");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT")
-                        .HasColumnName("LastName");
+                        .HasColumnName("Name");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11)
@@ -198,11 +192,9 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FirstName")
-                        .HasDatabaseName("IX_Patients_FirstName");
-
-                    b.HasIndex("LastName")
-                        .HasDatabaseName("IX_Patients_LastName");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Patients_Name");
 
                     b.ToTable("Patients", null, t =>
                         {
@@ -454,10 +446,9 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("PaidAmount");
 
-                    b.Property<string>("PatientName")
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("PatientName");
+                    b.Property<int>("PatientId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("PatientId");
 
                     b.Property<DateTime>("VisitDateTime")
                         .HasColumnType("TEXT")
@@ -465,17 +456,14 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentId")
-                        .IsUnique()
-                        .HasDatabaseName("UX_Visits_AppointmentId")
-                        .HasFilter("[AppointmentId] IS NOT NULL");
-
-                    b.HasIndex("PatientName")
-                        .HasDatabaseName("UX_Visits_PatientName");
+                    b.HasIndex("PatientId")
+                        .HasDatabaseName("IX_Visits_PatientId");
 
                     b.HasIndex("VisitDateTime")
-                        .IsUnique()
-                        .HasDatabaseName("UX_Visits_VisitDateTime");
+                        .HasDatabaseName("IX_Visits_VisitDateTime");
+
+                    b.HasIndex("AppointmentId", "PatientId")
+                        .IsUnique();
 
                     b.ToTable("Visits", null, t =>
                         {
@@ -610,12 +598,21 @@ namespace Dental.Infrastructure.Migrations
 
             modelBuilder.Entity("Dental.Domain.Entities.Visit", b =>
                 {
+                    b.HasOne("Dental.Domain.Entities.Patient", "Patient")
+                        .WithMany("Visits")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Dental.Domain.Entities.Appointment", "Appointment")
                         .WithOne("Visit")
-                        .HasForeignKey("Dental.Domain.Entities.Visit", "AppointmentId")
+                        .HasForeignKey("Dental.Domain.Entities.Visit", "AppointmentId", "PatientId")
+                        .HasPrincipalKey("Dental.Domain.Entities.Appointment", "Id", "PatientId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Appointment");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Dental.Domain.Entities.VisitTreatment", b =>
@@ -647,6 +644,8 @@ namespace Dental.Infrastructure.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("Prescriptions");
+
+                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("Dental.Domain.Entities.Prescription", b =>

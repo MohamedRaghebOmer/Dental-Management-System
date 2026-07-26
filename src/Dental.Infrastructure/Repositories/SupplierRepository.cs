@@ -6,10 +6,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Dental.Infrastructure.Repositories;
 
-public sealed class SupplierRepository(DentalDbContext _dbContext)
-    : Repository<Supplier>(_dbContext),
+public sealed class SupplierRepository
+    : Repository<Supplier>,
         ISupplierRepository
 {
+    private readonly DentalDbContext _dbContext;
+
+    public SupplierRepository(DentalDbContext dbContext) : base(dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public Task<bool> PhoneNumberExistsAsync(
         PhoneNumber phoneNumber,
         Id? excludedId = null,

@@ -49,19 +49,13 @@ namespace Dental.WinForms
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             splitContainer1 = new SplitContainer();
             tableLayoutPanel1 = new TableLayoutPanel();
             btnSettings = new Guna.UI2.WinForms.Guna2Button();
             btnCashCount = new Guna.UI2.WinForms.Guna2Button();
-            btnTreatments = new Guna.UI2.WinForms.Guna2Button();
             btnSuppliers = new Guna.UI2.WinForms.Guna2Button();
-            btnMaterials = new Guna.UI2.WinForms.Guna2Button();
-            btnPrescriptions = new Guna.UI2.WinForms.Guna2Button();
+            btnTreatments = new Guna.UI2.WinForms.Guna2Button();
             btnPatients = new Guna.UI2.WinForms.Guna2Button();
             btnAppointments = new Guna.UI2.WinForms.Guna2Button();
             btnVisits = new Guna.UI2.WinForms.Guna2Button();
@@ -112,12 +106,10 @@ namespace Dental.WinForms
             // 
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 90F));
-            tableLayoutPanel1.Controls.Add(btnSettings, 0, 10);
-            tableLayoutPanel1.Controls.Add(btnCashCount, 0, 9);
-            tableLayoutPanel1.Controls.Add(btnTreatments, 0, 6);
-            tableLayoutPanel1.Controls.Add(btnSuppliers, 0, 8);
-            tableLayoutPanel1.Controls.Add(btnMaterials, 0, 7);
-            tableLayoutPanel1.Controls.Add(btnPrescriptions, 0, 5);
+            tableLayoutPanel1.Controls.Add(btnSettings, 0, 8);
+            tableLayoutPanel1.Controls.Add(btnCashCount, 0, 7);
+            tableLayoutPanel1.Controls.Add(btnSuppliers, 0, 6);
+            tableLayoutPanel1.Controls.Add(btnTreatments, 0, 5);
             tableLayoutPanel1.Controls.Add(btnPatients, 0, 4);
             tableLayoutPanel1.Controls.Add(btnAppointments, 0, 3);
             tableLayoutPanel1.Controls.Add(btnVisits, 0, 2);
@@ -125,20 +117,18 @@ namespace Dental.WinForms
             tableLayoutPanel1.Controls.Add(btnMainMenu, 0, 1);
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 11;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 15.3852177F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.6926074F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 7.69183874F));
+            tableLayoutPanel1.RowCount = 9;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 20.0000019F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 9.999999F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(350, 816);
+            tableLayoutPanel1.Size = new Size(350, 774);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // btnSettings
@@ -148,7 +138,7 @@ namespace Dental.WinForms
             btnSettings.AutoRoundedCorners = true;
             btnSettings.BackColor = Color.Transparent;
             btnSettings.BackgroundImageLayout = ImageLayout.None;
-            btnSettings.BorderRadius = 30;
+            btnSettings.BorderRadius = 36;
             btnSettings.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             btnSettings.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnSettings.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
@@ -165,12 +155,12 @@ namespace Dental.WinForms
             btnSettings.HoverState.FillColor = Color.Gainsboro;
             btnSettings.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
             btnSettings.ImageAlign = HorizontalAlignment.Left;
-            btnSettings.Location = new Point(3, 751);
+            btnSettings.Location = new Point(3, 696);
             btnSettings.Name = "btnSettings";
             btnSettings.PressedColor = Color.FromArgb(229, 231, 235);
             btnSettings.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnSettings.Size = new Size(344, 62);
-            btnSettings.TabIndex = 13;
+            btnSettings.Size = new Size(344, 75);
+            btnSettings.TabIndex = 20;
             btnSettings.Text = "الإعدادات";
             btnSettings.UseTransparentBackground = true;
             // 
@@ -181,7 +171,7 @@ namespace Dental.WinForms
             btnCashCount.AutoRoundedCorners = true;
             btnCashCount.BackColor = Color.Transparent;
             btnCashCount.BackgroundImageLayout = ImageLayout.None;
-            btnCashCount.BorderRadius = 30;
+            btnCashCount.BorderRadius = 34;
             btnCashCount.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             btnCashCount.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnCashCount.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
@@ -198,47 +188,14 @@ namespace Dental.WinForms
             btnCashCount.HoverState.FillColor = Color.Gainsboro;
             btnCashCount.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
             btnCashCount.ImageAlign = HorizontalAlignment.Left;
-            btnCashCount.Location = new Point(3, 683);
+            btnCashCount.Location = new Point(3, 619);
             btnCashCount.Name = "btnCashCount";
             btnCashCount.PressedColor = Color.FromArgb(229, 231, 235);
             btnCashCount.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnCashCount.Size = new Size(344, 62);
-            btnCashCount.TabIndex = 12;
-            btnCashCount.Text = "الخدمات والأدوات";
+            btnCashCount.Size = new Size(344, 71);
+            btnCashCount.TabIndex = 19;
+            btnCashCount.Text = "الخامات والأدوات";
             btnCashCount.UseTransparentBackground = true;
-            // 
-            // btnTreatments
-            // 
-            btnTreatments.Animated = true;
-            btnTreatments.AnimatedGIF = true;
-            btnTreatments.AutoRoundedCorners = true;
-            btnTreatments.BackColor = Color.Transparent;
-            btnTreatments.BackgroundImageLayout = ImageLayout.None;
-            btnTreatments.BorderRadius = 30;
-            btnTreatments.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnTreatments.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnTreatments.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnTreatments.Cursor = Cursors.Hand;
-            btnTreatments.CustomizableEdges = customizableEdges5;
-            btnTreatments.DisabledState.BorderColor = Color.DarkGray;
-            btnTreatments.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnTreatments.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnTreatments.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnTreatments.Dock = DockStyle.Fill;
-            btnTreatments.FillColor = Color.FromArgb(243, 244, 246);
-            btnTreatments.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnTreatments.ForeColor = Color.FromArgb(55, 65, 81);
-            btnTreatments.HoverState.FillColor = Color.Gainsboro;
-            btnTreatments.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnTreatments.ImageAlign = HorizontalAlignment.Left;
-            btnTreatments.Location = new Point(3, 479);
-            btnTreatments.Name = "btnTreatments";
-            btnTreatments.PressedColor = Color.FromArgb(229, 231, 235);
-            btnTreatments.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            btnTreatments.Size = new Size(344, 62);
-            btnTreatments.TabIndex = 11;
-            btnTreatments.Text = "الخدمات الطبيه";
-            btnTreatments.UseTransparentBackground = true;
             // 
             // btnSuppliers
             // 
@@ -247,12 +204,12 @@ namespace Dental.WinForms
             btnSuppliers.AutoRoundedCorners = true;
             btnSuppliers.BackColor = Color.Transparent;
             btnSuppliers.BackgroundImageLayout = ImageLayout.None;
-            btnSuppliers.BorderRadius = 30;
+            btnSuppliers.BorderRadius = 34;
             btnSuppliers.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             btnSuppliers.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnSuppliers.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnSuppliers.Cursor = Cursors.Hand;
-            btnSuppliers.CustomizableEdges = customizableEdges7;
+            btnSuppliers.CustomizableEdges = customizableEdges5;
             btnSuppliers.DisabledState.BorderColor = Color.DarkGray;
             btnSuppliers.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSuppliers.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -264,80 +221,47 @@ namespace Dental.WinForms
             btnSuppliers.HoverState.FillColor = Color.Gainsboro;
             btnSuppliers.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
             btnSuppliers.ImageAlign = HorizontalAlignment.Left;
-            btnSuppliers.Location = new Point(3, 615);
+            btnSuppliers.Location = new Point(3, 542);
             btnSuppliers.Name = "btnSuppliers";
             btnSuppliers.PressedColor = Color.FromArgb(229, 231, 235);
-            btnSuppliers.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            btnSuppliers.Size = new Size(344, 62);
-            btnSuppliers.TabIndex = 8;
+            btnSuppliers.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnSuppliers.Size = new Size(344, 71);
+            btnSuppliers.TabIndex = 18;
             btnSuppliers.Text = "معاملات المعامل";
             btnSuppliers.UseTransparentBackground = true;
             // 
-            // btnMaterials
+            // btnTreatments
             // 
-            btnMaterials.Animated = true;
-            btnMaterials.AnimatedGIF = true;
-            btnMaterials.AutoRoundedCorners = true;
-            btnMaterials.BackColor = Color.Transparent;
-            btnMaterials.BackgroundImageLayout = ImageLayout.None;
-            btnMaterials.BorderRadius = 30;
-            btnMaterials.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnMaterials.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnMaterials.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnMaterials.Cursor = Cursors.Hand;
-            btnMaterials.CustomizableEdges = customizableEdges9;
-            btnMaterials.DisabledState.BorderColor = Color.DarkGray;
-            btnMaterials.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnMaterials.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnMaterials.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnMaterials.Dock = DockStyle.Fill;
-            btnMaterials.FillColor = Color.FromArgb(243, 244, 246);
-            btnMaterials.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnMaterials.ForeColor = Color.FromArgb(55, 65, 81);
-            btnMaterials.HoverState.FillColor = Color.Gainsboro;
-            btnMaterials.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnMaterials.ImageAlign = HorizontalAlignment.Left;
-            btnMaterials.Location = new Point(3, 547);
-            btnMaterials.Name = "btnMaterials";
-            btnMaterials.PressedColor = Color.FromArgb(229, 231, 235);
-            btnMaterials.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnMaterials.Size = new Size(344, 62);
-            btnMaterials.TabIndex = 7;
-            btnMaterials.Text = "المعامل";
-            btnMaterials.UseTransparentBackground = true;
-            // 
-            // btnPrescriptions
-            // 
-            btnPrescriptions.Animated = true;
-            btnPrescriptions.AnimatedGIF = true;
-            btnPrescriptions.AutoRoundedCorners = true;
-            btnPrescriptions.BackColor = Color.Transparent;
-            btnPrescriptions.BackgroundImageLayout = ImageLayout.None;
-            btnPrescriptions.BorderRadius = 30;
-            btnPrescriptions.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnPrescriptions.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnPrescriptions.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnPrescriptions.Cursor = Cursors.Hand;
-            btnPrescriptions.CustomizableEdges = customizableEdges11;
-            btnPrescriptions.DisabledState.BorderColor = Color.DarkGray;
-            btnPrescriptions.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnPrescriptions.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnPrescriptions.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnPrescriptions.Dock = DockStyle.Fill;
-            btnPrescriptions.FillColor = Color.FromArgb(243, 244, 246);
-            btnPrescriptions.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnPrescriptions.ForeColor = Color.FromArgb(55, 65, 81);
-            btnPrescriptions.HoverState.FillColor = Color.Gainsboro;
-            btnPrescriptions.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnPrescriptions.ImageAlign = HorizontalAlignment.Left;
-            btnPrescriptions.Location = new Point(3, 411);
-            btnPrescriptions.Name = "btnPrescriptions";
-            btnPrescriptions.PressedColor = Color.FromArgb(229, 231, 235);
-            btnPrescriptions.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnPrescriptions.Size = new Size(344, 62);
-            btnPrescriptions.TabIndex = 5;
-            btnPrescriptions.Text = "الوصفات الطبيه";
-            btnPrescriptions.UseTransparentBackground = true;
+            btnTreatments.Animated = true;
+            btnTreatments.AnimatedGIF = true;
+            btnTreatments.AutoRoundedCorners = true;
+            btnTreatments.BackColor = Color.Transparent;
+            btnTreatments.BackgroundImageLayout = ImageLayout.None;
+            btnTreatments.BorderRadius = 34;
+            btnTreatments.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            btnTreatments.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
+            btnTreatments.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnTreatments.Cursor = Cursors.Hand;
+            btnTreatments.CustomizableEdges = customizableEdges7;
+            btnTreatments.DisabledState.BorderColor = Color.DarkGray;
+            btnTreatments.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnTreatments.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
+            btnTreatments.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
+            btnTreatments.Dock = DockStyle.Fill;
+            btnTreatments.FillColor = Color.FromArgb(243, 244, 246);
+            btnTreatments.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            btnTreatments.ForeColor = Color.FromArgb(55, 65, 81);
+            btnTreatments.HoverState.FillColor = Color.Gainsboro;
+            btnTreatments.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnTreatments.ImageAlign = HorizontalAlignment.Left;
+            btnTreatments.Location = new Point(3, 465);
+            btnTreatments.Name = "btnTreatments";
+            btnTreatments.PressedColor = Color.FromArgb(229, 231, 235);
+            btnTreatments.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnTreatments.Size = new Size(344, 71);
+            btnTreatments.TabIndex = 17;
+            btnTreatments.Text = "الخدمات الطبيه";
+            btnTreatments.UseTransparentBackground = true;
             // 
             // btnPatients
             // 
@@ -346,12 +270,12 @@ namespace Dental.WinForms
             btnPatients.AutoRoundedCorners = true;
             btnPatients.BackColor = Color.Transparent;
             btnPatients.BackgroundImageLayout = ImageLayout.None;
-            btnPatients.BorderRadius = 30;
+            btnPatients.BorderRadius = 34;
             btnPatients.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             btnPatients.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnPatients.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnPatients.Cursor = Cursors.Hand;
-            btnPatients.CustomizableEdges = customizableEdges13;
+            btnPatients.CustomizableEdges = customizableEdges9;
             btnPatients.DisabledState.BorderColor = Color.DarkGray;
             btnPatients.DisabledState.CustomBorderColor = Color.DarkGray;
             btnPatients.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -363,14 +287,15 @@ namespace Dental.WinForms
             btnPatients.HoverState.FillColor = Color.Gainsboro;
             btnPatients.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
             btnPatients.ImageAlign = HorizontalAlignment.Left;
-            btnPatients.Location = new Point(3, 343);
+            btnPatients.Location = new Point(3, 388);
             btnPatients.Name = "btnPatients";
             btnPatients.PressedColor = Color.FromArgb(229, 231, 235);
-            btnPatients.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btnPatients.Size = new Size(344, 62);
+            btnPatients.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnPatients.Size = new Size(344, 71);
             btnPatients.TabIndex = 4;
             btnPatients.Text = "المرضى";
             btnPatients.UseTransparentBackground = true;
+            btnPatients.Click += btnPatients_Click;
             // 
             // btnAppointments
             // 
@@ -379,12 +304,12 @@ namespace Dental.WinForms
             btnAppointments.AutoRoundedCorners = true;
             btnAppointments.BackColor = Color.Transparent;
             btnAppointments.BackgroundImageLayout = ImageLayout.None;
-            btnAppointments.BorderRadius = 30;
+            btnAppointments.BorderRadius = 34;
             btnAppointments.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             btnAppointments.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnAppointments.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnAppointments.Cursor = Cursors.Hand;
-            btnAppointments.CustomizableEdges = customizableEdges15;
+            btnAppointments.CustomizableEdges = customizableEdges11;
             btnAppointments.DisabledState.BorderColor = Color.DarkGray;
             btnAppointments.DisabledState.CustomBorderColor = Color.DarkGray;
             btnAppointments.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -396,14 +321,15 @@ namespace Dental.WinForms
             btnAppointments.HoverState.FillColor = Color.Gainsboro;
             btnAppointments.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
             btnAppointments.ImageAlign = HorizontalAlignment.Left;
-            btnAppointments.Location = new Point(3, 275);
+            btnAppointments.Location = new Point(3, 311);
             btnAppointments.Name = "btnAppointments";
             btnAppointments.PressedColor = Color.FromArgb(229, 231, 235);
-            btnAppointments.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            btnAppointments.Size = new Size(344, 62);
+            btnAppointments.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnAppointments.Size = new Size(344, 71);
             btnAppointments.TabIndex = 3;
-            btnAppointments.Text = "المواعيد";
+            btnAppointments.Text = "الحجوزات و المواعيد";
             btnAppointments.UseTransparentBackground = true;
+            btnAppointments.Click += btnAppointments_Click;
             // 
             // btnVisits
             // 
@@ -412,12 +338,12 @@ namespace Dental.WinForms
             btnVisits.AutoRoundedCorners = true;
             btnVisits.BackColor = Color.Transparent;
             btnVisits.BackgroundImageLayout = ImageLayout.None;
-            btnVisits.BorderRadius = 30;
+            btnVisits.BorderRadius = 34;
             btnVisits.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             btnVisits.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnVisits.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnVisits.Cursor = Cursors.Hand;
-            btnVisits.CustomizableEdges = customizableEdges17;
+            btnVisits.CustomizableEdges = customizableEdges13;
             btnVisits.DisabledState.BorderColor = Color.DarkGray;
             btnVisits.DisabledState.CustomBorderColor = Color.DarkGray;
             btnVisits.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -429,11 +355,11 @@ namespace Dental.WinForms
             btnVisits.HoverState.FillColor = Color.Gainsboro;
             btnVisits.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
             btnVisits.ImageAlign = HorizontalAlignment.Left;
-            btnVisits.Location = new Point(3, 207);
+            btnVisits.Location = new Point(3, 234);
             btnVisits.Name = "btnVisits";
             btnVisits.PressedColor = Color.FromArgb(229, 231, 235);
-            btnVisits.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            btnVisits.Size = new Size(344, 62);
+            btnVisits.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            btnVisits.Size = new Size(344, 71);
             btnVisits.TabIndex = 2;
             btnVisits.Text = "الزيارات";
             btnVisits.UseTransparentBackground = true;
@@ -446,7 +372,7 @@ namespace Dental.WinForms
             pnlHeader.Dock = DockStyle.Fill;
             pnlHeader.Location = new Point(3, 3);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(344, 130);
+            pnlHeader.Size = new Size(344, 148);
             pnlHeader.TabIndex = 1;
             // 
             // lblHeader
@@ -477,12 +403,12 @@ namespace Dental.WinForms
             btnMainMenu.AutoRoundedCorners = true;
             btnMainMenu.BackColor = Color.Transparent;
             btnMainMenu.BackgroundImageLayout = ImageLayout.None;
-            btnMainMenu.BorderRadius = 30;
+            btnMainMenu.BorderRadius = 34;
             btnMainMenu.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
             btnMainMenu.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
             btnMainMenu.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
             btnMainMenu.Cursor = Cursors.Hand;
-            btnMainMenu.CustomizableEdges = customizableEdges19;
+            btnMainMenu.CustomizableEdges = customizableEdges15;
             btnMainMenu.DisabledState.BorderColor = Color.DarkGray;
             btnMainMenu.DisabledState.CustomBorderColor = Color.DarkGray;
             btnMainMenu.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
@@ -494,11 +420,11 @@ namespace Dental.WinForms
             btnMainMenu.HoverState.FillColor = Color.Gainsboro;
             btnMainMenu.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
             btnMainMenu.ImageAlign = HorizontalAlignment.Left;
-            btnMainMenu.Location = new Point(3, 139);
+            btnMainMenu.Location = new Point(3, 157);
             btnMainMenu.Name = "btnMainMenu";
             btnMainMenu.PressedColor = Color.FromArgb(229, 231, 235);
-            btnMainMenu.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            btnMainMenu.Size = new Size(344, 62);
+            btnMainMenu.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnMainMenu.Size = new Size(344, 71);
             btnMainMenu.TabIndex = 1;
             btnMainMenu.Text = "القائمه الرئيسية";
             btnMainMenu.UseTransparentBackground = true;
@@ -507,11 +433,11 @@ namespace Dental.WinForms
             // pnlView
             // 
             pnlView.BackColor = Color.DarkCyan;
-            pnlView.CustomizableEdges = customizableEdges21;
+            pnlView.CustomizableEdges = customizableEdges17;
             pnlView.Dock = DockStyle.Bottom;
             pnlView.Location = new Point(0, 99);
             pnlView.Name = "pnlView";
-            pnlView.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            pnlView.ShadowDecoration.CustomizableEdges = customizableEdges18;
             pnlView.Size = new Size(1562, 956);
             pnlView.TabIndex = 2;
             // 
@@ -520,11 +446,11 @@ namespace Dental.WinForms
             guna2CustomGradientPanel1.BackColor = Color.White;
             guna2CustomGradientPanel1.Controls.Add(ctrlDateTime1);
             guna2CustomGradientPanel1.Controls.Add(ctrlProfile1);
-            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges23;
+            guna2CustomGradientPanel1.CustomizableEdges = customizableEdges19;
             guna2CustomGradientPanel1.Dock = DockStyle.Top;
             guna2CustomGradientPanel1.Location = new Point(0, 0);
             guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
-            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges20;
             guna2CustomGradientPanel1.Size = new Size(1562, 100);
             guna2CustomGradientPanel1.TabIndex = 0;
             // 
@@ -597,15 +523,13 @@ namespace Dental.WinForms
         private Guna.UI2.WinForms.Guna2Button btnVisits;
         private Guna.UI2.WinForms.Guna2Button btnAppointments;
         private Guna.UI2.WinForms.Guna2Button btnPatients;
-        private Guna.UI2.WinForms.Guna2Button btnPrescriptions;
-        private Guna.UI2.WinForms.Guna2Button btnMaterials;
-        private Guna.UI2.WinForms.Guna2Button btnTreatments;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel1;
         private UserControls.ctrlProfile ctrlProfile1;
         private UserControls.ctrlDateTime ctrlDateTime1;
+        private Guna.UI2.WinForms.Guna2Panel pnlView;
         private Guna.UI2.WinForms.Guna2Button btnSettings;
         private Guna.UI2.WinForms.Guna2Button btnCashCount;
-        private Guna.UI2.WinForms.Guna2Panel pnlView;
         private Guna.UI2.WinForms.Guna2Button btnSuppliers;
+        private Guna.UI2.WinForms.Guna2Button btnTreatments;
     }
 }

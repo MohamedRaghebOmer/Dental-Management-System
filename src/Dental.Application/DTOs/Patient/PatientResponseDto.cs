@@ -4,10 +4,8 @@ using Dental.Domain.Enums;
 namespace Dental.Application.DTOs.Patient;
 
 public sealed record PatientResponseDto(
-    int id,
-    string FirstName,
-    string LastName,
-    string fullName,
+    int Id,
+    string Name,
     int Age,
     Gender Gender,
     string? PhoneNumber)
@@ -16,9 +14,7 @@ public sealed record PatientResponseDto(
     public PatientResponseDto(Domain.Entities.Patient entity)
     : this(
         entity.Id.Value,
-        entity.FirstName.Value,
-        entity.LastName.Value,
-        entity.FullName,
+        entity.Name,
         entity.Age,
         entity.Gender,
         entity.PhoneNumber?.Value)
