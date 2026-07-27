@@ -1,7 +1,5 @@
 ﻿using Dental.Licensing.Core;
-using Dental.WinForms.Security;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Dental.WinForms.Security;
 

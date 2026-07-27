@@ -32,7 +32,7 @@ public sealed class PatientRepository
     }
 
     public async Task<bool> CanDeleteAsync(
-        Id id, 
+        Id id,
         CancellationToken cancellationToken = default)
     {
         var canDeleteFromVisits = !await _dbContext.Visits

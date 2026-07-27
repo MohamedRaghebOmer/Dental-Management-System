@@ -1,11 +1,11 @@
-﻿using Dental.Application.ViewsStuff.Interfaces.Patients;
+﻿using Dental.Application.Abstractions.ServicesInterfaces;
+using Dental.Application.ViewsStuff.Interfaces.Patients;
 using Dental.Domain.Enums;
 using Dental.Domain.Views.Patients;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
 using System.ComponentModel;
-using Dental.Application.Abstractions.ServicesInterfaces;
 
 namespace Dental.WinForms.Views;
 
@@ -427,7 +427,7 @@ public partial class PatientsView : UserControl
 
         var result = MessageBox.Show(
             "هل أنت متأكد من حذف المريض؟",
-            "تأكيد الحذف", 
+            "تأكيد الحذف",
             MessageBoxButtons.YesNo,
             MessageBoxIcon.Warning,
             MessageBoxDefaultButton.Button2,
