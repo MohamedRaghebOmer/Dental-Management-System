@@ -3,7 +3,6 @@ using Dental.Domain.Enums;
 using Dental.Domain.Views.Patients;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
-using Dental.WinForms.Global.Helpers;
 using Dental.WinForms.Helpers;
 using System.ComponentModel;
 

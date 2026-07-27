@@ -22,4 +22,7 @@ public interface IFormFactory
 
     frmAddEditLabTransaction Create_frmAddEditLabTransaction();
     frmAddEditLabTransaction Create_frmAddEditLabTransaction(int labTranId);
+
+    frmAddEditMaterial Create_frmAddEditMaterial();
+    frmAddEditMaterial Create_frmAddEditMaterial(int materialId);
 }

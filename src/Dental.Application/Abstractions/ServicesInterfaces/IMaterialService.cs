@@ -1,5 +1,6 @@
 ﻿using Dental.Application.DTOs.Material;
 using Dental.Domain.Shared;
+using Dental.Domain.Views.Material;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;
 
@@ -24,5 +25,9 @@ public interface IMaterialService
 
     Task<Result> DeleteAsync(
         int id,
+        CancellationToken cancellationToken = default);
+
+    Task<List<MaterialFilterDto>> FilterAsync(
+        MaterialFilterDto? filterDto = null,
         CancellationToken cancellationToken = default);
 }

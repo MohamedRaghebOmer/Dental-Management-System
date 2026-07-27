@@ -2,9 +2,8 @@
 using Dental.Domain.Enums;
 using Dental.Domain.Views.Appointment;
 using Dental.WinForms.Abstractions;
+using Dental.WinForms.Constants;
 using Dental.WinForms.Extensions;
-using Dental.WinForms.Global.Constants;
-using Dental.WinForms.Global.Helpers;
 using Dental.WinForms.Helpers;
 
 namespace Dental.WinForms.UserControls.Search;

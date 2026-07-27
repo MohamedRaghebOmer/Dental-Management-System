@@ -1,7 +1,6 @@
 ﻿using Dental.Application.ViewsStuff.Interfaces.Appointments;
 using Dental.Domain.Views.Appointment;
 using Dental.WinForms.Extensions;
-using Dental.WinForms.Global.Helpers;
 using Dental.WinForms.Helpers;
 
 namespace Dental.WinForms.UserControls.Info;

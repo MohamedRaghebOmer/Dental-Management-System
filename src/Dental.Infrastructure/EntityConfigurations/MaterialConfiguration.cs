@@ -1,5 +1,4 @@
 ﻿using Dental.Domain.Entities;
-using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,20 +13,22 @@ public sealed class MaterialConfiguration
     {
         base.Configure(builder); // Configures (Table Name, Primary Key, Properties)
 
-        ConfigureForeignKeys(builder);
         ConfigureCheckConstraints(builder);
         ConfigureIndexes(builder);
     }
 
     private static void ConfigureIndexes(EntityTypeBuilder<Material> builder)
     {
-        builder.HasIndex(m => m.SupplierId)
-            .IsUnique(false);
-
         builder.HasIndex(m => m.Name)
+            .HasDatabaseName("IX_Materials_Name")
             .IsUnique(true);
 
         builder.HasIndex(m => m.Quantity)
+            .HasDatabaseName("IX_Materials_Quantity")
+            .IsUnique(false);
+
+        builder.HasIndex(m => m.ReorderLevel)
+            .HasDatabaseName("IX_Materials_ReorderLevel")
             .IsUnique(false);
     }
 
@@ -36,25 +37,17 @@ public sealed class MaterialConfiguration
         builder.ToTable(table =>
         {
             table.HasCheckConstraint(
-                "CK_Material_ReorderLevel",
+                "CK_Materials_ReorderLevel",
                 "[ReorderLevel] >= 0");
 
             table.HasCheckConstraint(
-                "CK_Material_Quantity",
+                "CK_Materials_Quantity",
                 "[Quantity] >= 0");
 
             table.HasCheckConstraint(
-                "CK_Material_BuyingPrice",
-                "[BuyingPrice] >= 0");
+                "CK_Materials_Price",
+                "[Price] >= 0");
         });
-    }
-
-    private static void ConfigureForeignKeys(EntityTypeBuilder<Material> builder)
-    {
-        builder.HasOne(m => m.Supplier)
-            .WithMany(s => s.Materials)
-            .HasForeignKey(m => m.SupplierId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 
     protected override void ConfigureProperties(EntityTypeBuilder<Material> builder)
@@ -64,28 +57,18 @@ public sealed class MaterialConfiguration
             .HasMaxLength(Material.Constants.NameMaxLength)
             .IsRequired();
 
-        builder.Property(m => m.SupplierId)
-            .HasConversion(
-                value => value == null ? (int?)null : value.Value,
-                value => value == null ? null : Id.FromDatabase(value.Value))
-            .HasColumnName(nameof(Material.SupplierId))
-            .IsRequired(false);
+        builder.Property(m => m.Quantity)
+            .HasColumnName(nameof(Material.Quantity))
+            .IsRequired();
 
         builder.Property(m => m.ReorderLevel)
             .HasColumnName(nameof(Material.ReorderLevel))
             .IsRequired();
 
-        builder.Property(m => m.Description)
-            .HasColumnName(nameof(Material.Description))
-            .HasMaxLength(Material.Constants.DescriptionMaxLength)
-            .IsRequired(false);
+        builder.Ignore(m => m.Status);
 
-        builder.Property(m => m.Quantity)
-            .HasColumnName(nameof(Material.Quantity))
-            .IsRequired();
-
-        builder.Property(m => m.BuyingPrice)
-            .HasColumnName(nameof(Material.BuyingPrice))
+        builder.Property(m => m.Price)
+            .HasColumnName(nameof(Material.Price))
             .HasPrecision(18, 2)
             .IsRequired();
     }

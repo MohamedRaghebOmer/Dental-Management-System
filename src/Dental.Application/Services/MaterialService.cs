@@ -6,6 +6,7 @@ using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
 using Dental.Domain.ValueObjects;
+using Dental.Domain.Views.Material;
 using Microsoft.Extensions.Logging;
 
 namespace Dental.Application.Services;
@@ -71,15 +72,20 @@ public sealed class MaterialService
 
         var updatedEntity = entityResult.Value.Update(
             entityResult.Value.Name,
-            entityResult.Value.SupplierId,
-            entityResult.Value.ReorderLevel,
-            entityResult.Value.Description,
             entityResult.Value.Quantity,
-            entityResult.Value.BuyingPrice);
+            entityResult.Value.ReorderLevel,
+            entityResult.Value.Price);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
+    }
+
+    public Task<List<MaterialFilterDto>> FilterAsync(
+        MaterialFilterDto? filterDto = null, 
+        CancellationToken cancellationToken = default)
+    {
+        return _repo.FilterAsync(filterDto, cancellationToken);
     }
 
     private async Task<Result<Material>> BuildEntityAsync(
@@ -98,17 +104,6 @@ public sealed class MaterialService
             }
         }
 
-        Result<Id> supplierIdResult = null!;
-        if (requestDto.SupplierId.HasValue)
-        {
-            supplierIdResult = Id.Create(requestDto.SupplierId.Value);
-            if (supplierIdResult.IsFailure)
-            {
-                _logger.LogWarning("Invalid supplier ID. {SupplierId}", requestDto.SupplierId);
-                return Result.Failure<Material>(ServiceErrors.Material.InvalidSupplierId);
-            }
-        }
-
         if (await _repo.ExistsByNameAsync(requestDto.Name, createIdResult?.Value, cancellationToken))
         {
             _logger.LogWarning("Material with name {Name} already exists.", requestDto.Name);
@@ -117,11 +112,9 @@ public sealed class MaterialService
 
         var entityResult = Material.Create(
             requestDto.Name,
-            supplierIdResult?.Value,
-            requestDto.ReorderLevel,
-            requestDto.Description,
             requestDto.Quantity,
-            requestDto.BuyingPrice);
+            requestDto.ReorderLevel,
+            requestDto.Price);
 
         if (entityResult.IsFailure)
         {

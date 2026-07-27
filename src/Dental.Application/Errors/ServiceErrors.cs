@@ -85,15 +85,6 @@ public static class ServiceErrors
                 "There is already an appointment for the given date.");
     }
 
-    public static class Prescription
-    {
-        public static readonly Error PatientNotFound =
-            new("Prescription.PatientNotFound", "Patient not found.");
-
-        public static readonly Error VisitNotFound =
-            new("Prescription.VisitNotFound", "Visit not found.");
-    }
-
     public static class PrescriptionItem
     {
         public static readonly Error PrescriptionNotFound = new(
@@ -125,9 +116,6 @@ public static class ServiceErrors
 
     public static class Material
     {
-        public static readonly Error InvalidSupplierId =
-            new("Material.InvalidSupplierId", "Invalid supplier ID.");
-
         public static readonly Error DuplicateName =
             new("Material.DuplicateName", "A material with the same name already exists.");
     }

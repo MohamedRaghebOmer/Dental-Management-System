@@ -53,7 +53,7 @@ namespace Dental.WinForms
             splitContainer1 = new SplitContainer();
             tableLayoutPanel1 = new TableLayoutPanel();
             btnSettings = new Guna.UI2.WinForms.Guna2Button();
-            btnCashCount = new Guna.UI2.WinForms.Guna2Button();
+            btnMaterials = new Guna.UI2.WinForms.Guna2Button();
             btnLabsTrans = new Guna.UI2.WinForms.Guna2Button();
             btnTreatments = new Guna.UI2.WinForms.Guna2Button();
             btnPatients = new Guna.UI2.WinForms.Guna2Button();
@@ -107,7 +107,7 @@ namespace Dental.WinForms
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 90F));
             tableLayoutPanel1.Controls.Add(btnSettings, 0, 8);
-            tableLayoutPanel1.Controls.Add(btnCashCount, 0, 7);
+            tableLayoutPanel1.Controls.Add(btnMaterials, 0, 7);
             tableLayoutPanel1.Controls.Add(btnLabsTrans, 0, 6);
             tableLayoutPanel1.Controls.Add(btnTreatments, 0, 5);
             tableLayoutPanel1.Controls.Add(btnPatients, 0, 4);
@@ -164,38 +164,39 @@ namespace Dental.WinForms
             btnSettings.Text = "الإعدادات";
             btnSettings.UseTransparentBackground = true;
             // 
-            // btnCashCount
+            // btnMaterials
             // 
-            btnCashCount.Animated = true;
-            btnCashCount.AnimatedGIF = true;
-            btnCashCount.AutoRoundedCorners = true;
-            btnCashCount.BackColor = Color.Transparent;
-            btnCashCount.BackgroundImageLayout = ImageLayout.None;
-            btnCashCount.BorderRadius = 34;
-            btnCashCount.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            btnCashCount.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
-            btnCashCount.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnCashCount.Cursor = Cursors.Hand;
-            btnCashCount.CustomizableEdges = customizableEdges3;
-            btnCashCount.DisabledState.BorderColor = Color.DarkGray;
-            btnCashCount.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnCashCount.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
-            btnCashCount.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
-            btnCashCount.Dock = DockStyle.Fill;
-            btnCashCount.FillColor = Color.FromArgb(243, 244, 246);
-            btnCashCount.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            btnCashCount.ForeColor = Color.FromArgb(55, 65, 81);
-            btnCashCount.HoverState.FillColor = Color.Gainsboro;
-            btnCashCount.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
-            btnCashCount.ImageAlign = HorizontalAlignment.Left;
-            btnCashCount.Location = new Point(3, 619);
-            btnCashCount.Name = "btnCashCount";
-            btnCashCount.PressedColor = Color.FromArgb(229, 231, 235);
-            btnCashCount.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnCashCount.Size = new Size(344, 71);
-            btnCashCount.TabIndex = 19;
-            btnCashCount.Text = "الخامات والأدوات";
-            btnCashCount.UseTransparentBackground = true;
+            btnMaterials.Animated = true;
+            btnMaterials.AnimatedGIF = true;
+            btnMaterials.AutoRoundedCorners = true;
+            btnMaterials.BackColor = Color.Transparent;
+            btnMaterials.BackgroundImageLayout = ImageLayout.None;
+            btnMaterials.BorderRadius = 34;
+            btnMaterials.BorderStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+            btnMaterials.CheckedState.FillColor = Color.FromArgb(229, 231, 235);
+            btnMaterials.CheckedState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnMaterials.Cursor = Cursors.Hand;
+            btnMaterials.CustomizableEdges = customizableEdges3;
+            btnMaterials.DisabledState.BorderColor = Color.DarkGray;
+            btnMaterials.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnMaterials.DisabledState.FillColor = Color.FromArgb(249, 250, 251);
+            btnMaterials.DisabledState.ForeColor = Color.FromArgb(156, 163, 175);
+            btnMaterials.Dock = DockStyle.Fill;
+            btnMaterials.FillColor = Color.FromArgb(243, 244, 246);
+            btnMaterials.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            btnMaterials.ForeColor = Color.FromArgb(55, 65, 81);
+            btnMaterials.HoverState.FillColor = Color.Gainsboro;
+            btnMaterials.HoverState.ForeColor = Color.FromArgb(37, 99, 235);
+            btnMaterials.ImageAlign = HorizontalAlignment.Left;
+            btnMaterials.Location = new Point(3, 619);
+            btnMaterials.Name = "btnMaterials";
+            btnMaterials.PressedColor = Color.FromArgb(229, 231, 235);
+            btnMaterials.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnMaterials.Size = new Size(344, 71);
+            btnMaterials.TabIndex = 19;
+            btnMaterials.Text = "الخامات والأدوات";
+            btnMaterials.UseTransparentBackground = true;
+            btnMaterials.Click += btnMaterials_Click;
             // 
             // btnLabsTrans
             // 
@@ -530,7 +531,7 @@ namespace Dental.WinForms
         private UserControls.ctrlDateTime ctrlDateTime1;
         private Guna.UI2.WinForms.Guna2Panel pnlView;
         private Guna.UI2.WinForms.Guna2Button btnSettings;
-        private Guna.UI2.WinForms.Guna2Button btnCashCount;
+        private Guna.UI2.WinForms.Guna2Button btnMaterials;
         private Guna.UI2.WinForms.Guna2Button btnLabsTrans;
         private Guna.UI2.WinForms.Guna2Button btnTreatments;
     }

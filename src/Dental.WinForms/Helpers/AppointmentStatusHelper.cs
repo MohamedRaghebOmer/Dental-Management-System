@@ -1,7 +1,7 @@
 ﻿using Dental.Domain.Enums;
-using Dental.WinForms.Global.Constants;
+using Dental.WinForms.Constants;
 
-namespace Dental.WinForms.Global.Helpers;
+namespace Dental.WinForms.Helpers;
 
 public static class AppointmentStatusHelper
 {

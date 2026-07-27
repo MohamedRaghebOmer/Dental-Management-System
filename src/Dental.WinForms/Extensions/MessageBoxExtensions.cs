@@ -9,7 +9,7 @@ public static class MessageBoxExtensions
             caption,
             MessageBoxButtons.OK,
             MessageBoxIcon.Error,
-            MessageBoxDefaultButton.Button1,
+            MessageBoxDefaultButton.Button2,
             MessageBoxOptions.RtlReading);
     }
 
@@ -20,7 +20,7 @@ public static class MessageBoxExtensions
             caption,
             MessageBoxButtons.OK,
             MessageBoxIcon.Warning,
-            MessageBoxDefaultButton.Button1,
+            MessageBoxDefaultButton.Button2,
             MessageBoxOptions.RtlReading);
     }
 
@@ -42,7 +42,7 @@ public static class MessageBoxExtensions
             caption,
             MessageBoxButtons.OK,
             MessageBoxIcon.Information,
-            MessageBoxDefaultButton.Button1,
+            MessageBoxDefaultButton.Button2,
             MessageBoxOptions.RtlReading);
     }
 }

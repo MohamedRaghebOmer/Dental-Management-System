@@ -1,4 +1,4 @@
-﻿namespace Dental.WinForms.Global.Constants;
+﻿namespace Dental.WinForms.Constants;
 
 public static class UiStrings
 {

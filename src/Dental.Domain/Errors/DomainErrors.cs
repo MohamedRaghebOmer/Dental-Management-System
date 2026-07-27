@@ -269,14 +269,6 @@ public static class DomainErrors
                 );
             }
 
-            public static class Description
-            {
-                public static readonly Error TooLong = new(
-                    "Description.TooLong",
-                    $"The material description cannot be longer than {Domain.Entities.Material.Constants.DescriptionMaxLength} characters."
-                );
-            }
-
             public static class Quantity
             {
                 public static readonly Error Negative = new(
@@ -285,11 +277,11 @@ public static class DomainErrors
                 );
             }
 
-            public static class BuyingPrice
+            public static class Price
             {
                 public static readonly Error Negative = new(
-                    "BuyingPrice.Negative",
-                    "The buying price cannot be negative."
+                    "Price.Negative",
+                    "The price cannot be negative."
                 );
             }
         }
