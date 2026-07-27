@@ -260,4 +260,13 @@ public partial class SettingsView : UserControl
 
         return destinationPath;
     }
+
+    private void SettingsView_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
+        {
+            btnSave_Click(sender, e);
+            e.Handled = true;
+        }
+    }
 }

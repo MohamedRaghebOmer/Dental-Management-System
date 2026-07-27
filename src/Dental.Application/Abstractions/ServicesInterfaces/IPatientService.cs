@@ -29,4 +29,8 @@ public interface IPatientService
     Task<Result> DeleteAsync(
         int id,
         CancellationToken cancellationToken = default);
+
+    Task<Result<bool>> CanDeleteAsync(
+        int id,
+        CancellationToken cancellationToken = default);
 }

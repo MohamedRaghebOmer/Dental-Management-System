@@ -69,6 +69,8 @@
             toolStripSeparator1 = new ToolStripSeparator();
             tsmiCreateAppointment = new ToolStripMenuItem();
             tsmiCreateVisit = new ToolStripMenuItem();
+            toolStripSeparator4 = new ToolStripSeparator();
+            tsmiDelete = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
             tsmiCopyPhoneNumber = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
@@ -424,30 +426,30 @@
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { تعديلبياناتالمريضToolStripMenuItem, toolStripSeparator1, tsmiCreateAppointment, tsmiCreateVisit, toolStripSeparator2, tsmiCopyPhoneNumber, toolStripSeparator3, tsmiRefresh });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { تعديلبياناتالمريضToolStripMenuItem, toolStripSeparator1, tsmiCreateAppointment, tsmiCreateVisit, toolStripSeparator4, tsmiDelete, toolStripSeparator2, tsmiCopyPhoneNumber, toolStripSeparator3, tsmiRefresh });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.RightToLeft = RightToLeft.Yes;
-            contextMenuStrip1.Size = new Size(181, 152);
+            contextMenuStrip1.Size = new Size(215, 212);
             contextMenuStrip1.Opening += contextMenuStrip1_Opening;
             // 
             // تعديلبياناتالمريضToolStripMenuItem
             // 
             تعديلبياناتالمريضToolStripMenuItem.Image = Properties.Resources.pen_512;
             تعديلبياناتالمريضToolStripMenuItem.Name = "تعديلبياناتالمريضToolStripMenuItem";
-            تعديلبياناتالمريضToolStripMenuItem.Size = new Size(180, 26);
+            تعديلبياناتالمريضToolStripMenuItem.Size = new Size(214, 26);
             تعديلبياناتالمريضToolStripMenuItem.Text = "تعديل";
             تعديلبياناتالمريضToolStripMenuItem.Click += dataGridView_DoubleClick;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(177, 6);
+            toolStripSeparator1.Size = new Size(211, 6);
             // 
             // tsmiCreateAppointment
             // 
             tsmiCreateAppointment.Image = Properties.Resources.plus_512;
             tsmiCreateAppointment.Name = "tsmiCreateAppointment";
-            tsmiCreateAppointment.Size = new Size(180, 26);
+            tsmiCreateAppointment.Size = new Size(214, 26);
             tsmiCreateAppointment.Text = "إنشاء حجز";
             tsmiCreateAppointment.Click += tsmiCreateAppointment_Click;
             // 
@@ -455,33 +457,46 @@
             // 
             tsmiCreateVisit.Image = Properties.Resources.plus_512;
             tsmiCreateVisit.Name = "tsmiCreateVisit";
-            tsmiCreateVisit.Size = new Size(180, 26);
+            tsmiCreateVisit.Size = new Size(214, 26);
             tsmiCreateVisit.Text = "إنشاء زياره";
             tsmiCreateVisit.Click += tsmiCreateVisit_Click;
+            // 
+            // toolStripSeparator4
+            // 
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(211, 6);
+            // 
+            // tsmiDelete
+            // 
+            tsmiDelete.Image = Properties.Resources.bin_512;
+            tsmiDelete.Name = "tsmiDelete";
+            tsmiDelete.Size = new Size(214, 26);
+            tsmiDelete.Text = "حذف";
+            tsmiDelete.Click += tsmiDelete_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(177, 6);
+            toolStripSeparator2.Size = new Size(211, 6);
             // 
             // tsmiCopyPhoneNumber
             // 
             tsmiCopyPhoneNumber.Image = (Image)resources.GetObject("tsmiCopyPhoneNumber.Image");
             tsmiCopyPhoneNumber.Name = "tsmiCopyPhoneNumber";
-            tsmiCopyPhoneNumber.Size = new Size(180, 26);
+            tsmiCopyPhoneNumber.Size = new Size(214, 26);
             tsmiCopyPhoneNumber.Text = "نسخ رقم الهاتف";
             tsmiCopyPhoneNumber.Click += tsmiCopyPhoneNumber_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(177, 6);
+            toolStripSeparator3.Size = new Size(211, 6);
             // 
             // tsmiRefresh
             // 
             tsmiRefresh.Image = Properties.Resources.Refresh_32;
             tsmiRefresh.Name = "tsmiRefresh";
-            tsmiRefresh.Size = new Size(180, 26);
+            tsmiRefresh.Size = new Size(214, 26);
             tsmiRefresh.Text = "تحديث";
             tsmiRefresh.Click += tsmiRefresh_Click;
             // 
@@ -745,5 +760,7 @@
         private ToolStripMenuItem tsmiRefresh;
         private ToolStripMenuItem tsmiCopyPhoneNumber;
         private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem tsmiDelete;
+        private ToolStripSeparator toolStripSeparator4;
     }
 }

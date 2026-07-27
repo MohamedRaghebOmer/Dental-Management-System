@@ -143,7 +143,6 @@
             lblTotalAppointments.Name = "lblTotalAppointments";
             lblTotalAppointments.Size = new Size(255, 28);
             lblTotalAppointments.TabIndex = 4;
-            lblTotalAppointments.Text = "0";
             lblTotalAppointments.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
@@ -180,7 +179,6 @@
             lblPendingAppointments.Name = "lblPendingAppointments";
             lblPendingAppointments.Size = new Size(255, 28);
             lblPendingAppointments.TabIndex = 0;
-            lblPendingAppointments.Text = "0";
             lblPendingAppointments.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -217,7 +215,6 @@
             lblCompletedAppointment.Name = "lblCompletedAppointment";
             lblCompletedAppointment.Size = new Size(255, 28);
             lblCompletedAppointment.TabIndex = 6;
-            lblCompletedAppointment.Text = "0";
             lblCompletedAppointment.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3
@@ -254,7 +251,6 @@
             lblMissedAppointments.Name = "lblMissedAppointments";
             lblMissedAppointments.Size = new Size(255, 28);
             lblMissedAppointments.TabIndex = 7;
-            lblMissedAppointments.Text = "0";
             lblMissedAppointments.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label4
@@ -631,7 +627,6 @@
             lblCanceledAppointments.Name = "lblCanceledAppointments";
             lblCanceledAppointments.Size = new Size(260, 31);
             lblCanceledAppointments.TabIndex = 7;
-            lblCanceledAppointments.Text = "0";
             lblCanceledAppointments.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label6

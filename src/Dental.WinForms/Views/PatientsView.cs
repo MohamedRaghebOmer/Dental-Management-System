@@ -5,12 +5,14 @@ using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
 using System.ComponentModel;
+using Dental.Application.Abstractions.ServicesInterfaces;
 
 namespace Dental.WinForms.Views;
 
 public partial class PatientsView : UserControl
 {
     private readonly IPatientViewService _patientViewService;
+    private readonly IPatientService _patientService;
     private readonly IFormFactory _formFactory;
 
     private bool _isLoading = true;
@@ -46,12 +48,14 @@ public partial class PatientsView : UserControl
 
     public PatientsView(
         IPatientViewService patientViewService,
+        IPatientService patientService,
         IFormFactory formFactory)
     {
         InitializeComponent();
         _isLoading = true;
 
         _patientViewService = patientViewService;
+        _patientService = patientService;
         _formFactory = formFactory;
 
         dataGridView.AutoGenerateColumns = false;
@@ -380,7 +384,7 @@ public partial class PatientsView : UserControl
         Refresh();
     }
 
-    private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+    private async void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
     {
         if (dataGridView.CurrentCell == null
             || dataGridView.CurrentCell.RowIndex < 0
@@ -392,6 +396,17 @@ public partial class PatientsView : UserControl
 
         if (string.IsNullOrWhiteSpace(GetSelectedPatientPhoneNumberFromGrid()))
             tsmiCopyPhoneNumber.Enabled = false;
+
+        var patientId = GetSelectedPatientIdFromGrid();
+        if (patientId is not > 0)
+        {
+            e.Cancel = true;
+            tsmiDelete.Enabled = false;
+            return;
+        }
+
+        var canDelete = await _patientService.CanDeleteAsync(patientId.Value);
+        tsmiDelete.Enabled = canDelete.Value;
     }
 
     private void dataGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
@@ -402,5 +417,33 @@ public partial class PatientsView : UserControl
             dataGridView.Rows[e.RowIndex].Selected = true;
             dataGridView.CurrentCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
         }
+    }
+
+    private async void tsmiDelete_Click(object sender, EventArgs e)
+    {
+        var patientId = GetSelectedPatientIdFromGrid();
+        if (patientId is not > 0)
+            return;
+
+        var result = MessageBox.Show(
+            "هل أنت متأكد من حذف المريض؟",
+            "تأكيد الحذف", 
+            MessageBoxButtons.YesNo,
+            MessageBoxIcon.Warning,
+            MessageBoxDefaultButton.Button2,
+            MessageBoxOptions.RtlReading);
+
+        if (result != DialogResult.Yes)
+            return;
+
+        var deleteResult = await _patientService.DeleteAsync(patientId.Value);
+        if (!deleteResult.IsSuccess)
+        {
+            MessageBoxExtensions.ShowError(deleteResult.Error.Message);
+            return;
+        }
+
+        MessageBoxExtensions.ShowInfo("تم حذف المريض بنجاح.", "تم الحذف");
+        Refresh();
     }
 }

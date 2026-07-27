@@ -417,7 +417,6 @@
             lblTotalVisits.Name = "lblTotalVisits";
             lblTotalVisits.Size = new Size(260, 28);
             lblTotalVisits.TabIndex = 4;
-            lblTotalVisits.Text = "0";
             lblTotalVisits.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label1
@@ -452,7 +451,6 @@
             lblSumOfPaidAmount.Name = "lblSumOfPaidAmount";
             lblSumOfPaidAmount.Size = new Size(260, 28);
             lblSumOfPaidAmount.TabIndex = 0;
-            lblSumOfPaidAmount.Text = "0";
             lblSumOfPaidAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -487,7 +485,6 @@
             lblSumOfDiscountAmount.Name = "lblSumOfDiscountAmount";
             lblSumOfDiscountAmount.Size = new Size(260, 28);
             lblSumOfDiscountAmount.TabIndex = 6;
-            lblSumOfDiscountAmount.Text = "0";
             lblSumOfDiscountAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3
@@ -522,7 +519,6 @@
             lblSumOfRemainedAmount.Name = "lblSumOfRemainedAmount";
             lblSumOfRemainedAmount.Size = new Size(260, 28);
             lblSumOfRemainedAmount.TabIndex = 7;
-            lblSumOfRemainedAmount.Text = "0";
             lblSumOfRemainedAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label4
@@ -792,7 +788,6 @@
             lblSumOfTotalAmount.Name = "lblSumOfTotalAmount";
             lblSumOfTotalAmount.Size = new Size(260, 28);
             lblSumOfTotalAmount.TabIndex = 7;
-            lblSumOfTotalAmount.Text = "0";
             lblSumOfTotalAmount.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label8

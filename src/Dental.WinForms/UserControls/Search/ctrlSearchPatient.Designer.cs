@@ -53,6 +53,8 @@
             label1 = new Label();
             cbGender = new ComboBox();
             filterTimer = new System.Windows.Forms.Timer(components);
+            tsmiSelect = new ToolStripMenuItem();
+            toolStripSeparator2 = new ToolStripSeparator();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -238,10 +240,10 @@
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { tsmiEditPatient, tsmiDeletePatient, toolStripSeparator1, tsmiAddPatient });
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { tsmiSelect, toolStripSeparator2, tsmiEditPatient, tsmiDeletePatient, toolStripSeparator1, tsmiAddPatient });
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.RightToLeft = RightToLeft.Yes;
-            contextMenuStrip1.Size = new Size(215, 88);
+            contextMenuStrip1.Size = new Size(215, 148);
             // 
             // tsmiEditPatient
             // 
@@ -312,6 +314,19 @@
             filterTimer.Interval = 500;
             filterTimer.Tick += filterTimer_Tick;
             // 
+            // tsmiSelect
+            // 
+            tsmiSelect.Image = Properties.Resources.check_512;
+            tsmiSelect.Name = "tsmiSelect";
+            tsmiSelect.Size = new Size(214, 26);
+            tsmiSelect.Text = "اختيار";
+            tsmiSelect.Click += tsmiSelect_Click;
+            // 
+            // toolStripSeparator2
+            // 
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(211, 6);
+            // 
             // ctrlSearchPatient
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
@@ -358,5 +373,7 @@
         private ToolStripMenuItem tsmiAddPatient;
         private ToolStripMenuItem tsmiDeletePatient;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem tsmiSelect;
+        private ToolStripSeparator toolStripSeparator2;
     }
 }

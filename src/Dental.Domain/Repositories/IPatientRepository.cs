@@ -13,4 +13,8 @@ public interface IPatientRepository
         string name,
         Id? excludedId = null,
         CancellationToken cancellationToken = default);
+
+    Task<bool> CanDeleteAsync(
+        Id id,
+        CancellationToken cancellationToken = default);
 }

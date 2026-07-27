@@ -2,6 +2,7 @@ using Dental.Application;
 using Dental.Infrastructure;
 using Dental.Infrastructure.Constants;
 using Dental.WinForms.Configurations;
+using Dental.WinForms.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -19,6 +20,16 @@ internal static class Program
         try
         {
             ApplicationConfiguration.Initialize();
+
+            if (!LicenseBootstrapper.IsActivated(out string error))
+            {
+                using ActivationForm form = new ActivationForm();
+
+                if (form.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+            }
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)

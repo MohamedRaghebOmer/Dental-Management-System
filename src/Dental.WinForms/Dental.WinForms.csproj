@@ -6,10 +6,26 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+	  <AssemblyName>إدارة عيادة الأسنان</AssemblyName>
+
+	  <Product>إدارة عيادة الأسنان</Product>
+
+	  <Company>Mohamed Ragheb Software</Company>
+
+	  <Authors>Mohamed Ragheb</Authors>
+
+	  <Description>نظام متكامل لإدارة عيادات الأسنان</Description>
+
+	  <Version>1.0.0</Version>
+	  <FileVersion>1.0.0</FileVersion>
+	  <AssemblyVersion>1.0.0.0</AssemblyVersion>
+
+	  <Copyright>© 2026 Mohamed Ragheb</Copyright>
   </PropertyGroup>
 
  <PropertyGroup>
       <EnableWindowsTargeting>true</EnableWindowsTargeting>
+      <ApplicationIcon>images\ico\icons8-dental-48.ico</ApplicationIcon>
   </PropertyGroup>
 
  <ItemGroup>
@@ -22,6 +38,10 @@
    <None Remove="images\**" />
    <None Remove="Resources\**" />
    <None Remove="UiSamples\**" />
+ </ItemGroup>
+
+ <ItemGroup>
+   <Content Include="images\ico\icons8-dental-48.ico" />
  </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +61,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dental.Application\Dental.Application.csproj" />
     <ProjectReference Include="..\Dental.Infrastructure\Dental.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dental.Licensing.Core\Dental.Licensing.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,5 +84,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
 </Project>

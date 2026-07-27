@@ -126,6 +126,20 @@ public class PatientService
         return PatientResponseDto.ToResponseDto(patient);
     }
 
+    async Task<Result<bool>> IPatientService.CanDeleteAsync(
+        int id,
+        CancellationToken cancellationToken)
+    {
+        var idResult = Id.Create(id);
+        if (idResult.IsFailure)
+        {
+            _logger.LogWarning("Invalid Id. {Id} {Error}", id, idResult.Error);
+            return Result.Failure<bool>(idResult.Error);
+        }
+
+        return await _repo.CanDeleteAsync(idResult.Value, cancellationToken);
+    }
+
     private Result<Patient> BuildEntity(PatientRequestDto dto)
     {
         PhoneNumber? phoneNumber = null;
