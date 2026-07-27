@@ -38,6 +38,10 @@ public partial class frmAddEditAppointment : Form
         {
             txtPatientId.Text = e.Id.ToString();
         };
+
+        CancelButton = btnClose;
+
+        InitializeForm();
     }
 
     public frmAddEditAppointment(
@@ -50,6 +54,8 @@ public partial class frmAddEditAppointment : Form
     {
         _appointmentId = appointmentId;
         _mode = Mode.Update;
+
+        InitializeForm();
     }
 
 
@@ -93,7 +99,6 @@ public partial class frmAddEditAppointment : Form
             }
         }
 
-        InitializeForm();
 
         if (_mode == Mode.Update)
             LoadAppointmentInfo(appointment!);
@@ -333,5 +338,10 @@ public partial class frmAddEditAppointment : Form
     protected virtual void OnAppointmentAdded(int appointmentId)
     {
         AppointmentAdded?.Invoke(this, appointmentId);
+    }
+
+    private void btnClose_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }

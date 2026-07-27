@@ -8,10 +8,24 @@ namespace Dental.Infrastructure.Repositories;
 public sealed class DentalInfoRepository(DentalDbContext dbContext)
     : IDentalInfoRepository
 {
-    public Task<DentalInfo?> GetAsync(
+    public Task<DentalInfo> GetAsync(
         CancellationToken cancellationToken = default)
     {
-        // There is must be one and only one DentalInfo record in the database, so we can use FirstAsync instead of FirstOrDefaultAsync
-        return dbContext.DentalInfo.FirstAsync(cancellationToken)!;
+        return dbContext.DentalInfo.FirstAsync(cancellationToken);
+    }
+
+    public Task SetAsync(
+        DentalInfo info,
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.DentalInfo
+            .ExecuteUpdateAsync(setters => setters
+                    .SetProperty(x => x.DoctorName, info.DoctorName)
+                    .SetProperty(x => x.PhoneNumber, info.PhoneNumber)
+                    .SetProperty(x => x.DoctorPicturePath, info.DoctorPicturePath)
+                    .SetProperty(x => x.DentalName, info.DentalName)
+                    .SetProperty(x => x.DentalDescription, info.DentalDescription)
+                    .SetProperty(x => x.DentalPicturePath, info.DentalPicturePath),
+                cancellationToken);
     }
 }

@@ -46,6 +46,7 @@ public static class DependencyInjection
         services.AddScoped<IPatientViewRepository, PatientViewRepository>();
         services.AddScoped<ILabTransactionRepository, LabTransactionRepository>();
         services.AddScoped<ILabTransactionViewRepository, LabTransactionViewRepository>();
+        services.AddScoped<DatabaseInitializer>();
 
         return services;
     }

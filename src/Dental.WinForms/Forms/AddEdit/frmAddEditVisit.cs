@@ -64,6 +64,10 @@ public partial class frmAddEditVisit : Form
 
         ctrlSearchAppointment1.AppointmentSelected += CtrlSearchAppointment1_AppointmentSelected;
         ctrlSearchPatient1.PatientSelected += CtrlSearchPatient1_PatientSelected;
+
+        CancelButton = btnClose;
+
+        InitializeFormTexts();
     }
 
     public frmAddEditVisit(
@@ -90,6 +94,8 @@ public partial class frmAddEditVisit : Form
         _mode = Mode.Add;
         _visitId = null;
         _visitType = visitType;
+
+        InitializeFormTexts();
     }
 
     public frmAddEditVisit(
@@ -116,6 +122,8 @@ public partial class frmAddEditVisit : Form
         _mode = Mode.Update;
         _visitId = visitId;
         _visitType = null;
+
+        InitializeFormTexts();
     }
 
 
@@ -176,7 +184,6 @@ public partial class frmAddEditVisit : Form
     {
         try
         {
-            InitializeFormTexts();
             await LoadDataGrid();
 
             if (_mode == Mode.Add)

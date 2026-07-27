@@ -4,6 +4,7 @@ using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dental.Infrastructure.Migrations
 {
     [DbContext(typeof(DentalDbContext))]
-    partial class DentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260727150600_UdpateDentalInfoTable")]
+    partial class UdpateDentalInfoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
@@ -105,6 +108,16 @@ namespace Dental.Infrastructure.Migrations
                     b.ToTable("DentalInfo", null, t =>
                         {
                             t.HasCheckConstraint("CK_DentalInfo_OnlyOneRecord", "[Id] = 1");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DentalDescription = "طب الفم والأسنان",
+                            DentalName = "إبتسامه",
+                            DoctorName = "د/ كريم فتوح",
+                            PhoneNumber = "+20100619816"
                         });
                 });
 
@@ -580,7 +593,7 @@ namespace Dental.Infrastructure.Migrations
 
                             b1.HasKey("LabTransactionId");
 
-                            b1.ToTable("LabTransactions", (string)null);
+                            b1.ToTable("LabTransactions");
 
                             b1.WithOwner()
                                 .HasForeignKey("LabTransactionId");
@@ -597,7 +610,7 @@ namespace Dental.Infrastructure.Migrations
 
                             b1.HasKey("LabTransactionId");
 
-                            b1.ToTable("LabTransactions", (string)null);
+                            b1.ToTable("LabTransactions");
 
                             b1.WithOwner()
                                 .HasForeignKey("LabTransactionId");
@@ -651,7 +664,7 @@ namespace Dental.Infrastructure.Migrations
 
                             b1.HasKey("PrescriptionItemId");
 
-                            b1.ToTable("PrescriptionItems", (string)null);
+                            b1.ToTable("PrescriptionItems");
 
                             b1.WithOwner()
                                 .HasForeignKey("PrescriptionItemId");

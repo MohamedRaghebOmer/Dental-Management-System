@@ -36,6 +36,9 @@ internal static class Program
             CreateApplicationDataFolder();
 
             ServiceProvider provider = services.BuildServiceProvider();
+
+            EnsureInitialDataAsync(provider).GetAwaiter().GetResult();
+
             System.Windows.Forms.Application.Run(provider.GetRequiredService<frmMain>());
         }
         catch (Exception ex)
@@ -50,19 +53,18 @@ internal static class Program
 
     private static void CreateApplicationDataFolder()
     {
-        if (!Directory.Exists(DataStoragePaths.BasePath))
-        {
-            Directory.CreateDirectory(DataStoragePaths.BasePath);
-        }
+        Directory.CreateDirectory(DataStoragePaths.DatabaseFolderPath);
+        Directory.CreateDirectory(DataStoragePaths.LogsFolderPath);
+        Directory.CreateDirectory(DataStoragePaths.ImagesFolderPath);
+    }
 
-        if (!Directory.Exists(DataStoragePaths.DatabaseFolderPath))
-        {
-            Directory.CreateDirectory(DataStoragePaths.DatabaseFolderPath);
-        }
+    private static async Task EnsureInitialDataAsync(IServiceProvider provider)
+    {
+        using var scope = provider.CreateScope();
 
-        if (!Directory.Exists(DataStoragePaths.LogsFolderPath))
-        {
-            Directory.CreateDirectory(DataStoragePaths.LogsFolderPath);
-        }
+        var initializer = scope.ServiceProvider
+            .GetRequiredService<DatabaseInitializer>();
+
+        await initializer.InitializeAsync();
     }
 }

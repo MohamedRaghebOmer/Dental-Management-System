@@ -17,6 +17,8 @@ public partial class frmAppointmentInfo : Form
         _appointmentInfoService = appointmentInfoService;
 
         ctrlAppointmentInfo1.WhenAppointmentIsNotFound += (s, args) => Close();
+
+        CancelButton = btnClose;
     }
 
     private void frmAppointmentInfo_Load(object sender, EventArgs e)
@@ -29,5 +31,10 @@ public partial class frmAppointmentInfo : Form
         }
 
         ctrlAppointmentInfo1.Initialize(_appointmentId, _appointmentInfoService);
+    }
+
+    private void btnClose_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }

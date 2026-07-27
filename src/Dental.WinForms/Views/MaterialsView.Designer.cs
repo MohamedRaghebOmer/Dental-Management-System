@@ -57,10 +57,6 @@
             colReorderLevel = new DataGridViewTextBoxColumn();
             colPrice = new DataGridViewTextBoxColumn();
             colStatus = new DataGridViewTextBoxColumn();
-            txtFilterValue = new Guna.UI2.WinForms.Guna2TextBox();
-            label8 = new Label();
-            cbMaterialStatus = new ComboBox();
-            loadDataTimer = new System.Windows.Forms.Timer(components);
             contextMenuStrip1 = new ContextMenuStrip(components);
             tsmiEdit = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
@@ -69,6 +65,10 @@
             toolStripSeparator2 = new ToolStripSeparator();
             tsmiCopyName = new ToolStripMenuItem();
             tsmiRefresh = new ToolStripMenuItem();
+            txtFilterValue = new Guna.UI2.WinForms.Guna2TextBox();
+            label8 = new Label();
+            cbMaterialStatus = new ComboBox();
+            loadDataTimer = new System.Windows.Forms.Timer(components);
             نسخإسمالToolStripMenuItem1 = new ToolStripMenuItem();
             تحديثToolStripMenuItem = new ToolStripMenuItem();
             pnlPendingAppointments.SuspendLayout();
@@ -374,58 +374,6 @@
             colStatus.Name = "colStatus";
             colStatus.ReadOnly = true;
             // 
-            // txtFilterValue
-            // 
-            txtFilterValue.BorderRadius = 7;
-            txtFilterValue.CustomizableEdges = customizableEdges3;
-            txtFilterValue.DefaultText = "";
-            txtFilterValue.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            txtFilterValue.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            txtFilterValue.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            txtFilterValue.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            txtFilterValue.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtFilterValue.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtFilterValue.ForeColor = Color.Black;
-            txtFilterValue.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtFilterValue.Location = new Point(792, 477);
-            txtFilterValue.Margin = new Padding(4, 6, 4, 6);
-            txtFilterValue.Name = "txtFilterValue";
-            txtFilterValue.PlaceholderText = "ابحث هنا";
-            txtFilterValue.SelectedText = "";
-            txtFilterValue.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtFilterValue.Size = new Size(301, 36);
-            txtFilterValue.TabIndex = 56;
-            txtFilterValue.TextChanged += RefreshData;
-            txtFilterValue.VisibleChanged += RefreshData;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label8.Location = new Point(1454, 539);
-            label8.Name = "label8";
-            label8.Size = new Size(103, 31);
-            label8.TabIndex = 60;
-            label8.Text = "ملحوظه :";
-            // 
-            // cbMaterialStatus
-            // 
-            cbMaterialStatus.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbMaterialStatus.FormattingEnabled = true;
-            cbMaterialStatus.Items.AddRange(new object[] { "الكل", "متوفر", "منخفض", "نفد" });
-            cbMaterialStatus.Location = new Point(792, 477);
-            cbMaterialStatus.Name = "cbMaterialStatus";
-            cbMaterialStatus.Size = new Size(301, 36);
-            cbMaterialStatus.TabIndex = 61;
-            cbMaterialStatus.Visible = false;
-            cbMaterialStatus.SelectedIndexChanged += RefreshData;
-            cbMaterialStatus.VisibleChanged += RefreshData;
-            // 
-            // loadDataTimer
-            // 
-            loadDataTimer.Interval = 10;
-            loadDataTimer.Tick += loadDataTimer_Tick;
-            // 
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
@@ -483,6 +431,58 @@
             tsmiRefresh.Size = new Size(182, 26);
             tsmiRefresh.Text = "تحديث";
             tsmiRefresh.Click += Refresh;
+            // 
+            // txtFilterValue
+            // 
+            txtFilterValue.BorderRadius = 7;
+            txtFilterValue.CustomizableEdges = customizableEdges3;
+            txtFilterValue.DefaultText = "";
+            txtFilterValue.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
+            txtFilterValue.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
+            txtFilterValue.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
+            txtFilterValue.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
+            txtFilterValue.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtFilterValue.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtFilterValue.ForeColor = Color.Black;
+            txtFilterValue.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtFilterValue.Location = new Point(792, 477);
+            txtFilterValue.Margin = new Padding(4, 6, 4, 6);
+            txtFilterValue.Name = "txtFilterValue";
+            txtFilterValue.PlaceholderText = "ابحث هنا";
+            txtFilterValue.SelectedText = "";
+            txtFilterValue.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            txtFilterValue.Size = new Size(301, 36);
+            txtFilterValue.TabIndex = 56;
+            txtFilterValue.TextChanged += RefreshData;
+            txtFilterValue.VisibleChanged += RefreshData;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 13.2000008F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label8.Location = new Point(1454, 539);
+            label8.Name = "label8";
+            label8.Size = new Size(103, 31);
+            label8.TabIndex = 60;
+            label8.Text = "ملحوظه :";
+            // 
+            // cbMaterialStatus
+            // 
+            cbMaterialStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbMaterialStatus.FormattingEnabled = true;
+            cbMaterialStatus.Items.AddRange(new object[] { "الكل", "متوفر", "منخفض", "نفد" });
+            cbMaterialStatus.Location = new Point(792, 477);
+            cbMaterialStatus.Name = "cbMaterialStatus";
+            cbMaterialStatus.Size = new Size(301, 36);
+            cbMaterialStatus.TabIndex = 61;
+            cbMaterialStatus.Visible = false;
+            cbMaterialStatus.SelectedIndexChanged += RefreshData;
+            cbMaterialStatus.VisibleChanged += RefreshData;
+            // 
+            // loadDataTimer
+            // 
+            loadDataTimer.Interval = 10;
+            loadDataTimer.Tick += loadDataTimer_Tick;
             // 
             // نسخإسمالToolStripMenuItem1
             // 

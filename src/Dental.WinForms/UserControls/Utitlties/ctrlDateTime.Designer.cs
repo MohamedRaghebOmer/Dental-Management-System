@@ -56,14 +56,14 @@
             // 
             // lblDate
             // 
-            lblDate.AutoSize = true;
             lblDate.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDate.Location = new Point(278, 35);
+            lblDate.Location = new Point(213, 35);
             lblDate.Name = "lblDate";
             lblDate.RightToLeft = RightToLeft.Yes;
-            lblDate.Size = new Size(194, 31);
+            lblDate.Size = new Size(259, 31);
             lblDate.TabIndex = 1;
             lblDate.Text = "الثلاثاء 30/12/2026";
+            lblDate.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // pictureBox2
             // 
@@ -77,12 +77,11 @@
             // 
             // lblTime
             // 
-            lblTime.AutoSize = true;
             lblTime.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblTime.Location = new Point(24, 35);
+            lblTime.Location = new Point(3, 35);
             lblTime.Name = "lblTime";
             lblTime.RightToLeft = RightToLeft.Yes;
-            lblTime.Size = new Size(104, 31);
+            lblTime.Size = new Size(125, 31);
             lblTime.TabIndex = 3;
             lblTime.Text = "12:59 ص";
             // 
@@ -98,13 +97,12 @@
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4);
             MaximumSize = new Size(0, 100);
-            MinimumSize = new Size(0, 100);
+            MinimumSize = new Size(590, 100);
             Name = "ctrlDateTime";
             Size = new Size(590, 100);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

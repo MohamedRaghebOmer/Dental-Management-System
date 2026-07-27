@@ -30,12 +30,12 @@ public sealed class MaterialRepository
     }
 
     public Task<List<MaterialFilterDto>> FilterAsync(
-        MaterialFilterDto? filterDto = null, 
+        MaterialFilterDto? filterDto = null,
         CancellationToken cancellationToken = default)
     {
         IQueryable<Material> query = _dbContext.Materials.AsNoTracking
             ();
-        
+
         if (filterDto is not null)
         {
             if (filterDto.Id is { } id)
@@ -63,7 +63,7 @@ public sealed class MaterialRepository
                     query = query.Where(m => m.Quantity == 0);
             }
         }
-        
+
         return query.Select(m => new MaterialFilterDto
         {
             Id = m.Id.Value,

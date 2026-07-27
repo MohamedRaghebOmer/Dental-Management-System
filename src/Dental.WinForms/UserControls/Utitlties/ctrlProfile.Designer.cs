@@ -29,61 +29,61 @@
         private void InitializeComponent()
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            pbDoctorPicture = new Guna.UI2.WinForms.Guna2CirclePictureBox();
-            lblDocktorName = new Label();
+            pbDoctorImage = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            lblDoctorName = new Label();
             lblDescription = new Label();
             lblPhoneNumber = new Label();
-            ((System.ComponentModel.ISupportInitialize)pbDoctorPicture).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbDoctorImage).BeginInit();
             SuspendLayout();
             // 
-            // pbDoctorPicture
+            // pbDoctorImage
             // 
-            pbDoctorPicture.BackgroundImage = Properties.Resources.user_512;
-            pbDoctorPicture.BackgroundImageLayout = ImageLayout.Zoom;
-            pbDoctorPicture.Image = Properties.Resources.user_512;
-            pbDoctorPicture.ImageRotate = 0F;
-            pbDoctorPicture.Location = new Point(293, 0);
-            pbDoctorPicture.Margin = new Padding(4);
-            pbDoctorPicture.Name = "pbDoctorPicture";
-            pbDoctorPicture.ShadowDecoration.CustomizableEdges = customizableEdges1;
-            pbDoctorPicture.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            pbDoctorPicture.Size = new Size(82, 96);
-            pbDoctorPicture.TabIndex = 0;
-            pbDoctorPicture.TabStop = false;
+            pbDoctorImage.BackgroundImageLayout = ImageLayout.Zoom;
+            pbDoctorImage.Image = Properties.Resources.user_512;
+            pbDoctorImage.ImageRotate = 0F;
+            pbDoctorImage.Location = new Point(374, 0);
+            pbDoctorImage.Margin = new Padding(4);
+            pbDoctorImage.Name = "pbDoctorImage";
+            pbDoctorImage.ShadowDecoration.CustomizableEdges = customizableEdges1;
+            pbDoctorImage.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            pbDoctorImage.Size = new Size(100, 100);
+            pbDoctorImage.SizeMode = PictureBoxSizeMode.Zoom;
+            pbDoctorImage.TabIndex = 0;
+            pbDoctorImage.TabStop = false;
             // 
-            // lblDocktorName
+            // lblDoctorName
             // 
-            lblDocktorName.AutoSize = true;
-            lblDocktorName.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDocktorName.Location = new Point(145, 12);
-            lblDocktorName.Margin = new Padding(4, 0, 4, 0);
-            lblDocktorName.Name = "lblDocktorName";
-            lblDocktorName.Size = new Size(140, 31);
-            lblDocktorName.TabIndex = 1;
-            lblDocktorName.Text = "د/ كريم فتوح";
+            lblDoctorName.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDoctorName.Location = new Point(4, 12);
+            lblDoctorName.Margin = new Padding(4, 0, 4, 0);
+            lblDoctorName.Name = "lblDoctorName";
+            lblDoctorName.Size = new Size(362, 31);
+            lblDoctorName.TabIndex = 1;
+            lblDoctorName.Text = "د/ كريم فتوح";
+            lblDoctorName.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblDescription
             // 
-            lblDescription.AutoSize = true;
             lblDescription.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDescription.Location = new Point(147, 43);
+            lblDescription.Location = new Point(0, 43);
             lblDescription.Margin = new Padding(4, 0, 4, 0);
             lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(137, 23);
+            lblDescription.Size = new Size(365, 23);
             lblDescription.TabIndex = 2;
             lblDescription.Text = "طب الفم والأسنان";
+            lblDescription.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // lblPhoneNumber
             // 
-            lblPhoneNumber.AutoSize = true;
             lblPhoneNumber.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblPhoneNumber.Location = new Point(150, 66);
+            lblPhoneNumber.Location = new Point(0, 66);
             lblPhoneNumber.Margin = new Padding(4, 0, 4, 0);
             lblPhoneNumber.Name = "lblPhoneNumber";
-            lblPhoneNumber.RightToLeft = RightToLeft.No;
-            lblPhoneNumber.Size = new Size(130, 23);
+            lblPhoneNumber.RightToLeft = RightToLeft.Yes;
+            lblPhoneNumber.Size = new Size(361, 23);
             lblPhoneNumber.TabIndex = 3;
-            lblPhoneNumber.Text = "+201006169816";
+            lblPhoneNumber.Text = "01006169816";
+            lblPhoneNumber.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // ctrlProfile
             // 
@@ -92,24 +92,23 @@
             BackColor = Color.Transparent;
             Controls.Add(lblPhoneNumber);
             Controls.Add(lblDescription);
-            Controls.Add(lblDocktorName);
-            Controls.Add(pbDoctorPicture);
+            Controls.Add(lblDoctorName);
+            Controls.Add(pbDoctorImage);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4);
-            MaximumSize = new Size(378, 100);
-            MinimumSize = new Size(378, 100);
+            MaximumSize = new Size(474, 100);
+            MinimumSize = new Size(474, 100);
             Name = "ctrlProfile";
             RightToLeft = RightToLeft.Yes;
-            Size = new Size(378, 100);
-            ((System.ComponentModel.ISupportInitialize)pbDoctorPicture).EndInit();
+            Size = new Size(474, 100);
+            ((System.ComponentModel.ISupportInitialize)pbDoctorImage).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2CirclePictureBox pbDoctorPicture;
-        private Label lblDocktorName;
+        private Guna.UI2.WinForms.Guna2CirclePictureBox pbDoctorImage;
+        private Label lblDoctorName;
         private Label lblDescription;
         private Label lblPhoneNumber;
     }

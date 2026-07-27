@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            components = new System.ComponentModel.Container();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges31 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges32 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges33 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges34 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges35 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges36 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             txtDescription = new RichTextBox();
             label2 = new Label();
             label12 = new Label();
@@ -42,6 +43,8 @@
             lblTitile = new Label();
             btnSave = new Guna.UI2.WinForms.Guna2Button();
             txtPrice = new Guna.UI2.WinForms.Guna2TextBox();
+            guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
+            btnClose = new FontAwesome.Sharp.IconButton();
             SuspendLayout();
             // 
             // txtDescription
@@ -79,7 +82,7 @@
             // 
             txtName.Animated = true;
             txtName.BorderRadius = 10;
-            txtName.CustomizableEdges = customizableEdges1;
+            txtName.CustomizableEdges = customizableEdges31;
             txtName.DefaultText = "";
             txtName.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtName.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -96,7 +99,7 @@
             txtName.PlaceholderText = "";
             txtName.RightToLeft = RightToLeft.Yes;
             txtName.SelectedText = "";
-            txtName.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            txtName.ShadowDecoration.CustomizableEdges = customizableEdges32;
             txtName.Size = new Size(249, 36);
             txtName.TabIndex = 2;
             // 
@@ -115,9 +118,9 @@
             // 
             lblTitile.Font = new Font("Segoe UI", 25.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitile.ForeColor = Color.FromArgb(100, 88, 255);
-            lblTitile.Location = new Point(12, 9);
+            lblTitile.Location = new Point(228, 9);
             lblTitile.Name = "lblTitile";
-            lblTitile.Size = new Size(797, 60);
+            lblTitile.Size = new Size(365, 60);
             lblTitile.TabIndex = 0;
             lblTitile.Text = "إضافة خدمه جديده";
             lblTitile.TextAlign = ContentAlignment.MiddleCenter;
@@ -128,7 +131,7 @@
             btnSave.AnimatedGIF = true;
             btnSave.BackColor = SystemColors.Control;
             btnSave.BorderRadius = 15;
-            btnSave.CustomizableEdges = customizableEdges3;
+            btnSave.CustomizableEdges = customizableEdges33;
             btnSave.DisabledState.BorderColor = Color.DarkGray;
             btnSave.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -140,7 +143,7 @@
             btnSave.Location = new Point(331, 433);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges34;
             btnSave.Size = new Size(159, 56);
             btnSave.TabIndex = 7;
             btnSave.Text = "حفظ";
@@ -150,7 +153,7 @@
             // 
             txtPrice.Animated = true;
             txtPrice.BorderRadius = 10;
-            txtPrice.CustomizableEdges = customizableEdges5;
+            txtPrice.CustomizableEdges = customizableEdges35;
             txtPrice.DefaultText = "";
             txtPrice.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtPrice.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -167,10 +170,37 @@
             txtPrice.PlaceholderText = "";
             txtPrice.RightToLeft = RightToLeft.Yes;
             txtPrice.SelectedText = "";
-            txtPrice.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            txtPrice.ShadowDecoration.CustomizableEdges = customizableEdges36;
             txtPrice.Size = new Size(249, 36);
             txtPrice.TabIndex = 4;
             txtPrice.KeyPress += txtPrice_KeyPress;
+            // 
+            // guna2BorderlessForm1
+            // 
+            guna2BorderlessForm1.AnimateWindow = true;
+            guna2BorderlessForm1.AnimationInterval = 270;
+            guna2BorderlessForm1.AnimationType = Guna.UI2.WinForms.Guna2BorderlessForm.AnimateWindowType.AW_CENTER;
+            guna2BorderlessForm1.BorderRadius = 85;
+            guna2BorderlessForm1.ContainerControl = this;
+            guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            guna2BorderlessForm1.HasFormShadow = false;
+            guna2BorderlessForm1.ResizeForm = false;
+            guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
+            // btnClose
+            // 
+            btnClose.IconChar = FontAwesome.Sharp.IconChar.Close;
+            btnClose.IconColor = Color.Red;
+            btnClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnClose.IconSize = 38;
+            btnClose.ImageAlign = ContentAlignment.TopCenter;
+            btnClose.Location = new Point(756, 19);
+            btnClose.Name = "btnClose";
+            btnClose.RightToLeft = RightToLeft.No;
+            btnClose.Size = new Size(53, 41);
+            btnClose.TabIndex = 8;
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
             // 
             // frmAddEditTreatment
             // 
@@ -178,6 +208,7 @@
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(821, 501);
+            Controls.Add(btnClose);
             Controls.Add(txtPrice);
             Controls.Add(btnSave);
             Controls.Add(lblTitile);
@@ -187,7 +218,7 @@
             Controls.Add(txtName);
             Controls.Add(lblPatientId);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(4);
             MaximizeBox = false;
             Name = "frmAddEditTreatment";
@@ -210,5 +241,7 @@
         private Label lblTitile;
         private Guna.UI2.WinForms.Guna2Button btnSave;
         private Guna.UI2.WinForms.Guna2TextBox txtPrice;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private FontAwesome.Sharp.IconButton btnClose;
     }
 }

@@ -14,7 +14,7 @@ public sealed class DentalInfoConfiguration
         builder.ConfigurePrimaryKey();
 
         ConfigureProperties(builder);
-        InsertInitialData(builder);
+        //InsertInitialData(builder);
         AddCheckConstraint(builder);
     }
 
@@ -28,10 +28,10 @@ public sealed class DentalInfoConfiguration
         });
     }
 
-    private static void InsertInitialData(EntityTypeBuilder<DentalInfo> builder)
-    {
-        builder.HasData(DentalInfo.CreateDefault());
-    }
+    //private static void InsertInitialData(EntityTypeBuilder<DentalInfo> builder)
+    //{
+    //    builder.HasData(DentalInfo.CreateDefault());
+    //}
 
     private static void ConfigureProperties(EntityTypeBuilder<DentalInfo> builder)
     {
@@ -39,16 +39,24 @@ public sealed class DentalInfoConfiguration
             .HasColumnName(nameof(DentalInfo.DoctorName))
             .HasMaxLength(DentalInfo.Constants.DoctorNameMaxLength);
 
-        builder.Property(d => d.DentalDescription)
-            .HasColumnName(nameof(DentalInfo.DentalDescription))
-            .HasMaxLength(DentalInfo.Constants.DentalDescriptionMaxLength);
-
         builder.Property(d => d.PhoneNumber)
             .HasColumnName(nameof(DentalInfo.PhoneNumber))
             .HasMaxLength(DentalInfo.Constants.PhoneNumberMaxLength);
 
-        builder.Property(d => d.PicturePath)
-            .HasColumnName(nameof(DentalInfo.PicturePath))
-            .HasMaxLength(DentalInfo.Constants.PicturePathMaxLength);
+        builder.Property(d => d.DoctorPicturePath)
+            .HasColumnName(nameof(DentalInfo.DoctorPicturePath))
+            .HasMaxLength(DentalInfo.Constants.DoctorPicturePathMaxLength);
+
+        builder.Property(d => d.DentalName)
+            .HasColumnName(nameof(DentalInfo.DentalName))
+            .HasMaxLength(DentalInfo.Constants.DentalNameMaxLength);
+
+        builder.Property(d => d.DentalDescription)
+            .HasColumnName(nameof(DentalInfo.DentalDescription))
+            .HasMaxLength(DentalInfo.Constants.DentalDescriptionMaxLength);
+
+        builder.Property(d => d.DentalPicturePath)
+            .HasColumnName(nameof(DentalInfo.DentalPicturePath))
+            .HasMaxLength(DentalInfo.Constants.DentalPicturePathMaxLength);
     }
 }

@@ -23,6 +23,11 @@ public partial class frmAddEditTreatment : Form
         _treatmentService = treatmentService;
         _mode = Mode.Add;
         _treatmentId = null;
+
+        CancelButton = btnClose;
+
+        Initialize();
+
     }
 
     public frmAddEditTreatment(
@@ -32,11 +37,13 @@ public partial class frmAddEditTreatment : Form
     {
         _treatmentId = treatmentId;
         _mode = Mode.Edit;
+
+        Initialize();
+
     }
 
     private async void frmAddEditTreatment_Load(object sender, EventArgs e)
     {
-        Initialize();
 
         if (_mode == Mode.Edit)
             await LoadTreatmentInfoAsync();
@@ -242,5 +249,10 @@ public partial class frmAddEditTreatment : Form
             Price = price,
             Description = txtDescription.Text.Trim()
         };
+    }
+
+    private void btnClose_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }

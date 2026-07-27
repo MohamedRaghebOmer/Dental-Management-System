@@ -7,6 +7,7 @@ public static class DataStoragePaths
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "Dental Clinic");
 
+    // ==================== Database ====================
     public static readonly string DatabaseFolderPath = Path.Combine(
         BasePath,
         "Database");
@@ -16,7 +17,16 @@ public static class DataStoragePaths
         "Database",
         "Dental.db");
 
+
+    // ==================== Logs ====================
     public static readonly string LogsFolderPath = Path.Combine(
         BasePath,
         "Logs");
+
+
+
+    // ==================== Images ====================
+    public static readonly string ImagesFolderPath = Path.Combine(
+        BasePath,
+        "Images");
 }
