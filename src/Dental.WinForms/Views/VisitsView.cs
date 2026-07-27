@@ -108,10 +108,10 @@ public partial class VisitsView : UserControl
                 VisitDateTime = v.VisitDateTime is not null
                     ? DateTimeHelper.GetArabicDateTime(v.VisitDateTime.Value)
                     : null,
-                v.TotalAmount,
-                v.PaidAmount,
-                v.DiscountAmount,
-                v.RemainedAmount
+                TotalAmount = v.TotalAmount.HasValue ? $"{v.TotalAmount.Value:F2}" : null,
+                PaidAmount = v.PaidAmount.HasValue ? $"{v.PaidAmount.Value:F2}" : null,
+                DiscountAmount = v.DiscountAmount.HasValue ? $"{v.DiscountAmount.Value:F2}" : null,
+                RemainedAmount = v.RemainedAmount.HasValue ? $"{v.RemainedAmount.Value:F2}" : null
             })
             .ToList();
 
@@ -126,10 +126,10 @@ public partial class VisitsView : UserControl
     private void LoadCards(List<VisitView> view)
     {
         lblTotalVisits.Text = view.Count.ToString();
-        lblSumOfTotalAmount.Text = view.Sum(v => v.TotalAmount ?? 0).ToString();
-        lblSumOfPaidAmount.Text = view.Sum(v => v.PaidAmount ?? 0).ToString();
-        lblSumOfDiscountAmount.Text = view.Sum(v => v.DiscountAmount ?? 0).ToString();
-        lblSumOfRemainedAmount.Text = view.Sum(v => v.RemainedAmount ?? 0).ToString();
+        lblSumOfTotalAmount.Text = view.Sum(v => v.TotalAmount ?? 0).ToString("F2");
+        lblSumOfPaidAmount.Text = view.Sum(v => v.PaidAmount ?? 0).ToString("F2");
+        lblSumOfDiscountAmount.Text = view.Sum(v => v.DiscountAmount ?? 0).ToString("F2");
+        lblSumOfRemainedAmount.Text = view.Sum(v => v.RemainedAmount ?? 0).ToString("F2");
     }
 
     private async void btnAddWalkInVisit_Click(object sender, EventArgs e)

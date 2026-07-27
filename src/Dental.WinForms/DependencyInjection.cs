@@ -37,7 +37,6 @@ public static class DependencyInjection
 
         private IServiceCollection AddViews()
         {
-            services.AddTransient<MainMenuView>();
             services.AddTransient<VisitsView>();
             services.AddTransient<PatientsView>();
             services.AddTransient<AppointmentInfo>();

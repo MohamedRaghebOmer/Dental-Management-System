@@ -3,6 +3,8 @@
     <Project Path="src/Dental.Application/Dental.Application.csproj" Id="aba6c91e-34df-4af8-9224-c687d7a96a41" />
     <Project Path="src/Dental.Domain/Dental.Domain.csproj" Id="b550b819-6bf5-4e03-a389-b88b94ba6758" />
     <Project Path="src/Dental.Infrastructure/Dental.Infrastructure.csproj" />
+    <Project Path="src/Dental.LicenseGenerator/Dental.LicenseGenerator.csproj" Id="0bced25c-43ca-4430-80fc-cf41f4ed7e60" />
+    <Project Path="src/Dental.Licensing.Core/Dental.Licensing.Core.csproj" Id="9aa4f5f4-fe4d-4034-95b3-8bba9e6162e5" />
     <Project Path="src/Dental.WinForms/Dental.WinForms.csproj" Id="16051263-cab6-46c8-9992-208ce29cb21d" />
   </Folder>
 </Solution>

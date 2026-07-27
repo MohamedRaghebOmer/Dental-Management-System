@@ -255,10 +255,10 @@
             btnSave.IconColor = Color.RoyalBlue;
             btnSave.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnSave.IconSize = 43;
-            btnSave.Location = new Point(1503, 3);
+            btnSave.Location = new Point(1502, 3);
             btnSave.Name = "btnSave";
             btnSave.RightToLeft = RightToLeft.Yes;
-            btnSave.Size = new Size(52, 46);
+            btnSave.Size = new Size(53, 51);
             btnSave.TabIndex = 14;
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
@@ -353,6 +353,7 @@
             Size = new Size(1558, 952);
             Load += SettingsView_Load;
             Paint += SettingsView_Paint;
+            KeyDown += SettingsView_KeyDown;
             ((System.ComponentModel.ISupportInitialize)pbDoctorImage).EndInit();
             ((System.ComponentModel.ISupportInitialize)pbDentalImage).EndInit();
             ResumeLayout(false);

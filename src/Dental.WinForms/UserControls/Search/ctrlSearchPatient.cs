@@ -398,4 +398,9 @@ public partial class ctrlSearchPatient : UserControl
             dataGridView.CurrentCell = dataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
         }
     }
+
+    private void tsmiSelect_Click(object sender, EventArgs e)
+    {
+        dataGridView_DoubleClick(null!, null!);
+    }
 }

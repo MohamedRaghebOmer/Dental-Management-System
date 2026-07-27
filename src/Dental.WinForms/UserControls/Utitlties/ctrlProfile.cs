@@ -2,6 +2,8 @@
 
 public partial class ctrlProfile : UserControl
 {
+    public event EventHandler? ControlClicked;
+
     public ctrlProfile()
     {
         InitializeComponent();
@@ -27,5 +29,15 @@ public partial class ctrlProfile : UserControl
     public void SetDescription(string? description)
     {
         lblDescription.Text = description ?? string.Empty;
+    }
+
+    private void pbDoctorImage_Click(object sender, EventArgs e)
+    {
+        OnControlClicked();
+    }
+
+    protected virtual void OnControlClicked()
+    {
+        ControlClicked?.Invoke(this, EventArgs.Empty);
     }
 }

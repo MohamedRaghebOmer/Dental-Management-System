@@ -50,6 +50,7 @@
             pbDoctorImage.SizeMode = PictureBoxSizeMode.Zoom;
             pbDoctorImage.TabIndex = 0;
             pbDoctorImage.TabStop = false;
+            pbDoctorImage.Click += pbDoctorImage_Click;
             // 
             // lblDoctorName
             // 
@@ -61,6 +62,7 @@
             lblDoctorName.TabIndex = 1;
             lblDoctorName.Text = "د/ كريم فتوح";
             lblDoctorName.TextAlign = ContentAlignment.MiddleLeft;
+            lblDoctorName.Click += pbDoctorImage_Click;
             // 
             // lblDescription
             // 
@@ -72,6 +74,7 @@
             lblDescription.TabIndex = 2;
             lblDescription.Text = "طب الفم والأسنان";
             lblDescription.TextAlign = ContentAlignment.MiddleLeft;
+            lblDescription.Click += pbDoctorImage_Click;
             // 
             // lblPhoneNumber
             // 
@@ -84,6 +87,7 @@
             lblPhoneNumber.TabIndex = 3;
             lblPhoneNumber.Text = "01006169816";
             lblPhoneNumber.TextAlign = ContentAlignment.MiddleLeft;
+            lblPhoneNumber.Click += pbDoctorImage_Click;
             // 
             // ctrlProfile
             // 
@@ -101,6 +105,7 @@
             Name = "ctrlProfile";
             RightToLeft = RightToLeft.Yes;
             Size = new Size(474, 100);
+            Click += pbDoctorImage_Click;
             ((System.ComponentModel.ISupportInitialize)pbDoctorImage).EndInit();
             ResumeLayout(false);
         }

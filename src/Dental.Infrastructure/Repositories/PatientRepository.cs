@@ -30,4 +30,17 @@ public sealed class PatientRepository
         return _dbContext.Patients
             .AnyAsync(p => p.Name == name && p.Id != excludedId, cancellationToken);
     }
+
+    public async Task<bool> CanDeleteAsync(
+        Id id, 
+        CancellationToken cancellationToken = default)
+    {
+        var canDeleteFromVisits = !await _dbContext.Visits
+            .AnyAsync(v => v.PatientId == id, cancellationToken);
+
+        var canDeleteFromAppointments = !await _dbContext.Appointments
+            .AnyAsync(a => a.PatientId == id, cancellationToken);
+
+        return canDeleteFromVisits && canDeleteFromAppointments;
+    }
 }

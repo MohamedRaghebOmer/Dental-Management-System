@@ -7,7 +7,6 @@ namespace Dental.WinForms;
 
 public partial class frmMain : Form
 {
-    private readonly MainMenuView _mainMenuView = default!;
     private readonly VisitsView _VisitView = default!;
     private readonly PatientsView _patientView = default!;
     private readonly AppointmentsView _appointmentsView = default!;
@@ -19,7 +18,6 @@ public partial class frmMain : Form
     private Guna2Button? _selectedButton;
 
     public frmMain(
-        MainMenuView mainMenuView,
         VisitsView visitView,
         PatientsView patientView,
         AppointmentsView appointmentsView,
@@ -31,7 +29,6 @@ public partial class frmMain : Form
     {
         InitializeComponent();
 
-        _mainMenuView = mainMenuView;
         _VisitView = visitView;
         _patientView = patientView;
         _appointmentsView = appointmentsView;
@@ -42,8 +39,9 @@ public partial class frmMain : Form
         _dentalInfoService = dentalInfoService;
 
         settingsView.SettingsSaved += LoadDentalInfo;
+        ctrlProfile1.ControlClicked += ctrlProfile1_ControlClicked;
 
-        btnMainMenu_Click(null!, null!);
+        btnVisits_Click(null!, null!);
         LoadDentalInfo(null, null);
     }
 
@@ -108,15 +106,6 @@ public partial class frmMain : Form
         _selectedButton.ForeColor = Color.FromArgb(37, 99, 235);
     }
 
-    private void btnMainMenu_Click(object sender, EventArgs e)
-    {
-        Cursor = Cursors.WaitCursor;
-        ShowView(_mainMenuView);
-        SelectMenuButton(btnMainMenu);
-        Cursor = Cursors.Default;
-    }
-
-    // CHAT GPT: This is the event handler for the Visits button click event.
     private void btnVisits_Click(object sender, EventArgs e)
     {
         Cursor = Cursors.WaitCursor;
@@ -173,8 +162,9 @@ public partial class frmMain : Form
         Cursor = Cursors.Default;
     }
 
-    private void ctrlProfile1_Click(object sender, EventArgs e)
+    private void ctrlProfile1_ControlClicked(object? sender, EventArgs? e)
     {
-        btnSettings_Click(sender, e);
+        btnSettings_Click(null!, null!);
+
     }
 }
