@@ -45,6 +45,7 @@ public static class DependencyInjection
             services.AddTransient<TreatmentsView>();
             services.AddTransient<LabTransactionsView>();
             services.AddTransient<MaterialsView>();
+            services.AddTransient<SettingsView>();
 
             return services;
         }

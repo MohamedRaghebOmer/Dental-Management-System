@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using Dental.Application.Abstractions.ServicesInterfaces;
+﻿using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Material;
 using Dental.Domain.Shared;
 using Dental.WinForms.Extensions;
@@ -28,6 +27,11 @@ public partial class frmAddEditMaterial : Form
 
         _mode = Mode.Add;
         _materialId = null;
+
+        AcceptButton = btnSave;
+        CancelButton = btnClose;
+
+        Initialize();
     }
 
     public frmAddEditMaterial(
@@ -61,7 +65,7 @@ public partial class frmAddEditMaterial : Form
             Close();
             return;
         }
-            
+
         var materialResult = await _materialService.GetByIdAsync(_materialId.Value);
         if (materialResult.IsFailure)
         {
@@ -104,7 +108,7 @@ public partial class frmAddEditMaterial : Form
             return;
 
         var requestDto = GetMaterialRequestDtoFromUi();
-        if (requestDto == null) 
+        if (requestDto == null)
             return;
 
         Result? saveResult = null;

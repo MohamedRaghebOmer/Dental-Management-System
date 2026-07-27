@@ -1,143 +1,31 @@
-﻿using Dental.Application.Abstractions.ServicesInterfaces;
-using Dental.Application.DTOs.DentalInfo;
-using Dental.Application.Errors;
-using Dental.Domain.Errors;
-using Dental.Domain.Shared;
-using Dental.WinForms.Extensions;
-using Dental.WinForms.Properties;
-using Microsoft.Extensions.Logging;
-
-namespace Dental.WinForms.UserControls;
+﻿namespace Dental.WinForms.UserControls;
 
 public partial class ctrlProfile : UserControl
 {
-    private readonly ILogger<ctrlProfile> _logger = default!;
-    private readonly IDentalInfoService _infoService = default!;
-    private const int _profileId = 1; // The profile ID is always 1
-
     public ctrlProfile()
     {
         InitializeComponent();
     }
 
-    public ctrlProfile(
-        IDentalInfoService infoService,
-        ILogger<ctrlProfile> logger) : this()
+    public void SetDoctorImage(Image? image)
     {
-        _logger = logger;
-        _infoService = infoService;
-
-        Load += CtrlProfile_Load;
+        var oldImage = pbDoctorImage.Image;
+        pbDoctorImage.Image = image is null ? null : new Bitmap(image);
+        oldImage?.Dispose();
     }
 
-    public override async void Refresh()
+    public void SetDoctorName(string? doctorName)
     {
-        base.Refresh();
-        await SetValues();
+        lblDoctorName.Text = doctorName ?? string.Empty;
     }
 
-    public async Task Update(DentalInfoDto dto)
+    public void SetPhoneNumber(string? phoneNumber)
     {
-        var updateResult = await _infoService.UpdateAsync(dto);
-        if (updateResult.IsFailure)
-        {
-            HandleError(updateResult);
-            return;
-        }
-
-        SetUi(updateResult.Value);
+        lblPhoneNumber.Text = phoneNumber ?? string.Empty;
     }
 
-
-    private async void CtrlProfile_Load(object? sender, EventArgs e)
+    public void SetDescription(string? description)
     {
-        await SetValues();
-    }
-
-    private async Task SetValues()
-    {
-        try
-        {
-            var existingValuesResult = await _infoService.GetAsync();
-            if (existingValuesResult.IsFailure)
-            {
-                return;
-            }
-
-            SetUi(existingValuesResult.Value);
-        }
-        catch (Exception ex)
-        {
-            _logger?.LogError(ex, "An error occurred while setting the profile values.");
-        }
-    }
-
-    private void SetUi(DentalInfoDto existingValuesResult)
-    {
-        lblDocktorName.Text = existingValuesResult.DoctorName ?? string.Empty;
-        lblDescription.Text = existingValuesResult.DentalDescription ?? string.Empty;
-        lblPhoneNumber.Text = existingValuesResult.PhoneNumber ?? string.Empty;
-
-        try
-        {
-            pbDoctorPicture.Image = Image.FromFile(
-                existingValuesResult.PicturePath ?? string.Empty);
-        }
-        catch
-        {
-            pbDoctorPicture.Image = Resources.user_512;
-            MessageBox.Show("حدث خطأ اثناء تحميل الصوره، برجاء التواصل مع المطور.",
-                "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            _logger?.LogWarning(
-                "Failed to load image from path: {PicturePath}. Using default image instead.",
-                existingValuesResult.PicturePath);
-        }
-    }
-
-    private static void HandleError(Result updateResult)
-    {
-        if (updateResult.Error == ServiceErrors.Common.NotFound)
-        {
-            // this is unexpected, since the profile should always exist
-            MessageBoxExtensions.ShowError("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
-                "خطأ");
-            return;
-        }
-
-        if (updateResult.Error == ServiceErrors.Common.InvalidId)
-        {
-            MessageBoxExtensions.ShowError("حدث خطأ اثناء تحديث الملف الشخصي، برجاء التواصل مع المطور.",
-                "خطأ");
-            return;
-        }
-
-        if (updateResult.Error == DomainErrors.Entities.DentalInfo.DoctorNameTooLong)
-        {
-            MessageBoxExtensions.ShowError("اسم الطبيب طويل جداً، برجاء إدخال اسم أقصر.",
-                "خطأ");
-            return;
-        }
-
-        if (updateResult.Error == DomainErrors.Entities.DentalInfo.DentalDescriptionTooLong)
-        {
-            MessageBoxExtensions.ShowError("وصف العيادة طويل جداً، برجاء إدخال وصف أقصر.",
-                "خطأ");
-            return;
-        }
-
-        if (updateResult.Error == DomainErrors.Entities.DentalInfo.PhoneNumberTooLong)
-        {
-            MessageBoxExtensions.ShowError("رقم الهاتف طويل جداً، برجاء إدخال رقم هاتف أقصر.",
-                "خطأ");
-            return;
-        }
-
-        if (updateResult.Error == DomainErrors.Entities.DentalInfo.PicturePathTooLong)
-        {
-            MessageBoxExtensions.ShowError("مسار الصورة طويل جداً، برجاء إدخال مسار أقصر.",
-                "خطأ");
-            return;
-        }
+        lblDescription.Text = description ?? string.Empty;
     }
 }

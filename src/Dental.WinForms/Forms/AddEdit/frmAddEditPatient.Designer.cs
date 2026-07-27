@@ -28,14 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            components = new System.ComponentModel.Container();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             txtPhoneNumber = new Guna.UI2.WinForms.Guna2TextBox();
             lblTitile = new Label();
             label7 = new Label();
@@ -49,13 +50,15 @@
             txtName = new Guna.UI2.WinForms.Guna2TextBox();
             lblPatientId = new Label();
             lblPatientIdValue = new Label();
+            guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
+            btnClose = new FontAwesome.Sharp.IconButton();
             SuspendLayout();
             // 
             // txtPhoneNumber
             // 
             txtPhoneNumber.Animated = true;
             txtPhoneNumber.BorderRadius = 10;
-            txtPhoneNumber.CustomizableEdges = customizableEdges1;
+            txtPhoneNumber.CustomizableEdges = customizableEdges9;
             txtPhoneNumber.DefaultText = "";
             txtPhoneNumber.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtPhoneNumber.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -71,7 +74,7 @@
             txtPhoneNumber.Name = "txtPhoneNumber";
             txtPhoneNumber.PlaceholderText = "";
             txtPhoneNumber.SelectedText = "";
-            txtPhoneNumber.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            txtPhoneNumber.ShadowDecoration.CustomizableEdges = customizableEdges10;
             txtPhoneNumber.Size = new Size(249, 36);
             txtPhoneNumber.TabIndex = 11;
             // 
@@ -125,7 +128,7 @@
             btnSave.AnimatedGIF = true;
             btnSave.BackColor = Color.Transparent;
             btnSave.BorderRadius = 15;
-            btnSave.CustomizableEdges = customizableEdges3;
+            btnSave.CustomizableEdges = customizableEdges11;
             btnSave.DisabledState.BorderColor = Color.DarkGray;
             btnSave.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -137,7 +140,7 @@
             btnSave.Location = new Point(347, 436);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnSave.Size = new Size(160, 56);
             btnSave.TabIndex = 12;
             btnSave.Text = "حفظ";
@@ -169,7 +172,7 @@
             // 
             txtAge.Animated = true;
             txtAge.BorderRadius = 10;
-            txtAge.CustomizableEdges = customizableEdges5;
+            txtAge.CustomizableEdges = customizableEdges13;
             txtAge.DefaultText = "";
             txtAge.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtAge.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -185,7 +188,7 @@
             txtAge.Name = "txtAge";
             txtAge.PlaceholderText = "";
             txtAge.SelectedText = "";
-            txtAge.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            txtAge.ShadowDecoration.CustomizableEdges = customizableEdges14;
             txtAge.Size = new Size(249, 36);
             txtAge.TabIndex = 6;
             txtAge.KeyPress += txtAge_KeyPress;
@@ -205,7 +208,7 @@
             // 
             txtName.Animated = true;
             txtName.BorderRadius = 10;
-            txtName.CustomizableEdges = customizableEdges7;
+            txtName.CustomizableEdges = customizableEdges15;
             txtName.DefaultText = "";
             txtName.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtName.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -221,7 +224,7 @@
             txtName.Name = "txtName";
             txtName.PlaceholderText = "";
             txtName.SelectedText = "";
-            txtName.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            txtName.ShadowDecoration.CustomizableEdges = customizableEdges16;
             txtName.Size = new Size(249, 36);
             txtName.TabIndex = 4;
             // 
@@ -245,11 +248,39 @@
             lblPatientIdValue.Text = "0";
             lblPatientIdValue.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // guna2BorderlessForm1
+            // 
+            guna2BorderlessForm1.AnimateWindow = true;
+            guna2BorderlessForm1.AnimationInterval = 270;
+            guna2BorderlessForm1.AnimationType = Guna.UI2.WinForms.Guna2BorderlessForm.AnimateWindowType.AW_CENTER;
+            guna2BorderlessForm1.BorderRadius = 85;
+            guna2BorderlessForm1.ContainerControl = this;
+            guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            guna2BorderlessForm1.HasFormShadow = false;
+            guna2BorderlessForm1.ResizeForm = false;
+            guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
+            // btnClose
+            // 
+            btnClose.IconChar = FontAwesome.Sharp.IconChar.Close;
+            btnClose.IconColor = Color.Red;
+            btnClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnClose.IconSize = 38;
+            btnClose.ImageAlign = ContentAlignment.TopCenter;
+            btnClose.Location = new Point(786, 12);
+            btnClose.Name = "btnClose";
+            btnClose.RightToLeft = RightToLeft.No;
+            btnClose.Size = new Size(53, 41);
+            btnClose.TabIndex = 13;
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // frmAddEditPatient
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(861, 504);
+            Controls.Add(btnClose);
             Controls.Add(lblPatientIdValue);
             Controls.Add(lblPatientId);
             Controls.Add(txtAge);
@@ -264,7 +295,7 @@
             Controls.Add(label6);
             Controls.Add(label5);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(4);
             MaximizeBox = false;
             Name = "frmAddEditPatient";
@@ -292,5 +323,7 @@
         private Guna.UI2.WinForms.Guna2TextBox txtName;
         private Label lblPatientId;
         private Label lblPatientIdValue;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private FontAwesome.Sharp.IconButton btnClose;
     }
 }

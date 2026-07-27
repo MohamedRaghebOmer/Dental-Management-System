@@ -24,6 +24,11 @@ public partial class frmAddEditPatient : Form
         _patientId = null;
 
         _patientService = patientService;
+
+        AcceptButton = btnSave;
+        CancelButton = btnClose;
+
+        InitializeForm();
     }
 
     public frmAddEditPatient(
@@ -32,13 +37,13 @@ public partial class frmAddEditPatient : Form
     {
         _mode = Mode.Update;
         _patientId = patientId;
+
+        InitializeForm();
     }
 
 
     private async void frmAddEditPatient_Load(object sender, EventArgs e)
     {
-        InitializeForm();
-
         if (_mode == Mode.Update)
         {
             if (!IsValidId())
@@ -309,5 +314,10 @@ public partial class frmAddEditPatient : Form
     protected virtual void OnPatientAdded(int patientId)
     {
         PatientAdded?.Invoke(this, patientId);
+    }
+
+    private void btnClose_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }

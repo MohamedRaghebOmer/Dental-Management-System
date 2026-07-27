@@ -28,13 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             ctrlAppointmentInfo1 = new Dental.WinForms.UserControls.Info.ctrlAppointmentInfo();
+            guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
+            btnClose = new FontAwesome.Sharp.IconButton();
             SuspendLayout();
             // 
             // ctrlAppointmentInfo1
             // 
             ctrlAppointmentInfo1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ctrlAppointmentInfo1.Location = new Point(-2, 13);
+            ctrlAppointmentInfo1.Location = new Point(0, 62);
             ctrlAppointmentInfo1.Margin = new Padding(4);
             ctrlAppointmentInfo1.MaximumSize = new Size(942, 287);
             ctrlAppointmentInfo1.MinimumSize = new Size(942, 287);
@@ -43,14 +46,42 @@
             ctrlAppointmentInfo1.Size = new Size(942, 287);
             ctrlAppointmentInfo1.TabIndex = 0;
             // 
+            // guna2BorderlessForm1
+            // 
+            guna2BorderlessForm1.AnimateWindow = true;
+            guna2BorderlessForm1.AnimationInterval = 270;
+            guna2BorderlessForm1.AnimationType = Guna.UI2.WinForms.Guna2BorderlessForm.AnimateWindowType.AW_CENTER;
+            guna2BorderlessForm1.BorderRadius = 85;
+            guna2BorderlessForm1.ContainerControl = this;
+            guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            guna2BorderlessForm1.HasFormShadow = false;
+            guna2BorderlessForm1.ResizeForm = false;
+            guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
+            // btnClose
+            // 
+            btnClose.IconChar = FontAwesome.Sharp.IconChar.Close;
+            btnClose.IconColor = Color.Red;
+            btnClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnClose.IconSize = 38;
+            btnClose.ImageAlign = ContentAlignment.TopCenter;
+            btnClose.Location = new Point(887, 12);
+            btnClose.Name = "btnClose";
+            btnClose.RightToLeft = RightToLeft.No;
+            btnClose.Size = new Size(43, 39);
+            btnClose.TabIndex = 13;
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // frmAppointmentInfo
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(942, 316);
+            ClientSize = new Size(942, 356);
+            Controls.Add(btnClose);
             Controls.Add(ctrlAppointmentInfo1);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(4);
             MaximizeBox = false;
             Name = "frmAppointmentInfo";
@@ -66,5 +97,7 @@
         #endregion
 
         private UserControls.Info.ctrlAppointmentInfo ctrlAppointmentInfo1;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private FontAwesome.Sharp.IconButton btnClose;
     }
 }

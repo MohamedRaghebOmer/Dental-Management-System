@@ -303,9 +303,19 @@ public static class DomainErrors
                 $"The phone number cannot be longer than {Domain.Entities.DentalInfo.Constants.PhoneNumberMaxLength} characters."
             );
 
-            public static readonly Error PicturePathTooLong = new(
-                "DentalInfo.PicturePathTooLong",
-                $"The picture path cannot be longer than {Domain.Entities.DentalInfo.Constants.PicturePathMaxLength} characters."
+            public static readonly Error DentalPicturePathTooLong = new(
+                "DentalInfo.DentalPicturePathTooLong",
+                $"The dental picture path cannot be longer than {Domain.Entities.DentalInfo.Constants.DentalPicturePathMaxLength} characters."
+            );
+
+            public static readonly Error DoctorPicturePathTooLong = new(
+                "DentalInfo.DoctorPicturePathTooLong",
+                $"The doctor picture path cannot be longer than {Domain.Entities.DentalInfo.Constants.DoctorPicturePathMaxLength} characters."
+            );
+
+            public static readonly Error DentalNameTooLong = new(
+                "DentalInfo.DentalNameTooLong",
+                $"The dental name cannot be longer than {Domain.Entities.DentalInfo.Constants.DentalNameMaxLength} characters."
             );
         }
 

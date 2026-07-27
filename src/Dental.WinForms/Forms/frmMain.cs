@@ -1,4 +1,5 @@
-﻿using Dental.WinForms.Views;
+﻿using Dental.Application.Abstractions.ServicesInterfaces;
+using Dental.WinForms.Views;
 using Guna.UI2.WinForms;
 using Color = System.Drawing.Color;
 
@@ -13,6 +14,8 @@ public partial class frmMain : Form
     private readonly TreatmentsView _treatmentsView = default!;
     private readonly LabTransactionsView _labTransactionsView = default!;
     private readonly MaterialsView _materialsView = default!;
+    private readonly SettingsView _settingsView = default!;
+    private readonly IDentalInfoService _dentalInfoService;
     private Guna2Button? _selectedButton;
 
     public frmMain(
@@ -22,7 +25,9 @@ public partial class frmMain : Form
         AppointmentsView appointmentsView,
         TreatmentsView treatmentsView,
         LabTransactionsView labTransactionsView,
-        MaterialsView materialsView)
+        MaterialsView materialsView,
+        SettingsView settingsView,
+        IDentalInfoService dentalInfoService)
     {
         InitializeComponent();
 
@@ -33,8 +38,51 @@ public partial class frmMain : Form
         _treatmentsView = treatmentsView;
         _labTransactionsView = labTransactionsView;
         _materialsView = materialsView;
+        _settingsView = settingsView;
+        _dentalInfoService = dentalInfoService;
+
+        settingsView.SettingsSaved += LoadDentalInfo;
 
         btnMainMenu_Click(null!, null!);
+        LoadDentalInfo(null, null);
+    }
+
+    private async void LoadDentalInfo(object? sender, SettingsView.SettingsSavedEventArgs? e)
+    {
+        var dentalInfo = e?.DentalInfo ?? await _dentalInfoService.GetAsync();
+
+        lblDentalName.Text = dentalInfo.DentalName ?? string.Empty;
+
+        SetPictureBoxImage(
+            pbDentalImage,
+            !string.IsNullOrWhiteSpace(dentalInfo.DentalPicturePath)
+            && File.Exists(dentalInfo.DentalPicturePath)
+                ? LoadImageFromFile(dentalInfo.DentalPicturePath)
+                : Properties.Resources.tooth_512);
+
+        ctrlProfile1.SetDoctorName(dentalInfo.DoctorName);
+        ctrlProfile1.SetDoctorImage(
+            !string.IsNullOrWhiteSpace(dentalInfo.DoctorPicturePath)
+            && File.Exists(dentalInfo.DoctorPicturePath)
+                ? LoadImageFromFile(dentalInfo.DoctorPicturePath)
+                : Properties.Resources.user_512);
+
+        ctrlProfile1.SetPhoneNumber(dentalInfo.PhoneNumber);
+        ctrlProfile1.SetDescription(dentalInfo.DentalDescription);
+    }
+
+    private static void SetPictureBoxImage(PictureBox pictureBox, Image image)
+    {
+        var oldImage = pictureBox.Image;
+        pictureBox.Image = new Bitmap(image);
+        oldImage?.Dispose();
+    }
+
+    private static Image LoadImageFromFile(string filePath)
+    {
+        using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        using var tempImage = Image.FromStream(stream);
+        return new Bitmap(tempImage);
     }
 
     private void ShowView(UserControl view)
@@ -115,5 +163,18 @@ public partial class frmMain : Form
         ShowView(_materialsView);
         SelectMenuButton(btnMaterials);
         Cursor = Cursors.Default;
+    }
+
+    private void btnSettings_Click(object sender, EventArgs e)
+    {
+        Cursor = Cursors.WaitCursor;
+        ShowView(_settingsView);
+        SelectMenuButton(btnSettings);
+        Cursor = Cursors.Default;
+    }
+
+    private void ctrlProfile1_Click(object sender, EventArgs e)
+    {
+        btnSettings_Click(sender, e);
     }
 }

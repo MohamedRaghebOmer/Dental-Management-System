@@ -82,7 +82,7 @@ public sealed class MaterialService
     }
 
     public Task<List<MaterialFilterDto>> FilterAsync(
-        MaterialFilterDto? filterDto = null, 
+        MaterialFilterDto? filterDto = null,
         CancellationToken cancellationToken = default)
     {
         return _repo.FilterAsync(filterDto, cancellationToken);

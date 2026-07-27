@@ -60,20 +60,20 @@ namespace Dental.WinForms
             btnAppointments = new Guna.UI2.WinForms.Guna2Button();
             btnVisits = new Guna.UI2.WinForms.Guna2Button();
             pnlHeader = new Panel();
-            lblHeader = new Label();
-            pictureBox1 = new PictureBox();
+            lblDentalName = new Label();
+            pbDentalImage = new PictureBox();
             btnMainMenu = new Guna.UI2.WinForms.Guna2Button();
             pnlView = new Guna.UI2.WinForms.Guna2Panel();
             guna2CustomGradientPanel1 = new Guna.UI2.WinForms.Guna2CustomGradientPanel();
-            ctrlDateTime1 = new Dental.WinForms.UserControls.ctrlDateTime();
             ctrlProfile1 = new Dental.WinForms.UserControls.ctrlProfile();
+            ctrlDateTime1 = new Dental.WinForms.UserControls.ctrlDateTime();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             pnlHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbDentalImage).BeginInit();
             guna2CustomGradientPanel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -163,6 +163,7 @@ namespace Dental.WinForms
             btnSettings.TabIndex = 20;
             btnSettings.Text = "الإعدادات";
             btnSettings.UseTransparentBackground = true;
+            btnSettings.Click += btnSettings_Click;
             // 
             // btnMaterials
             // 
@@ -370,34 +371,35 @@ namespace Dental.WinForms
             // 
             // pnlHeader
             // 
-            pnlHeader.Controls.Add(lblHeader);
-            pnlHeader.Controls.Add(pictureBox1);
+            pnlHeader.Controls.Add(lblDentalName);
+            pnlHeader.Controls.Add(pbDentalImage);
             pnlHeader.Dock = DockStyle.Fill;
             pnlHeader.Location = new Point(3, 3);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.Size = new Size(344, 148);
             pnlHeader.TabIndex = 1;
             // 
-            // lblHeader
+            // lblDentalName
             // 
-            lblHeader.AutoSize = true;
-            lblHeader.Font = new Font("Goudy Stout", 25.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblHeader.ForeColor = Color.White;
-            lblHeader.Location = new Point(151, 35);
-            lblHeader.Name = "lblHeader";
-            lblHeader.Size = new Size(137, 60);
-            lblHeader.TabIndex = 0;
-            lblHeader.Text = "ابتسامه";
+            lblDentalName.Font = new Font("Goudy Stout", 19.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblDentalName.ForeColor = Color.White;
+            lblDentalName.Location = new Point(125, 13);
+            lblDentalName.Margin = new Padding(0);
+            lblDentalName.Name = "lblDentalName";
+            lblDentalName.Size = new Size(216, 123);
+            lblDentalName.TabIndex = 0;
+            lblDentalName.Text = "إبتسامه";
+            lblDentalName.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // pictureBox1
+            // pbDentalImage
             // 
-            pictureBox1.Image = Properties.Resources.tooth_512;
-            pictureBox1.Location = new Point(56, 25);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(101, 81);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
+            pbDentalImage.Image = Properties.Resources.tooth_512;
+            pbDentalImage.Location = new Point(7, 17);
+            pbDentalImage.Name = "pbDentalImage";
+            pbDentalImage.Size = new Size(115, 115);
+            pbDentalImage.SizeMode = PictureBoxSizeMode.Zoom;
+            pbDentalImage.TabIndex = 0;
+            pbDentalImage.TabStop = false;
             // 
             // btnMainMenu
             // 
@@ -438,10 +440,10 @@ namespace Dental.WinForms
             pnlView.BackColor = Color.DarkCyan;
             pnlView.CustomizableEdges = customizableEdges17;
             pnlView.Dock = DockStyle.Bottom;
-            pnlView.Location = new Point(0, 99);
+            pnlView.Location = new Point(0, 104);
             pnlView.Name = "pnlView";
             pnlView.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            pnlView.Size = new Size(1562, 956);
+            pnlView.Size = new Size(1562, 951);
             pnlView.TabIndex = 2;
             // 
             // guna2CustomGradientPanel1
@@ -454,36 +456,34 @@ namespace Dental.WinForms
             guna2CustomGradientPanel1.Location = new Point(0, 0);
             guna2CustomGradientPanel1.Name = "guna2CustomGradientPanel1";
             guna2CustomGradientPanel1.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            guna2CustomGradientPanel1.Size = new Size(1562, 100);
+            guna2CustomGradientPanel1.Size = new Size(1562, 105);
             guna2CustomGradientPanel1.TabIndex = 0;
-            // 
-            // ctrlDateTime1
-            // 
-            ctrlDateTime1.Anchor = AnchorStyles.Top;
-            ctrlDateTime1.BackColor = Color.Transparent;
-            ctrlDateTime1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ctrlDateTime1.Location = new Point(459, -3);
-            ctrlDateTime1.Margin = new Padding(4);
-            ctrlDateTime1.MaximumSize = new Size(0, 100);
-            ctrlDateTime1.MinimumSize = new Size(0, 100);
-            ctrlDateTime1.Name = "ctrlDateTime1";
-            ctrlDateTime1.Size = new Size(645, 100);
-            ctrlDateTime1.TabIndex = 1;
             // 
             // ctrlProfile1
             // 
-            ctrlProfile1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             ctrlProfile1.BackColor = Color.Transparent;
-            ctrlProfile1.Cursor = Cursors.Hand;
             ctrlProfile1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            ctrlProfile1.Location = new Point(1181, -3);
+            ctrlProfile1.Location = new Point(1084, 2);
             ctrlProfile1.Margin = new Padding(4);
-            ctrlProfile1.MaximumSize = new Size(378, 100);
-            ctrlProfile1.MinimumSize = new Size(378, 100);
+            ctrlProfile1.MaximumSize = new Size(474, 100);
+            ctrlProfile1.MinimumSize = new Size(411, 100);
             ctrlProfile1.Name = "ctrlProfile1";
             ctrlProfile1.RightToLeft = RightToLeft.Yes;
-            ctrlProfile1.Size = new Size(378, 100);
-            ctrlProfile1.TabIndex = 0;
+            ctrlProfile1.Size = new Size(474, 100);
+            ctrlProfile1.TabIndex = 1;
+            ctrlProfile1.Click += ctrlProfile1_Click;
+            // 
+            // ctrlDateTime1
+            // 
+            ctrlDateTime1.BackColor = Color.Transparent;
+            ctrlDateTime1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            ctrlDateTime1.Location = new Point(486, 2);
+            ctrlDateTime1.Margin = new Padding(4);
+            ctrlDateTime1.MaximumSize = new Size(0, 100);
+            ctrlDateTime1.MinimumSize = new Size(590, 100);
+            ctrlDateTime1.Name = "ctrlDateTime1";
+            ctrlDateTime1.Size = new Size(590, 100);
+            ctrlDateTime1.TabIndex = 2;
             // 
             // frmMain
             // 
@@ -509,8 +509,7 @@ namespace Dental.WinForms
             splitContainer1.ResumeLayout(false);
             tableLayoutPanel1.ResumeLayout(false);
             pnlHeader.ResumeLayout(false);
-            pnlHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbDentalImage).EndInit();
             guna2CustomGradientPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -520,19 +519,19 @@ namespace Dental.WinForms
         private SplitContainer splitContainer1;
         private TableLayoutPanel tableLayoutPanel1;
         private Panel pnlHeader;
-        private Label lblHeader;
-        private PictureBox pictureBox1;
+        private Label lblDentalName;
+        private PictureBox pbDentalImage;
         private Guna.UI2.WinForms.Guna2Button btnMainMenu;
         private Guna.UI2.WinForms.Guna2Button btnVisits;
         private Guna.UI2.WinForms.Guna2Button btnAppointments;
         private Guna.UI2.WinForms.Guna2Button btnPatients;
         private Guna.UI2.WinForms.Guna2CustomGradientPanel guna2CustomGradientPanel1;
-        private UserControls.ctrlProfile ctrlProfile1;
-        private UserControls.ctrlDateTime ctrlDateTime1;
         private Guna.UI2.WinForms.Guna2Panel pnlView;
         private Guna.UI2.WinForms.Guna2Button btnSettings;
         private Guna.UI2.WinForms.Guna2Button btnMaterials;
         private Guna.UI2.WinForms.Guna2Button btnLabsTrans;
         private Guna.UI2.WinForms.Guna2Button btnTreatments;
+        private UserControls.ctrlProfile ctrlProfile1;
+        private UserControls.ctrlDateTime ctrlDateTime1;
     }
 }

@@ -250,7 +250,7 @@
             txtSearchValue.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtSearchValue.ForeColor = Color.Black;
             txtSearchValue.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearchValue.Location = new Point(631, 498);
+            txtSearchValue.Location = new Point(631, 460);
             txtSearchValue.Margin = new Padding(4, 6, 4, 6);
             txtSearchValue.Name = "txtSearchValue";
             txtSearchValue.PlaceholderText = "ابحث بإسم الخدمه";
@@ -274,7 +274,7 @@
             btnAddNewTreatment.Font = new Font("Segoe UI", 13.8F);
             btnAddNewTreatment.ForeColor = Color.White;
             btnAddNewTreatment.HoverState.FillColor = Color.MediumBlue;
-            btnAddNewTreatment.Location = new Point(1343, 3);
+            btnAddNewTreatment.Location = new Point(1343, 450);
             btnAddNewTreatment.Name = "btnAddNewTreatment";
             btnAddNewTreatment.PressedColor = Color.FromArgb(0, 0, 165);
             btnAddNewTreatment.ShadowDecoration.CustomizableEdges = customizableEdges4;

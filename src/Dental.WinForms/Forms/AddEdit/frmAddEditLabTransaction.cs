@@ -26,6 +26,10 @@ public partial class frmAddEditLabTransaction : Form
         _labTransactionService = labTransactionService;
         _mode = Mode.Add;
         _labTranId = null;
+
+        CancelButton = btnClose;
+
+        Initialize();
     }
 
     public frmAddEditLabTransaction(
@@ -35,12 +39,12 @@ public partial class frmAddEditLabTransaction : Form
     {
         _mode = Mode.Edit;
         _labTranId = labTranId;
+
+        Initialize();
     }
 
     private async void frmAddEditLabTransaction_Load(object sender, EventArgs e)
     {
-        Initialize();
-
         if (_mode == Mode.Edit)
             await LoadLabTransactionInfoAsync();
     }
@@ -241,5 +245,10 @@ public partial class frmAddEditLabTransaction : Form
         }
 
         return true;
+    }
+
+    private void btnClose_Click(object sender, EventArgs e)
+    {
+        Close();
     }
 }

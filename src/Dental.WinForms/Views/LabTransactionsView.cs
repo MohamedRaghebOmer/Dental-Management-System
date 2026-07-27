@@ -416,6 +416,11 @@ public partial class LabTransactionsView : UserControl
         Refresh();
     }
 
+    private void dataGridView_DoubleClick(object sender, EventArgs e)
+    {
+        tsmiEdit_Click(sender, e);
+    }
+
     private int? SelectedTranId
     {
         get

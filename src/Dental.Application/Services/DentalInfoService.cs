@@ -11,81 +11,51 @@ namespace Dental.Application.Services;
 public sealed class DentalInfoService : IDentalInfoService
 {
     private readonly IDentalInfoRepository _repo;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<DentalInfoService> _logger;
 
     public DentalInfoService(
         IDentalInfoRepository repo,
-        IUnitOfWork unitOfWork,
         ILogger<DentalInfoService> logger)
     {
         _repo = repo;
-        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
 
-    public async Task<Result<DentalInfoDto>> UpdateAsync(
+    public async Task<Result> SetAsync(
         DentalInfoDto dto,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("DentalInfoService.UpdateAsync is called. {dto}", dto);
+        _logger.LogInformation("DentalInfoService.SetAsync is called. {dto}", dto);
         var createResult = DentalInfo.Create(
             dto.DoctorName,
-            dto.DentalDescription,
             dto.PhoneNumber,
-            dto.PicturePath);
+            dto.DoctorPicturePath,
+            dto.DentalName,
+            dto.DentalDescription,
+            dto.DentalPicturePath);
         if (createResult.IsFailure)
         {
             _logger.LogWarning("Failed to create a DentalInfo. {Error}", createResult.Error);
-            return Result.Failure<DentalInfoDto>(createResult.Error);
+            return Result.Failure(createResult.Error);
         }
 
-        var existingEntity = await _repo.GetAsync(cancellationToken);
-        if (existingEntity is null)
+        try
         {
-            _logger.LogCritical("Entity Not found. {Id}", 1);
-            return Result.Failure<DentalInfoDto>(ServiceErrors.Common.NotFound);
+            await _repo.SetAsync(createResult.Value, cancellationToken);
         }
-
-        var updatedResult = existingEntity.Update(
-            createResult.Value.DoctorName,
-            createResult.Value.DentalDescription,
-            createResult.Value.PhoneNumber,
-            createResult.Value.PicturePath);
-
-        if (updatedResult.IsFailure)
+        catch (Exception ex)
         {
-            _logger.LogWarning("Failed to update entity due to domain validation. {Erorr}",
-                updatedResult.Error);
-            return Result.Failure<DentalInfoDto>(updatedResult.Error);
+            _logger.LogError(ex, "An error occurred while setting dental info.");
+            return Result.Failure(ServiceErrors.Common.UnexpectedError);
         }
 
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-        _logger.LogInformation("DentalInfo updated successfully. {UpdatedEntity}", createResult.Value);
-
-        return Result.Success(new DentalInfoDto(
-            createResult.Value.DoctorName,
-            createResult.Value.DentalDescription,
-            createResult.Value.PhoneNumber,
-            createResult.Value.PicturePath));
+        return Result.Success();
     }
 
-    public async Task<Result<DentalInfoDto>> GetAsync(
+    public async Task<DentalInfoDto> GetAsync(
         CancellationToken cancellationToken = default)
     {
-        var entity = await _repo.GetAsync(cancellationToken);
-        if (entity is null)
-        {
-            _logger.LogCritical("Entity Not found. {Id}", 1);
-            return Result.Failure<DentalInfoDto>(ServiceErrors.Common.NotFound);
-        }
-
-        return Result.Success(new DentalInfoDto(
-            entity.DoctorName,
-            entity.DentalDescription,
-            entity.PhoneNumber,
-            entity.PicturePath));
+        return DentalInfoDto.FromEntity(await _repo.GetAsync(cancellationToken));
     }
 }

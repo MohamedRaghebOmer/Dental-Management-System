@@ -5,10 +5,10 @@ namespace Dental.Application.Abstractions.ServicesInterfaces;
 
 public interface IDentalInfoService
 {
-    Task<Result<DentalInfoDto>> UpdateAsync(
-        DentalInfoDto dto,
+    Task<DentalInfoDto> GetAsync(
         CancellationToken cancellationToken = default);
 
-    Task<Result<DentalInfoDto>> GetAsync(
+    Task<Result> SetAsync(
+        DentalInfoDto dto,
         CancellationToken cancellationToken = default);
 }

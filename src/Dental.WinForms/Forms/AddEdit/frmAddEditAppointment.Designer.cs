@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -46,6 +47,8 @@
             lblAppointmentId = new Label();
             lblAppointmentIdValue = new Label();
             ctrlSearchPatient1 = new Dental.WinForms.UserControls.Search.ctrlSearchPatient();
+            guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
+            btnClose = new FontAwesome.Sharp.IconButton();
             SuspendLayout();
             // 
             // label12
@@ -53,7 +56,7 @@
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             label12.ForeColor = Color.FromArgb(0, 0, 192);
-            label12.Location = new Point(1041, 340);
+            label12.Location = new Point(1031, 337);
             label12.Name = "label12";
             label12.Size = new Size(222, 28);
             label12.TabIndex = 3;
@@ -90,7 +93,7 @@
             lblPatientId.AutoSize = true;
             lblPatientId.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             lblPatientId.ForeColor = Color.FromArgb(0, 0, 192);
-            lblPatientId.Location = new Point(1138, 245);
+            lblPatientId.Location = new Point(1128, 245);
             lblPatientId.Name = "lblPatientId";
             lblPatientId.Size = new Size(125, 28);
             lblPatientId.TabIndex = 1;
@@ -136,7 +139,7 @@
             dtpVisitDate.HoverState.BorderColor = Color.White;
             dtpVisitDate.HoverState.FillColor = Color.White;
             dtpVisitDate.HoverState.ForeColor = Color.Black;
-            dtpVisitDate.Location = new Point(746, 318);
+            dtpVisitDate.Location = new Point(748, 318);
             dtpVisitDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpVisitDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpVisitDate.Name = "dtpVisitDate";
@@ -154,7 +157,7 @@
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             label2.ForeColor = Color.FromArgb(0, 0, 192);
-            label2.Location = new Point(1163, 435);
+            label2.Location = new Point(1153, 435);
             label2.Name = "label2";
             label2.Size = new Size(99, 28);
             label2.TabIndex = 5;
@@ -173,9 +176,9 @@
             // 
             lblTitile.Font = new Font("Segoe UI", 25.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitile.ForeColor = Color.FromArgb(100, 88, 255);
-            lblTitile.Location = new Point(12, 9);
+            lblTitile.Location = new Point(470, 9);
             lblTitile.Name = "lblTitile";
-            lblTitile.Size = new Size(1235, 60);
+            lblTitile.Size = new Size(318, 60);
             lblTitile.TabIndex = 0;
             lblTitile.Text = "اضافة حجز جديد";
             lblTitile.TextAlign = ContentAlignment.MiddleCenter;
@@ -184,7 +187,7 @@
             // 
             dtpVisitTime.CustomFormat = "hh:mm tt";
             dtpVisitTime.Format = DateTimePickerFormat.Custom;
-            dtpVisitTime.Location = new Point(828, 369);
+            dtpVisitTime.Location = new Point(830, 369);
             dtpVisitTime.Name = "dtpVisitTime";
             dtpVisitTime.RightToLeft = RightToLeft.No;
             dtpVisitTime.ShowUpDown = true;
@@ -196,7 +199,7 @@
             lblAppointmentId.AutoSize = true;
             lblAppointmentId.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             lblAppointmentId.ForeColor = Color.FromArgb(0, 0, 192);
-            lblAppointmentId.Location = new Point(1161, 167);
+            lblAppointmentId.Location = new Point(1151, 167);
             lblAppointmentId.Name = "lblAppointmentId";
             lblAppointmentId.Size = new Size(101, 28);
             lblAppointmentId.TabIndex = 9;
@@ -227,11 +230,39 @@
             ctrlSearchPatient1.Size = new Size(730, 412);
             ctrlSearchPatient1.TabIndex = 11;
             // 
+            // guna2BorderlessForm1
+            // 
+            guna2BorderlessForm1.AnimateWindow = true;
+            guna2BorderlessForm1.AnimationInterval = 270;
+            guna2BorderlessForm1.AnimationType = Guna.UI2.WinForms.Guna2BorderlessForm.AnimateWindowType.AW_CENTER;
+            guna2BorderlessForm1.BorderRadius = 85;
+            guna2BorderlessForm1.ContainerControl = this;
+            guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            guna2BorderlessForm1.HasFormShadow = false;
+            guna2BorderlessForm1.ResizeForm = false;
+            guna2BorderlessForm1.TransparentWhileDrag = true;
+            // 
+            // btnClose
+            // 
+            btnClose.IconChar = FontAwesome.Sharp.IconChar.Close;
+            btnClose.IconColor = Color.Red;
+            btnClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            btnClose.IconSize = 38;
+            btnClose.ImageAlign = ContentAlignment.TopCenter;
+            btnClose.Location = new Point(1183, 12);
+            btnClose.Name = "btnClose";
+            btnClose.RightToLeft = RightToLeft.No;
+            btnClose.Size = new Size(53, 41);
+            btnClose.TabIndex = 12;
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
+            // 
             // frmAddEditAppointment
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1259, 676);
+            Controls.Add(btnClose);
             Controls.Add(ctrlSearchPatient1);
             Controls.Add(lblAppointmentIdValue);
             Controls.Add(lblAppointmentId);
@@ -245,7 +276,7 @@
             Controls.Add(lblPatientId);
             Controls.Add(btnSave);
             Font = new Font("Segoe UI", 12F);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(4);
             MaximizeBox = false;
             Name = "frmAddEditAppointment";
@@ -272,5 +303,7 @@
         private Label lblAppointmentId;
         private Label lblAppointmentIdValue;
         private UserControls.Search.ctrlSearchPatient ctrlSearchPatient1;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private FontAwesome.Sharp.IconButton btnClose;
     }
 }
