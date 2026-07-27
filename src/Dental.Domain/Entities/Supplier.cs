@@ -34,8 +34,6 @@ public sealed class Supplier : Entity
     public string? Address { get; private set; } = null;
     public string? Description { get; private set; } = null;
 
-    public ICollection<Material> Materials { get; private set; } = [];
-
     public static Result<Supplier> Create(
         string name,
         PhoneNumber? phoneNumber,

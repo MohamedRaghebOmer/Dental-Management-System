@@ -1,14 +1,15 @@
 ﻿using Dental.Application.Abstractions;
+using Dental.Domain.Enums;
 
 namespace Dental.Application.DTOs.Material;
 
 public sealed record MaterialResponseDto(
     int Id,
     string Name,
-    int? SupplierId,
-    string? Description,
-    int Quantity,
-    decimal BuyingPrice)
+    decimal Quantity,
+    decimal ReorderLevel,
+    decimal Price,
+    MaterialStatus Status)
     : IResponseDto<Domain.Entities.Material, MaterialResponseDto>
 {
     public static MaterialResponseDto ToResponseDto(Domain.Entities.Material entity)
@@ -16,10 +17,10 @@ public sealed record MaterialResponseDto(
         return new MaterialResponseDto(
             entity.Id.Value,
             entity.Name,
-            entity.SupplierId?.Value,
-            entity.Description,
             entity.Quantity,
-            entity.BuyingPrice
+            entity.ReorderLevel,
+            entity.Price,
+            entity.Status
         );
     }
 }

@@ -75,4 +75,15 @@ public class FormFactory : IFormFactory
         return ActivatorUtilities.CreateInstance<frmAddEditLabTransaction>
             (_serviceProvider, labTranId);
     }
+
+    public frmAddEditMaterial Create_frmAddEditMaterial()
+    {
+        return _serviceProvider.GetRequiredService<frmAddEditMaterial>();
+    }
+
+    public frmAddEditMaterial Create_frmAddEditMaterial(int materialId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditMaterial>
+            (_serviceProvider, materialId);
+    }
 }

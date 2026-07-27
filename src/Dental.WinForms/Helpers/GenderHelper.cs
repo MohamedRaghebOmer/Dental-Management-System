@@ -1,6 +1,6 @@
 ﻿using Dental.Domain.Enums;
 
-namespace Dental.WinForms.Global.Helpers;
+namespace Dental.WinForms.Helpers;
 
 public static class GenderHelper
 {
