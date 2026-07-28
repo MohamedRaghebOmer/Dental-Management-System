@@ -13,14 +13,14 @@ public sealed class DatabaseInitializer
         _dbContext = dbContext;
     }
 
-    public async Task InitializeAsync()
-    {
-        await _dbContext.Database.MigrateAsync();
+    //public async Task InitializeAsync()
+    //{
+    //    await _dbContext.Database.MigrateAsync();
 
-        if (await _dbContext.DentalInfo.AnyAsync())
-            return;
+    //    if (await _dbContext.DentalInfo.AnyAsync())
+    //        return;
 
-        _dbContext.DentalInfo.Add(DentalInfo.CreateDefault());
-        await _dbContext.SaveChangesAsync();
-    }
+    //    _dbContext.DentalInfo.Add(DentalInfo.CreateDefault());
+    //    await _dbContext.SaveChangesAsync();
+    //}
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,7 +8,7 @@
 namespace Dental.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDatabaseSchema : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,10 +19,12 @@ namespace Dental.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    DoctorName = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
-                    DentalDescription = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 13, nullable: true),
-                    PicturePath = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true)
+                    DoctorName = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 11, nullable: true),
+                    DoctorPicturePath = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
+                    DentalName = table.Column<string>(type: "TEXT", maxLength: 30, nullable: true),
+                    DentalDescription = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    DentalPicturePath = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,22 +33,60 @@ namespace Dental.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LabTransactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LabName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    TranDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PaidAmount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Treatments = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LabTransactions", x => x.Id);
+                    table.CheckConstraint("CK_LabTransaction_PaidAmount", "[PaidAmount] >= 0");
+                    table.CheckConstraint("CK_LabTransaction_TotalAmount", "[TotalAmount] >= 0");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Materials",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Quantity = table.Column<decimal>(type: "TEXT", nullable: false),
+                    ReorderLevel = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Price = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Materials", x => x.Id);
+                    table.CheckConstraint("CK_Materials_Price", "[Price] >= 0");
+                    table.CheckConstraint("CK_Materials_Quantity", "[Quantity] >= 0");
+                    table.CheckConstraint("CK_Materials_ReorderLevel", "[ReorderLevel] >= 0");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Patients",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "TEXT", nullable: true),
-                    Gender = table.Column<byte>(type: "TINYINT", nullable: false, comment: "Male = 1, Female = 2"),
-                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 11, nullable: true),
-                    Address = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Age = table.Column<int>(type: "INTEGER", nullable: false),
+                    Gender = table.Column<byte>(type: "TINYINT", nullable: false, comment: "Male = 0, Female = 1"),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 11, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Patients", x => x.Id);
-                    table.CheckConstraint("CK_Patient_Gender", "Gender IN (1, 2)");
+                    table.CheckConstraint("CK_Patients_AgeRange", "Age BETWEEN 0 AND 99");
+                    table.CheckConstraint("CK_Patients_Gender", "Gender IN (0, 1)");
+                    table.CheckConstraint("CK_Patients_PhoneNumberLength", "length(PhoneNumber) = 11");
                 });
 
             migrationBuilder.CreateTable(
@@ -62,6 +103,7 @@ namespace Dental.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.CheckConstraint("CK_Suppliers_PhoneNumberLengthEqualTo11", "length(PhoneNumber) = 11");
                 });
 
             migrationBuilder.CreateTable(
@@ -87,45 +129,20 @@ namespace Dental.Infrastructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     PatientId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CompletedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false, defaultValueSql: "DATETIME('now', 'localtime')"),
+                    ScheduledVisitDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ActualVisitDateTime = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Status = table.Column<byte>(type: "TINYINT", nullable: false, comment: "Pending = 1, Canceled = 2, Completed = 3, Missed = 4"),
                     Notes = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.UniqueConstraint("AK_Appointments_Id_PatientId", x => new { x.Id, x.PatientId });
                     table.ForeignKey(
                         name: "FK_Appointments_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Materials",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
-                    SupplierId = table.Column<int>(type: "INTEGER", nullable: true),
-                    ReorderLevel = table.Column<int>(type: "INTEGER", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true),
-                    Quantity = table.Column<int>(type: "INTEGER", nullable: false),
-                    BuyingPrice = table.Column<decimal>(type: "TEXT", precision: 18, scale: 2, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Materials", x => x.Id);
-                    table.CheckConstraint("CK_Material_BuyingPrice", "[BuyingPrice] >= 0");
-                    table.CheckConstraint("CK_Material_Quantity", "[Quantity] >= 0");
-                    table.CheckConstraint("CK_Material_ReorderLevel", "[ReorderLevel] >= 0");
-                    table.ForeignKey(
-                        name: "FK_Materials_Suppliers_SupplierId",
-                        column: x => x.SupplierId,
-                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -137,6 +154,7 @@ namespace Dental.Infrastructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AppointmentId = table.Column<int>(type: "INTEGER", nullable: true),
+                    PatientId = table.Column<int>(type: "INTEGER", nullable: false),
                     PaidAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     DiscountAmount = table.Column<decimal>(type: "TEXT", nullable: false),
                     VisitDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -148,9 +166,15 @@ namespace Dental.Infrastructure.Migrations
                     table.CheckConstraint("CK_Visits_DiscountAmount_NotNegative", "[DiscountAmount] >= 0");
                     table.CheckConstraint("CK_Visits_PaidAmount_NotNegative", "[PaidAmount] >= 0");
                     table.ForeignKey(
-                        name: "FK_Visits_Appointments_AppointmentId",
-                        column: x => x.AppointmentId,
+                        name: "FK_Visits_Appointments_AppointmentId_PatientId",
+                        columns: x => new { x.AppointmentId, x.PatientId },
                         principalTable: "Appointments",
+                        principalColumns: new[] { "Id", "PatientId" },
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Visits_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -161,12 +185,19 @@ namespace Dental.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    PatientId = table.Column<int>(type: "INTEGER", nullable: true),
                     VisitId = table.Column<int>(type: "INTEGER", nullable: false),
                     Notes = table.Column<string>(type: "TEXT", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Prescriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Prescriptions_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Prescriptions_Visits_VisitId",
                         column: x => x.VisitId,
@@ -189,21 +220,21 @@ namespace Dental.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VisitToothTreatments", x => x.Id);
-                    table.CheckConstraint("CK_VisitToothTreatments_Price_NonNegative", "[Price] >= 0");
-                    table.CheckConstraint("CK_VisitToothTreatments_ToothNumber_Range", "[ToothNumber] >= 1 AND [ToothNumber] <= 32");
+                    table.PrimaryKey("PK_VisitTreatments", x => x.Id);
+                    table.CheckConstraint("CK_VisitTreatments_Price_NonNegative", "[Price] >= 0");
+                    table.CheckConstraint("CK_VisitTreatments_ToothNumber_Range", "[ToothNumber] >= 1 AND [ToothNumber] <= 32");
                     table.ForeignKey(
-                        name: "FK_VisitToothTreatments_Treatments_TreatmentId",
+                        name: "FK_VisitTreatments_Treatments_TreatmentId",
                         column: x => x.TreatmentId,
                         principalTable: "Treatments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_VisitToothTreatments_Visits_VisitId",
+                        name: "FK_VisitTreatments_Visits_VisitId",
                         column: x => x.VisitId,
                         principalTable: "Visits",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -229,34 +260,44 @@ namespace Dental.Infrastructure.Migrations
                         column: x => x.PrescriptionId,
                         principalTable: "Prescriptions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "DentalInfo",
-                columns: new[] { "Id", "DentalDescription", "DoctorName", "PhoneNumber", "PicturePath" },
-                values: new object[] { 1, "طب الفم والأسنان", "د/ كريم فتوح", "+20100619816", null });
+                columns: new[] { "Id", "DentalDescription", "DentalName", "DentalPicturePath", "DoctorName", "DoctorPicturePath", "PhoneNumber" },
+                values: new object[] { 1, "طب الفم والأسنان", "إبتسامه", null, "د/ كريم فتوح", null, "01006169816" });
 
             migrationBuilder.InsertData(
                 table: "Treatments",
                 columns: new[] { "Id", "Description", "Name", "Price" },
                 values: new object[,]
                 {
-                    { 1, null, "حشو عصب", 100.00m },
-                    { 2, null, "حشو ليزر", 100.00m },
-                    { 3, null, "تركيبات", 100.00m },
-                    { 4, null, "خلع", 100.00m },
-                    { 5, null, "زراعه", 100.00m },
-                    { 6, null, "تقويم", 100.00m },
-                    { 7, null, "تنظيف جير", 100.00m },
-                    { 8, null, "تلميع", 100.00m },
-                    { 9, null, "تبيض", 100.00m }
+                    { 1, null, "حشو عصب", 260.00m },
+                    { 2, null, "حشو ليزر", 450.00m },
+                    { 3, null, "تركيبات", 130.00m },
+                    { 4, null, "خلع", 120.00m },
+                    { 5, null, "زراعه", 730.00m },
+                    { 6, null, "تقويم", 1530.00m },
+                    { 7, null, "تنظيف جير", 204.00m },
+                    { 8, null, "تلميع", 143.00m },
+                    { 9, null, "تبيض", 138.00m }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_PatientId",
                 table: "Appointments",
                 column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LabTransaction_LabName",
+                table: "LabTransactions",
+                column: "LabName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LabTransaction_TransactionDateTime",
+                table: "LabTransactions",
+                column: "TranDateTime");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Materials_Name",
@@ -270,9 +311,15 @@ namespace Dental.Infrastructure.Migrations
                 column: "Quantity");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_SupplierId",
+                name: "IX_Materials_ReorderLevel",
                 table: "Materials",
-                column: "SupplierId");
+                column: "ReorderLevel");
+
+            migrationBuilder.CreateIndex(
+                name: "UX_Patients_Name",
+                table: "Patients",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PrescriptionItems_PrescriptionId",
@@ -280,9 +327,21 @@ namespace Dental.Infrastructure.Migrations
                 column: "PrescriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Prescriptions_VisitId",
+                name: "UX_PrescriptionItems_PrescriptionId_MedicineName",
+                table: "PrescriptionItems",
+                columns: new[] { "PrescriptionId", "MedicineName" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Prescriptions_PatientId",
                 table: "Prescriptions",
-                column: "VisitId");
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "UX_Prescriptions_VisitId",
+                table: "Prescriptions",
+                column: "VisitId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "UX_Supplier_Name",
@@ -304,35 +363,33 @@ namespace Dental.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "UX_Visits_AppointmentId",
+                name: "IX_Visits_AppointmentId_PatientId",
                 table: "Visits",
-                column: "AppointmentId",
-                unique: true,
-                filter: "[AppointmentId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "UX_Visits_DateTime",
-                table: "Visits",
-                column: "VisitDateTime",
+                columns: new[] { "AppointmentId", "PatientId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_VisitToothTreatments_ToothNumber",
-                table: "VisitTreatments",
-                column: "ToothNumber");
+                name: "IX_Visits_PatientId",
+                table: "Visits",
+                column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VisitToothTreatments_TreatmentId",
+                name: "IX_Visits_VisitDateTime",
+                table: "Visits",
+                column: "VisitDateTime");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VisitTreatments_TreatmentId",
                 table: "VisitTreatments",
                 column: "TreatmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VisitToothTreatments_VisitId",
+                name: "IX_VisitTreatments_VisitId",
                 table: "VisitTreatments",
                 column: "VisitId");
 
             migrationBuilder.CreateIndex(
-                name: "UX_VisitToothTreatments_ToothNumber_VisitId_TreatmentId",
+                name: "UX_VisitTreatments_ToothNumber_VisitId_TreatmentId",
                 table: "VisitTreatments",
                 columns: new[] { "ToothNumber", "VisitId", "TreatmentId" },
                 unique: true);
@@ -345,16 +402,19 @@ namespace Dental.Infrastructure.Migrations
                 name: "DentalInfo");
 
             migrationBuilder.DropTable(
+                name: "LabTransactions");
+
+            migrationBuilder.DropTable(
                 name: "Materials");
 
             migrationBuilder.DropTable(
                 name: "PrescriptionItems");
 
             migrationBuilder.DropTable(
-                name: "VisitTreatments");
+                name: "Suppliers");
 
             migrationBuilder.DropTable(
-                name: "Suppliers");
+                name: "VisitTreatments");
 
             migrationBuilder.DropTable(
                 name: "Prescriptions");

@@ -93,6 +93,16 @@ namespace Dental.WinForms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap blue_user_512 {
+            get {
+                object obj = ResourceManager.GetObject("blue-user-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap calendar_512 {
             get {
                 object obj = ResourceManager.GetObject("calendar-512", resourceCulture);
@@ -116,6 +126,16 @@ namespace Dental.WinForms.Properties {
         internal static System.Drawing.Bitmap clock_512 {
             get {
                 object obj = ResourceManager.GetObject("clock-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap close_512 {
+            get {
+                object obj = ResourceManager.GetObject("close-512", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -153,6 +173,36 @@ namespace Dental.WinForms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap internet_512 {
+            get {
+                object obj = ResourceManager.GetObject("internet-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap location_512 {
+            get {
+                object obj = ResourceManager.GetObject("location-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mail_512 {
+            get {
+                object obj = ResourceManager.GetObject("mail-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pen_512 {
             get {
                 object obj = ResourceManager.GetObject("pen-512", resourceCulture);
@@ -163,9 +213,29 @@ namespace Dental.WinForms.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap phone_512 {
+            get {
+                object obj = ResourceManager.GetObject("phone-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap plus_512 {
             get {
                 object obj = ResourceManager.GetObject("plus-512", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap question_512 {
+            get {
+                object obj = ResourceManager.GetObject("question-512", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

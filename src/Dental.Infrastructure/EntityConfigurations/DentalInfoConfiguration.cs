@@ -14,7 +14,7 @@ public sealed class DentalInfoConfiguration
         builder.ConfigurePrimaryKey();
 
         ConfigureProperties(builder);
-        //InsertInitialData(builder);
+        InsertInitialData(builder);
         AddCheckConstraint(builder);
     }
 
@@ -28,10 +28,10 @@ public sealed class DentalInfoConfiguration
         });
     }
 
-    //private static void InsertInitialData(EntityTypeBuilder<DentalInfo> builder)
-    //{
-    //    builder.HasData(DentalInfo.CreateDefault());
-    //}
+    private static void InsertInitialData(EntityTypeBuilder<DentalInfo> builder)
+    {
+        builder.HasData(DentalInfo.CreateDefault());
+    }
 
     private static void ConfigureProperties(EntityTypeBuilder<DentalInfo> builder)
     {

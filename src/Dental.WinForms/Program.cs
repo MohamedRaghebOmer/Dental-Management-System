@@ -1,8 +1,10 @@
 using Dental.Application;
 using Dental.Infrastructure;
 using Dental.Infrastructure.Constants;
+using Dental.Infrastructure.Persistence;
 using Dental.WinForms.Configurations;
 using Dental.WinForms.Security;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -46,9 +48,13 @@ internal static class Program
 
             CreateApplicationDataFolder();
 
-            ServiceProvider provider = services.BuildServiceProvider();
 
-            EnsureInitialDataAsync(provider).GetAwaiter().GetResult();
+            //EnsureInitialDataAsync(provider).GetAwaiter().GetResult();
+
+            ServiceProvider provider = services.BuildServiceProvider();
+            using var scope = provider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DentalDbContext>();
+            dbContext.Database.Migrate();
 
             System.Windows.Forms.Application.Run(provider.GetRequiredService<frmMain>());
         }
@@ -69,13 +75,13 @@ internal static class Program
         Directory.CreateDirectory(DataStoragePaths.ImagesFolderPath);
     }
 
-    private static async Task EnsureInitialDataAsync(IServiceProvider provider)
-    {
-        using var scope = provider.CreateScope();
+    //private static async Task EnsureInitialDataAsync(IServiceProvider provider)
+    //{
+    //    using var scope = provider.CreateScope();
 
-        var initializer = scope.ServiceProvider
-            .GetRequiredService<DatabaseInitializer>();
+    //    var initializer = scope.ServiceProvider
+    //        .GetRequiredService<DatabaseInitializer>();
 
-        await initializer.InitializeAsync();
-    }
+    //    await initializer.InitializeAsync();
+    //}
 }

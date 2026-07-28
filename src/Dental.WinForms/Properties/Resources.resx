@@ -121,8 +121,17 @@
   <data name="bell-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\bell-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="blue-user-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\blue-user-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="tooth-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\tooth-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="close-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\close-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="location-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\location-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="details-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\details-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -133,8 +142,8 @@
   <data name="teeth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\other\teeth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="plus-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\512px\plus-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="check-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\check-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icons8-dental-48" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-dental-48.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -142,8 +151,20 @@
   <data name="Refresh-32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\32px\Refresh-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="plus-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\plus-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="question-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\question-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="calendar-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\calendar-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mail-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\mail-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="phone-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\phone-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="pen-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\pen-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -160,7 +181,7 @@
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="check-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\512px\check-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="internet-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\internet-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
