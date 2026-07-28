@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dental.Infrastructure.Migrations
 {
     [DbContext(typeof(DentalDbContext))]
-    [Migration("20260718180321_UpdatePatientGenderConstraint")]
-    partial class UpdatePatientGenderConstraint
+    [Migration("20260728212053_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,24 +74,34 @@ namespace Dental.Infrastructure.Migrations
                     SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<string>("DentalDescription")
-                        .HasMaxLength(20)
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT")
                         .HasColumnName("DentalDescription");
 
+                    b.Property<string>("DentalName")
+                        .HasMaxLength(30)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DentalName");
+
+                    b.Property<string>("DentalPicturePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DentalPicturePath");
+
                     b.Property<string>("DoctorName")
-                        .HasMaxLength(20)
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT")
                         .HasColumnName("DoctorName");
 
+                    b.Property<string>("DoctorPicturePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("DoctorPicturePath");
+
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(13)
+                        .HasMaxLength(11)
                         .HasColumnType("TEXT")
                         .HasColumnName("PhoneNumber");
-
-                    b.Property<string>("PicturePath")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("PicturePath");
 
                     b.HasKey("Id");
 
@@ -105,8 +115,48 @@ namespace Dental.Infrastructure.Migrations
                         {
                             Id = 1,
                             DentalDescription = "طب الفم والأسنان",
+                            DentalName = "إبتسامه",
                             DoctorName = "د/ كريم فتوح",
-                            PhoneNumber = "+20100619816"
+                            PhoneNumber = "01006169816"
+                        });
+                });
+
+            modelBuilder.Entity("Dental.Domain.Entities.LabTransaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
+
+                    b.Property<string>("LabName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("LabName");
+
+                    b.Property<DateTime>("TranDateTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("TranDateTime");
+
+                    b.Property<string>("Treatments")
+                        .HasMaxLength(1000)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Treatments");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LabName")
+                        .HasDatabaseName("IX_LabTransaction_LabName");
+
+                    b.HasIndex("TranDateTime")
+                        .HasDatabaseName("IX_LabTransaction_TransactionDateTime");
+
+                    b.ToTable("LabTransactions", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_LabTransaction_PaidAmount", "[PaidAmount] >= 0");
+
+                            t.HasCheckConstraint("CK_LabTransaction_TotalAmount", "[TotalAmount] >= 0");
                         });
                 });
 
@@ -118,50 +168,44 @@ namespace Dental.Infrastructure.Migrations
 
                     SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
-                    b.Property<decimal>("BuyingPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("BuyingPrice");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("Description");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT")
                         .HasColumnName("Name");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER")
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Price");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("TEXT")
                         .HasColumnName("Quantity");
 
-                    b.Property<int>("ReorderLevel")
-                        .HasColumnType("INTEGER")
+                    b.Property<decimal>("ReorderLevel")
+                        .HasColumnType("TEXT")
                         .HasColumnName("ReorderLevel");
-
-                    b.Property<int?>("SupplierId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("SupplierId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("IX_Materials_Name");
 
-                    b.HasIndex("Quantity");
+                    b.HasIndex("Quantity")
+                        .HasDatabaseName("IX_Materials_Quantity");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex("ReorderLevel")
+                        .HasDatabaseName("IX_Materials_ReorderLevel");
 
                     b.ToTable("Materials", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Material_BuyingPrice", "[BuyingPrice] >= 0");
+                            t.HasCheckConstraint("CK_Materials_Price", "[Price] >= 0");
 
-                            t.HasCheckConstraint("CK_Material_Quantity", "[Quantity] >= 0");
+                            t.HasCheckConstraint("CK_Materials_Quantity", "[Quantity] >= 0");
 
-                            t.HasCheckConstraint("CK_Material_ReorderLevel", "[ReorderLevel] >= 0");
+                            t.HasCheckConstraint("CK_Materials_ReorderLevel", "[ReorderLevel] >= 0");
                         });
                 });
 
@@ -177,22 +221,16 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("Age");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("FirstName");
-
                     b.Property<byte>("Gender")
                         .HasColumnType("TINYINT")
                         .HasColumnName("Gender")
                         .HasComment("Male = 0, Female = 1");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT")
-                        .HasColumnName("LastName");
+                        .HasColumnName("Name");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(11)
@@ -201,11 +239,9 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FirstName")
-                        .HasDatabaseName("IX_Patients_FirstName");
-
-                    b.HasIndex("LastName")
-                        .HasDatabaseName("IX_Patients_LastName");
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("UX_Patients_Name");
 
                     b.ToTable("Patients", null, t =>
                         {
@@ -457,10 +493,9 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("PaidAmount");
 
-                    b.Property<string>("PatientName")
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT")
-                        .HasColumnName("PatientName");
+                    b.Property<int>("PatientId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("PatientId");
 
                     b.Property<DateTime>("VisitDateTime")
                         .HasColumnType("TEXT")
@@ -468,17 +503,14 @@ namespace Dental.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentId")
-                        .IsUnique()
-                        .HasDatabaseName("UX_Visits_AppointmentId")
-                        .HasFilter("[AppointmentId] IS NOT NULL");
-
-                    b.HasIndex("PatientName")
-                        .HasDatabaseName("UX_Visits_PatientName");
+                    b.HasIndex("PatientId")
+                        .HasDatabaseName("IX_Visits_PatientId");
 
                     b.HasIndex("VisitDateTime")
-                        .IsUnique()
-                        .HasDatabaseName("UX_Visits_VisitDateTime");
+                        .HasDatabaseName("IX_Visits_VisitDateTime");
+
+                    b.HasIndex("AppointmentId", "PatientId")
+                        .IsUnique();
 
                     b.ToTable("Visits", null, t =>
                         {
@@ -548,14 +580,47 @@ namespace Dental.Infrastructure.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("Dental.Domain.Entities.Material", b =>
+            modelBuilder.Entity("Dental.Domain.Entities.LabTransaction", b =>
                 {
-                    b.HasOne("Dental.Domain.Entities.Supplier", "Supplier")
-                        .WithMany("Materials")
-                        .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.OwnsOne("Dental.Domain.ValueObjects.Money", "PaidAmount", b1 =>
+                        {
+                            b1.Property<int>("LabTransactionId")
+                                .HasColumnType("INTEGER");
 
-                    b.Navigation("Supplier");
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("PaidAmount");
+
+                            b1.HasKey("LabTransactionId");
+
+                            b1.ToTable("LabTransactions");
+
+                            b1.WithOwner()
+                                .HasForeignKey("LabTransactionId");
+                        });
+
+                    b.OwnsOne("Dental.Domain.ValueObjects.Money", "TotalAmount", b1 =>
+                        {
+                            b1.Property<int>("LabTransactionId")
+                                .HasColumnType("INTEGER");
+
+                            b1.Property<decimal>("Value")
+                                .HasColumnType("TEXT")
+                                .HasColumnName("TotalAmount");
+
+                            b1.HasKey("LabTransactionId");
+
+                            b1.ToTable("LabTransactions");
+
+                            b1.WithOwner()
+                                .HasForeignKey("LabTransactionId");
+                        });
+
+                    b.Navigation("PaidAmount")
+                        .IsRequired();
+
+                    b.Navigation("TotalAmount")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Dental.Domain.Entities.Prescription", b =>
@@ -613,12 +678,21 @@ namespace Dental.Infrastructure.Migrations
 
             modelBuilder.Entity("Dental.Domain.Entities.Visit", b =>
                 {
+                    b.HasOne("Dental.Domain.Entities.Patient", "Patient")
+                        .WithMany("Visits")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Dental.Domain.Entities.Appointment", "Appointment")
                         .WithOne("Visit")
-                        .HasForeignKey("Dental.Domain.Entities.Visit", "AppointmentId")
+                        .HasForeignKey("Dental.Domain.Entities.Visit", "AppointmentId", "PatientId")
+                        .HasPrincipalKey("Dental.Domain.Entities.Appointment", "Id", "PatientId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Appointment");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Dental.Domain.Entities.VisitTreatment", b =>
@@ -650,16 +724,13 @@ namespace Dental.Infrastructure.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("Prescriptions");
+
+                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("Dental.Domain.Entities.Prescription", b =>
                 {
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("Dental.Domain.Entities.Supplier", b =>
-                {
-                    b.Navigation("Materials");
                 });
 
             modelBuilder.Entity("Dental.Domain.Entities.Treatment", b =>

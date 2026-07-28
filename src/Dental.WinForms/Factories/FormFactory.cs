@@ -86,4 +86,9 @@ public class FormFactory : IFormFactory
         return ActivatorUtilities.CreateInstance<frmAddEditMaterial>
             (_serviceProvider, materialId);
     }
+
+    public frmAbout Create_frmAbout()
+    {
+        return _serviceProvider.GetRequiredService<frmAbout>();
+    }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 internal static class Program
 {
-    const string CustomerName = "Karim Fattouh";
+    const string CustomerName = "KarimFattouh";
     const string ProductId = "Dental";
 
     private static void Main(string[] args)
@@ -33,6 +33,7 @@ internal static class Program
         {
             Console.WriteLine("private.pem not found.");
             Console.WriteLine("Run: Dental.LicenseGenerator --init-keys");
+            Console.ReadLine();
             return;
         }
 
@@ -63,6 +64,7 @@ internal static class Program
         Console.WriteLine(licenseKey);
         Console.WriteLine();
         Console.WriteLine("Saved to: " + outputPath);
+        Console.ReadLine();
     }
 
     private static void CreateKeyPair(string privateKeyPath, string publicKeyPath)
@@ -80,6 +82,7 @@ internal static class Program
         Console.WriteLine("Public key:  " + publicKeyPath);
         Console.WriteLine();
         Console.WriteLine("Copy the public key content into your WinForms app.");
+        Console.ReadLine();
     }
 
     private static string MakeSafeFileName(string text)

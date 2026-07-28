@@ -25,4 +25,6 @@ public interface IFormFactory
 
     frmAddEditMaterial Create_frmAddEditMaterial();
     frmAddEditMaterial Create_frmAddEditMaterial(int materialId);
+
+    frmAbout Create_frmAbout();
 }

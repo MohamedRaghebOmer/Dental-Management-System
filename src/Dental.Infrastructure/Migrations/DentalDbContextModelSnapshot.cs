@@ -71,12 +71,12 @@ namespace Dental.Infrastructure.Migrations
                     SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
                     b.Property<string>("DentalDescription")
-                        .HasMaxLength(20)
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT")
                         .HasColumnName("DentalDescription");
 
                     b.Property<string>("DentalName")
-                        .HasMaxLength(20)
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT")
                         .HasColumnName("DentalName");
 
@@ -86,7 +86,7 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnName("DentalPicturePath");
 
                     b.Property<string>("DoctorName")
-                        .HasMaxLength(20)
+                        .HasMaxLength(30)
                         .HasColumnType("TEXT")
                         .HasColumnName("DoctorName");
 
@@ -96,7 +96,7 @@ namespace Dental.Infrastructure.Migrations
                         .HasColumnName("DoctorPicturePath");
 
                     b.Property<string>("PhoneNumber")
-                        .HasMaxLength(13)
+                        .HasMaxLength(11)
                         .HasColumnType("TEXT")
                         .HasColumnName("PhoneNumber");
 
@@ -105,6 +105,16 @@ namespace Dental.Infrastructure.Migrations
                     b.ToTable("DentalInfo", null, t =>
                         {
                             t.HasCheckConstraint("CK_DentalInfo_OnlyOneRecord", "[Id] = 1");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DentalDescription = "طب الفم والأسنان",
+                            DentalName = "إبتسامه",
+                            DoctorName = "د/ كريم فتوح",
+                            PhoneNumber = "01006169816"
                         });
                 });
 
@@ -580,7 +590,7 @@ namespace Dental.Infrastructure.Migrations
 
                             b1.HasKey("LabTransactionId");
 
-                            b1.ToTable("LabTransactions", (string)null);
+                            b1.ToTable("LabTransactions");
 
                             b1.WithOwner()
                                 .HasForeignKey("LabTransactionId");
@@ -597,7 +607,7 @@ namespace Dental.Infrastructure.Migrations
 
                             b1.HasKey("LabTransactionId");
 
-                            b1.ToTable("LabTransactions", (string)null);
+                            b1.ToTable("LabTransactions");
 
                             b1.WithOwner()
                                 .HasForeignKey("LabTransactionId");
@@ -651,7 +661,7 @@ namespace Dental.Infrastructure.Migrations
 
                             b1.HasKey("PrescriptionItemId");
 
-                            b1.ToTable("PrescriptionItems", (string)null);
+                            b1.ToTable("PrescriptionItems");
 
                             b1.WithOwner()
                                 .HasForeignKey("PrescriptionItemId");

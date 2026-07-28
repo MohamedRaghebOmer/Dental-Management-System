@@ -1,6 +1,8 @@
 ﻿using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.WinForms.Views;
 using Guna.UI2.WinForms;
+using System.Diagnostics;
+using Dental.WinForms.Abstractions;
 using Color = System.Drawing.Color;
 
 namespace Dental.WinForms;
@@ -15,6 +17,7 @@ public partial class frmMain : Form
     private readonly MaterialsView _materialsView = default!;
     private readonly SettingsView _settingsView = default!;
     private readonly IDentalInfoService _dentalInfoService;
+    private readonly IFormFactory _formFactory;
     private Guna2Button? _selectedButton;
 
     public frmMain(
@@ -25,7 +28,8 @@ public partial class frmMain : Form
         LabTransactionsView labTransactionsView,
         MaterialsView materialsView,
         SettingsView settingsView,
-        IDentalInfoService dentalInfoService)
+        IDentalInfoService dentalInfoService,
+        IFormFactory formFactory)
     {
         InitializeComponent();
 
@@ -37,6 +41,7 @@ public partial class frmMain : Form
         _materialsView = materialsView;
         _settingsView = settingsView;
         _dentalInfoService = dentalInfoService;
+        _formFactory = formFactory;
 
         settingsView.SettingsSaved += LoadDentalInfo;
         ctrlProfile1.ControlClicked += ctrlProfile1_ControlClicked;
@@ -166,5 +171,28 @@ public partial class frmMain : Form
     {
         btnSettings_Click(null!, null!);
 
+    }
+
+    private void lblEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        // Open the default email client with a new email to the specified address
+        try
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = $"mailto:{lblEmail.Text}",
+                UseShellExecute = true
+            });
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Unable to open email client: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private async void btnHelp_Click(object sender, EventArgs e)
+    {
+        using var frm = _formFactory.Create_frmAbout();
+        await frm.ShowAsync();
     }
 }
