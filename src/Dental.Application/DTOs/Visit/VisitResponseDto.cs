@@ -6,7 +6,6 @@ public sealed record VisitResponseDto(
     int Id,
     int? AppointmentId,
     int PatientId,
-    decimal PaidAmount,
     decimal DiscountAmount,
     DateTime VisitDateTime,
     string? Notes)
@@ -18,7 +17,6 @@ public sealed record VisitResponseDto(
             Id: entity.Id.Value,
             AppointmentId: entity.AppointmentId?.Value,
             PatientId: entity.PatientId.Value,
-            PaidAmount: entity.PaidAmount.Value,
             DiscountAmount: entity.DiscountAmount.Value,
             VisitDateTime: entity.VisitDateTime,
             Notes: entity.Notes

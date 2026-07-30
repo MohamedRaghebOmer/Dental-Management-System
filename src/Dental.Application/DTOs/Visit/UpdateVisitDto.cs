@@ -7,11 +7,6 @@ public sealed record UpdateVisitDto
     [Required]
     [Range(0, double.MaxValue)]
     [DataType(DataType.Currency)]
-    public required decimal PaidAmount { get; init; }
-
-    [Required]
-    [Range(0, double.MaxValue)]
-    [DataType(DataType.Currency)]
     public required decimal DiscountAmount { get; init; }
 
     public string? Notes { get; init; } = null;

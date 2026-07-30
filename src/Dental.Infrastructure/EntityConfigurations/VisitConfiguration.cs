@@ -97,13 +97,6 @@ public sealed class VisitConfiguration
             .HasColumnName(nameof(Visit.PatientId))
             .IsRequired();
 
-        builder.Property((p => p.PaidAmount))
-            .HasConversion(
-                value => value.Value,
-                value => Money.FromDatabase(value))
-            .HasColumnName(nameof(Visit.PaidAmount))
-            .IsRequired();
-
         builder.Property((p => p.DiscountAmount))
             .HasConversion(
                 value => value.Value,

@@ -15,7 +15,6 @@ public sealed class Visit : Entity
 
     public Id? AppointmentId { get; private set; } = default;
     public Id PatientId { get; private set; } = default!;
-    public Money PaidAmount { get; private set; } = default!;
     public Money DiscountAmount { get; private set; } = default!;
     public DateTime VisitDateTime { get; private set; }
     public string? Notes { get; private set; }
@@ -37,13 +36,11 @@ public sealed class Visit : Entity
     private Visit(
         Id? appointmentId,
         Id patientId,
-        Money paidAmount,
         Money discountAmount,
         string? notes)
     {
         AppointmentId = appointmentId;
         PatientId = patientId;
-        PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
         VisitDateTime = DateTime.Now;
         Notes = notes;
@@ -54,7 +51,6 @@ public sealed class Visit : Entity
     public static Result<Visit> Create(
         Id? appointmentId,
         Id patientId,
-        Money paidAmount,
         Money discountAmount,
         string? notes)
     {
@@ -66,11 +62,10 @@ public sealed class Visit : Entity
             return Result.Failure<Visit>(validateResult.Error);
         }
 
-        return new Visit(appointmentId, patientId, paidAmount, discountAmount, notes);
+        return new Visit(appointmentId, patientId, discountAmount, notes);
     }
 
     public Result Update(
-        Money paidAmount,
         Money discountAmount,
         string? notes)
     {
@@ -82,7 +77,6 @@ public sealed class Visit : Entity
             return Result.Failure(validateResult.Error);
         }
 
-        PaidAmount = paidAmount;
         DiscountAmount = discountAmount;
         Notes = notes;
 
