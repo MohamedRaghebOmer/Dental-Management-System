@@ -79,7 +79,6 @@ public interface IVisitRepository
         CancellationToken cancellationToken = default);
 
     Task<Dictionary<int, Visit>> GetByIdsAsync(
-    IEnumerable<Id> ids,
-    CancellationToken cancellationToken = default);
-
+        IEnumerable<Id> ids,
+        CancellationToken cancellationToken = default);
 }

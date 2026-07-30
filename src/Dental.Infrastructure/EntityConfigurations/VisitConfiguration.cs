@@ -60,6 +60,10 @@ public sealed class VisitConfiguration
             .FindNavigation(nameof(Visit.VisitTreatments))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
 
+        builder.Metadata
+            .FindNavigation(nameof(Visit.VisitPayments))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
 
         builder.HasOne(v => v.Appointment)
             .WithOne(a => a.Visit)

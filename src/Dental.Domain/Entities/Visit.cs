@@ -28,6 +28,9 @@ public sealed class Visit : Entity
     public IReadOnlyCollection<VisitTreatment> VisitTreatments => _visitTreatments.AsReadOnly();
     private readonly List<VisitTreatment> _visitTreatments = [];
 
+    public IReadOnlyCollection<VisitPayment> VisitPayments => _visitPayments.AsReadOnly();
+    private readonly List<VisitPayment> _visitPayments = [];
+
 
     private Visit() { } // EF Core
 
@@ -173,6 +176,7 @@ public sealed class Visit : Entity
     public void RemoveAllVisitTreatments()
         => _visitTreatments.Clear();
 
+
     public Result<Prescription> AddPrescription(Id patientId, string? notes)
     {
         if (Prescription is not null)
@@ -284,6 +288,43 @@ public sealed class Visit : Entity
             return Result.Failure(removeItemResult.Error);
         }
 
+        return Result.Success();
+    }
+
+
+    public Result<VisitPayment> AddVisitPayment(
+        Money paidAmount)
+    {
+        var createResult = VisitPayment.Create(Id, paidAmount);
+        if (createResult.IsFailure)
+            return Result.Failure<VisitPayment>(createResult.Error);
+
+        return createResult.Value;
+    }
+
+    public Result UpdateVisitPayment(
+        Id visitPaymentId,
+        Money paidAmount)
+    {
+        var entity = _visitPayments.FirstOrDefault(vp => vp.Id == visitPaymentId);
+        if (entity is null)
+            return Result.Failure(DomainErrors.Entities.Visit.VisitPayment.NotFound);
+
+        var updateResult = entity.Udpate(paidAmount);
+        if (updateResult.IsFailure)
+            return Result.Failure(updateResult.Error);
+
+        return Result.Success();
+    }
+
+    public Result RemoveVisitPayment(
+        Id visitPaymentId)
+    {
+        var entity = _visitPayments.FirstOrDefault(vp => vp.Id == visitPaymentId);
+        if (entity is null)
+            return Result.Failure(DomainErrors.Entities.Visit.VisitPayment.NotFound);
+
+        _visitPayments.Remove(entity);
         return Result.Success();
     }
 }
