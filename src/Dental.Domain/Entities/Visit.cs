@@ -293,6 +293,8 @@ public sealed class Visit : Entity
         if (createResult.IsFailure)
             return Result.Failure<VisitPayment>(createResult.Error);
 
+        _visitPayments.Add(createResult.Value);
+
         return createResult.Value;
     }
 

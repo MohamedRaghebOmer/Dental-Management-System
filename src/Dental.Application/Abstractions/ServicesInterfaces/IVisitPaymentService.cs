@@ -5,18 +5,13 @@ namespace Dental.Application.Abstractions.ServicesInterfaces;
 
 public interface IVisitPaymentService
 {
-    Task<Result<VisitPaymentResponseDto>> GetByIdAsync(
-        int id,
+    Task<Result> UpdateManyAsync(
+        List<UpdateVisitPaymentDto> updateDtos,
         CancellationToken cancellationToken = default);
 
-    Task<Result<bool>> ExistsAsync(
-        int id,
+    Task<Result> CreateMenyAsync(
+        List<CreateVisitPaymentDto> addDtos,
         CancellationToken cancellationToken = default);
 
-    Task<List<VisitPaymentResponseDto>> GetAllAsync(
-        CancellationToken cancellationToken = default);
-
-    Task<Result> DeleteAsync(
-        int id,
-        CancellationToken cancellationToken = default);
+    Task<Result> DeleteManyAsync(IEnumerable<int> paymentIds);
 }

@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IPrescriptionItemService, PrescriptionItemService>();
         services.AddScoped<IPrescriptionService, PrescriptionService>();
         services.AddScoped<ISupplierService, SupplierService>();
+        services.AddScoped<IVisitPaymentService, VisitPaymentService>();
 
         // Dental.Application.ViewsStuff
         services.AddScoped<IVisitTreatmentsViewService, VisitTreatmentsViewService>();

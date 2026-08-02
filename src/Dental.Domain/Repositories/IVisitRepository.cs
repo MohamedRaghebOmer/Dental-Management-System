@@ -1,5 +1,7 @@
 ﻿using Dental.Domain.Entities;
 using Dental.Domain.ValueObjects;
+using System.Collections.Immutable;
+using System.Linq.Expressions;
 
 namespace Dental.Domain.Repositories;
 
@@ -80,5 +82,14 @@ public interface IVisitRepository
 
     Task<Dictionary<int, Visit>> GetByIdsAsync(
         IEnumerable<Id> ids,
+        CancellationToken cancellationToken = default,
+        params Expression<Func<Visit, object>>[] includes);
+
+    Task<List<VisitPayment>> GetPaymentsByVisitIdAsync(
+        Id id,
+        CancellationToken cancellationToken);
+
+    Task DeleteVisitPaymentsByIdsAsync(
+        ImmutableList<Id> ids,
         CancellationToken cancellationToken = default);
 }

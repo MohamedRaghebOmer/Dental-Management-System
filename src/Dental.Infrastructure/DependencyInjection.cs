@@ -9,6 +9,7 @@ using Dental.Infrastructure.Repositories.Views.Appointment;
 using Dental.Infrastructure.Repositories.Views.LabTransactions;
 using Dental.Infrastructure.Repositories.Views.Patient;
 using Dental.Infrastructure.Repositories.Views.Visit;
+using Dental.Infrastructure.Repositories.Views.Visits;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -3,6 +3,8 @@ using Dental.Domain.Repositories;
 using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
+using System.Linq.Expressions;
 
 namespace Dental.Infrastructure.Repositories;
 
@@ -114,12 +116,36 @@ public sealed class VisitRepository
 
     public Task<Dictionary<int, Visit>> GetByIdsAsync(
         IEnumerable<Id> ids,
+        CancellationToken cancellationToken = default,
+        params Expression<Func<Visit, object>>[] includes)
+    {
+        IQueryable<Visit> query = _dbContext.Visits
+            .Where(v => ids.Contains(v.Id));
+
+        foreach (var include in includes)
+            query = query.Include(include);
+
+        return query.ToDictionaryAsync(
+            v => v.Id.Value,
+            cancellationToken);
+    }
+
+    public Task<List<VisitPayment>> GetPaymentsByVisitIdAsync(
+        Id id,
+        CancellationToken cancellationToken)
+    {
+        return _dbContext.VisitPayments
+            .AsNoTracking()
+            .Where(vp => vp.VisitId == id)
+            .ToListAsync(cancellationToken);
+    }
+
+    public Task DeleteVisitPaymentsByIdsAsync(
+        ImmutableList<Id> ids,
         CancellationToken cancellationToken = default)
     {
-        return _dbContext.Visits
-            .Where(v => ids.Contains(v.Id))
-            .ToDictionaryAsync(
-                v => v.Id.Value,
-                cancellationToken);
+        return _dbContext.VisitPayments
+            .Where(vp => ids.Contains(vp.Id))
+            .ExecuteDeleteAsync(cancellationToken);
     }
 }

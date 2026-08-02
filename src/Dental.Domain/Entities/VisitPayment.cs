@@ -7,10 +7,10 @@ namespace Dental.Domain.Entities;
 
 public sealed class VisitPayment : Entity
 {
-    public Id VisitId { get; private set; }
-    public Money PaidAmount { get; private set; }
+    public Id VisitId { get; private set; } = default!;
+    public Money PaidAmount { get; private set; } = default!;
     public DateTime PaymentDateTime { get; private set; }
-    public Visit Visit { get; private set; }
+    public Visit Visit { get; private set; } = default!;
 
 
     private VisitPayment() { } // EF Core

@@ -1,4 +1,5 @@
 ﻿using Dental.Application.DTOs.Visit;
+using Dental.Application.DTOs.VisitPayment;
 using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;
@@ -29,5 +30,9 @@ public interface IVisitService
 
     Task<Result> DeleteAsync(
         int id,
+        CancellationToken cancellationToken = default);
+
+    Task<Result<List<VisitPaymentResponseDto>>> GetPaymentsByVisitIdAsync(
+        int visitId,
         CancellationToken cancellationToken = default);
 }

@@ -31,7 +31,7 @@ public partial class VisitsView : UserControl
         VisitDateTime,
         VisitTreatments,
         TotalAmount,
-        PaidAmount,
+        TotalPaidAmounts,
         DiscountAmount,
         RemainedAmount
     }
@@ -105,13 +105,27 @@ public partial class VisitsView : UserControl
                 v.PatientId,
                 v.PatientName,
                 v.VisitTreatmentsNames,
+
                 VisitDateTime = v.VisitDateTime is not null
                     ? DateTimeHelper.GetArabicDateTime(v.VisitDateTime.Value)
                     : null,
-                TotalAmount = v.TotalAmount.HasValue ? $"{v.TotalAmount.Value:F2}" : null,
-                PaidAmount = v.PaidAmount.HasValue ? $"{v.PaidAmount.Value:F2}" : null,
-                DiscountAmount = v.DiscountAmount.HasValue ? $"{v.DiscountAmount.Value:F2}" : null,
-                RemainedAmount = v.RemainedAmount.HasValue ? $"{v.RemainedAmount.Value:F2}" : null
+
+                TotalAmount = v.TotalAmount.HasValue ?
+                $"{v.TotalAmount.Value:F2}"
+                : null,
+
+                TotalPaidAmount = v.SumOfPaidAmounts.HasValue ?
+                    $"{v.SumOfPaidAmounts.Value:F2}"
+                    : null,
+
+                DiscountAmount =
+                    v.DiscountAmount.HasValue ?
+                    $"{v.DiscountAmount.Value:F2}"
+                    : null,
+
+                RemainedAmount = v.RemainedAmount.HasValue ?
+                    $"{v.RemainedAmount.Value:F2}"
+                    : null
             })
             .ToList();
 
@@ -126,10 +140,18 @@ public partial class VisitsView : UserControl
     private void LoadCards(List<VisitView> view)
     {
         lblTotalVisits.Text = view.Count.ToString();
-        lblSumOfTotalAmount.Text = view.Sum(v => v.TotalAmount ?? 0).ToString("F2");
-        lblSumOfPaidAmount.Text = view.Sum(v => v.PaidAmount ?? 0).ToString("F2");
-        lblSumOfDiscountAmount.Text = view.Sum(v => v.DiscountAmount ?? 0).ToString("F2");
-        lblSumOfRemainedAmount.Text = view.Sum(v => v.RemainedAmount ?? 0).ToString("F2");
+
+        lblSumOfTotalAmount.Text =
+            view.Sum(v => v.TotalAmount ?? 0).ToString("F2");
+
+        lblSumOfPaidAmounts.Text =
+            view.Sum(v => v.SumOfPaidAmounts ?? 0).ToString("F2");
+
+        lblSumOfDiscountAmount.Text =
+            view.Sum(v => v.DiscountAmount ?? 0).ToString("F2");
+
+        lblSumOfRemainedAmount.Text =
+            view.Sum(v => v.RemainedAmount ?? 0).ToString("F2");
     }
 
     private async void btnAddWalkInVisit_Click(object sender, EventArgs e)
@@ -184,66 +206,71 @@ public partial class VisitsView : UserControl
     private VisitView? GetFilterDto()
     {
         var filterValue = txtFilterValue.Text;
-        VisitView view = new();
+        VisitView? view = null;
 
         switch (_currentFilterColumn)
         {
             case GridColumns.VisitId:
                 if (int.TryParse(filterValue, out int visitId))
-                    view.VisitId = visitId;
+                    view = new VisitView { VisitId = visitId };
                 break;
 
             case GridColumns.AppointmentId:
                 if (int.TryParse(filterValue, out int appointmentId))
-                    view.AppointmentId = appointmentId;
+                    view = new VisitView { AppointmentId = appointmentId };
                 break;
 
             case GridColumns.PatientName:
-                view.PatientName = filterValue;
+                view = new VisitView { PatientName = filterValue };
                 break;
 
             case GridColumns.VisitTreatments:
-                view.VisitTreatmentsNames = filterValue;
+                view = new VisitView { VisitTreatmentsNames = filterValue };
                 break;
 
             case GridColumns.TotalAmount:
-                if (decimal.TryParse(filterValue, out decimal totalAmount))
-                    view.TotalAmount = totalAmount;
+                if (decimal.TryParse(filterValue, out var totalAmount))
+                    view = new VisitView { TotalAmount = totalAmount };
                 break;
 
-            case GridColumns.PaidAmount:
-                if (decimal.TryParse(filterValue, out decimal paidAmount))
-                    view.PaidAmount = paidAmount;
+            case GridColumns.TotalPaidAmounts:
+                if (decimal.TryParse(filterValue, out var paidAmount))
+                    view = new VisitView { SumOfPaidAmounts = paidAmount };
                 break;
 
             case GridColumns.DiscountAmount:
-                if (decimal.TryParse(filterValue, out decimal discountAmount))
-                    view.DiscountAmount = discountAmount;
+                if (decimal.TryParse(filterValue, out var discountAmount))
+                    view = new VisitView { DiscountAmount = discountAmount };
                 break;
 
             case GridColumns.RemainedAmount:
-                if (decimal.TryParse(filterValue, out decimal remainedAmount))
-                    view.RemainedAmount = remainedAmount;
+                if (decimal.TryParse(filterValue, out var remainedAmount))
+                    view = new VisitView { RemainedAmount = remainedAmount };
                 break;
         }
 
         if (dtpSearchAfter.Visible)
         {
-            view.GetViewsAfterDateTime = dtpSearchAfter.Value.Date;
+            if (view is not null)
+                view.GetViewsAfterDateTime = dtpSearchAfter.Value.Date;
+            else
+                view = new VisitView { GetViewsAfterDateTime = dtpSearchAfter.Value.Date };
+
             return view;
         }
 
         if (_currentFilterColumn == GridColumns.VisitDateTime && dtpVisitDateTime.Visible)
         {
-            view.VisitDateTime = dtpVisitDateTime.Value.Date;
+            if (view is not null)
+                view.VisitDateTime = dtpVisitDateTime.Value.Date;
+            else
+                view = new VisitView { VisitDateTime = dtpVisitDateTime.Value.Date };
+
             return view;
         }
 
         if (pnlSearchAtRadioButtons.Visible && rbAllTime.Checked)
-        {
-            view.GetViewsAfterDateTime = null;
-            return view;
-        }
+            view?.GetViewsAfterDateTime = null;
 
 
         return view;
@@ -252,7 +279,7 @@ public partial class VisitsView : UserControl
     private void txtFilterValue_KeyPress(object sender, KeyPressEventArgs e)
     {
         if (_currentFilterColumn
-            is GridColumns.PaidAmount
+            is GridColumns.TotalPaidAmounts
             or GridColumns.DiscountAmount
             or GridColumns.RemainedAmount
             or GridColumns.TotalAmount)
@@ -290,7 +317,7 @@ public partial class VisitsView : UserControl
          اسم المريض
         تاريخ الزياره
         الخدمات المقدمه
-        المبلغ الكلي
+        مجموع المبالغ المدفوعه
         المبلغ المدفوع
         مبلغ الخصم
         المبلغ المتبقي
@@ -304,8 +331,8 @@ public partial class VisitsView : UserControl
             "اسم المريض" => GridColumns.PatientName,
             "تاريخ الزياره" => GridColumns.VisitDateTime,
             "الخدمات المقدمه" => GridColumns.VisitTreatments,
-            "المبلغ الكلي" => GridColumns.TotalAmount,
-            "المبلغ المدفوع" => GridColumns.PaidAmount,
+            "مجموع المبالغ المدفوعه" => GridColumns.TotalAmount,
+            "المبلغ المدفوع" => GridColumns.TotalPaidAmounts,
             "مبلغ الخصم" => GridColumns.DiscountAmount,
             "المبلغ المتبقي" => GridColumns.RemainedAmount,
 

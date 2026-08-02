@@ -26,10 +26,6 @@ public sealed class VisitConfiguration
             table.HasCheckConstraint(
                 "CK_Visits_DiscountAmount_NotNegative",
                 "[DiscountAmount] >= 0");
-
-            table.HasCheckConstraint(
-                "CK_Visits_PaidAmount_NotNegative",
-                "[PaidAmount] >= 0");
         });
     }
 

@@ -1,6 +1,5 @@
 ﻿using Dental.WinForms.Extensions;
 using Guna.UI2.WinForms;
-using Timer = System.Windows.Forms.Timer;
 
 namespace Dental.WinForms.Forms
 {

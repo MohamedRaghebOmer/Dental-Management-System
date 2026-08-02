@@ -1,6 +1,7 @@
 ﻿using Dental.Application.Abstractions;
 using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Visit;
+using Dental.Application.DTOs.VisitPayment;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
@@ -348,5 +349,21 @@ public sealed class VisitService
 
             return Result.Failure(ServiceErrors.Common.UnexpectedError);
         }
+    }
+
+    public async Task<Result<List<VisitPaymentResponseDto>>> GetPaymentsByVisitIdAsync(
+        int visitId,
+        CancellationToken cancellationToken = default)
+    {
+        var idResult = Id.Create(visitId);
+        if (idResult.IsFailure)
+            return Result.Failure
+                <List<VisitPaymentResponseDto>>(ServiceErrors.Common.InvalidId);
+
+        var entities = await _visitRepo.GetPaymentsByVisitIdAsync(
+           idResult.Value,
+           cancellationToken);
+
+        return entities.Select(VisitPaymentResponseDto.ToResponseDto).ToList();
     }
 }

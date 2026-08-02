@@ -54,7 +54,7 @@
             colVisitDateTime = new DataGridViewTextBoxColumn();
             colVisitTreatments = new DataGridViewTextBoxColumn();
             colTotalAmount = new DataGridViewTextBoxColumn();
-            colPaidAmount = new DataGridViewTextBoxColumn();
+            colTotalPaidAmount = new DataGridViewTextBoxColumn();
             colDiscountAmount = new DataGridViewTextBoxColumn();
             colRemainedAmount = new DataGridViewTextBoxColumn();
             contextMenuStrip = new ContextMenuStrip(components);
@@ -72,7 +72,7 @@
             lblTotalVisits = new Label();
             label1 = new Label();
             guna2ShadowPanel1 = new Guna.UI2.WinForms.Guna2ShadowPanel();
-            lblSumOfPaidAmount = new Label();
+            lblSumOfPaidAmounts = new Label();
             label2 = new Label();
             guna2ShadowPanel2 = new Guna.UI2.WinForms.Guna2ShadowPanel();
             lblSumOfDiscountAmount = new Label();
@@ -133,7 +133,7 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView.ColumnHeadersHeight = 35;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { colVisitId, colAppointmentId, colPatientId, colPatientName, colVisitDateTime, colVisitTreatments, colTotalAmount, colPaidAmount, colDiscountAmount, colRemainedAmount });
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { colVisitId, colAppointmentId, colPatientId, colPatientName, colVisitDateTime, colVisitTreatments, colTotalAmount, colTotalPaidAmount, colDiscountAmount, colRemainedAmount });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -257,15 +257,15 @@
             colTotalAmount.ReadOnly = true;
             colTotalAmount.Width = 140;
             // 
-            // colPaidAmount
+            // colTotalPaidAmount
             // 
-            colPaidAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            colPaidAmount.DataPropertyName = "PaidAmount";
-            colPaidAmount.HeaderText = "المبلغ المدفوع";
-            colPaidAmount.MinimumWidth = 100;
-            colPaidAmount.Name = "colPaidAmount";
-            colPaidAmount.ReadOnly = true;
-            colPaidAmount.Width = 160;
+            colTotalPaidAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            colTotalPaidAmount.DataPropertyName = "TotalPaidAmount";
+            colTotalPaidAmount.HeaderText = "إجمالي المبالغ المدفوعه";
+            colTotalPaidAmount.MinimumWidth = 100;
+            colTotalPaidAmount.Name = "colTotalPaidAmount";
+            colTotalPaidAmount.ReadOnly = true;
+            colTotalPaidAmount.Width = 238;
             // 
             // colDiscountAmount
             // 
@@ -389,7 +389,7 @@
             // 
             cbFilterList.DropDownStyle = ComboBoxStyle.DropDownList;
             cbFilterList.FormattingEnabled = true;
-            cbFilterList.Items.AddRange(new object[] { "رقم الزياره", "رقم الحجز", "اسم المريض", "تاريخ الزياره", "الخدمات المقدمه", "المبلغ الكلي", "المبلغ المدفوع", "مبلغ الخصم", "المبلغ المتبقي" });
+            cbFilterList.Items.AddRange(new object[] { "رقم الزياره", "رقم الحجز", "اسم المريض", "تاريخ الزياره", "الخدمات المقدمه", "مجموع المبالغ المدفوعه", "المبلغ المدفوع", "مبلغ الخصم", "المبلغ المتبقي" });
             cbFilterList.Location = new Point(477, 472);
             cbFilterList.Name = "cbFilterList";
             cbFilterList.Size = new Size(301, 36);
@@ -433,36 +433,36 @@
             // guna2ShadowPanel1
             // 
             guna2ShadowPanel1.BackColor = Color.Transparent;
-            guna2ShadowPanel1.Controls.Add(lblSumOfPaidAmount);
+            guna2ShadowPanel1.Controls.Add(lblSumOfPaidAmounts);
             guna2ShadowPanel1.Controls.Add(label2);
             guna2ShadowPanel1.FillColor = Color.White;
-            guna2ShadowPanel1.Location = new Point(648, 219);
+            guna2ShadowPanel1.Location = new Point(616, 219);
             guna2ShadowPanel1.Name = "guna2ShadowPanel1";
             guna2ShadowPanel1.Radius = 10;
             guna2ShadowPanel1.ShadowColor = Color.Black;
             guna2ShadowPanel1.ShadowDepth = 150;
-            guna2ShadowPanel1.Size = new Size(266, 125);
+            guna2ShadowPanel1.Size = new Size(322, 125);
             guna2ShadowPanel1.TabIndex = 3;
             // 
-            // lblSumOfPaidAmount
+            // lblSumOfPaidAmounts
             // 
-            lblSumOfPaidAmount.ForeColor = Color.Black;
-            lblSumOfPaidAmount.Location = new Point(3, 55);
-            lblSumOfPaidAmount.Name = "lblSumOfPaidAmount";
-            lblSumOfPaidAmount.Size = new Size(260, 28);
-            lblSumOfPaidAmount.TabIndex = 0;
-            lblSumOfPaidAmount.TextAlign = ContentAlignment.MiddleCenter;
+            lblSumOfPaidAmounts.ForeColor = Color.Black;
+            lblSumOfPaidAmounts.Location = new Point(3, 55);
+            lblSumOfPaidAmounts.Name = "lblSumOfPaidAmounts";
+            lblSumOfPaidAmounts.Size = new Size(319, 28);
+            lblSumOfPaidAmounts.TabIndex = 0;
+            lblSumOfPaidAmounts.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.FromArgb(255, 128, 0);
-            label2.Location = new Point(45, 8);
+            label2.Location = new Point(38, 8);
             label2.Name = "label2";
-            label2.Size = new Size(213, 28);
+            label2.Size = new Size(277, 28);
             label2.TabIndex = 3;
-            label2.Text = "مجموع المبالغ المدفوعه";
+            label2.Text = "مجموع إجمالي المبالغ المدفوعه";
             // 
             // guna2ShadowPanel2
             // 
@@ -470,7 +470,7 @@
             guna2ShadowPanel2.Controls.Add(lblSumOfDiscountAmount);
             guna2ShadowPanel2.Controls.Add(label3);
             guna2ShadowPanel2.FillColor = Color.White;
-            guna2ShadowPanel2.Location = new Point(335, 219);
+            guna2ShadowPanel2.Location = new Point(314, 219);
             guna2ShadowPanel2.Name = "guna2ShadowPanel2";
             guna2ShadowPanel2.Radius = 10;
             guna2ShadowPanel2.ShadowColor = Color.Black;
@@ -773,7 +773,7 @@
             guna2ShadowPanel4.Controls.Add(lblSumOfTotalAmount);
             guna2ShadowPanel4.Controls.Add(label8);
             guna2ShadowPanel4.FillColor = Color.White;
-            guna2ShadowPanel4.Location = new Point(961, 219);
+            guna2ShadowPanel4.Location = new Point(975, 219);
             guna2ShadowPanel4.Name = "guna2ShadowPanel4";
             guna2ShadowPanel4.Radius = 10;
             guna2ShadowPanel4.ShadowColor = Color.Black;
@@ -887,7 +887,7 @@
         private RadioButton rbThisMonth;
         private RadioButton rbAllTime;
         private Label lblTotalVisits;
-        private Label lblSumOfPaidAmount;
+        private Label lblSumOfPaidAmounts;
         private Label lblSumOfDiscountAmount;
         private Label lblSumOfRemainedAmount;
         private Guna.UI2.WinForms.Guna2DateTimePicker dtpSearchAfter;
@@ -906,16 +906,6 @@
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripSeparator toolStripSeparator2;
         private Guna.UI2.WinForms.Guna2Button btnCreatePreAppointmentVisit;
-        private DataGridViewTextBoxColumn colVisitId;
-        private DataGridViewTextBoxColumn colAppointmentId;
-        private DataGridViewTextBoxColumn colPatientId;
-        private DataGridViewTextBoxColumn colPatientName;
-        private DataGridViewTextBoxColumn colVisitDateTime;
-        private DataGridViewTextBoxColumn colVisitTreatments;
-        private DataGridViewTextBoxColumn colTotalAmount;
-        private DataGridViewTextBoxColumn colPaidAmount;
-        private DataGridViewTextBoxColumn colDiscountAmount;
-        private DataGridViewTextBoxColumn colRemainedAmount;
         private System.Windows.Forms.Timer LoadDataFirstTimeTimer;
         private Label label5;
         private Label label6;
@@ -925,5 +915,15 @@
         private Label label7;
         private Label label9;
         private ToolStripSeparator toolStripSeparator3;
+        private DataGridViewTextBoxColumn colVisitId;
+        private DataGridViewTextBoxColumn colAppointmentId;
+        private DataGridViewTextBoxColumn colPatientId;
+        private DataGridViewTextBoxColumn colPatientName;
+        private DataGridViewTextBoxColumn colVisitDateTime;
+        private DataGridViewTextBoxColumn colVisitTreatments;
+        private DataGridViewTextBoxColumn colTotalAmount;
+        private DataGridViewTextBoxColumn colTotalPaidAmount;
+        private DataGridViewTextBoxColumn colDiscountAmount;
+        private DataGridViewTextBoxColumn colRemainedAmount;
     }
 }
