@@ -88,6 +88,7 @@
             tsmiPaymentsDelete = new ToolStripMenuItem();
             lblSumOfPaidAmounts = new Label();
             label5 = new Label();
+            change_txtId_FillColorTimer = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvVisitTreatments).BeginInit();
             cmsTreatmetnsGrid.SuspendLayout();
@@ -275,7 +276,7 @@
             dgvVisitTreatments.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvVisitTreatments.RowTemplate.Height = 35;
             dgvVisitTreatments.RowTemplate.Resizable = DataGridViewTriState.False;
-            dgvVisitTreatments.Size = new Size(1246, 237);
+            dgvVisitTreatments.Size = new Size(1238, 237);
             dgvVisitTreatments.TabIndex = 7;
             dgvVisitTreatments.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvVisitTreatments.ThemeStyle.AlternatingRowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -379,7 +380,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label8.Location = new Point(1493, 715);
+            label8.Location = new Point(1503, 715);
             label8.Name = "label8";
             label8.Size = new Size(91, 28);
             label8.TabIndex = 22;
@@ -389,7 +390,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 10.2F);
-            label9.Location = new Point(1001, 719);
+            label9.Location = new Point(1011, 719);
             label9.Name = "label9";
             label9.Size = new Size(496, 23);
             label9.TabIndex = 23;
@@ -711,6 +712,11 @@
             label5.TabIndex = 37;
             label5.Text = "إجمالي المبالغ المدفوعه:";
             // 
+            // change_txtId_FillColorTimer
+            // 
+            change_txtId_FillColorTimer.Interval = 500;
+            change_txtId_FillColorTimer.Tick += change_txtId_FillColorTimer_Tick;
+            // 
             // frmAddEditVisit
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
@@ -808,5 +814,6 @@
         private DataGridViewTextBoxColumn col_Payments_OldPaidAmount;
         private DataGridViewTextBoxColumn col_Payments_PaymentDateTime;
         private DataGridViewTextBoxColumn col_Payments_ConvertablePaymentDateTime;
+        private System.Windows.Forms.Timer change_txtId_FillColorTimer;
     }
 }

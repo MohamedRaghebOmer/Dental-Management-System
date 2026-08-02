@@ -139,6 +139,9 @@
   <data name="backup-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\backup-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="upload-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\upload-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="teeth" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\other\teeth.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -156,6 +159,9 @@
   </data>
   <data name="question-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\question-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="internet-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\internet-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="calendar-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\calendar-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -181,7 +187,7 @@
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="internet-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\512px\internet-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="photo-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\photo-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

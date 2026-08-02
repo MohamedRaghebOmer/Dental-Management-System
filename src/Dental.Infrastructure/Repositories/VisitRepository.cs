@@ -148,4 +148,22 @@ public sealed class VisitRepository
             .Where(vp => ids.Contains(vp.Id))
             .ExecuteDeleteAsync(cancellationToken);
     }
+
+    public Task<VisitRadiograph?> GetRadiographByIdAsync(
+        Id id,
+        CancellationToken cancellationToken)
+    {
+        return _dbContext.VisitRadiographs
+            .AsNoTracking()
+            .FirstOrDefaultAsync(vr => vr.Id == id, cancellationToken);
+    }
+
+    public Task<Visit?> GetByRadiographIdAsync(
+        Id idResultValue,
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Visits
+            .Include(v => v.VisitRadiographs)
+            .FirstOrDefaultAsync(v => v.VisitRadiographs.Any(r => r.Id == idResultValue), cancellationToken);
+    }
 }

@@ -725,8 +725,8 @@
             Controls.Add(pnlTotalAppointments);
             Controls.Add(cbFilterList);
             Controls.Add(dataGridView);
-            Controls.Add(txtFilterValue);
             Controls.Add(dateTimePicker);
+            Controls.Add(txtFilterValue);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Margin = new Padding(4);
             MaximumSize = new Size(1558, 952);

@@ -91,4 +91,15 @@ public class FormFactory : IFormFactory
     {
         return _serviceProvider.GetRequiredService<frmAbout>();
     }
+
+    public frmAddEditVisitRadioghraph Create_frmAddEditVisitRadioghraph()
+    {
+        return _serviceProvider.GetRequiredService<frmAddEditVisitRadioghraph>();
+    }
+
+    public frmAddEditVisitRadioghraph Create_frmAddEditVisitRadioghraph(int visitRadiographId)
+    {
+        return ActivatorUtilities.CreateInstance<frmAddEditVisitRadioghraph>
+            (_serviceProvider, visitRadiographId);
+    }
 }

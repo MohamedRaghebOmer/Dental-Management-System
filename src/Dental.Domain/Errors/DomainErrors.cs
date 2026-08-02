@@ -132,6 +132,13 @@ public static class DomainErrors
                     "VisitPayment.NotFounf",
                     "Visit payment not found.");
             }
+
+            public static class VisitRadiograph
+            {
+                public static readonly Error NotFound = new(
+                    "VisitRadiograph.NotFound",
+                    "Visit radiograph not found.");
+            }
         }
 
         public static class VisitTreatment
@@ -354,6 +361,20 @@ public static class DomainErrors
                 public static readonly Error CanNotBeZero = new(
                     "PaidAmount.CanNotBeZero",
                     "Paid amount must be a positive value.");
+            }
+        }
+
+        public static class VisitRadioghraph
+        {
+            public static class ImagePath
+            {
+                public static readonly Error Empty = new(
+                    "ImagePath.Empty",
+                    "The image path cannot be empty.");
+                public static readonly Error TooLong = new(
+                    "ImagePath.TooLong",
+                    $"The image path cannot be longer than {Domain.Entities.VisitRadiograph.Constants.ImagePathMaxLength} characters."
+                );
             }
         }
     }

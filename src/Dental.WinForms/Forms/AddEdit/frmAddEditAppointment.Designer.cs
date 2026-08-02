@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             label12 = new Label();
             txtPatientId = new Guna.UI2.WinForms.Guna2TextBox();
             lblPatientId = new Label();
@@ -49,6 +49,7 @@
             ctrlSearchPatient1 = new Dental.WinForms.UserControls.Search.ctrlSearchPatient();
             guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(components);
             btnClose = new FontAwesome.Sharp.IconButton();
+            change_txtPatientId_FllColorTimer = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // label12
@@ -66,7 +67,7 @@
             // 
             txtPatientId.Animated = true;
             txtPatientId.BorderRadius = 10;
-            txtPatientId.CustomizableEdges = customizableEdges1;
+            txtPatientId.CustomizableEdges = customizableEdges13;
             txtPatientId.DefaultText = "";
             txtPatientId.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtPatientId.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -83,7 +84,7 @@
             txtPatientId.PlaceholderText = "";
             txtPatientId.RightToLeft = RightToLeft.Yes;
             txtPatientId.SelectedText = "";
-            txtPatientId.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            txtPatientId.ShadowDecoration.CustomizableEdges = customizableEdges14;
             txtPatientId.Size = new Size(249, 36);
             txtPatientId.TabIndex = 2;
             txtPatientId.KeyPress += txtPatientId_KeyPress;
@@ -105,7 +106,7 @@
             btnSave.AnimatedGIF = true;
             btnSave.BackColor = SystemColors.Control;
             btnSave.BorderRadius = 15;
-            btnSave.CustomizableEdges = customizableEdges3;
+            btnSave.CustomizableEdges = customizableEdges15;
             btnSave.DisabledState.BorderColor = Color.DarkGray;
             btnSave.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -117,7 +118,7 @@
             btnSave.Location = new Point(550, 608);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnSave.Size = new Size(159, 56);
             btnSave.TabIndex = 7;
             btnSave.Text = "حفظ";
@@ -131,7 +132,7 @@
             dtpVisitDate.BorderColor = Color.White;
             dtpVisitDate.BorderRadius = 21;
             dtpVisitDate.Checked = true;
-            dtpVisitDate.CustomizableEdges = customizableEdges5;
+            dtpVisitDate.CustomizableEdges = customizableEdges17;
             dtpVisitDate.FillColor = Color.White;
             dtpVisitDate.FocusedColor = Color.White;
             dtpVisitDate.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -145,7 +146,7 @@
             dtpVisitDate.Name = "dtpVisitDate";
             dtpVisitDate.RightToLeft = RightToLeft.No;
             dtpVisitDate.ShadowDecoration.BorderRadius = 30;
-            dtpVisitDate.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            dtpVisitDate.ShadowDecoration.CustomizableEdges = customizableEdges18;
             dtpVisitDate.ShadowDecoration.Shadow = new Padding(0);
             dtpVisitDate.Size = new Size(274, 45);
             dtpVisitDate.TabIndex = 4;
@@ -257,6 +258,11 @@
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
             // 
+            // change_txtPatientId_FllColorTimer
+            // 
+            change_txtPatientId_FllColorTimer.Interval = 500;
+            change_txtPatientId_FllColorTimer.Tick += change_txtPatientId_FllColorTimer_Tick;
+            // 
             // frmAddEditAppointment
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
@@ -305,5 +311,6 @@
         private UserControls.Search.ctrlSearchPatient ctrlSearchPatient1;
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private FontAwesome.Sharp.IconButton btnClose;
+        private System.Windows.Forms.Timer change_txtPatientId_FllColorTimer;
     }
 }

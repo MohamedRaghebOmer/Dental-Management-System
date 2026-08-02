@@ -27,4 +27,7 @@ public interface IFormFactory
     frmAddEditMaterial Create_frmAddEditMaterial(int materialId);
 
     frmAbout Create_frmAbout();
+
+    frmAddEditVisitRadioghraph Create_frmAddEditVisitRadioghraph();
+    frmAddEditVisitRadioghraph Create_frmAddEditVisitRadioghraph(int visitRadiographId);
 }

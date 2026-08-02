@@ -11,6 +11,7 @@ public partial class frmMain : Form
 {
     private readonly VisitsView _VisitView = default!;
     private readonly PatientsView _patientView = default!;
+    private readonly RadiographsView _radiographsView = default!;
     private readonly AppointmentsView _appointmentsView = default!;
     private readonly TreatmentsView _treatmentsView = default!;
     private readonly LabTransactionsView _labTransactionsView = default!;
@@ -23,6 +24,7 @@ public partial class frmMain : Form
     public frmMain(
         VisitsView visitView,
         PatientsView patientView,
+        RadiographsView radiographsView,
         AppointmentsView appointmentsView,
         TreatmentsView treatmentsView,
         LabTransactionsView labTransactionsView,
@@ -35,6 +37,7 @@ public partial class frmMain : Form
 
         _VisitView = visitView;
         _patientView = patientView;
+        _radiographsView = radiographsView;
         _appointmentsView = appointmentsView;
         _treatmentsView = treatmentsView;
         _labTransactionsView = labTransactionsView;
@@ -124,6 +127,14 @@ public partial class frmMain : Form
         Cursor = Cursors.WaitCursor;
         ShowView(_patientView);
         SelectMenuButton(btnPatients);
+        Cursor = Cursors.Default;
+    }
+
+    private void btnRadiographs_Click(object sender, EventArgs e)
+    {
+        Cursor = Cursors.WaitCursor;
+        ShowView(_radiographsView);
+        SelectMenuButton(btnRadiographs);
         Cursor = Cursors.Default;
     }
 
