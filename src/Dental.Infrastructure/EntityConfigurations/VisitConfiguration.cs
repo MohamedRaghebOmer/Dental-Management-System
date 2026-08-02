@@ -26,10 +26,6 @@ public sealed class VisitConfiguration
             table.HasCheckConstraint(
                 "CK_Visits_DiscountAmount_NotNegative",
                 "[DiscountAmount] >= 0");
-
-            table.HasCheckConstraint(
-                "CK_Visits_PaidAmount_NotNegative",
-                "[PaidAmount] >= 0");
         });
     }
 
@@ -58,6 +54,10 @@ public sealed class VisitConfiguration
 
         builder.Metadata
             .FindNavigation(nameof(Visit.VisitTreatments))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.Metadata
+            .FindNavigation(nameof(Visit.VisitPayments))!
             .SetPropertyAccessMode(PropertyAccessMode.Field);
 
 
@@ -91,13 +91,6 @@ public sealed class VisitConfiguration
                 value => value.Value,
                 value => Id.FromDatabase(value))
             .HasColumnName(nameof(Visit.PatientId))
-            .IsRequired();
-
-        builder.Property((p => p.PaidAmount))
-            .HasConversion(
-                value => value.Value,
-                value => Money.FromDatabase(value))
-            .HasColumnName(nameof(Visit.PaidAmount))
             .IsRequired();
 
         builder.Property((p => p.DiscountAmount))

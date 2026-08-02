@@ -125,6 +125,13 @@ public static class DomainErrors
                     "PatientName.TooLong",
                     $"Patient name can not exceed {Domain.Entities.Visit.Constants.PatientNameMaxLength} character length.");
             }
+
+            public static class VisitPayment
+            {
+                public static readonly Error NotFound = new(
+                    "VisitPayment.NotFounf",
+                    "Visit payment not found.");
+            }
         }
 
         public static class VisitTreatment
@@ -337,6 +344,16 @@ public static class DomainErrors
                     "Treatments.TooLong",
                     $"The treatments cannot be longer than {Domain.Entities.LabTransaction.Constants.TreatmentsMaxLength} characters."
                 );
+            }
+        }
+
+        public static class VisitPayment
+        {
+            public static class PaidAmount
+            {
+                public static readonly Error CanNotBeZero = new(
+                    "PaidAmount.CanNotBeZero",
+                    "Paid amount must be a positive value.");
             }
         }
     }

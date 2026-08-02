@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Runtime.Versioning;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Dental.Licensing.Core;
@@ -11,6 +12,7 @@ public static class LicenseStorage
 
     private static readonly string FilePath = Path.Combine(FolderPath, "license.dat");
 
+    [SupportedOSPlatform("windows")]
     public static void Save(string licenseKey)
     {
         Directory.CreateDirectory(FolderPath);
@@ -24,6 +26,7 @@ public static class LicenseStorage
         File.WriteAllBytes(FilePath, protectedBytes);
     }
 
+    [SupportedOSPlatform("windows")]
     public static bool TryLoad(out string licenseKey)
     {
         licenseKey = string.Empty;

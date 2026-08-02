@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System.Management;
+using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace Dental.Licensing.Core;
 
 public static class FingerprintService
 {
+    [SupportedOSPlatform("windows")]
     public static string GetFingerprint()
     {
         string machineGuid = ReadMachineGuid();
@@ -34,6 +36,7 @@ public static class FingerprintService
         return string.IsNullOrWhiteSpace(value) ? string.Empty : value.Trim().ToUpperInvariant();
     }
 
+    [SupportedOSPlatform("windows")]
     private static string ReadMachineGuid()
     {
         try
@@ -48,6 +51,7 @@ public static class FingerprintService
         }
     }
 
+    [SupportedOSPlatform("windows")]
     private static string ReadWmiValue(string wmiClass, string propertyName)
     {
         try

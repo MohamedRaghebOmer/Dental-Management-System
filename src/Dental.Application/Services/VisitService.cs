@@ -1,6 +1,7 @@
 ﻿using Dental.Application.Abstractions;
 using Dental.Application.Abstractions.ServicesInterfaces;
 using Dental.Application.DTOs.Visit;
+using Dental.Application.DTOs.VisitPayment;
 using Dental.Application.Errors;
 using Dental.Domain.Entities;
 using Dental.Domain.Repositories;
@@ -85,16 +86,6 @@ public sealed class VisitService
                 return Result.Failure<int>(ServiceErrors.Visit.PatientNotFound);
             }
 
-            // Adjust this to your actual Money factory/constructor
-            var paidAmount = Money.Create(walkInVisitDto.PaidAmount);
-            if (paidAmount.IsFailure)
-            {
-                _logger.LogWarning(
-                    "CreateWalkInVisitAsync failed. Invalid PaidAmount: {PaidAmount}.",
-                    walkInVisitDto.PaidAmount);
-
-                return Result.Failure<int>(paidAmount.Error);
-            }
 
             var discountAmount = Money.Create(walkInVisitDto.DiscountAmount);
             if (discountAmount.IsFailure)
@@ -109,7 +100,6 @@ public sealed class VisitService
             var visitResult = Visit.Create(
                 appointmentId: null,
                 patientId: patientIdResult.Value,
-                paidAmount: paidAmount.Value,
                 discountAmount: discountAmount.Value,
                 notes: walkInVisitDto.Notes);
 
@@ -209,17 +199,6 @@ public sealed class VisitService
                 return Result.Failure<int>(completeResult.Error);
             }
 
-            // Adjust this to your actual Money factory/constructor
-            var paidAmount = Money.Create(preAppointmentVisitDto.PaidAmount);
-            if (paidAmount.IsFailure)
-            {
-                _logger.LogWarning(
-                    "CreatePreAppointmentVisitAsync failed. Invalid PaidAmount: {PaidAmount}.",
-                    preAppointmentVisitDto.PaidAmount);
-
-                return Result.Failure<int>(paidAmount.Error);
-            }
-
             var discountAmount = Money.Create(preAppointmentVisitDto.DiscountAmount);
             if (discountAmount.IsFailure)
             {
@@ -233,7 +212,6 @@ public sealed class VisitService
             var visitResult = Visit.Create(
                 appointmentId: appointmentIdResult.Value,
                 patientId: appointment.PatientId,
-                paidAmount: paidAmount.Value,
                 discountAmount: discountAmount.Value,
                 notes: preAppointmentVisitDto.Notes);
 
@@ -324,17 +302,6 @@ public sealed class VisitService
                 return Result.Failure(ServiceErrors.Common.NotFound);
             }
 
-            // Adjust this to your actual Money factory/constructor
-            var paidAmount = Money.Create(updateVisitDto.PaidAmount);
-            if (paidAmount.IsFailure)
-            {
-                _logger.LogWarning(
-                    "UpdateAsync failed. Invalid PaidAmount: {PaidAmount}. VisitId: {VisitId}.",
-                    updateVisitDto.PaidAmount,
-                    visitId);
-
-                return Result.Failure(paidAmount.Error);
-            }
 
             var discountAmount = Money.Create(updateVisitDto.DiscountAmount);
             if (discountAmount.IsFailure)
@@ -348,7 +315,6 @@ public sealed class VisitService
             }
 
             var updateResult = visit.Update(
-                paidAmount: paidAmount.Value,
                 discountAmount: discountAmount.Value,
                 notes: updateVisitDto.Notes);
 
@@ -383,5 +349,21 @@ public sealed class VisitService
 
             return Result.Failure(ServiceErrors.Common.UnexpectedError);
         }
+    }
+
+    public async Task<Result<List<VisitPaymentResponseDto>>> GetPaymentsByVisitIdAsync(
+        int visitId,
+        CancellationToken cancellationToken = default)
+    {
+        var idResult = Id.Create(visitId);
+        if (idResult.IsFailure)
+            return Result.Failure
+                <List<VisitPaymentResponseDto>>(ServiceErrors.Common.InvalidId);
+
+        var entities = await _visitRepo.GetPaymentsByVisitIdAsync(
+           idResult.Value,
+           cancellationToken);
+
+        return entities.Select(VisitPaymentResponseDto.ToResponseDto).ToList();
     }
 }

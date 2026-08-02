@@ -1,6 +1,4 @@
-﻿using Dental.Domain.Entities;
-using Dental.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Dental.Infrastructure.Persistence;
 
 namespace Dental.Infrastructure;
 

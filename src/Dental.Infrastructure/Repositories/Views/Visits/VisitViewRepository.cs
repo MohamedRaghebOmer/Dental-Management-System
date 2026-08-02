@@ -3,12 +3,12 @@ using Dental.Domain.Views.Visit;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Diagnostics;
+using System.Data.Common;
 using System.Text;
 
-namespace Dental.Infrastructure.Repositories.Views.Visit;
+namespace Dental.Infrastructure.Repositories.Views.Visits;
 
-public class VisitViewRepository : IVisitViewRepository
+public sealed class VisitViewRepository : IVisitViewRepository
 {
     private readonly DentalDbContext _dbContext;
 
@@ -18,192 +18,324 @@ public class VisitViewRepository : IVisitViewRepository
     }
 
     public async Task<List<VisitView>> GetAsync(
-        VisitView? filterDTO,
+        VisitView? filterDto,
         CancellationToken cancellationToken = default)
     {
-        var sw = Stopwatch.StartNew();
-
-        var whereClauses = new List<string>();
-        var havingClauses = new List<string>();
+        var visitWhereClauses = new List<string>();
+        var resultWhereClauses = new List<string>();
         var parameters = new List<(string Name, object Value)>();
 
-        if (filterDTO is not null)
+        if (filterDto is not null)
         {
-            if (filterDTO.VisitId is { } visitId)
-            {
-                whereClauses.Add("v.Id = @VisitId");
-                parameters.Add(("@VisitId", visitId));
-            }
+            AddVisitIdFilter(filterDto, visitWhereClauses, parameters);
+            AddAppointmentIdFilter(filterDto, visitWhereClauses, parameters);
+            AddPatientIdFilter(filterDto, visitWhereClauses, parameters);
+            AddPatientNameFilter(filterDto, visitWhereClauses, parameters);
+            AddVisitDateFilter(filterDto, visitWhereClauses, parameters);
+            AddDiscountAmountFilter(filterDto, visitWhereClauses, parameters);
 
-            if (filterDTO.AppointmentId is { } appointmentId)
-            {
-                whereClauses.Add("v.AppointmentId = @AppointmentId");
-                parameters.Add(("@AppointmentId", appointmentId));
-            }
-
-            if (filterDTO.PatientId is { } patientId)
-            {
-                whereClauses.Add("v.PatientId = @PatientId");
-                parameters.Add(("@PatientId", patientId));
-            }
-
-            if (!string.IsNullOrWhiteSpace(filterDTO.PatientName))
-            {
-                // Smart search: match anywhere within the full "First Last" name.
-                whereClauses.Add("p.Name LIKE @PatientName ESCAPE '\\'");
-                parameters.Add(("@PatientName", $"%{EscapeLike(filterDTO.PatientName)}%"));
-            }
-
-
-            if (filterDTO.VisitDateTime is { } visitDateTime)
-            {
-                // Match the whole day, not an exact timestamp
-                whereClauses.Add("v.VisitDateTime >= @VisitDateFrom AND v.VisitDateTime < @VisitDateTo");
-                parameters.Add(("@VisitDateFrom", visitDateTime.Date));
-                parameters.Add(("@VisitDateTo", visitDateTime.Date.AddDays(1)));
-            }
-            else if (filterDTO.GetViewsAfterDateTime is { } getViewsAfterDateTime)
-            {
-                // Compare by calendar date only — strip time-of-day so that
-                // visits earlier "today" are still included when the cutoff is today.
-                whereClauses.Add("v.VisitDateTime >= @GetViewsAfterDateTime");
-                parameters.Add(("@GetViewsAfterDateTime", getViewsAfterDateTime.Date));
-            }
-
-            if (filterDTO.PaidAmount is { } paidAmount)
-            {
-                whereClauses.Add("v.PaidAmount = @PaidAmount");
-                parameters.Add(("@PaidAmount", paidAmount));
-            }
-
-            if (filterDTO.DiscountAmount is { } discountAmount)
-            {
-                whereClauses.Add("v.DiscountAmount = @DiscountAmount");
-                parameters.Add(("@DiscountAmount", discountAmount));
-            }
-
-            if (!string.IsNullOrWhiteSpace(filterDTO.VisitTreatmentsNames))
-            {
-                // Each independent treatment name (separated by ' ') must be present
-                // somewhere within the fully concatenated TreatmentsNames result.
-                var treatmentNames = filterDTO.VisitTreatmentsNames.Split(
-                    ' ',
-                    StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-
-                for (var i = 0; i < treatmentNames.Length; i++)
-                {
-                    var paramName = $"@TreatmentName{i}";
-                    havingClauses.Add($"COALESCE(GROUP_CONCAT(t.Name, '، '), '') LIKE {paramName} ESCAPE '\\'");
-                    parameters.Add((paramName, $"%{EscapeLike(treatmentNames[i])}%"));
-                }
-            }
-
-            if (filterDTO.TotalAmount is { } totalAmount)
-            {
-                havingClauses.Add("ABS(COALESCE(SUM(CAST(t.Price AS REAL)), 0) - CAST(@TotalAmount AS REAL)) < 0.005");
-                parameters.Add(("@TotalAmount", totalAmount));
-            }
-
-            if (filterDTO.RemainedAmount is { } remainedAmount)
-            {
-                havingClauses.Add(@"
-                ABS(
-                    (COALESCE(SUM(CAST(t.Price AS REAL)), 0)
-                     - (CAST(v.PaidAmount AS REAL) + CAST(v.DiscountAmount AS REAL)))
-                    - CAST(@RemainedAmount AS REAL)
-                ) < 0.005");
-                parameters.Add(("@RemainedAmount", remainedAmount));
-            }
+            AddTreatmentNamesFilter(filterDto, resultWhereClauses, parameters);
+            AddTotalAmountFilter(filterDto, resultWhereClauses, parameters);
+            AddSumOfPaidAmountsFilter(filterDto, resultWhereClauses, parameters);
+            AddRemainedAmountFilter(filterDto, resultWhereClauses, parameters);
         }
 
-        var sql = new StringBuilder(@"
-        SELECT
-            v.Id             AS VisitId,
-            v.AppointmentId  AS AppointmentId,
-            v.PatientId      AS PatientId,
-            p.Name           AS PatientName,
-            v.VisitDateTime  AS VisitDateTime,
-            v.PaidAmount     AS PaidAmount,
-            v.DiscountAmount AS DiscountAmount,
-            COALESCE(GROUP_CONCAT(t.Name, '، '), '') AS TreatmentsNames,
-            COALESCE(SUM(t.Price), 0)                AS TotalAmount
-        FROM Visits v
-        INNER JOIN Patients p        ON p.Id = v.PatientId
-        LEFT JOIN VisitTreatments vt ON vt.VisitId = v.Id
-        LEFT JOIN Treatments t       ON t.Id = vt.TreatmentId");
-
-        if (whereClauses.Count > 0)
-            sql.Append(" WHERE ").Append(string.Join(" AND ", whereClauses));
-
-        sql.Append(" GROUP BY v.Id");
-
-        if (havingClauses.Count > 0)
-            sql.Append(" HAVING ").Append(string.Join(" AND ", havingClauses));
-
-        sql.Append(" ORDER BY v.VisitDateTime DESC;");
+        var sql = BuildSql(visitWhereClauses, resultWhereClauses);
 
         var results = new List<VisitView>();
         var connection = _dbContext.Database.GetDbConnection();
-        var wasClosed = connection.State != ConnectionState.Open;
-        if (wasClosed)
+        var shouldCloseConnection = connection.State != ConnectionState.Open;
+
+        if (shouldCloseConnection)
             await connection.OpenAsync(cancellationToken);
 
         try
         {
             await using var command = connection.CreateCommand();
-            command.CommandText = sql.ToString();
+            command.CommandText = sql;
 
             foreach (var (name, value) in parameters)
             {
-                var p = command.CreateParameter();
-                p.ParameterName = name;
-                p.Value = value;
-                command.Parameters.Add(p);
+                var parameter = command.CreateParameter();
+                parameter.ParameterName = name;
+                parameter.Value = value;
+                command.Parameters.Add(parameter);
             }
 
             await using var reader = await command.ExecuteReaderAsync(
-                CommandBehavior.SequentialAccess, cancellationToken);
+                CommandBehavior.SequentialAccess,
+                cancellationToken);
 
-            int oVisitId = reader.GetOrdinal("VisitId");
-            int oAppointmentId = reader.GetOrdinal("AppointmentId");
-            int oPatientId = reader.GetOrdinal("PatientId");
-            int oPatientName = reader.GetOrdinal("PatientName");
-            int oVisitDateTime = reader.GetOrdinal("VisitDateTime");
-            int oPaidAmount = reader.GetOrdinal("PaidAmount");
-            int oDiscountAmount = reader.GetOrdinal("DiscountAmount");
-            int oTreatmentsNames = reader.GetOrdinal("TreatmentsNames");
-            int oTotalAmount = reader.GetOrdinal("TotalAmount");
+            var oVisitId = reader.GetOrdinal("VisitId");
+            var oAppointmentId = reader.GetOrdinal("AppointmentId");
+            var oPatientId = reader.GetOrdinal("PatientId");
+            var oPatientName = reader.GetOrdinal("PatientName");
+            var oVisitDateTime = reader.GetOrdinal("VisitDateTime");
+            var oDiscountAmount = reader.GetOrdinal("DiscountAmount");
+            var oTreatmentsNames = reader.GetOrdinal("TreatmentsNames");
+            var oTotalAmount = reader.GetOrdinal("TotalAmount");
+            var oSumOfPaidAmounts = reader.GetOrdinal("SumOfPaidAmounts");
 
             while (await reader.ReadAsync(cancellationToken))
             {
-                var paid = reader.GetDecimal(oPaidAmount);
-                var discount = reader.GetDecimal(oDiscountAmount);
-                var total = reader.GetDecimal(oTotalAmount);
+                var totalAmount = reader.GetDecimal(oTotalAmount);
+                var paidAmount = reader.GetDecimal(oSumOfPaidAmounts);
+                var discountAmount = reader.GetDecimal(oDiscountAmount);
 
                 results.Add(new VisitView
                 {
                     VisitId = reader.GetInt32(oVisitId),
-                    AppointmentId = reader.IsDBNull(oAppointmentId) ? null : reader.GetInt32(oAppointmentId),
+
+                    AppointmentId = reader.IsDBNull(oAppointmentId)
+                    ? null
+                    : reader.GetInt32(oAppointmentId),
+
                     PatientId = reader.GetInt32(oPatientId),
                     PatientName = reader.GetString(oPatientName),
                     VisitDateTime = reader.GetDateTime(oVisitDateTime),
-                    VisitTreatmentsNames = reader.GetString(oTreatmentsNames),
-                    TotalAmount = total,
-                    PaidAmount = paid,
-                    DiscountAmount = discount,
-                    RemainedAmount = total - (paid + discount)
+                    DiscountAmount = discountAmount,
+
+                    VisitTreatmentsNames = reader.IsDBNull(oTreatmentsNames)
+                    ? string.Empty
+                    : reader.GetString(oTreatmentsNames),
+
+                    TotalAmount = totalAmount,
+                    SumOfPaidAmounts = paidAmount,
+                    RemainedAmount = totalAmount - (paidAmount + discountAmount)
                 });
             }
         }
         finally
         {
-            if (wasClosed)
+            if (shouldCloseConnection)
                 await connection.CloseAsync();
         }
 
-        Debug.WriteLine(sw.ElapsedMilliseconds);
-
         return results;
+    }
+
+    private static string BuildSql(
+        IReadOnlyList<string> visitWhereClauses,
+        IReadOnlyList<string> resultWhereClauses)
+    {
+        var sql = new StringBuilder();
+
+        sql.AppendLine("""
+            WITH FilteredVisits AS
+            (
+                SELECT
+                    v.Id AS VisitId,
+                    v.AppointmentId AS AppointmentId,
+                    v.PatientId AS PatientId,
+                    p.Name AS PatientName,
+                    v.VisitDateTime AS VisitDateTime,
+                    COALESCE(v.DiscountAmount, 0) AS DiscountAmount
+                FROM Visits AS v
+                INNER JOIN Patients AS p ON p.Id = v.PatientId
+            """);
+
+        if (visitWhereClauses.Count > 0)
+        {
+            sql.AppendLine("    WHERE");
+            sql.AppendLine("        " + string.Join("\n        AND ", visitWhereClauses));
+        }
+
+        sql.AppendLine("""
+            ),
+            TreatmentAgg AS
+            (
+                SELECT
+                    vt.VisitId AS VisitId,
+                    COALESCE(GROUP_CONCAT(t.Name, '، '), '') AS TreatmentsNames,
+                    COALESCE(SUM(vt.Price), 0) AS TotalAmount
+                FROM VisitTreatments AS vt
+                INNER JOIN FilteredVisits AS fv ON fv.VisitId = vt.VisitId
+                INNER JOIN Treatments AS t ON t.Id = vt.TreatmentId
+                GROUP BY vt.VisitId
+            ),
+            PaymentAgg AS
+            (
+                SELECT
+                    vp.VisitId AS VisitId,
+                    COALESCE(SUM(vp.PaidAmount), 0) AS SumOfPaidAmounts
+                FROM VisitPayments AS vp
+                INNER JOIN FilteredVisits AS fv ON fv.VisitId = vp.VisitId
+                GROUP BY vp.VisitId
+            )
+            SELECT
+                fv.VisitId,
+                fv.AppointmentId,
+                fv.PatientId,
+                fv.PatientName,
+                fv.VisitDateTime,
+                fv.DiscountAmount,
+                COALESCE(ta.TreatmentsNames, '') AS TreatmentsNames,
+                COALESCE(ta.TotalAmount, 0) AS TotalAmount,
+                COALESCE(pa.SumOfPaidAmounts, 0) AS SumOfPaidAmounts
+            FROM FilteredVisits AS fv
+            LEFT JOIN TreatmentAgg AS ta ON ta.VisitId = fv.VisitId
+            LEFT JOIN PaymentAgg AS pa ON pa.VisitId = fv.VisitId
+            """);
+
+        if (resultWhereClauses.Count > 0)
+        {
+            sql.AppendLine("WHERE");
+            sql.AppendLine("    " + string.Join("\n    AND ", resultWhereClauses));
+        }
+
+        sql.AppendLine("ORDER BY fv.VisitDateTime DESC, fv.VisitId DESC;");
+
+        return sql.ToString();
+    }
+
+    private static void AddVisitIdFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.VisitId is not null)
+        {
+            whereClauses.Add("fv.VisitId = @VisitId");
+            parameters.Add(("@VisitId", filterDto.VisitId.Value));
+        }
+    }
+
+    private static void AddAppointmentIdFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.AppointmentId is not null)
+        {
+            whereClauses.Add("fv.AppointmentId = @AppointmentId");
+            parameters.Add(("@AppointmentId", filterDto.AppointmentId.Value));
+        }
+    }
+
+    private static void AddPatientIdFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.PatientId is not null)
+        {
+            whereClauses.Add("fv.PatientId = @PatientId");
+            parameters.Add(("@PatientId", filterDto.PatientId.Value));
+        }
+    }
+
+    private static void AddPatientNameFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (!string.IsNullOrWhiteSpace(filterDto.PatientName))
+        {
+            whereClauses.Add("p.Name LIKE @PatientName ESCAPE '\\'");
+            parameters.Add(("@PatientName", $"%{EscapeLike(filterDto.PatientName)}%"));
+        }
+    }
+
+    private static void AddVisitDateFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.VisitDateTime is { } visitDateTime)
+        {
+            whereClauses.Add("v.VisitDateTime >= @VisitDateFrom AND v.VisitDateTime < @VisitDateTo");
+            parameters.Add(("@VisitDateFrom", visitDateTime.Date));
+            parameters.Add(("@VisitDateTo", visitDateTime.Date.AddDays(1)));
+        }
+        else if (filterDto.GetViewsAfterDateTime is { } getViewsAfterDateTime)
+        {
+            whereClauses.Add("v.VisitDateTime >= @GetViewsAfterDateTime");
+            parameters.Add(("@GetViewsAfterDateTime", getViewsAfterDateTime.Date));
+        }
+    }
+
+    private static void AddDiscountAmountFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.DiscountAmount is not null)
+        {
+            whereClauses.Add("fv.DiscountAmount = @DiscountAmount");
+            parameters.Add(("@DiscountAmount", filterDto.DiscountAmount.Value));
+        }
+    }
+
+    private static void AddTreatmentNamesFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (string.IsNullOrWhiteSpace(filterDto.VisitTreatmentsNames))
+            return;
+
+        var treatmentNames = filterDto.VisitTreatmentsNames.Split(
+            ' ',
+            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        for (var i = 0; i < treatmentNames.Length; i++)
+        {
+            var parameterName = $"@TreatmentName{i}";
+            whereClauses.Add($"COALESCE(ta.TreatmentsNames, '') LIKE {parameterName} ESCAPE '\\'");
+            parameters.Add((parameterName, $"%{EscapeLike(treatmentNames[i])}%"));
+        }
+    }
+
+    private static void AddTotalAmountFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.TotalAmount is not null)
+        {
+            whereClauses.Add("ABS(COALESCE(ta.TotalAmount, 0) - @TotalAmount) < 0.005");
+            parameters.Add(("@TotalAmount", filterDto.TotalAmount.Value));
+        }
+    }
+
+    private static void AddSumOfPaidAmountsFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.SumOfPaidAmounts is not null)
+        {
+            whereClauses.Add("ABS(COALESCE(pa.SumOfPaidAmounts, 0) - @SumOfPaidAmounts) < 0.005");
+            parameters.Add(("@SumOfPaidAmounts", filterDto.SumOfPaidAmounts.Value));
+        }
+    }
+
+    private static void AddRemainedAmountFilter(
+        VisitView filterDto,
+        ICollection<string> whereClauses,
+        ICollection<(string Name, object Value)> parameters)
+    {
+        if (filterDto.RemainedAmount is not null)
+        {
+            whereClauses.Add("""
+                ABS(
+                    (COALESCE(ta.TotalAmount, 0) - (COALESCE(pa.SumOfPaidAmounts, 0) + COALESCE(fv.DiscountAmount, 0)))
+                    - @RemainedAmount
+                ) < 0.005
+                """);
+            parameters.Add(("@RemainedAmount", filterDto.RemainedAmount.Value));
+        }
+    }
+
+    private static void AddParameter(
+        DbCommand command,
+        string name,
+        object value)
+    {
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = name;
+        parameter.Value = value;
+        command.Parameters.Add(parameter);
     }
 
     private static string EscapeLike(string input) =>

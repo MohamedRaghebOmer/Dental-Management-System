@@ -125,4 +125,11 @@ public static class ServiceErrors
         public static readonly Error DuplicateName =
             new("Patient.DuplicateName", "A patient with the same name already exists.");
     }
+
+    public static class VisitPayment
+    {
+        public static readonly Error VisitNotFound = new(
+            "VisitPayment.VisitNotFound",
+            "Visit not found.");
+    }
 }
