@@ -29,6 +29,9 @@ public sealed class Visit : Entity
 
     public IReadOnlyCollection<VisitPayment> VisitPayments => _visitPayments.AsReadOnly();
     private readonly List<VisitPayment> _visitPayments = [];
+    
+    public IReadOnlyCollection<VisitRadiograph> VisitRadiographs => _visitRadiographs.AsReadOnly();
+    private readonly List<VisitRadiograph> _visitRadiographs = [];
 
 
     private Visit() { } // EF Core
@@ -321,6 +324,46 @@ public sealed class Visit : Entity
             return Result.Failure(DomainErrors.Entities.Visit.VisitPayment.NotFound);
 
         _visitPayments.Remove(entity);
+        return Result.Success();
+    }
+
+
+    // VisitRadiograph methods
+    public Result<VisitRadiograph> AddVisitRadiograph(
+        string imagePath)
+    {
+        var createResult = VisitRadiograph.Create(Id, imagePath);
+        if (createResult.IsFailure)
+            return Result.Failure<VisitRadiograph>(createResult.Error);
+
+        _visitRadiographs.Add(createResult.Value);
+
+        return Result.Success(createResult.Value);
+    }
+
+    public Result UpdateVisitRadiograph(
+        Id visitRadiographId,
+        string imagePath)
+    {
+        var entity = 
+            _visitRadiographs.FirstOrDefault(vr => vr.Id == visitRadiographId);
+        if (entity is null)
+            return Result.Failure(DomainErrors.Entities.Visit.VisitRadiograph.NotFound);
+
+        var updateResult = entity.Update(imagePath);
+        if (updateResult.IsFailure)
+            return Result.Failure(updateResult.Error);
+
+        return Result.Success();
+    }
+
+    public Result RemoveVisitRadiograph(
+        Id visitRadiographId)
+    {
+        var entity = _visitRadiographs.FirstOrDefault(vr => vr.Id == visitRadiographId);
+        if (entity is null)
+            return Result.Failure(DomainErrors.Entities.Visit.VisitRadiograph.NotFound);
+        _visitRadiographs.Remove(entity);
         return Result.Success();
     }
 }
