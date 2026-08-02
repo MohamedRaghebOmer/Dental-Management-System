@@ -4,6 +4,7 @@ using Dental.Domain.Shared;
 using Dental.Domain.Views.Visit;
 using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
+using Dental.WinForms.Forms;
 using Dental.WinForms.Helpers;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -540,6 +541,28 @@ public partial class VisitsView : UserControl
     {
         LoadDataFirstTimeTimer.Stop();
         await LoadGridAsync(null!);
+    }
+
+    private async void tsmiAddNewRadiographToTheSameVisit_Click(object sender, EventArgs e)
+    {
+        var visitId = SelectedVisitId;
+        if (visitId is not > 0)
+            return;
+
+        using var frm = _formFactory.Create_frmAddEditVisitRadioghraph();
+        frm.VisitId = visitId.Value;
+        await frm.ShowDialogAsync();
+    }
+
+    private async void tsmiAddNewVisitToTheSamePatient_Click(object sender, EventArgs e)
+    {
+        var visitId = SelectedPatientId;
+        if (visitId is not > 0)
+            return;
+
+        using var frm = _formFactory.Create_frmAddEditVisit(frmAddEditVisit.VisitType.WalkIn);
+        frm.Id = visitId.Value;
+        await frm.ShowDialogAsync();
     }
 
     private int? SelectedAppointmentId

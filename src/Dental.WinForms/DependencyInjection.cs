@@ -32,6 +32,7 @@ public static class DependencyInjection
             services.AddTransient<frmAddEditLabTransaction>();
             services.AddTransient<frmAddEditMaterial>();
             services.AddTransient<frmAbout>();
+            services.AddTransient<frmAddEditVisitRadioghraph>();
 
             return services;
         }
@@ -46,6 +47,7 @@ public static class DependencyInjection
             services.AddTransient<LabTransactionsView>();
             services.AddTransient<MaterialsView>();
             services.AddTransient<SettingsView>();
+            services.AddTransient<RadiographsView>();
 
             return services;
         }

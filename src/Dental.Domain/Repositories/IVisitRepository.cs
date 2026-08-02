@@ -92,4 +92,12 @@ public interface IVisitRepository
     Task DeleteVisitPaymentsByIdsAsync(
         ImmutableList<Id> ids,
         CancellationToken cancellationToken = default);
+
+    Task<VisitRadiograph?> GetRadiographByIdAsync(
+        Id id,
+        CancellationToken cancellationToken);
+
+    Task<Visit?> GetByRadiographIdAsync(
+        Id idResultValue,
+        CancellationToken cancellationToken = default);
 }

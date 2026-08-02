@@ -142,6 +142,8 @@ public partial class frmAddEditVisit : Form
     private void CtrlSearchPatient1_PatientSelected(object? sender, Application.DTOs.Patient.PatientResponseDto e)
     {
         txtId.Text = e.Id.ToString();
+        txtId.FillColor = Color.Red;
+        change_txtId_FillColorTimer.Start();
     }
 
     private void CtrlSearchAppointment1_AppointmentSelected(
@@ -160,6 +162,8 @@ public partial class frmAddEditVisit : Form
         }
 
         txtId.Text = e.AppointmentId?.ToString() ?? string.Empty;
+        txtId.FillColor = Color.Red;
+        change_txtId_FillColorTimer.Start();
     }
 
 
@@ -628,8 +632,17 @@ public partial class frmAddEditVisit : Form
         if (!await AddPaymentsAsync(addVisitResult.Value))
             return false;
 
-        MessageBoxExtensions.ShowInfo(
-            "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
+        var want = MessageBoxExtensions.ShowQuestion(
+            "تم حفظ بيانات الزياره بنجاح، هل تود إضافة الأشعه؟", "تم الحفظ");
+
+        if (want == DialogResult.Yes)
+        {
+            Hide();
+
+            using var frm = _formFactory.Create_frmAddEditVisitRadioghraph();
+            frm.VisitId = addVisitResult.Value;
+            await frm.ShowDialogAsync();
+        }
 
         return true;
     }
@@ -681,8 +694,17 @@ public partial class frmAddEditVisit : Form
         if (!await AddPaymentsAsync(addVisitResult.Value))
             return false;
 
-        MessageBoxExtensions.ShowInfo(
-            "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
+        var want = MessageBoxExtensions.ShowQuestion(
+            "تم حفظ بيانات الزياره بنجاح، هل تود إضافة الأشعه؟", "تم الحفظ");
+
+        if (want == DialogResult.Yes)
+        {
+            Hide();
+
+            using var frm = _formFactory.Create_frmAddEditVisitRadioghraph();
+            frm.VisitId = addVisitResult.Value;
+            await frm.ShowDialogAsync();
+        }
 
         return true;
     }
@@ -1408,7 +1430,8 @@ public partial class frmAddEditVisit : Form
         }
         else if (remainingAmount < 0)
         {
-            MessageBoxExtensions.ShowError("القيمه المتبقيه لا يجب ان تكون سالبه.");
+            MessageBoxExtensions.ShowError(
+                "إجمالي المبالغ المدفوعة لا يمكن أن يكون أكبر من المبلغ الكلي.");
             return false;
         }
 
@@ -1698,5 +1721,11 @@ public partial class frmAddEditVisit : Form
     private void dgvVisitPayments_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
     {
         txtMoney_TextChanged(sender, e);
+    }
+
+    private void change_txtId_FillColorTimer_Tick(object sender, EventArgs e)
+    {
+        change_txtId_FillColorTimer.Stop();
+        txtId.FillColor = Color.White;
     }
 }

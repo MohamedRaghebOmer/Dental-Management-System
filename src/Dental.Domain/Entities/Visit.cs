@@ -29,7 +29,7 @@ public sealed class Visit : Entity
 
     public IReadOnlyCollection<VisitPayment> VisitPayments => _visitPayments.AsReadOnly();
     private readonly List<VisitPayment> _visitPayments = [];
-    
+
     public IReadOnlyCollection<VisitRadiograph> VisitRadiographs => _visitRadiographs.AsReadOnly();
     private readonly List<VisitRadiograph> _visitRadiographs = [];
 
@@ -345,7 +345,7 @@ public sealed class Visit : Entity
         Id visitRadiographId,
         string imagePath)
     {
-        var entity = 
+        var entity =
             _visitRadiographs.FirstOrDefault(vr => vr.Id == visitRadiographId);
         if (entity is null)
             return Result.Failure(DomainErrors.Entities.Visit.VisitRadiograph.NotFound);

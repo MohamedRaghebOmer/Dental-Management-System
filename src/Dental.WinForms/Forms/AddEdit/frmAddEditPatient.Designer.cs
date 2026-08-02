@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             txtPhoneNumber = new Guna.UI2.WinForms.Guna2TextBox();
             lblTitile = new Label();
             label7 = new Label();
@@ -58,7 +58,7 @@
             // 
             txtPhoneNumber.Animated = true;
             txtPhoneNumber.BorderRadius = 10;
-            txtPhoneNumber.CustomizableEdges = customizableEdges9;
+            txtPhoneNumber.CustomizableEdges = customizableEdges1;
             txtPhoneNumber.DefaultText = "";
             txtPhoneNumber.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtPhoneNumber.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -74,20 +74,20 @@
             txtPhoneNumber.Name = "txtPhoneNumber";
             txtPhoneNumber.PlaceholderText = "";
             txtPhoneNumber.SelectedText = "";
-            txtPhoneNumber.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            txtPhoneNumber.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtPhoneNumber.Size = new Size(249, 36);
             txtPhoneNumber.TabIndex = 11;
             // 
             // lblTitile
             // 
-            lblTitile.AutoSize = true;
             lblTitile.Font = new Font("Segoe UI", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitile.ForeColor = Color.FromArgb(100, 88, 255);
-            lblTitile.Location = new Point(233, 9);
+            lblTitile.Location = new Point(179, 9);
             lblTitile.Name = "lblTitile";
-            lblTitile.Size = new Size(394, 62);
+            lblTitile.Size = new Size(502, 62);
             lblTitile.TabIndex = 0;
             lblTitile.Text = "اضافة مريض جديد";
+            lblTitile.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label7
             // 
@@ -128,7 +128,7 @@
             btnSave.AnimatedGIF = true;
             btnSave.BackColor = Color.Transparent;
             btnSave.BorderRadius = 15;
-            btnSave.CustomizableEdges = customizableEdges11;
+            btnSave.CustomizableEdges = customizableEdges3;
             btnSave.DisabledState.BorderColor = Color.DarkGray;
             btnSave.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -140,7 +140,7 @@
             btnSave.Location = new Point(347, 436);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnSave.Size = new Size(160, 56);
             btnSave.TabIndex = 12;
             btnSave.Text = "حفظ";
@@ -172,7 +172,7 @@
             // 
             txtAge.Animated = true;
             txtAge.BorderRadius = 10;
-            txtAge.CustomizableEdges = customizableEdges13;
+            txtAge.CustomizableEdges = customizableEdges5;
             txtAge.DefaultText = "";
             txtAge.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtAge.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -188,7 +188,7 @@
             txtAge.Name = "txtAge";
             txtAge.PlaceholderText = "";
             txtAge.SelectedText = "";
-            txtAge.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtAge.ShadowDecoration.CustomizableEdges = customizableEdges6;
             txtAge.Size = new Size(249, 36);
             txtAge.TabIndex = 6;
             txtAge.KeyPress += txtAge_KeyPress;
@@ -208,7 +208,7 @@
             // 
             txtName.Animated = true;
             txtName.BorderRadius = 10;
-            txtName.CustomizableEdges = customizableEdges15;
+            txtName.CustomizableEdges = customizableEdges7;
             txtName.DefaultText = "";
             txtName.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtName.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -224,7 +224,7 @@
             txtName.Name = "txtName";
             txtName.PlaceholderText = "";
             txtName.SelectedText = "";
-            txtName.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            txtName.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtName.Size = new Size(249, 36);
             txtName.TabIndex = 4;
             // 

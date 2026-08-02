@@ -43,6 +43,7 @@ public static class DependencyInjection
         services.AddScoped<IPatientViewService, PatientViewService>();
         services.AddScoped<ILabTransactionService, LabTransactionService>();
         services.AddScoped<ILabTransactionViewService, LabTransactionViewService>();
+        services.AddScoped<IVisitRadiographViewService, VisitRadiographViewService>();
 
         return services;
     }

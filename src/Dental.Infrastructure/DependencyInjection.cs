@@ -48,6 +48,7 @@ public static class DependencyInjection
         services.AddScoped<ILabTransactionRepository, LabTransactionRepository>();
         services.AddScoped<ILabTransactionViewRepository, LabTransactionViewRepository>();
         services.AddScoped<DatabaseInitializer>();
+        services.AddScoped<IVisitRadiographViewRepository, VisitRadiographViewRepository>();
 
         return services;
     }

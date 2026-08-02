@@ -47,7 +47,7 @@ internal static class Program
                 .ConfigureSerilog(configuration);
 
             CreateApplicationDataFolder();
-
+            AddEnvironmentVariables();
 
             //EnsureInitialDataAsync(provider).GetAwaiter().GetResult();
 
@@ -73,6 +73,14 @@ internal static class Program
         Directory.CreateDirectory(DataStoragePaths.DatabaseFolderPath);
         Directory.CreateDirectory(DataStoragePaths.LogsFolderPath);
         Directory.CreateDirectory(DataStoragePaths.ImagesFolderPath);
+    }
+
+    private static void AddEnvironmentVariables()
+    {
+        Environment.SetEnvironmentVariable(
+            "Dental",
+            DataStoragePaths.BasePath,
+            EnvironmentVariableTarget.User);
     }
 
     //private static async Task EnsureInitialDataAsync(IServiceProvider provider)

@@ -13,7 +13,7 @@ public sealed class VisitRadiograph : Entity
     }
 
     public Id VisitId { get; private set; } = default!;
-    public string ImagePath { get; private set; }
+    public string ImagePath { get; private set; } = default!;
     public DateTime CreatedAt { get; private set; }
     public Visit Visit { get; private set; } = default!;
 

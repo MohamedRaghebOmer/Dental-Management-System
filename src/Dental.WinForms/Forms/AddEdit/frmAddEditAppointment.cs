@@ -37,6 +37,8 @@ public partial class frmAddEditAppointment : Form
         ctrlSearchPatient1.PatientSelected += (s, e) =>
         {
             txtPatientId.Text = e.Id.ToString();
+            txtPatientId.FillColor = Color.Red;
+            change_txtPatientId_FllColorTimer.Start();
         };
 
         CancelButton = btnClose;
@@ -153,6 +155,7 @@ public partial class frmAddEditAppointment : Form
     private void InitializeForm()
     {
         dtpVisitDate.Value = DateTime.Now;
+        dtpVisitDate.MinDate = DateTime.Now;
         dtpVisitDate.Format = DateTimePickerFormat.Custom;
         dtpVisitDate.CustomFormat = "MM/dd/yyyy dddd";
 
@@ -343,5 +346,11 @@ public partial class frmAddEditAppointment : Form
     private void btnClose_Click(object sender, EventArgs e)
     {
         Close();
+    }
+
+    private void change_txtPatientId_FllColorTimer_Tick(object sender, EventArgs e)
+    {
+        change_txtPatientId_FllColorTimer.Stop();
+        txtPatientId.FillColor = Color.White;
     }
 }

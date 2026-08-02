@@ -1,5 +1,4 @@
 ﻿using Dental.Domain.Entities;
-using Dental.Domain.Errors;
 using Dental.Domain.ValueObjects;
 using Dental.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;

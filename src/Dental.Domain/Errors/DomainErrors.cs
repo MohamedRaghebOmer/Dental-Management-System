@@ -366,7 +366,7 @@ public static class DomainErrors
 
         public static class VisitRadioghraph
         {
-           public static class ImagePath
+            public static class ImagePath
             {
                 public static readonly Error Empty = new(
                     "ImagePath.Empty",
