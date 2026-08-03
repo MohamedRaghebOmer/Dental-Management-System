@@ -21,6 +21,8 @@ public partial class VisitsView : UserControl
     private int _selectedRowIndex = -1;
     private bool _isLoading = true;
 
+    public event EventHandler<int> ShowRadiographsRelatedToTheVisitRequested;
+
     private Stopwatch _lastFilteringSince = new();
 
 
@@ -563,6 +565,20 @@ public partial class VisitsView : UserControl
         using var frm = _formFactory.Create_frmAddEditVisit(frmAddEditVisit.VisitType.WalkIn);
         frm.Id = visitId.Value;
         await frm.ShowDialogAsync();
+    }
+
+    protected virtual void OnShowRadiographsRelatedToTheVisitRequested(int visitId)
+    {
+        ShowRadiographsRelatedToTheVisitRequested?.Invoke(this, visitId);
+    }
+
+    private void tsmiViewAllRadiographsRelatedToTheVisit_Click(object sender, EventArgs e)
+    {
+        var visitId = SelectedVisitId;
+        if (visitId is not > 0)
+            return;
+
+        OnShowRadiographsRelatedToTheVisitRequested(visitId.Value);
     }
 
     private int? SelectedAppointmentId

@@ -5,6 +5,7 @@ using Dental.WinForms.Abstractions;
 using Dental.WinForms.Extensions;
 using Dental.WinForms.Helpers;
 using Microsoft.Extensions.Logging;
+using System.Collections.Specialized;
 using System.Diagnostics;
 
 namespace Dental.WinForms.Views;
@@ -17,7 +18,7 @@ public partial class RadiographsView : UserControl
     private readonly IVisitRadioghraphService _visitRadioghraphService;
     private bool _isLoading = true;
 
-    private enum GridColumn
+    public enum GridColumn
     {
         VisitId,
         PatientName,
@@ -32,7 +33,7 @@ public partial class RadiographsView : UserControl
 
     private GridColumn _currentFilterColumn = GridColumn.PatientName;
 
-    private static class Constants
+    public static class Constants
     {
         public static class cbFilterby
         {
@@ -48,11 +49,29 @@ public partial class RadiographsView : UserControl
         }
     }
 
+    public void SetSearch(GridColumn column, string? value = null)
+    {
+        _currentFilterColumn = column;
+
+        cbFilterList.Text = column switch
+        {
+            GridColumn.VisitId => Constants.cbFilterby.VisitId,
+            GridColumn.PatientName => Constants.cbFilterby.PatientName,
+            GridColumn.RadiographCreatedAt => Constants.cbFilterby.RadiographCreatedAt,
+            GridColumn.PatientId => Constants.cbFilterby.PatientId,
+            GridColumn.VisitRadiographId => Constants.cbFilterby.VisitRadiographId,
+            GridColumn.ImagePath => Constants.cbFilterby.ImagePath,
+            _ => Constants.cbFilterby.PatientName
+        };
+
+        txtFilterValue.Text = value ?? string.Empty;
+    }
+
     public RadiographsView(
         IFormFactory formFactory,
         ILogger<RadiographsView> logger,
         IVisitRadiographViewService visitRadiographViewService,
-        IVisitRadioghraphService visitRadioghraphService)
+        IVisitRadioghraphService visitRadiographService)
     {
         InitializeComponent();
         _isLoading = true;
@@ -60,7 +79,7 @@ public partial class RadiographsView : UserControl
         _formFactory = formFactory;
         _logger = logger;
         _visitRadiographViewService = visitRadiographViewService;
-        _visitRadioghraphService = visitRadioghraphService;
+        _visitRadioghraphService = visitRadiographService;
 
         dataGridView.AutoGenerateColumns = false;
         dataGridView.DataSource = null;
@@ -490,10 +509,9 @@ public partial class RadiographsView : UserControl
                 return;
             }
 
-            using var image = Image.FromFile(imagePath);
-
-            // Copy a clone so the clipboard doesn't depend on the disposed image.
-            Clipboard.SetImage(new Bitmap(image));
+            var files = new StringCollection();
+            files.Add(imagePath);
+            Clipboard.SetFileDropList(files);
 
             MessageBoxExtensions.ShowInfo(
                 "تم نسخ صورة الأشعة إلى الحافظة.", "تم النسخ");

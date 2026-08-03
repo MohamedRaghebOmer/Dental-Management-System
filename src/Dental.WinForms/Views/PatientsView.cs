@@ -102,26 +102,60 @@ public partial class PatientsView : UserControl
                 Gender = dto.Gender != null ? GenderHelper.GenderToString(dto.Gender.Value) : null,
                 dto.PhoneNumber,
 
-                NextAppointmentDateTime = dto.NextAppointmentDateTime.HasValue ?
-                DateTimeHelper.GetArabicDateTime(dto.NextAppointmentDateTime.Value)
-                : "لا يوجد زيارات مقبله",
+                NextAppointmentDateTime = dto.NextAppointmentDateTime.HasValue
+                    ? DateTimeHelper.GetArabicDateTime(dto.NextAppointmentDateTime.Value)
+                    : "لا يوجد زيارات مقبله",
 
-                LastVisitDateTime = dto.LastVisitDateTime.HasValue ?
-                DateTimeHelper.GetArabicDateTime(dto.LastVisitDateTime.Value)
-                : "لا يوجد زيارات سابقة",
+                LastVisitDateTime = dto.LastVisitDateTime.HasValue
+                    ? DateTimeHelper.GetArabicDateTime(dto.LastVisitDateTime.Value)
+                    : "لا يوجد زيارات سابقة",
 
                 dto.TotalNumberOfVisits
             }).ToList();
 
             dataGridView.DataSource = dataSource;
-
+            LoadCardsAsync(data);
         }
         catch (Exception ex)
         {
             MessageBoxExtensions.ShowError("حدث خطأ أثناء تحميل بيانات المرضى: " + ex.Message);
         }
+        finally
+        {
+            Cursor = Cursors.Default;
+        }
+    }
 
-        Cursor = Cursors.Default;
+    private void LoadCardsAsync(List<PatientDetailedInfoDto> data)
+    {
+        var count = data.Count;
+
+        lblPatietnsCount.Text = count.ToString();
+
+        lblTodayPatientCount.Text = data.Count(
+            p => p.NextAppointmentDateTime.HasValue 
+                 && p.NextAppointmentDateTime.Value.Date == DateTime.Today).ToString();
+
+        if (count == 0)
+        {
+            lblMalePercentage.Text = @"%0.00";
+            lblFemalePercentage.Text = @"%0.00";
+            lblAdultsPercentage.Text = @"%0.00";
+            lblChilderensPercentage.Text = @"%0.00";
+            return;
+        }
+
+        lblMalePercentage.Text = $@"%{data.Count(
+            p => p.Gender == Gender.Male) / (double)count * 100:F2}";
+
+        lblFemalePercentage.Text = $@"%{data.Count(
+            p => p.Gender == Gender.Female) / (double)count * 100:F2}";
+
+        lblAdultsPercentage.Text = $@"%{data.Count(
+            p => p.Age >= 18) / (double)count * 100:F2}";
+
+        lblChilderensPercentage.Text = $@"%{data.Count(
+            p => p.Age < 18) / (double)count * 100:F2}";
     }
 
     private PatientDetailedInfoDto? GetFilterDtoFromUi()
@@ -137,7 +171,7 @@ public partial class PatientsView : UserControl
 
             case GridColumns.Name:
                 filterDto = new PatientDetailedInfoDto
-                { Name = txtFilterValue.Text.Trim() };
+                    { Name = txtFilterValue.Text.Trim() };
                 break;
 
             case GridColumns.Age:
@@ -148,22 +182,22 @@ public partial class PatientsView : UserControl
 
             case GridColumns.Gender:
                 filterDto = new PatientDetailedInfoDto
-                { Gender = GenderHelper.GenderFromString(cbGender.Text) };
+                    { Gender = GenderHelper.GenderFromString(cbGender.Text) };
                 break;
 
             case GridColumns.PhoneNumber:
                 filterDto = new PatientDetailedInfoDto
-                { PhoneNumber = txtFilterValue.Text.Trim() };
+                    { PhoneNumber = txtFilterValue.Text.Trim() };
                 break;
 
             case GridColumns.NextAppointmentDateTime:
                 filterDto = new PatientDetailedInfoDto
-                { NextAppointmentDateTime = dateTimerPicker.Value.Date };
+                    { NextAppointmentDateTime = dateTimerPicker.Value.Date };
                 break;
 
             case GridColumns.LastVisitDateTime:
                 filterDto = new PatientDetailedInfoDto
-                { LastVisitDateTime = dateTimerPicker.Value.Date };
+                    { LastVisitDateTime = dateTimerPicker.Value.Date };
                 break;
 
             case GridColumns.TotalNumberOfVisits:
@@ -175,31 +209,6 @@ public partial class PatientsView : UserControl
         return filterDto;
     }
 
-    private async Task LoadCardsAsync()
-    {
-        if (_isLoading)
-            return;
-
-        Cursor = Cursors.WaitCursor;
-
-        var cards = await _patientViewService.GetInfoCardsAsync();
-
-        lblPatietnsCount.Text = cards.PatientsCount.ToString();
-        lblTodayPatientCount.Text = cards.TodayPatientsCount.ToString();
-        lblMalePercentage.Text = $@"%{cards.MalePatientsPercentage:F2}";
-        lblFemalePercentage.Text = $@"%{cards.FemalePatientsPercentage:F2}";
-        lblAdultsPercentage.Text = $@"%{cards.AdultsPatientsPercentage:F2}";
-        lblChilderensPercentage.Text = $@"%{cards.ChildrenPatientsPercentage:F2}";
-
-        Cursor = Cursors.Default;
-    }
-
-    private async Task LoadUiDataAsync(PatientDetailedInfoDto? filterDto = null)
-    {
-        await LoadGridAsync(filterDto);
-        await LoadCardsAsync();
-    }
-
     private new void Refresh()
     {
         base.Refresh();
@@ -209,7 +218,7 @@ public partial class PatientsView : UserControl
     private async void LoadDataFirstTimeTimer_Tick(object sender, EventArgs e)
     {
         LoadDataFirstTimeTimer.Stop();
-        await LoadUiDataAsync();
+        await LoadGridAsync();
     }
 
     private void cbFilterList_SelectedIndexChanged(object sender, EventArgs e)

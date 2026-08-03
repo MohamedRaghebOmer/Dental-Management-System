@@ -16,8 +16,8 @@
 
 	  <Description>نظام متكامل لإدارة عيادات الأسنان</Description>
 
-	  <Version>1.1.0</Version>
-	  <FileVersion>1.1.0</FileVersion>
+	  <Version>1.1.1</Version>
+	  <FileVersion>1.1.1</FileVersion>
 	  <AssemblyVersion>1.0.0.0</AssemblyVersion>
 
 	  <Copyright>© 2026 Mohamed Ragheb</Copyright>
@@ -25,7 +25,7 @@
 
  <PropertyGroup>
       <EnableWindowsTargeting>true</EnableWindowsTargeting>
-      <ApplicationIcon>images\ico\icons8-dental-48.ico</ApplicationIcon>
+      <ApplicationIcon>images\ico\tooth-medicine.ico</ApplicationIcon>
   </PropertyGroup>
 
  <ItemGroup>
@@ -41,7 +41,7 @@
  </ItemGroup>
 
  <ItemGroup>
-   <Content Include="images\ico\icons8-dental-48.ico" />
+   <Content Include="images\ico\tooth-medicine.ico" />
  </ItemGroup>
 
   <ItemGroup>

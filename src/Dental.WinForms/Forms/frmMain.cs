@@ -48,9 +48,17 @@ public partial class frmMain : Form
 
         settingsView.SettingsSaved += LoadDentalInfo;
         ctrlProfile1.ControlClicked += ctrlProfile1_ControlClicked;
+        _VisitView.ShowRadiographsRelatedToTheVisitRequested
+            += VisitView_ShowRadiographsRelatedToTheVisitRequested;
 
         btnVisits_Click(null!, null!);
         LoadDentalInfo(null, null);
+    }
+
+    private void VisitView_ShowRadiographsRelatedToTheVisitRequested(object? sender, int visitId)
+    {
+        btnRadiographs_Click(sender, EventArgs.Empty);
+        _radiographsView.SetSearch(RadiographsView.GridColumn.VisitId, visitId.ToString());
     }
 
     private async void LoadDentalInfo(object? sender, SettingsView.SettingsSavedEventArgs? e)
@@ -130,7 +138,7 @@ public partial class frmMain : Form
         Cursor = Cursors.Default;
     }
 
-    private void btnRadiographs_Click(object sender, EventArgs e)
+    private void btnRadiographs_Click(object? sender, EventArgs e)
     {
         Cursor = Cursors.WaitCursor;
         ShowView(_radiographsView);

@@ -130,6 +130,9 @@
   <data name="close-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\close-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="photo-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\photo-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="location-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\location-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -187,7 +190,7 @@
   <data name="copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\images\512px\copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="photo-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\images\512px\photo-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="radiograph-512" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\images\512px\radiograph-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

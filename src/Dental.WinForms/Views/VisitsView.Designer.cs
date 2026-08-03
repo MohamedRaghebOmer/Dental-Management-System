@@ -63,8 +63,8 @@
             cmsShowPatientDetails = new ToolStripMenuItem();
             cmsShowAppointmentDetails = new ToolStripMenuItem();
             toolStripSeparator2 = new ToolStripSeparator();
-            tsmiAddNewRadiographToTheSameVisit = new ToolStripMenuItem();
             tsmiAddNewVisitToTheSamePatient = new ToolStripMenuItem();
+            tsmiAddNewRadiographToTheSameVisit = new ToolStripMenuItem();
             toolStripSeparator1 = new ToolStripSeparator();
             cmsDelete = new ToolStripMenuItem();
             toolStripSeparator3 = new ToolStripSeparator();
@@ -104,6 +104,7 @@
             label8 = new Label();
             label7 = new Label();
             label9 = new Label();
+            tsmiViewAllRadiographsRelatedToTheVisit = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             contextMenuStrip.SuspendLayout();
             pnlTotalVisits.SuspendLayout();
@@ -293,10 +294,10 @@
             // contextMenuStrip
             // 
             contextMenuStrip.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip.Items.AddRange(new ToolStripItem[] { cmsEdit, toolStripSeparator4, cmsShowPatientDetails, cmsShowAppointmentDetails, toolStripSeparator2, tsmiAddNewVisitToTheSamePatient, tsmiAddNewRadiographToTheSameVisit, toolStripSeparator1, cmsDelete, toolStripSeparator3, cmsRefreshGrid });
+            contextMenuStrip.Items.AddRange(new ToolStripItem[] { cmsEdit, toolStripSeparator4, cmsShowPatientDetails, cmsShowAppointmentDetails, tsmiViewAllRadiographsRelatedToTheVisit, toolStripSeparator2, tsmiAddNewVisitToTheSamePatient, tsmiAddNewRadiographToTheSameVisit, toolStripSeparator1, cmsDelete, toolStripSeparator3, cmsRefreshGrid });
             contextMenuStrip.Name = "contextMenuStrip1";
             contextMenuStrip.RightToLeft = RightToLeft.Yes;
-            contextMenuStrip.Size = new Size(282, 210);
+            contextMenuStrip.Size = new Size(291, 264);
             // 
             // cmsEdit
             // 
@@ -304,14 +305,14 @@
             cmsEdit.Name = "cmsEdit";
             cmsEdit.ShortcutKeys = Keys.Control | Keys.E;
             cmsEdit.ShowShortcutKeys = false;
-            cmsEdit.Size = new Size(281, 26);
+            cmsEdit.Size = new Size(290, 26);
             cmsEdit.Text = "تعديل";
             cmsEdit.Click += cmsEdit_Click;
             // 
             // toolStripSeparator4
             // 
             toolStripSeparator4.Name = "toolStripSeparator4";
-            toolStripSeparator4.Size = new Size(278, 6);
+            toolStripSeparator4.Size = new Size(287, 6);
             // 
             // cmsShowPatientDetails
             // 
@@ -319,7 +320,7 @@
             cmsShowPatientDetails.Name = "cmsShowPatientDetails";
             cmsShowPatientDetails.ShortcutKeys = Keys.Control | Keys.Shift | Keys.P;
             cmsShowPatientDetails.ShowShortcutKeys = false;
-            cmsShowPatientDetails.Size = new Size(281, 26);
+            cmsShowPatientDetails.Size = new Size(290, 26);
             cmsShowPatientDetails.Text = "عرض بيانات المريض";
             cmsShowPatientDetails.Click += cmsShowPatientDetails_Click;
             // 
@@ -329,35 +330,35 @@
             cmsShowAppointmentDetails.Name = "cmsShowAppointmentDetails";
             cmsShowAppointmentDetails.ShortcutKeys = Keys.Control | Keys.Shift | Keys.A;
             cmsShowAppointmentDetails.ShowShortcutKeys = false;
-            cmsShowAppointmentDetails.Size = new Size(281, 26);
+            cmsShowAppointmentDetails.Size = new Size(290, 26);
             cmsShowAppointmentDetails.Text = "عرض بيانات الحجز";
             cmsShowAppointmentDetails.Click += cmsShowAppointmentDetails_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
-            toolStripSeparator2.Size = new Size(278, 6);
-            // 
-            // tsmiAddNewRadiographToTheSameVisit
-            // 
-            tsmiAddNewRadiographToTheSameVisit.Image = Properties.Resources.plus_512;
-            tsmiAddNewRadiographToTheSameVisit.Name = "tsmiAddNewRadiographToTheSameVisit";
-            tsmiAddNewRadiographToTheSameVisit.Size = new Size(281, 26);
-            tsmiAddNewRadiographToTheSameVisit.Text = "إضافة أشعة أخري لنفس الزيارة";
-            tsmiAddNewRadiographToTheSameVisit.Click += tsmiAddNewRadiographToTheSameVisit_Click;
+            toolStripSeparator2.Size = new Size(287, 6);
             // 
             // tsmiAddNewVisitToTheSamePatient
             // 
             tsmiAddNewVisitToTheSamePatient.Image = Properties.Resources.plus_512;
             tsmiAddNewVisitToTheSamePatient.Name = "tsmiAddNewVisitToTheSamePatient";
-            tsmiAddNewVisitToTheSamePatient.Size = new Size(281, 26);
+            tsmiAddNewVisitToTheSamePatient.Size = new Size(290, 26);
             tsmiAddNewVisitToTheSamePatient.Text = "إضافة زياره أخري لنفس المريض";
             tsmiAddNewVisitToTheSamePatient.Click += tsmiAddNewVisitToTheSamePatient_Click;
+            // 
+            // tsmiAddNewRadiographToTheSameVisit
+            // 
+            tsmiAddNewRadiographToTheSameVisit.Image = Properties.Resources.plus_512;
+            tsmiAddNewRadiographToTheSameVisit.Name = "tsmiAddNewRadiographToTheSameVisit";
+            tsmiAddNewRadiographToTheSameVisit.Size = new Size(290, 26);
+            tsmiAddNewRadiographToTheSameVisit.Text = "إضافة أشعة أخري لنفس الزيارة";
+            tsmiAddNewRadiographToTheSameVisit.Click += tsmiAddNewRadiographToTheSameVisit_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(278, 6);
+            toolStripSeparator1.Size = new Size(287, 6);
             // 
             // cmsDelete
             // 
@@ -366,14 +367,14 @@
             cmsDelete.RightToLeftAutoMirrorImage = true;
             cmsDelete.ShortcutKeys = Keys.Delete;
             cmsDelete.ShowShortcutKeys = false;
-            cmsDelete.Size = new Size(281, 26);
+            cmsDelete.Size = new Size(290, 26);
             cmsDelete.Text = "حذف";
             cmsDelete.Click += cmsDelete_Click;
             // 
             // toolStripSeparator3
             // 
             toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(278, 6);
+            toolStripSeparator3.Size = new Size(287, 6);
             // 
             // cmsRefreshGrid
             // 
@@ -381,7 +382,7 @@
             cmsRefreshGrid.Name = "cmsRefreshGrid";
             cmsRefreshGrid.ShortcutKeys = Keys.F5;
             cmsRefreshGrid.ShowShortcutKeys = false;
-            cmsRefreshGrid.Size = new Size(281, 26);
+            cmsRefreshGrid.Size = new Size(290, 26);
             cmsRefreshGrid.Text = "تحديث";
             cmsRefreshGrid.Click += cmsRefreshGrid_Click;
             // 
@@ -844,6 +845,14 @@
             label9.TabIndex = 14;
             label9.Text = "اضغط علي الصف ضغطتين متتاليتين لتعديل بيانات الزياره.";
             // 
+            // tsmiViewAllRadiographsRelatedToTheVisit
+            // 
+            tsmiViewAllRadiographsRelatedToTheVisit.Image = Properties.Resources.radiograph_512;
+            tsmiViewAllRadiographsRelatedToTheVisit.Name = "tsmiViewAllRadiographsRelatedToTheVisit";
+            tsmiViewAllRadiographsRelatedToTheVisit.Size = new Size(290, 26);
+            tsmiViewAllRadiographsRelatedToTheVisit.Text = "عرض كل الأشعه المرتبطه بالزياره";
+            tsmiViewAllRadiographsRelatedToTheVisit.Click += tsmiViewAllRadiographsRelatedToTheVisit_Click;
+            // 
             // VisitsView
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
@@ -952,5 +961,6 @@
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripMenuItem tsmiAddNewRadiographToTheSameVisit;
         private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem tsmiViewAllRadiographsRelatedToTheVisit;
     }
 }
