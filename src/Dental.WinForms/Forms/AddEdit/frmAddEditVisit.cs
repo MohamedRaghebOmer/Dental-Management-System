@@ -63,6 +63,8 @@ public partial class frmAddEditVisit : Form
         _formFactory = formFactory;
         _mode = Mode.Add;
         _visitId = null;
+        dtpVisitDateTime_Date.MaxDate = DateTime.Now;
+        tmrUpdate_dtpVisitDateTime_MaxDate.Start();
 
         dgvVisitPayments.AlternatingRowsDefaultCellStyle = null;
         dgvVisitTreatments.AlternatingRowsDefaultCellStyle = null;
@@ -241,7 +243,6 @@ public partial class frmAddEditVisit : Form
     {
         Text = _mode == Mode.Add ? "اضافة زياره" : "تعديل زياره";
         lblTitile.Text = _mode == Mode.Add ? "اضافة زياره جديده" : "تعديل بيانات زياره";
-        lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(DateTime.Now);
         lblId.Text = _visitType == VisitType.WalkIn ? "رقم المريض :" : "رقم الحجز :";
 
         if (_mode == Mode.Add)
@@ -440,8 +441,7 @@ public partial class frmAddEditVisit : Form
         }
 
         txtDiscountAmount.Text = visitResult.Value.DiscountAmount.ToString("F2");
-        lblVisitDateTime.Text =
-            DateTimeHelper.GetArabicDateTime(visitResult.Value.VisitDateTime);
+        AssignVisitDateTime(visitResult.Value.VisitDateTime);
         txtNotes.Text = visitResult.Value.Notes ?? string.Empty;
 
         return await LoadVisitPaymentsGridAsync();
@@ -726,6 +726,7 @@ public partial class frmAddEditVisit : Form
         {
             AppointmentId = appointmentId.Value,
             DiscountAmount = discountAmount.Value,
+            VisitDateTime = SelectedVisitDateTime,
             Notes = txtNotes.Text
         };
     }
@@ -824,6 +825,7 @@ public partial class frmAddEditVisit : Form
         {
             PatientId = patientId.Value,
             DiscountAmount = discountAmount.Value,
+            VisitDateTime = SelectedVisitDateTime,
             Notes = txtNotes.Text
         };
     }
@@ -1092,6 +1094,7 @@ public partial class frmAddEditVisit : Form
         return new UpdateVisitDto
         {
             DiscountAmount = discountAmount.Value,
+            VisitDateTime = SelectedVisitDateTime,
             Notes = txtNotes.Text
         };
     }
@@ -1153,6 +1156,10 @@ public partial class frmAddEditVisit : Form
 
             case "Common.UnexpectedError":
                 MessageBoxExtensions.ShowError("حدث خطأ غير متوقع اثناء حفظ بيانات الزياره.");
+                break;
+
+            case "VisitDateTime.InTheFuture":
+                MessageBoxExtensions.ShowError("تاريخ الزيارة لا يمكن أن يكون في المستقبل.");
                 break;
 
             default:
@@ -1545,7 +1552,23 @@ public partial class frmAddEditVisit : Form
             return false;
         }
 
+        if (SelectedVisitDateTime > DateTime.Now)
+        {
+            MessageBoxExtensions.ShowError("تاريخ الزيارة لا يمكن أن يكون في المستقبل.");
+            return false;
+        }
+
         return true;
+    }
+
+    private DateTime SelectedVisitDateTime 
+        => dtpVisitDateTime_Date.Value.Date + 
+           dtpVisitDateTime_Time.Value.TimeOfDay;
+
+    private void AssignVisitDateTime(DateTime visitDateTime)
+    {
+        dtpVisitDateTime_Date.Value = visitDateTime.Date;
+        dtpVisitDateTime_Time.Value = visitDateTime;
     }
 
     private void InitializeDataGridDefaultValues()
@@ -1689,11 +1712,11 @@ public partial class frmAddEditVisit : Form
         return null;
     }
 
-    private void timer_Tick(object sender, EventArgs e)
+    private void tmrUpdate_dtpVisitDateTime_MaxDate_Tick(object sender, EventArgs e)
     {
         if (_mode == Mode.Add)
         {
-            lblVisitDateTime.Text = DateTimeHelper.GetArabicDateTime(DateTime.Now);
+            dtpVisitDateTime_Date.MaxDate = DateTime.Now;
         }
     }
 

@@ -101,6 +101,7 @@ public sealed class VisitService
                 appointmentId: null,
                 patientId: patientIdResult.Value,
                 discountAmount: discountAmount.Value,
+                visitDateTime: walkInVisitDto.VisitDateTime,
                 notes: walkInVisitDto.Notes);
 
             if (visitResult.IsFailure)
@@ -213,6 +214,7 @@ public sealed class VisitService
                 appointmentId: appointmentIdResult.Value,
                 patientId: appointment.PatientId,
                 discountAmount: discountAmount.Value,
+                visitDateTime: preAppointmentVisitDto.VisitDateTime,
                 notes: preAppointmentVisitDto.Notes);
 
             if (visitResult.IsFailure)
@@ -316,6 +318,7 @@ public sealed class VisitService
 
             var updateResult = visit.Update(
                 discountAmount: discountAmount.Value,
+                visitDateTime: updateVisitDto.VisitDateTime,
                 notes: updateVisitDto.Notes);
 
             if (updateResult.IsFailure)

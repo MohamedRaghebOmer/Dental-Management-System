@@ -68,11 +68,10 @@
             label9 = new Label();
             txtRemainingAmount = new Guna.UI2.WinForms.Guna2TextBox();
             label10 = new Label();
-            lblVisitDateTime = new Label();
             label11 = new Label();
             txtNotes = new RichTextBox();
             lblId = new Label();
-            timer = new System.Windows.Forms.Timer(components);
+            tmrUpdate_dtpVisitDateTime_MaxDate = new System.Windows.Forms.Timer(components);
             btnSearch = new FontAwesome.Sharp.IconButton();
             ctrlSearchAppointment1 = new Dental.WinForms.UserControls.Search.ctrlSearchAppointment();
             ctrlSearchPatient1 = new Dental.WinForms.UserControls.Search.ctrlSearchPatient();
@@ -90,6 +89,8 @@
             lblSumOfPaidAmounts = new Label();
             label5 = new Label();
             change_txtId_FillColorTimer = new System.Windows.Forms.Timer(components);
+            dtpVisitDateTime_Date = new DateTimePicker();
+            dtpVisitDateTime_Time = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvVisitTreatments).BeginInit();
             cmsTreatmetnsGrid.SuspendLayout();
@@ -100,9 +101,9 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.teeth;
-            pictureBox1.Location = new Point(12, 559);
+            pictureBox1.Location = new Point(16, 559);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(339, 479);
+            pictureBox1.Size = new Size(333, 500);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
@@ -111,7 +112,7 @@
             // 
             label3.AutoSize = true;
             label3.BackColor = Color.White;
-            label3.Location = new Point(122, 696);
+            label3.Location = new Point(124, 702);
             label3.Name = "label3";
             label3.Size = new Size(112, 28);
             label3.TabIndex = 4;
@@ -121,7 +122,7 @@
             // 
             label4.AutoSize = true;
             label4.BackColor = Color.White;
-            label4.Location = new Point(119, 874);
+            label4.Location = new Point(121, 892);
             label4.Name = "label4";
             label4.Size = new Size(119, 28);
             label4.TabIndex = 5;
@@ -131,7 +132,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            label2.Location = new Point(956, 680);
+            label2.Location = new Point(1018, 688);
             label2.Name = "label2";
             label2.Size = new Size(141, 31);
             label2.TabIndex = 6;
@@ -139,7 +140,7 @@
             // 
             // lblTotalPrice
             // 
-            lblTotalPrice.Location = new Point(750, 681);
+            lblTotalPrice.Location = new Point(748, 689);
             lblTotalPrice.Name = "lblTotalPrice";
             lblTotalPrice.Size = new Size(200, 28);
             lblTotalPrice.TabIndex = 7;
@@ -150,7 +151,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(1402, 194);
+            label6.Location = new Point(1466, 194);
             label6.Name = "label6";
             label6.Size = new Size(192, 28);
             label6.TabIndex = 9;
@@ -159,7 +160,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(1303, 253);
+            label7.Location = new Point(1367, 253);
             label7.Name = "label7";
             label7.Size = new Size(291, 28);
             label7.TabIndex = 10;
@@ -179,7 +180,7 @@
             txtId.Font = new Font("Segoe UI", 10.2F);
             txtId.ForeColor = Color.Black;
             txtId.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtId.Location = new Point(1004, 129);
+            txtId.Location = new Point(1039, 129);
             txtId.Margin = new Padding(3, 5, 3, 5);
             txtId.MaxLength = 6;
             txtId.Name = "txtId";
@@ -187,7 +188,7 @@
             txtId.RightToLeft = RightToLeft.Yes;
             txtId.SelectedText = "";
             txtId.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            txtId.Size = new Size(294, 40);
+            txtId.Size = new Size(323, 40);
             txtId.TabIndex = 0;
             txtId.KeyPress += txtId_KeyPress;
             // 
@@ -205,15 +206,15 @@
             txtDiscountAmount.Font = new Font("Segoe UI", 10.2F);
             txtDiscountAmount.ForeColor = Color.Black;
             txtDiscountAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtDiscountAmount.Location = new Point(1004, 188);
+            txtDiscountAmount.Location = new Point(1039, 188);
             txtDiscountAmount.Margin = new Padding(3, 5, 3, 5);
             txtDiscountAmount.MaxLength = 9;
             txtDiscountAmount.Name = "txtDiscountAmount";
             txtDiscountAmount.PlaceholderText = "";
             txtDiscountAmount.SelectedText = "";
             txtDiscountAmount.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            txtDiscountAmount.Size = new Size(294, 40);
-            txtDiscountAmount.TabIndex = 3;
+            txtDiscountAmount.Size = new Size(323, 40);
+            txtDiscountAmount.TabIndex = 2;
             txtDiscountAmount.TextChanged += txtMoney_TextChanged;
             txtDiscountAmount.KeyPress += txtMoney_KeyPress;
             // 
@@ -260,7 +261,7 @@
             dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
             dgvVisitTreatments.DefaultCellStyle = dataGridViewCellStyle11;
             dgvVisitTreatments.GridColor = Color.LightGray;
-            dgvVisitTreatments.Location = new Point(357, 746);
+            dgvVisitTreatments.Location = new Point(370, 753);
             dgvVisitTreatments.MultiSelect = false;
             dgvVisitTreatments.Name = "dgvVisitTreatments";
             dgvVisitTreatments.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -277,8 +278,8 @@
             dgvVisitTreatments.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvVisitTreatments.RowTemplate.Height = 35;
             dgvVisitTreatments.RowTemplate.Resizable = DataGridViewTriState.False;
-            dgvVisitTreatments.Size = new Size(1238, 237);
-            dgvVisitTreatments.TabIndex = 7;
+            dgvVisitTreatments.Size = new Size(1289, 237);
+            dgvVisitTreatments.TabIndex = 10;
             dgvVisitTreatments.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvVisitTreatments.ThemeStyle.AlternatingRowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dgvVisitTreatments.ThemeStyle.AlternatingRowsStyle.ForeColor = SystemColors.ControlText;
@@ -386,12 +387,12 @@
             btnSave.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             btnSave.ForeColor = Color.DimGray;
             btnSave.HoverState.FillColor = Color.DarkOrange;
-            btnSave.Location = new Point(902, 997);
+            btnSave.Location = new Point(966, 1003);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
             btnSave.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btnSave.Size = new Size(160, 56);
-            btnSave.TabIndex = 8;
+            btnSave.TabIndex = 11;
             btnSave.Text = "حفظ";
             btnSave.Click += btnSave_Click;
             // 
@@ -399,7 +400,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            label8.Location = new Point(1503, 715);
+            label8.Location = new Point(1565, 723);
             label8.Name = "label8";
             label8.Size = new Size(91, 28);
             label8.TabIndex = 22;
@@ -409,7 +410,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 10.2F);
-            label9.Location = new Point(1011, 719);
+            label9.Location = new Point(1073, 727);
             label9.Name = "label9";
             label9.Size = new Size(496, 23);
             label9.TabIndex = 23;
@@ -430,39 +431,30 @@
             txtRemainingAmount.Font = new Font("Segoe UI", 10.2F);
             txtRemainingAmount.ForeColor = Color.Black;
             txtRemainingAmount.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtRemainingAmount.Location = new Point(1004, 247);
+            txtRemainingAmount.Location = new Point(1039, 247);
             txtRemainingAmount.Margin = new Padding(3, 5, 3, 5);
             txtRemainingAmount.MaxLength = 9;
             txtRemainingAmount.Name = "txtRemainingAmount";
             txtRemainingAmount.PlaceholderText = "";
             txtRemainingAmount.SelectedText = "";
             txtRemainingAmount.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            txtRemainingAmount.Size = new Size(294, 40);
-            txtRemainingAmount.TabIndex = 4;
+            txtRemainingAmount.Size = new Size(323, 40);
+            txtRemainingAmount.TabIndex = 3;
             txtRemainingAmount.KeyPress += txtMoney_KeyPress;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(1475, 312);
+            label10.Location = new Point(1539, 312);
             label10.Name = "label10";
             label10.Size = new Size(117, 28);
             label10.TabIndex = 25;
             label10.Text = "تاريخ الزياره :";
             // 
-            // lblVisitDateTime
-            // 
-            lblVisitDateTime.Location = new Point(1004, 312);
-            lblVisitDateTime.Name = "lblVisitDateTime";
-            lblVisitDateTime.RightToLeft = RightToLeft.Yes;
-            lblVisitDateTime.Size = new Size(294, 28);
-            lblVisitDateTime.TabIndex = 26;
-            lblVisitDateTime.TextAlign = ContentAlignment.MiddleLeft;
-            // 
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(1497, 371);
+            label11.Location = new Point(1561, 371);
             label11.Name = "label11";
             label11.Size = new Size(97, 28);
             label11.TabIndex = 27;
@@ -470,27 +462,27 @@
             // 
             // txtNotes
             // 
-            txtNotes.Location = new Point(1004, 371);
+            txtNotes.Location = new Point(1039, 371);
             txtNotes.MaxLength = 500;
             txtNotes.Name = "txtNotes";
-            txtNotes.Size = new Size(294, 73);
+            txtNotes.Size = new Size(323, 73);
             txtNotes.TabIndex = 6;
             txtNotes.Text = "";
             // 
             // lblId
             // 
-            lblId.Location = new Point(1452, 135);
+            lblId.Location = new Point(1516, 135);
             lblId.Name = "lblId";
             lblId.Size = new Size(142, 28);
             lblId.TabIndex = 28;
             lblId.Text = "رقم الحجز :";
             lblId.TextAlign = ContentAlignment.MiddleLeft;
             // 
-            // timer
+            // tmrUpdate_dtpVisitDateTime_MaxDate
             // 
-            timer.Enabled = true;
-            timer.Interval = 1000;
-            timer.Tick += timer_Tick;
+            tmrUpdate_dtpVisitDateTime_MaxDate.Enabled = true;
+            tmrUpdate_dtpVisitDateTime_MaxDate.Interval = 1000;
+            tmrUpdate_dtpVisitDateTime_MaxDate.Tick += tmrUpdate_dtpVisitDateTime_MaxDate_Tick;
             // 
             // btnSearch
             // 
@@ -500,10 +492,10 @@
             btnSearch.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnSearch.IconSize = 37;
             btnSearch.ImageAlign = ContentAlignment.TopLeft;
-            btnSearch.Location = new Point(805, 129);
+            btnSearch.Location = new Point(843, 131);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(178, 40);
-            btnSearch.TabIndex = 31;
+            btnSearch.Size = new Size(176, 40);
+            btnSearch.TabIndex = 1;
             btnSearch.Text = "عرض التفاصيل";
             btnSearch.TextAlign = ContentAlignment.TopRight;
             btnSearch.UseVisualStyleBackColor = true;
@@ -520,7 +512,7 @@
             ctrlSearchAppointment1.MinimumSize = new Size(607, 423);
             ctrlSearchAppointment1.Name = "ctrlSearchAppointment1";
             ctrlSearchAppointment1.RightToLeft = RightToLeft.Yes;
-            ctrlSearchAppointment1.Size = new Size(970, 423);
+            ctrlSearchAppointment1.Size = new Size(1009, 423);
             ctrlSearchAppointment1.TabIndex = 32;
             // 
             // ctrlSearchPatient1
@@ -533,8 +525,8 @@
             ctrlSearchPatient1.MinimumSize = new Size(511, 338);
             ctrlSearchPatient1.Name = "ctrlSearchPatient1";
             ctrlSearchPatient1.RightToLeft = RightToLeft.Yes;
-            ctrlSearchPatient1.Size = new Size(970, 423);
-            ctrlSearchPatient1.TabIndex = 33;
+            ctrlSearchPatient1.Size = new Size(1009, 423);
+            ctrlSearchPatient1.TabIndex = 8;
             // 
             // btnClose
             // 
@@ -543,11 +535,11 @@
             btnClose.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnClose.IconSize = 38;
             btnClose.ImageAlign = ContentAlignment.TopCenter;
-            btnClose.Location = new Point(1522, 22);
+            btnClose.Location = new Point(1585, 12);
             btnClose.Name = "btnClose";
             btnClose.RightToLeft = RightToLeft.No;
             btnClose.Size = new Size(53, 41);
-            btnClose.TabIndex = 34;
+            btnClose.TabIndex = 12;
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
             // 
@@ -595,7 +587,7 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvVisitPayments.DefaultCellStyle = dataGridViewCellStyle3;
             dgvVisitPayments.GridColor = Color.LightGray;
-            dgvVisitPayments.Location = new Point(1004, 499);
+            dgvVisitPayments.Location = new Point(1039, 499);
             dgvVisitPayments.MultiSelect = false;
             dgvVisitPayments.Name = "dgvVisitPayments";
             dgvVisitPayments.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -612,8 +604,8 @@
             dgvVisitPayments.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvVisitPayments.RowTemplate.Height = 35;
             dgvVisitPayments.RowTemplate.Resizable = DataGridViewTriState.False;
-            dgvVisitPayments.Size = new Size(588, 178);
-            dgvVisitPayments.TabIndex = 36;
+            dgvVisitPayments.Size = new Size(620, 178);
+            dgvVisitPayments.TabIndex = 9;
             dgvVisitPayments.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvVisitPayments.ThemeStyle.AlternatingRowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dgvVisitPayments.ThemeStyle.AlternatingRowsStyle.ForeColor = SystemColors.ControlText;
@@ -714,7 +706,7 @@
             // 
             // lblSumOfPaidAmounts
             // 
-            lblSumOfPaidAmounts.Location = new Point(1014, 459);
+            lblSumOfPaidAmounts.Location = new Point(1078, 459);
             lblSumOfPaidAmounts.Name = "lblSumOfPaidAmounts";
             lblSumOfPaidAmounts.Size = new Size(226, 28);
             lblSumOfPaidAmounts.TabIndex = 38;
@@ -725,7 +717,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.Location = new Point(1246, 459);
+            label5.Location = new Point(1310, 459);
             label5.Name = "label5";
             label5.Size = new Size(218, 28);
             label5.TabIndex = 37;
@@ -736,11 +728,31 @@
             change_txtId_FillColorTimer.Interval = 500;
             change_txtId_FillColorTimer.Tick += change_txtId_FillColorTimer_Tick;
             // 
+            // dtpVisitDateTime_Date
+            // 
+            dtpVisitDateTime_Date.Location = new Point(1039, 309);
+            dtpVisitDateTime_Date.Name = "dtpVisitDateTime_Date";
+            dtpVisitDateTime_Date.RightToLeft = RightToLeft.No;
+            dtpVisitDateTime_Date.Size = new Size(323, 34);
+            dtpVisitDateTime_Date.TabIndex = 4;
+            // 
+            // dtpVisitDateTime_Time
+            // 
+            dtpVisitDateTime_Time.CustomFormat = "";
+            dtpVisitDateTime_Time.Format = DateTimePickerFormat.Time;
+            dtpVisitDateTime_Time.Location = new Point(1368, 309);
+            dtpVisitDateTime_Time.Name = "dtpVisitDateTime_Time";
+            dtpVisitDateTime_Time.ShowUpDown = true;
+            dtpVisitDateTime_Time.Size = new Size(138, 34);
+            dtpVisitDateTime_Time.TabIndex = 5;
+            // 
             // frmAddEditVisit
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1596, 1064);
+            ClientSize = new Size(1660, 1073);
+            Controls.Add(dtpVisitDateTime_Time);
+            Controls.Add(dtpVisitDateTime_Date);
             Controls.Add(lblSumOfPaidAmounts);
             Controls.Add(label5);
             Controls.Add(dgvVisitPayments);
@@ -750,7 +762,6 @@
             Controls.Add(lblId);
             Controls.Add(txtNotes);
             Controls.Add(label11);
-            Controls.Add(lblVisitDateTime);
             Controls.Add(label10);
             Controls.Add(txtRemainingAmount);
             Controls.Add(label9);
@@ -766,8 +777,8 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(pictureBox1);
-            Controls.Add(ctrlSearchPatient1);
             Controls.Add(ctrlSearchAppointment1);
+            Controls.Add(ctrlSearchPatient1);
             Font = new Font("Segoe UI", 12F);
             FormBorderStyle = FormBorderStyle.None;
             Margin = new Padding(4);
@@ -808,11 +819,10 @@
         private ToolStripMenuItem tsmiTreatmentsDelete;
         private Guna.UI2.WinForms.Guna2TextBox txtRemainingAmount;
         private Label label10;
-        private Label lblVisitDateTime;
         private Label label11;
         private RichTextBox txtNotes;
         private Label lblId;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Timer tmrUpdate_dtpVisitDateTime_MaxDate;
         private FontAwesome.Sharp.IconButton btnSearch;
         private UserControls.Search.ctrlSearchAppointment ctrlSearchAppointment1;
         private UserControls.Search.ctrlSearchPatient ctrlSearchPatient1;
@@ -835,5 +845,7 @@
         private DataGridViewTextBoxColumn colTreatmentPrice;
         private DataGridViewTextBoxColumn colCount;
         private DataGridViewTextBoxColumn colNotes;
+        private DateTimePicker dtpVisitDateTime_Date;
+        private DateTimePicker dtpVisitDateTime_Time;
     }
 }

@@ -139,6 +139,13 @@ public static class DomainErrors
                     "VisitRadiograph.NotFound",
                     "Visit radiograph not found.");
             }
+
+            public static class VisitDateTime
+            {
+                public static readonly Error InTheFuture = new(
+                    "VisitDateTime.InTheFuture",
+                    "The visit date and time cannot be in the future.");
+            }
         }
 
         public static class VisitTreatment

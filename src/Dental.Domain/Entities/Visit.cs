@@ -34,18 +34,20 @@ public sealed class Visit : Entity
     private readonly List<VisitRadiograph> _visitRadiographs = [];
 
 
+
     private Visit() { } // EF Core
 
     private Visit(
         Id? appointmentId,
         Id patientId,
         Money discountAmount,
+        DateTime visitDateTime,
         string? notes)
     {
         AppointmentId = appointmentId;
         PatientId = patientId;
         DiscountAmount = discountAmount;
-        VisitDateTime = DateTime.Now;
+        VisitDateTime = visitDateTime;
         Notes = notes;
     }
 
@@ -55,46 +57,56 @@ public sealed class Visit : Entity
         Id? appointmentId,
         Id patientId,
         Money discountAmount,
+        DateTime visitDateTime,
         string? notes)
     {
         notes = notes?.Trim();
 
-        var validateResult = Validate(notes);
+        var validateResult = Validate(notes, visitDateTime);
         if (validateResult.IsFailure)
         {
             return Result.Failure<Visit>(validateResult.Error);
         }
 
-        return new Visit(appointmentId, patientId, discountAmount, notes);
+        return new Visit(appointmentId, patientId, discountAmount, visitDateTime, notes);
     }
 
     public Result Update(
         Money discountAmount,
+        DateTime visitDateTime,
         string? notes)
     {
         notes = notes?.Trim();
 
-        var validateResult = Validate(notes);
+        var validateResult = Validate(notes, visitDateTime);
         if (validateResult.IsFailure)
         {
             return Result.Failure(validateResult.Error);
         }
 
         DiscountAmount = discountAmount;
+        VisitDateTime = visitDateTime;
         Notes = notes;
 
         return Result.Success();
     }
 
-    private static Result Validate(string? notes)
+    private static Result Validate(string? notes, DateTime visitDateTime)
     {
         if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.Visit.Notes.TooLong);
         }
 
+        // Check if the visitDateTime is in the future. Being in the past is allowed, future is not.
+        if (visitDateTime > DateTime.Now)
+        {
+            return Result.Failure(DomainErrors.Entities.Visit.VisitDateTime.InTheFuture);
+        }
+
         return Result.Success();
     }
+
 
 
     public Result<VisitTreatment> AddVisitTreatment(
@@ -158,6 +170,8 @@ public sealed class Visit : Entity
         return Result.Success();
     }
 
+
+
     public Result<Prescription> AddPrescription(Id patientId, string? notes)
     {
         if (Prescription is not null)
@@ -204,6 +218,7 @@ public sealed class Visit : Entity
 
         return Result.Success();
     }
+
 
 
     public Result<PrescriptionItem> AddPrescriptionItem(
@@ -273,6 +288,7 @@ public sealed class Visit : Entity
     }
 
 
+
     public Result<VisitPayment> AddVisitPayment(
         Money paidAmount)
     {
@@ -312,7 +328,7 @@ public sealed class Visit : Entity
     }
 
 
-    // VisitRadiograph methods
+
     public Result<VisitRadiograph> AddVisitRadiograph(
         string imagePath)
     {
