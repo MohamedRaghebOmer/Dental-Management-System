@@ -37,11 +37,15 @@ public sealed class VisitTreatmentConfiguration
         {
             table.HasCheckConstraint(
                 "CK_VisitTreatments_ToothNumber_Range",
-                "[ToothNumber] >= 1 AND [ToothNumber] <= 32");
+                "[ToothNumber] = NULL OR [ToothNumber] BETWEEN 1 AND 32");
 
             table.HasCheckConstraint(
                 "CK_VisitTreatments_Price_NonNegative",
-                "[Price] >= 0");
+                "[TreatmentPrice] >= 0");
+
+            table.HasCheckConstraint(
+                "CK_VisitTreatments_Count_Positive",
+                "[Count] > 0");
         });
     }
 
@@ -60,13 +64,6 @@ public sealed class VisitTreatmentConfiguration
 
     protected override void ConfigureProperties(EntityTypeBuilder<VisitTreatment> builder)
     {
-        builder.Property(vt => vt.ToothNumber)
-            .HasConversion(
-                value => value.Value,
-                value => ToothNumber.FromDatabase(value))
-            .HasColumnName(nameof(VisitTreatment.ToothNumber))
-            .IsRequired();
-
         builder.Property(vt => vt.VisitId)
             .HasConversion(
                 value => value.Value,
@@ -81,11 +78,25 @@ public sealed class VisitTreatmentConfiguration
             .HasColumnName(nameof(VisitTreatment.TreatmentId))
             .IsRequired();
 
-        builder.Property(vt => vt.Price)
+        builder.Property(vt => vt.ToothNumber)
+            .HasConversion(
+                value => value == null ? (byte?)null : value.Value,
+                value => value == null ? null : ToothNumber.FromDatabase(value.Value))
+            .HasColumnName(nameof(VisitTreatment.ToothNumber))
+            .IsRequired(false);
+
+        builder.Property(vt => vt.Count)
+            .HasColumnName(nameof(VisitTreatment.Count))
+            .HasDefaultValue(1)
+            .IsRequired();
+
+        builder.Ignore(vt => vt.TotalPrice);
+
+        builder.Property(vt => vt.TreatmentPrice)
             .HasConversion(
                 value => value.Value,
                 value => Money.FromDatabase(value))
-            .HasColumnName(nameof(VisitTreatment.Price))
+            .HasColumnName(nameof(VisitTreatment.TreatmentPrice))
             .HasPrecision(18, 2)
             .IsRequired();
 

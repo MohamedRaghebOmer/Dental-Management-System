@@ -319,7 +319,7 @@
             // 
             // colTreatmentPrice
             // 
-            colTreatmentPrice.DataPropertyName = "Price";
+            colTreatmentPrice.DataPropertyName = "TreatmentPrice";
             colTreatmentPrice.HeaderText = "سعر الخدمه";
             colTreatmentPrice.MinimumWidth = 6;
             colTreatmentPrice.Name = "colTreatmentPrice";

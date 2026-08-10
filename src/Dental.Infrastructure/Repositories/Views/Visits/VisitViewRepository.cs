@@ -147,7 +147,7 @@ public sealed class VisitViewRepository : IVisitViewRepository
                 SELECT
                     vt.VisitId AS VisitId,
                     COALESCE(GROUP_CONCAT(t.Name, '، '), '') AS TreatmentsNames,
-                    COALESCE(SUM(vt.Price), 0) AS TotalAmount
+                    COALESCE(SUM(vt.TreatmentPrice * vt.Count), 0) AS TotalAmount
                 FROM VisitTreatments AS vt
                 INNER JOIN FilteredVisits AS fv ON fv.VisitId = vt.VisitId
                 INNER JOIN Treatments AS t ON t.Id = vt.TreatmentId

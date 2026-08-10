@@ -12,10 +12,12 @@ public sealed class VisitTreatment : Entity
         public const int NotesMaxLength = 500;
     }
 
-    public ToothNumber ToothNumber { get; private set; } = default!;
+    public ToothNumber? ToothNumber { get; private set; } = default!;
     public Id VisitId { get; private set; } = default!;
     public Id TreatmentId { get; private set; } = default!;
-    public Money Price { get; private set; } = default!;
+    public int Count { get; private set; } = 1; // Default value is 1, updatable
+    public Money TreatmentPrice { get; private set; } = default!;
+    public decimal TotalPrice => TreatmentPrice.Value * Count; // Computed property
     public string? Notes { get; private set; }
 
     public Visit Visit { get; private set; } = default!;
@@ -24,65 +26,77 @@ public sealed class VisitTreatment : Entity
     private VisitTreatment() { } // EF Core
 
     private VisitTreatment(
-        ToothNumber toothNumber,
         Id visitId,
         Id treatmentId,
-        Money price,
+        ToothNumber? toothNumber,
+        int count,
+        Money treatmentPrice,
         string? notes)
     {
-        ToothNumber = toothNumber;
         VisitId = visitId;
         TreatmentId = treatmentId;
-        Price = price;
+        ToothNumber = toothNumber;
+        Count = count;
+        TreatmentPrice = treatmentPrice;
         Notes = notes;
     }
 
     internal static Result<VisitTreatment> Create(
-        ToothNumber toothNumber,
+        ToothNumber? toothNumber,
         Id visitId,
         Id treatmentId,
-        Money price, // Auto set from table Treatments<treatmentId>.Price | NOT updatable
+        int count,
+        Money treatmentPrice,
         string? notes)
     {
         notes = notes?.Trim();
 
-        var validationResult = Validate(notes);
+        var validationResult = Validate(count, notes);
         if (validationResult.IsFailure)
         {
             return Result.Failure<VisitTreatment>(validationResult.Error);
         }
 
         return new VisitTreatment(
-            toothNumber,
-            visitId,
-            treatmentId,
-            price,
-            notes);
+            visitId: visitId,
+            treatmentId: treatmentId,
+            toothNumber: toothNumber,
+            count: count,
+            treatmentPrice: treatmentPrice,
+            notes: notes);
     }
 
     internal Result Update(
-        ToothNumber toothNumber,
         Id treatmentId,
+        ToothNumber? toothNumber,
+        int count,
         string? notes)
     {
         notes = notes?.Trim();
 
-        var validationResult = Validate(notes);
+        var validationResult = Validate(count, notes);
         if (validationResult.IsFailure)
         {
             return Result.Failure(validationResult.Error);
         }
 
-        ToothNumber = toothNumber;
         TreatmentId = treatmentId;
+        ToothNumber = toothNumber;
+        Count = count;
         Notes = notes;
 
         return Result.Success();
     }
 
     private static Result Validate(
+        int count,
         string? notes)
     {
+        if (count <= 0)
+        {
+            return Result.Failure(DomainErrors.Entities.VisitTreatment.Count.EqualToOrLessThanZero);
+        }
+
         if (notes?.Length > Constants.NotesMaxLength)
         {
             return Result.Failure(DomainErrors.Entities.VisitTreatment.Notes.TooLong);

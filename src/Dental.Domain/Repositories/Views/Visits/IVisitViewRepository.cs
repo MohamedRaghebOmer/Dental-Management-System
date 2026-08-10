@@ -5,6 +5,6 @@ namespace Dental.Domain.Repositories.Views.Visits;
 public interface IVisitViewRepository
 {
     Task<List<VisitView>> GetAsync(
-        VisitView? filterDTO,
+        VisitView? filterDto = null,
         CancellationToken cancellationToken = default);
 }

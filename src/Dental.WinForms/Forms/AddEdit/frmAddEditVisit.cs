@@ -2,7 +2,7 @@
 using Dental.Application.DTOs.Treatment;
 using Dental.Application.DTOs.Visit;
 using Dental.Application.DTOs.VisitPayment;
-using Dental.Application.DTOs.VisitToothNumber;
+using Dental.Application.DTOs.VisitTreatments;
 using Dental.Application.Errors;
 using Dental.Application.ViewsStuff.Interfaces.Appointments;
 using Dental.Application.ViewsStuff.Interfaces.Patients;
@@ -347,7 +347,7 @@ public partial class frmAddEditVisit : Form
         ((DataGridViewComboBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
             .Cells[nameof(colTreatmentName)]).Value = view.Name;
 
-        // Price
+        // TreatmentPrice
         ((DataGridViewTextBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
             .Cells[nameof(colTreatmentPrice)]).Value = view.Price;
 

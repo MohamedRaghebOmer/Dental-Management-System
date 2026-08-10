@@ -21,7 +21,7 @@ public partial class VisitsView : UserControl
     private int _selectedRowIndex = -1;
     private bool _isLoading = true;
 
-    public event EventHandler<int> ShowRadiographsRelatedToTheVisitRequested;
+    public event EventHandler<int>? ShowRadiographsRelatedToTheVisitRequested;
 
     private Stopwatch _lastFilteringSince = new();
 

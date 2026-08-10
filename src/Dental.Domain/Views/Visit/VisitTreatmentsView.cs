@@ -8,7 +8,7 @@ public sealed record VisitTreatmentsView
 
     - VisitTreatments<VisitId>.ToothNumber
     - Treatments<VisitTreatments<VisitId>>.TreatmentName
-    - VisitTreatments<VisitId>.Price
+    - VisitTreatments<VisitId>.TreatmentPrice
     - VisitTreatments<VisitId>.Notes
 
 
@@ -16,8 +16,9 @@ public sealed record VisitTreatmentsView
      */
 
 
-    public required byte ToothNumber { get; init; }
+    public byte? ToothNumber { get; init; } = null;
     public required string Name { get; init; }
     public required decimal Price { get; init; }
-    public string? Notes { get; init; }
+    public required int Count { get; init; }
+    public string? Notes { get; init; } = null;
 }
