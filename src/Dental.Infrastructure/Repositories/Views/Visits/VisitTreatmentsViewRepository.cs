@@ -13,16 +13,17 @@ public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext)
         Id visitId,
         CancellationToken cancellationToken = default)
     {
-        var query = dbContext.VisitTreatments
+        IQueryable<VisitTreatmentsView> query = dbContext.VisitTreatments
             .AsNoTracking()
             .Where(vtt => vtt.VisitId == visitId)
-            .Include(vtt => vtt.Treatment)
             .Select(
                vtt => new VisitTreatmentsView
                {
-                   ToothNumber = vtt.ToothNumber.Value,
+                   ToothNumber = vtt.ToothNumber == null? null : vtt.ToothNumber.Value,
                    Name = vtt.Treatment.Name,
                    Price = vtt.Treatment.Price.Value,
+                   Count = vtt.Count,
+                   TotalPrice = vtt.TreatmentPrice.Value * vtt.Count,
                    Notes = vtt.Notes
                });
 

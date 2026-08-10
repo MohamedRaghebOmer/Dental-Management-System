@@ -1,14 +1,16 @@
 ﻿using Dental.Application.Abstractions;
 using Dental.Domain.ValueObjects;
 
-namespace Dental.Application.DTOs.VisitToothNumber;
+namespace Dental.Application.DTOs.VisitTreatments;
 
 public sealed record VisitTreatmentResponseDto(
     int Id,
-    ToothNumber ToothNumber,
     int VisitId,
-    int ServiceId,
-    decimal Price,
+    int TreatmentId,
+    ToothNumber? ToothNumber,
+    decimal TreatmentPrice,
+    int Count,
+    decimal TotalPrice,
     string? Notes)
     : IResponseDto<Domain.Entities.VisitTreatment, VisitTreatmentResponseDto>
 {
@@ -17,10 +19,12 @@ public sealed record VisitTreatmentResponseDto(
     {
         return new VisitTreatmentResponseDto(
             Id: entity.Id.Value,
-            ToothNumber: entity.ToothNumber,
             VisitId: entity.VisitId.Value,
-            ServiceId: entity.TreatmentId.Value,
-            Price: entity.Price.Value,
+            TreatmentId: entity.TreatmentId.Value,
+            ToothNumber: entity.ToothNumber,
+            TreatmentPrice: entity.TreatmentPrice.Value,
+            Count: entity.Count,
+            TotalPrice: entity.TotalPrice,
             Notes: entity.Notes
         );
     }

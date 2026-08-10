@@ -2,7 +2,7 @@
 using Dental.Application.DTOs.Treatment;
 using Dental.Application.DTOs.Visit;
 using Dental.Application.DTOs.VisitPayment;
-using Dental.Application.DTOs.VisitToothNumber;
+using Dental.Application.DTOs.VisitTreatments;
 using Dental.Application.Errors;
 using Dental.Application.ViewsStuff.Interfaces.Appointments;
 using Dental.Application.ViewsStuff.Interfaces.Patients;
@@ -37,7 +37,7 @@ public partial class frmAddEditVisit : Form
     private readonly Mode _mode = Mode.Add;
 
     public enum VisitType { WalkIn, PreAppointment }
-    private readonly VisitType? _visitType = null;
+    private VisitType? _visitType = null;
 
 
     private frmAddEditVisit(
@@ -186,14 +186,22 @@ public partial class frmAddEditVisit : Form
 
     private async void AddUpdateVisit_Load(object sender, EventArgs e)
     {
-        await InitializeAsync();
-
-        if (_mode == Mode.Update)
+        try
         {
-            SetUpdateUiMode();
-            await LoadUi();
-        }
+            await InitializeAsync();
 
+            if (_mode == Mode.Update)
+            {
+                SetUpdateUiMode();
+                await LoadUi();
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBoxExtensions.ShowError(
+                $"حدث خطأ أثناء تحميل البيانات، يرجى التواصل مع المطور.\n{ex}");
+            _logger.LogCritical(ex, "Error occurred while loading visit data.");
+        }
     }
 
     private async Task InitializeAsync()
@@ -222,8 +230,8 @@ public partial class frmAddEditVisit : Form
         var treatments = await _treatmentService.GetAllAsync();
 
         // Bind treatment name to the combo box
-        colTreatmentName.DisplayMember = "Name";
-        colTreatmentName.ValueMember = "Name";
+        colTreatmentName.DisplayMember = nameof(TreatmentResponseDto.Name);
+        colTreatmentName.ValueMember = nameof(TreatmentResponseDto.Name);
         colTreatmentName.DataSource = treatments;
 
         _treatments = treatments;
@@ -258,9 +266,7 @@ public partial class frmAddEditVisit : Form
     }
 
     private void SetUpdateUiMode()
-    {
-        txtId.Enabled = false;
-    }
+       => txtId.Enabled = false;
 
     private async Task LoadUi()
     {
@@ -270,19 +276,19 @@ public partial class frmAddEditVisit : Form
             return;
         }
 
-        await LoadVisitToothTreatmentsUi();
+        await LoadVisitTreatmentsUi();
 
         if (dgvVisitTreatments.Rows.Count - 1 > 0)
             dgvVisitTreatments.Rows[1].Height = 35;
     }
 
-    private async Task LoadVisitToothTreatmentsUi()
+    private async Task LoadVisitTreatmentsUi()
     {
         if (_mode != Mode.Update || !_visitId.HasValue)
             return;
 
         var viewResult = await _visitTreatmentsViewService.GetAsync(_visitId.Value);
-        if (!HandleGetVisitToothTreatmentViewResult(viewResult))
+        if (!HandleGetVisitTreatmentsViewResult(viewResult))
             return;
 
         // Clear the gird first
@@ -299,6 +305,9 @@ public partial class frmAddEditVisit : Form
         {
             AssignViewToRowCells(viewResult.Value[i], i);
         }
+
+        lblTotalPrice.Text = viewResult.Value.Sum(
+            v => v.TotalPrice).ToString("F2");
 
         var discountAmount = GetDiscountPriceFromTextbox();
         if (!discountAmount.HasValue)
@@ -341,22 +350,26 @@ public partial class frmAddEditVisit : Form
     {
         // ToothNumber
         ((DataGridViewComboBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
-            .Cells[nameof(colToothNumber)]).Value = (view.ToothNumber.ToString());
+            .Cells[nameof(colToothNumber)]).Value = (view.ToothNumber?.ToString() ?? null);
 
         // TreatmentName
         ((DataGridViewComboBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
             .Cells[nameof(colTreatmentName)]).Value = view.Name;
 
-        // Price
+        // TreatmentPrice
         ((DataGridViewTextBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
             .Cells[nameof(colTreatmentPrice)]).Value = view.Price;
+
+        // Count
+        ((DataGridViewTextBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
+            .Cells[nameof(colCount)]).Value = view.Count;
 
         // Notes
         ((DataGridViewTextBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
             .Cells[nameof(colNotes)]).Value = view.Notes;
     }
 
-    private bool HandleGetVisitToothTreatmentViewResult(
+    private static bool HandleGetVisitTreatmentsViewResult(
         Result<List<VisitTreatmentsView>> viewResult)
     {
         if (viewResult.IsFailure)
@@ -417,11 +430,13 @@ public partial class frmAddEditVisit : Form
         {
             txtId.Text = visitResult.Value.AppointmentId.Value.ToString();
             lblId.Text = "رقم الحجز :";
+            _visitType = VisitType.PreAppointment;
         }
         else
         {
             txtId.Text = visitResult.Value.PatientId.ToString();
             lblId.Text = "رقم المريض :";
+            _visitType = VisitType.WalkIn;
         }
 
         txtDiscountAmount.Text = visitResult.Value.DiscountAmount.ToString("F2");
@@ -482,12 +497,38 @@ public partial class frmAddEditVisit : Form
     private void DataGridViewCellValueChanged(
         object sender, DataGridViewCellEventArgs e)
     {
-        if (e.ColumnIndex == dgvVisitTreatments.Columns[nameof(colTreatmentName)]?.Index
-            && e.RowIndex >= 0
-            && e.RowIndex < dgvVisitTreatments.Rows.Count)
+        if (e.RowIndex < 0
+            || e.RowIndex >= dgvVisitTreatments.Rows.Count)
+            return;
+
+        if (e.ColumnIndex == dgvVisitTreatments.Columns[nameof(colTreatmentName)]?.Index)
         {
             AssignPriceToSelectedTreatment(e);
             UpdateTotalPrice();
+        }
+        else if (e.ColumnIndex == dgvVisitTreatments.Columns[nameof(colCount)]?.Index
+                 || e.ColumnIndex == dgvVisitTreatments.Columns[nameof(colTreatmentPrice)]?.Index)
+        {
+            var countCellValue = dgvVisitTreatments.Rows[e.RowIndex]
+                .Cells[nameof(colCount)]
+                .Value;
+
+            if (countCellValue == null)
+            { 
+                // Do Nothing
+                // Do not show error message when the user clears the count cell value, just set it to null and update the total price.
+                // The condition prevents the error message from showing twice when the user clears the count cell value, because the DataGridViewCellValueChanged event is triggered twice when the user clears the cell value.
+            }
+            else if (!int.TryParse(countCellValue?.ToString()?.Trim(), out var count)
+                || count <= 0)
+            {
+                MessageBoxExtensions.ShowError("الرجاء إدخال رقم صحيح أكبر من الصفر.");
+                dgvVisitTreatments.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = null;
+            }
+            else
+            {
+                UpdateTotalPrice();
+            }
         }
     }
 
@@ -498,8 +539,7 @@ public partial class frmAddEditVisit : Form
 
         for (int i = 0; i < rowsCount; i++)
         {
-            decimal? rowTreatmentPrice = GetTreatmentPriceFromGrid(i);
-
+            var rowTreatmentPrice = GetTreatmentTotalPriceFromGrid(i);
             if (rowTreatmentPrice.HasValue)
                 sum += rowTreatmentPrice.Value;
         }
@@ -559,9 +599,10 @@ public partial class frmAddEditVisit : Form
 
     private decimal? GetTreatmentPriceFromGrid(int rowIndex)
     {
-        if (rowIndex < 0 || rowIndex >= dgvVisitTreatments.Rows.Count)
+        if (rowIndex < 0
+            || rowIndex >= dgvVisitTreatments.Rows.Count
+            || dgvVisitTreatments.Rows[rowIndex].IsNewRow)
             return null;
-
 
         var cellValue = dgvVisitTreatments.Rows[rowIndex]
             .Cells[nameof(colTreatmentPrice)]
@@ -576,32 +617,64 @@ public partial class frmAddEditVisit : Form
         return null;
     }
 
+    private decimal? GetTreatmentTotalPriceFromGrid(int rowIndex)
+    {
+        var treatmentPrice = GetTreatmentPriceFromGrid(rowIndex);
+        if (!treatmentPrice.HasValue)
+            return null;
+
+        var countCellValue = dgvVisitTreatments.Rows[rowIndex]
+            .Cells[nameof(colCount)]
+            .Value;
+
+        if (int.TryParse(countCellValue?.ToString()?.Trim(), out int count) && count > 0)
+        {
+            return treatmentPrice.Value * count;
+        }
+
+        return null;
+    }
+
     private async void btnSave_Click(object sender, EventArgs e)
     {
-        if (!Validate())
-            return;
-
-        if (!MakeSure())
-            return;
-
-        if (_mode == Mode.Update)
+        try
         {
-            if (await UpdateVisitAndTreatmentsAsync())
+            btnSave.Enabled = false;
+
+            if (!Validate())
+                return;
+
+            if (!MakeSure())
+                return;
+
+            if (_mode == Mode.Update)
+            {
+                if (await UpdateVisitAndTreatmentsAsync())
+                    Close();
+
+                return; // Exist the method whether the update is successful or not.
+            }
+
+            if (_visitType == VisitType.WalkIn)
+            {
+                if (await CreateWalkInVisitAndTreatmentsAsync())
+                    Close();
+
+                return; // Exist the method whether the creation is successful or not.
+            }
+
+            if (await CreatePreAppointmentVisitAndTreatmentsAsync())
                 Close();
-
-            return; // Exist the method whether the update is successful or not.
         }
-
-        if (_visitType == VisitType.WalkIn)
+        catch (Exception ex)
         {
-            if (await CreateWalkInVisitAndTreatmentsAsync())
-                Close();
-
-            return; // Exist the method whether the creation is successful or not.
+            MessageBoxExtensions.ShowError("حدث خطأ أثناء حفظ بيانات الزياره.");
+            _logger.LogError(ex, "An error occurred while saving visit data.");
         }
-
-        if (await CreatePreAppointmentVisitAndTreatmentsAsync())
-            Close();
+        finally
+        {
+            btnSave.Enabled = true;
+        }
     }
 
     private async Task<bool> CreatePreAppointmentVisitAndTreatmentsAsync()
@@ -617,7 +690,8 @@ public partial class frmAddEditVisit : Form
             return false;
         }
 
-        var visitTreatments = GetVisitTreatmentsFromUi(addVisitResult.Value);
+        var visitTreatments =
+            GetVisitTreatmentsFromUi(addVisitResult.Value);
         if (visitTreatments is null)
             return false;
 
@@ -632,17 +706,8 @@ public partial class frmAddEditVisit : Form
         if (!await AddPaymentsAsync(addVisitResult.Value))
             return false;
 
-        var want = MessageBoxExtensions.ShowQuestion(
-            "تم حفظ بيانات الزياره بنجاح، هل تود إضافة الأشعه؟", "تم الحفظ");
-
-        if (want == DialogResult.Yes)
-        {
-            Hide();
-
-            using var frm = _formFactory.Create_frmAddEditVisitRadioghraph();
-            frm.VisitId = addVisitResult.Value;
-            await frm.ShowDialogAsync();
-        }
+        MessageBoxExtensions.ShowInfo(
+            "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
 
         return true;
     }
@@ -694,17 +759,8 @@ public partial class frmAddEditVisit : Form
         if (!await AddPaymentsAsync(addVisitResult.Value))
             return false;
 
-        var want = MessageBoxExtensions.ShowQuestion(
-            "تم حفظ بيانات الزياره بنجاح، هل تود إضافة الأشعه؟", "تم الحفظ");
-
-        if (want == DialogResult.Yes)
-        {
-            Hide();
-
-            using var frm = _formFactory.Create_frmAddEditVisitRadioghraph();
-            frm.VisitId = addVisitResult.Value;
-            await frm.ShowDialogAsync();
-        }
+        MessageBoxExtensions.ShowInfo(
+            "تم حفظ بيانات الزياره بنجاح.", "تم الحفظ");
 
         return true;
     }
@@ -739,7 +795,7 @@ public partial class frmAddEditVisit : Form
             var paidAmount = GetPaidAmountFromPaymentsGrid(i);
             if (!paidAmount.HasValue)
             {
-                MessageBoxExtensions.ShowQuestion(
+                MessageBoxExtensions.ShowError(
                     $"يرجى إدخال مبلغ أكبر من الصفر في الصف رقم {i + 1} أو حذف الصف.");
                 return null;
             }
@@ -1117,7 +1173,6 @@ public partial class frmAddEditVisit : Form
                 continue;
 
             var visitTreatment = GetVisitTreatmentFromUi(i, visitId);
-
             if (visitTreatment is null)
                 return null;
 
@@ -1129,25 +1184,41 @@ public partial class frmAddEditVisit : Form
 
     private VisitTreatmentRequestDto? GetVisitTreatmentFromUi(int rowIndex, int visitId)
     {
+        if (rowIndex < 0
+            || rowIndex >= dgvVisitTreatments.Rows.Count
+            || rowIndex == dgvVisitTreatments.NewRowIndex)
+            return null;
+
         var toothNumber = GetToothNumberFromDataGrid(rowIndex);
-        if (!toothNumber.HasValue)
+        if (toothNumber is < 1 or > 32) // Allow null and 1-32 only
         {
-            MessageBoxExtensions.ShowError("هناك رقم سن غير صالح.");
+            MessageBoxExtensions.ShowError(
+                $"رقم السن يجب ان يكون بين 1 و 32 في الصف رقم {rowIndex + 1}");
             return null;
         }
 
         var treatmentId = GetTreatmentIdFromDataGrid(rowIndex);
         if (!treatmentId.HasValue)
         {
-            MessageBoxExtensions.ShowError("هناك اسم خدمه غير صالح.");
+            MessageBoxExtensions.ShowError(
+                $"يرجي اختيار الخدمه المقدمه في الصف رقم {rowIndex + 1}");
+            return null;
+        }
+
+        var count = GetCountFromTreatmentsGrid(rowIndex);
+        if (!count.HasValue)
+        {
+            MessageBoxExtensions.ShowError(
+                $"يرجي ادخال عدد صالح في الصف رقم {rowIndex + 1}");
             return null;
         }
 
         return new VisitTreatmentRequestDto
         {
-            ToothNumber = toothNumber.Value,
+            ToothNumber = toothNumber,
             TreatmentId = treatmentId.Value,
             VisitId = visitId,
+            Count = count.Value,
             Notes = GetTreatmentNotesFromDataGrid(rowIndex)
         };
     }
@@ -1183,9 +1254,6 @@ public partial class frmAddEditVisit : Form
 
         int? treatmentId = _treatments
                             .FirstOrDefault(t => t.Name == stringCellValue)?.Id;
-
-        if (treatmentId is null)
-            return null;
 
         return treatmentId;
     }
@@ -1232,6 +1300,8 @@ public partial class frmAddEditVisit : Form
 
     private new bool Validate()
     {
+        base.Validate();
+
         if (!ValidateTextboxes())
             return false;
 
@@ -1247,14 +1317,7 @@ public partial class frmAddEditVisit : Form
             return false;
 
         if (!ValidateColumnCellsValues(
-                nameof(colToothNumber), "يرجي اختيار رقم السن"))
-            return false;
-
-        if (!ValidateColumnCellsValues(
             nameof(colTreatmentName), "يرجي اختيار الخدمه المقدمه"))
-            return false;
-
-        if (!ValidateToothTreatmentsDuplication())
             return false;
 
         if (!ValidateTreatmentsGridRowsValues())
@@ -1279,7 +1342,7 @@ public partial class frmAddEditVisit : Form
             if (!decimal.TryParse(cellValue?.ToString(), out _))
             {
                 MessageBoxExtensions.ShowWarning(
-                    $"يرجي إدخال مبلغ صالح في جدول المدفوعات الصف رقم {i + 1}");
+                    $"يرجي إدخال مبلغ صالح في جدول المبالغ المدفوعه الصف رقم {i + 1}");
                 return false;
             }
         }
@@ -1297,15 +1360,31 @@ public partial class frmAddEditVisit : Form
             if (i == newRowIndex)
                 continue;
 
-            if (GetToothNumberFromDataGrid(i) is null)
+            if (!IsValidToothNumberCellValue(i))
             {
-                MessageBoxExtensions.ShowWarning($"هناك رقم سن غير صالح في الصف رقم {i + 1}.", "تنبيه");
+                MessageBoxExtensions.ShowWarning(
+                    $"يرجى اختيار رقم السن في الصف رقم {i + 1}.", "تنبيه");
                 return false;
             }
 
             if (GetTreatmentIdFromDataGrid(i) is null)
             {
-                MessageBoxExtensions.ShowWarning($"هناك اسم خدمه غير صالح في الصف رقم {i + 1}.", "تنبيه");
+                MessageBoxExtensions.ShowWarning(
+                    $"يرجى اختيار الخدمة في الصف رقم {i + 1}.", "تنبيه");
+                return false;
+            }
+
+            if (GetTreatmentPriceFromGrid(i) is null)
+            {
+                MessageBoxExtensions.ShowWarning(
+                    $"يرجى إدخال سعر صالح في الصف رقم {i + 1}.", "تنبيه");
+                return false;
+            }
+
+            if (GetCountFromTreatmentsGrid(i) is null)
+            {
+                MessageBoxExtensions.ShowWarning(
+                    $"يرجى إدخال عدد صالح في الصف رقم {i + 1}.", "تنبيه");
                 return false;
             }
         }
@@ -1313,35 +1392,72 @@ public partial class frmAddEditVisit : Form
         return true;
     }
 
-    private bool ValidateToothTreatmentsDuplication()
+    private bool IsValidToothNumberCellValue(int i)
     {
-        var seen = new HashSet<(int ToothNumber, string TreatmentName)>();
+        int rowsCount = dgvVisitTreatments.Rows.Count;
+        int newRowIndex = dgvVisitTreatments.NewRowIndex;
 
-        foreach (DataGridViewRow row in dgvVisitTreatments.Rows)
-        {
-            // Ignore the new row at the bottom.
-            if (row.IsNewRow)
-                continue;
+        if (i < 0 || i >= rowsCount || i == newRowIndex)
+            return false;
 
-            if (row.Cells[nameof(colToothNumber)].Value is null ||
-                row.Cells[nameof(colTreatmentName)].Value is null)
-            {
-                continue;
-            }
+        var cellValue = dgvVisitTreatments.Rows[i].Cells[nameof(colToothNumber)].Value;
+        if (cellValue is null)
+            return true;
 
-            int toothNumber = Convert.ToInt32(row.Cells[nameof(colToothNumber)].Value);
-            string treatmentName = Convert.ToString(row.Cells[nameof(colTreatmentName)].Value)!;
+        var cellValueAsString = cellValue as string;
+        if (string.IsNullOrWhiteSpace(cellValueAsString))
+            return true;
 
-            if (!seen.Add((toothNumber, treatmentName)))
-            {
-                MessageBoxExtensions.ShowError(
-                    $"لا يمكن اضافة '{treatmentName}' للسن رقم {toothNumber} اكثر من مره.");
-                return false;
-            }
-        }
+        if (int.TryParse(cellValueAsString.Trim(), out var toothNumber))
+            return toothNumber is > 0 and < 33;
 
-        return true;
+        return false;
     }
+
+    private int? GetCountFromTreatmentsGrid(int i)
+    {
+        int rowsCount = dgvVisitTreatments.Rows.Count;
+        int newRowIndex = dgvVisitTreatments.NewRowIndex;
+
+        if (i < 0 || i >= rowsCount || i == newRowIndex)
+            return null;
+
+        var cellValue = dgvVisitTreatments.Rows[i].Cells[nameof(colCount)].Value;
+        if (int.TryParse(cellValue?.ToString()?.Trim(), out var count))
+            return count;
+
+        return null;
+    }
+
+    //private bool ValidateToothTreatmentsDuplication()
+    //{
+    //    var seen = new HashSet<(int ToothNumber, string TreatmentName)>();
+
+    //    foreach (DataGridViewRow row in dgvVisitTreatments.Rows)
+    //    {
+    //        // Ignore the new row at the bottom.
+    //        if (row.IsNewRow)
+    //            continue;
+
+    //        if (row.Cells[nameof(colToothNumber)].Value is null ||
+    //            row.Cells[nameof(colTreatmentName)].Value is null)
+    //        {
+    //            continue;
+    //        }
+
+    //        int toothNumber = Convert.ToInt32(row.Cells[nameof(colToothNumber)].Value);
+    //        string treatmentName = Convert.ToString(row.Cells[nameof(colTreatmentName)].Value)!;
+
+    //        if (!seen.Add((toothNumber, treatmentName)))
+    //        {
+    //            MessageBoxExtensions.ShowError(
+    //                $"لا يمكن اضافة '{treatmentName}' للسن رقم {toothNumber} اكثر من مره.");
+    //            return false;
+    //        }
+    //    }
+
+    //    return true;
+    //}
 
     private bool ValidateColumnCellsValues(string columnName, string errorMessage)
     {
@@ -1350,18 +1466,17 @@ public partial class frmAddEditVisit : Form
 
         for (int i = 0; i < cellsCount; i++)
         {
-            if (i != newRowIndex)
+            if (i == newRowIndex)
+                continue;
+
+            var cellValue = dgvVisitTreatments.Rows[i].Cells[columnName].Value;
+            if (cellValue == null)
             {
-                var cellValue = dgvVisitTreatments.Rows[i].Cells[columnName].Value;
-                if (cellValue == null)
-                {
-                    MessageBoxExtensions.ShowWarning($"{errorMessage} في الصف رقم {i + 1}.",
-                        "تنبيه");
+                MessageBoxExtensions.ShowWarning($"{errorMessage} في الصف رقم {i + 1}.",
+                    "تنبيه");
 
-                    return false;
-                }
+                return false;
             }
-
         }
 
         return true;
@@ -1372,24 +1487,19 @@ public partial class frmAddEditVisit : Form
         // ========================== Appointment Id ==========================
         if (string.IsNullOrWhiteSpace(txtId.Text))
         {
-            if (_mode == Mode.Add)
-            {
-                string message = _visitType == VisitType.WalkIn ?
-                    "رقم المريض مطلوب." :
-                    "رقم الحجز مطلوب.";
+            string message = _visitType == VisitType.WalkIn ?
+                "رقم المريض مطلوب." :
+                "رقم الحجز مطلوب.";
 
-                MessageBoxExtensions.ShowError(message);
-                return false;
-            }
-        }
-        else if (!int.TryParse(txtId.Text, out int appointmentId))
-        {
-            MessageBoxExtensions.ShowError("قيمة رقم الحجز غير صالحه.");
+            MessageBoxExtensions.ShowError(message);
             return false;
         }
-        else if (appointmentId <= 0)
+        else if (!int.TryParse(txtId.Text, out int appointmentId) || appointmentId <= 0)
         {
-            MessageBoxExtensions.ShowError("قيمة رقم الحجز يجب ان تكون موجبه او فارغه.");
+            string msg = _visitType == VisitType.WalkIn ?
+                "قيمة رقم المريض غير صالحه." :
+                "قيمة رقم الحجز غير صالحه.";
+            MessageBoxExtensions.ShowError(msg);
             return false;
         }
 
@@ -1442,10 +1552,6 @@ public partial class frmAddEditVisit : Form
     {
         dgvVisitTreatments.Rows.Add();
 
-        // Add 1 as a default value for ToothNumber
-        ((DataGridViewComboBoxCell)(dgvVisitTreatments.Rows[0].Cells[nameof(colToothNumber)]))
-            .Value = "1";
-
         // Add First Value of treatments names as a default value
         ((DataGridViewComboBoxCell)(dgvVisitTreatments.Rows[0].Cells[nameof(colTreatmentName)]))
             .Value = _treatments.FirstOrDefault()?.Name ?? string.Empty;
@@ -1458,10 +1564,14 @@ public partial class frmAddEditVisit : Form
         // Set the current only price to the lblPrice
         lblTotalPrice.Text = firstValuePrice?.ToString("F2");
 
-        // Second Row Height
+        ((DataGridViewTextBoxCell)(dgvVisitTreatments.Rows[0].Cells[nameof(colCount)]))
+            .Value = "1";
+
+        // Set the first row height of treatments grid to 35
         if (dgvVisitTreatments.Rows.Count > 1)
             dgvVisitTreatments.Rows[1].Height = 35;
 
+        // Set the first row height of payments grid to 35
         if (dgvVisitPayments.Rows.Count > 0)
             dgvVisitPayments.Rows[0].Height = 35;
     }
@@ -1646,7 +1756,10 @@ public partial class frmAddEditVisit : Form
                 .Cells[e.ColumnIndex].Value;
 
             if (amountCellValue is null)
+            {
+                txtMoney_TextChanged(null!, null!);
                 return;
+            }
 
             if (!decimal.TryParse(amountCellValue?.ToString(), out var enteredValue)
                 || enteredValue <= 0)

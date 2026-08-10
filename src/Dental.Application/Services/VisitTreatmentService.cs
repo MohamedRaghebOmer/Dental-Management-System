@@ -1,5 +1,5 @@
 ﻿using Dental.Application.Abstractions.ServicesInterfaces;
-using Dental.Application.DTOs.VisitToothNumber;
+using Dental.Application.DTOs.VisitTreatments;
 using Dental.Application.Errors;
 using Dental.Domain.Repositories;
 using Dental.Domain.Shared;
@@ -34,11 +34,15 @@ public sealed class VisitTreatmentService
        VisitTreatmentRequestDto dto,
        CancellationToken cancellationToken = default)
     {
-        var toothNumberResult = ToothNumber.Create(dto.ToothNumber);
-        if (toothNumberResult.IsFailure)
+        Result<ToothNumber>? toothNumberResult = null;
+        if (dto.ToothNumber.HasValue)
         {
-            _logger.LogWarning("Invalid tooth number. {ToothNumber}", dto.ToothNumber);
-            return Result.Failure<int>(toothNumberResult.Error);
+            toothNumberResult = ToothNumber.Create(dto.ToothNumber.Value);
+            if (toothNumberResult.IsFailure)
+            {
+                _logger.LogWarning("Invalid tooth number. {ToothNumber}", dto.ToothNumber);
+                return Result.Failure<int>(toothNumberResult.Error);
+            }
         }
 
         var visitIdResult = Id.Create(dto.VisitId);
@@ -51,7 +55,7 @@ public sealed class VisitTreatmentService
         var treatmentIdResult = Id.Create(dto.TreatmentId);
         if (treatmentIdResult.IsFailure)
         {
-            _logger.LogWarning("Invalid service ID. {ServiceId}", dto.TreatmentId);
+            _logger.LogWarning("Invalid service ID. {TreatmentId}", dto.TreatmentId);
             return Result.Failure<int>(treatmentIdResult.Error);
         }
 
@@ -71,10 +75,11 @@ public sealed class VisitTreatmentService
         }
 
         var visitToothTreatmentResult = visit.AddVisitTreatment(
-            toothNumberResult.Value,
-            treatmentIdResult.Value,
-            price,
-            dto.Notes);
+            treatmentId: treatmentIdResult.Value,
+            toothNumber: toothNumberResult?.Value,
+            treatmentPrice: price,
+            notes: dto.Notes,
+            count: dto.Count);
 
         if (visitToothTreatmentResult.IsFailure)
         {
@@ -131,14 +136,15 @@ public sealed class VisitTreatmentService
 
         foreach (var dto in dtos)
         {
-            var toothNumberResult = ToothNumber.Create(dto.ToothNumber);
-            if (toothNumberResult.IsFailure)
+            Result<ToothNumber>? toothNumberResult = null;
+            if (dto.ToothNumber.HasValue)
             {
-                _logger.LogWarning(
-                    "Invalid tooth number. {ToothNumber}",
-                    dto.ToothNumber);
-
-                return Result.Failure(toothNumberResult.Error);
+                toothNumberResult = ToothNumber.Create(dto.ToothNumber.Value);
+                if (toothNumberResult.IsFailure)
+                {
+                    _logger.LogWarning("Invalid tooth number. {ToothNumber}", dto.ToothNumber);
+                    return Result.Failure<int>(toothNumberResult.Error);
+                }
             }
 
             var visitIdResult = Id.Create(dto.VisitId);
@@ -180,10 +186,11 @@ public sealed class VisitTreatmentService
             }
 
             var addResult = visit.AddVisitTreatment(
-                toothNumberResult.Value,
-                treatmentIdResult.Value,
-                Money.FromDatabase(price),
-                dto.Notes);
+                treatmentId: treatmentIdResult.Value,
+                toothNumber: toothNumberResult?.Value,
+                count: dto.Count,
+                treatmentPrice: Money.FromDatabase(price),
+                notes: dto.Notes);
 
             if (addResult.IsFailure)
             {
@@ -227,18 +234,20 @@ public sealed class VisitTreatmentService
         var treatmentPrices =
             await _treatmentRepo.GetAllIdsAndPricesAsync(cancellationToken);
 
-        var validatedTreatments = new List<(ToothNumber ToothNumber, Id TreatmentId, Money Price, string? Notes)>();
+        var validatedTreatments = new List<(Id TreatmentId, ToothNumber? ToothNumber,
+            Money TreatmentPrice, int Count, string? Notes)>();
 
         foreach (var dto in dtos)
         {
-            var toothNumberResult = ToothNumber.Create(dto.ToothNumber);
-            if (toothNumberResult.IsFailure)
+            Result<ToothNumber>? toothNumberResult = null;
+            if (dto.ToothNumber.HasValue)
             {
-                _logger.LogWarning(
-                    "Invalid tooth number. {ToothNumber}",
-                    dto.ToothNumber);
-
-                return Result.Failure(toothNumberResult.Error);
+                toothNumberResult = ToothNumber.Create(dto.ToothNumber.Value);
+                if (toothNumberResult.IsFailure)
+                {
+                    _logger.LogWarning("Invalid tooth number. {ToothNumber}", dto.ToothNumber);
+                    return Result.Failure<int>(toothNumberResult.Error);
+                }
             }
 
             var treatmentIdResult = Id.Create(dto.TreatmentId);
@@ -261,9 +270,10 @@ public sealed class VisitTreatmentService
             }
 
             validatedTreatments.Add((
-                toothNumberResult.Value,
                 treatmentIdResult.Value,
+                toothNumberResult?.Value,
                 Money.FromDatabase(price),
+                dto.Count,
                 dto.Notes));
         }
 
@@ -282,10 +292,11 @@ public sealed class VisitTreatmentService
         foreach (var treatment in validatedTreatments)
         {
             var addResult = visit.AddVisitTreatment(
-                treatment.ToothNumber,
-                treatment.TreatmentId,
-                treatment.Price,
-                treatment.Notes);
+                treatmentId: treatment.TreatmentId,
+                toothNumber: treatment.ToothNumber,
+                count: treatment.Count,
+                treatmentPrice: treatment.TreatmentPrice,
+                notes: treatment.Notes);
 
             if (addResult.IsFailure)
             {

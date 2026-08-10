@@ -3,7 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-src/Dental.WinForms/UiSamples
+src/Dental.WinForms/UiSamples/
+*.mp4
 
 # User-specific files
 *.rsuser

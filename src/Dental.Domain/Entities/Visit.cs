@@ -98,22 +98,19 @@ public sealed class Visit : Entity
 
 
     public Result<VisitTreatment> AddVisitTreatment(
-        ToothNumber toothNumber,
         Id treatmentId,
-        Money price, // Get it from database first and put it in the constructor. In treatments table > price
+        ToothNumber? toothNumber,
+        int count,
+        Money treatmentPrice,
         string? notes)
     {
-        if (_visitTreatments.Any(t => t.TreatmentId == treatmentId && t.ToothNumber == toothNumber))
-        {
-            return Result.Failure<VisitTreatment>(DomainErrors.Entities.Visit.Treatment.DuplicateTreatmentForTheSameTooth);
-        }
-
         var createTreatmentResult = VisitTreatment.Create(
-            toothNumber,
-            this.Id,
-            treatmentId,
-            price,
-            notes);
+            toothNumber: toothNumber,
+            visitId: this.Id,
+            treatmentId: treatmentId,
+            count: count,
+            treatmentPrice: treatmentPrice,
+            notes: notes);
 
         if (createTreatmentResult.IsFailure)
         {
@@ -127,52 +124,39 @@ public sealed class Visit : Entity
 
     public Result UpdateVisitTreatment(
         Id visitTreatmentId,
-        ToothNumber toothNumber,
         Id treatmentId,
+        ToothNumber? toothNumber,
+        int count,
         string? notes)
     {
-        if (_visitTreatments.Any(
-            t => t.TreatmentId == treatmentId
-            && t.ToothNumber == toothNumber
-            && t.Id != visitTreatmentId))
-        {
-            return Result.Failure(DomainErrors.Entities.Visit.Treatment.DuplicateTreatmentForTheSameTooth);
-        }
-
-        var treatment = _visitTreatments.FirstOrDefault(t => t.Id == visitTreatmentId);
-        if (treatment is null)
+        var visitTreatment = _visitTreatments.FirstOrDefault(
+            vt => vt.Id == visitTreatmentId);
+        if (visitTreatment is null)
         {
             return Result.Failure(DomainErrors.Entities.Visit.Treatment.NotFound);
         }
 
-        var updateResult = treatment.Update(
-            toothNumber,
-            treatmentId,
-            notes);
+        var updateResult = visitTreatment.Update(
+            treatmentId: treatmentId,
+            toothNumber: toothNumber,
+            count: count,
+            notes: notes);
 
-        if (updateResult.IsFailure)
-        {
-            return Result.Failure(updateResult.Error);
-        }
-
-        return Result.Success();
+        return updateResult.IsFailure ? Result.Failure(updateResult.Error) : Result.Success();
     }
 
     public Result RemoveVisitTreatment(Id visitTreatmentId)
     {
-        var treatment = _visitTreatments.FirstOrDefault(t => t.Id == visitTreatmentId);
-        if (treatment is null)
+        var visitTreatment = _visitTreatments.FirstOrDefault(
+            vt => vt.Id == visitTreatmentId);
+        if (visitTreatment is null)
         {
             return Result.Failure(DomainErrors.Entities.Visit.Treatment.NotFound);
         }
 
-        _visitTreatments.Remove(treatment);
+        _visitTreatments.Remove(visitTreatment);
         return Result.Success();
     }
-
-    public void RemoveAllVisitTreatments()
-        => _visitTreatments.Clear();
-
 
     public Result<Prescription> AddPrescription(Id patientId, string? notes)
     {

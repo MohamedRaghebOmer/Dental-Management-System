@@ -6,7 +6,7 @@ using System.Data;
 
 namespace Dental.Infrastructure.Repositories.Views.Visit;
 
-public class VisitSummaryRepository : IVisitSummaryRepository
+public sealed class VisitSummaryRepository : IVisitSummaryRepository
 {
     private readonly DentalDbContext _dbContext;
 
@@ -16,7 +16,7 @@ public class VisitSummaryRepository : IVisitSummaryRepository
     }
 
     public async Task<VisitsSummaryView> GetAsync(
-        DateTime? dateTime,
+        DateTime? dateTime = null,
         CancellationToken cancellationToken = default)
     {
         const string sql = @"

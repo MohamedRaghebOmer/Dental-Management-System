@@ -5,6 +5,6 @@ namespace Dental.Domain.Repositories.Views.Visits;
 public interface IVisitSummaryRepository
 {
     Task<VisitsSummaryView> GetAsync(
-        DateTime? dateTime,
+        DateTime? dateTime = null,
         CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,4 @@
-﻿using Dental.Application.DTOs.VisitToothNumber;
+﻿using Dental.Application.DTOs.VisitTreatments;
 using Dental.Domain.Shared;
 
 namespace Dental.Application.Abstractions.ServicesInterfaces;
