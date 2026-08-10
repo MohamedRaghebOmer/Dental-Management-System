@@ -3,6 +3,7 @@ using Dental.WinForms.Abstractions;
 using Dental.WinForms.Factories;
 using Dental.WinForms.Forms;
 using Dental.WinForms.Forms.AddEdit;
+using Dental.WinForms.Forms.Dialogs;
 using Dental.WinForms.Views;
 using Microsoft.Extensions.DependencyInjection;
 using VisitsView = Dental.WinForms.Views.VisitsView;
@@ -49,6 +50,12 @@ public static class DependencyInjection
             services.AddTransient<SettingsView>();
             services.AddTransient<RadiographsView>();
 
+            return services;
+        }
+
+        private IServiceCollection AddDialogs()
+        {
+            services.AddTransient<DateTimePickerDialog>();
             return services;
         }
     }

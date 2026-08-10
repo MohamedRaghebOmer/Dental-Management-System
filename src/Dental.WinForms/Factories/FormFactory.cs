@@ -1,6 +1,7 @@
 ﻿using Dental.WinForms.Abstractions;
 using Dental.WinForms.Forms;
 using Dental.WinForms.Forms.AddEdit;
+using Dental.WinForms.Forms.Dialogs;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Dental.WinForms.Factories;
@@ -101,5 +102,18 @@ public class FormFactory : IFormFactory
     {
         return ActivatorUtilities.CreateInstance<frmAddEditVisitRadioghraph>
             (_serviceProvider, visitRadiographId);
+    }
+
+    public DateTimePickerDialog Create_DateTimePickerDialog()
+    {
+        return _serviceProvider.GetRequiredService<DateTimePickerDialog>();
+    }
+
+    public DateTimePickerDialog Create_DateTimePickerDialog(
+        DateTime currentValue, 
+        DateTime maxValue)
+    {
+        return ActivatorUtilities.CreateInstance<DateTimePickerDialog>
+            (_serviceProvider, currentValue, maxValue);
     }
 }

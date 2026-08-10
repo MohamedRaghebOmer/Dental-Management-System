@@ -33,10 +33,20 @@ public partial class frmAddEditVisit : Form
     private List<TreatmentResponseDto> _treatments = [];
     private HashSet<int> _loadedVisitPaymentsIds = [];
 
-    public enum Mode { Add, Update }
+    public enum Mode
+    {
+        Add,
+        Update
+    }
+
     private readonly Mode _mode = Mode.Add;
 
-    public enum VisitType { WalkIn, PreAppointment }
+    public enum VisitType
+    {
+        WalkIn,
+        PreAppointment
+    }
+
     private VisitType? _visitType = null;
 
 
@@ -92,16 +102,16 @@ public partial class frmAddEditVisit : Form
         IPatientViewService patientViewService,
         IVisitPaymentService visitPaymentService,
         IFormFactory formFactory) : this(
-            treatmentService,
-            visitService,
-            visitToothTreatmentService,
-            visitTreatmentsViewService,
-            logger,
-            appointmentInfoService,
-            patientService,
-            patientViewService,
-            visitPaymentService,
-            formFactory)
+        treatmentService,
+        visitService,
+        visitToothTreatmentService,
+        visitTreatmentsViewService,
+        logger,
+        appointmentInfoService,
+        patientService,
+        patientViewService,
+        visitPaymentService,
+        formFactory)
     {
         _mode = Mode.Add;
         _visitId = null;
@@ -122,16 +132,16 @@ public partial class frmAddEditVisit : Form
         IPatientViewService patientViewService,
         IVisitPaymentService visitPaymentService,
         IFormFactory formFactory) : this(
-            treatmentService,
-            visitService,
-            visitToothTreatmentService,
-            visitTreatmentsViewService,
-            logger,
-            appointmentInfoService,
-            patientService,
-            patientViewService,
-            visitPaymentService,
-            formFactory)
+        treatmentService,
+        visitService,
+        visitToothTreatmentService,
+        visitTreatmentsViewService,
+        logger,
+        appointmentInfoService,
+        patientService,
+        patientViewService,
+        visitPaymentService,
+        formFactory)
     {
         _mode = Mode.Update;
         _visitId = visitId;
@@ -153,7 +163,7 @@ public partial class frmAddEditVisit : Form
     {
         if (e.Status == Domain.Enums.AppointmentStatus.Completed)
         {
-            MessageBoxExtensions.ShowWarning("هذا الحجز مكتمل بالفعل ولا يمكن انشاء زياره له.");
+            MessageBoxExtensions.ShowError("هذا الحجز مكتمل بالفعل ولا يمكن انشاء زياره له.");
             return;
         }
 
@@ -220,7 +230,8 @@ public partial class frmAddEditVisit : Form
         catch (Exception ex)
         {
             _logger.LogError(
-                ex, "Error occurred while initializing visit data. Error Occurred in {ClassName}", nameof(frmAddEditVisit));
+                ex, "Error occurred while initializing visit data. Error Occurred in {ClassName}",
+                nameof(frmAddEditVisit));
 
             MessageBoxExtensions.ShowError(
                 "حدث خطأ أثناء تهيئة بيانات الزياره برجاء التواصل مع المطور.");
@@ -267,30 +278,31 @@ public partial class frmAddEditVisit : Form
     }
 
     private void SetUpdateUiMode()
-       => txtId.Enabled = false;
+        => txtId.Enabled = false;
 
     private async Task LoadUi()
     {
-        if (!await LoadVisitUi())
+        if (_mode != Mode.Update
+            || !await LoadVisitUi()
+            || !await LoadVisitPaymentsGridAsync()
+            || !await LoadVisitTreatmentsUi())
         {
             Close();
             return;
         }
 
-        await LoadVisitTreatmentsUi();
-
         if (dgvVisitTreatments.Rows.Count - 1 > 0)
             dgvVisitTreatments.Rows[1].Height = 35;
     }
 
-    private async Task LoadVisitTreatmentsUi()
+    private async Task<bool> LoadVisitTreatmentsUi()
     {
         if (_mode != Mode.Update || !_visitId.HasValue)
-            return;
+            return false;
 
         var viewResult = await _visitTreatmentsViewService.GetAsync(_visitId.Value);
         if (!HandleGetVisitTreatmentsViewResult(viewResult))
-            return;
+            return false;
 
         // Clear the gird first
         dgvVisitTreatments.Rows.Clear();
@@ -307,22 +319,22 @@ public partial class frmAddEditVisit : Form
             AssignViewToRowCells(viewResult.Value[i], i);
         }
 
-        lblTotalPrice.Text = viewResult.Value.Sum(
-            v => v.TotalPrice).ToString("F2");
+        lblTotalPrice.Text = viewResult.Value.Sum(v => v.TotalPrice).ToString("F2");
 
         var discountAmount = GetDiscountPriceFromTextbox();
         if (!discountAmount.HasValue)
-            return;
+            return false;
 
         var totalPaidAmount = GetSumOfPaidAmountsFromPaymentsGrid();
         if (!totalPaidAmount.HasValue)
-            return;
+            return false;
 
         decimal totalPrice = UpdateTotalPrice();
         decimal remainingAmount =
             totalPrice - (totalPaidAmount.Value + discountAmount.Value);
 
         txtRemainingAmount.Text = remainingAmount.ToString("F2");
+        return true;
     }
 
     private decimal? GetSumOfPaidAmountsFromPaymentsGrid()
@@ -382,7 +394,7 @@ public partial class frmAddEditVisit : Form
             else
             {
                 MessageBoxExtensions.ShowError("حدث خطأ أثناء تحميل بيانات الزياره. "
-                    + viewResult.Error.Message);
+                                               + viewResult.Error.Message);
             }
 
             return false;
@@ -444,7 +456,7 @@ public partial class frmAddEditVisit : Form
         AssignVisitDateTime(visitResult.Value.VisitDateTime);
         txtNotes.Text = visitResult.Value.Notes ?? string.Empty;
 
-        return await LoadVisitPaymentsGridAsync();
+        return true;
     }
 
     private async Task<bool> LoadVisitPaymentsGridAsync()
@@ -468,7 +480,7 @@ public partial class frmAddEditVisit : Form
         for (int i = 0; i < dtosCount; i++)
         {
             dgvVisitPayments.Rows[i].Cells[nameof(col_Payments_VisitPaymentId)].Value =
-                paymentsResult.Value[i].VisitPaymentId;
+                paymentsResult.Value[i].Id;
 
             dgvVisitPayments.Rows[i].Cells[nameof(col_Payments_VisitId)].Value =
                 paymentsResult.Value[i].VisitId;
@@ -485,17 +497,20 @@ public partial class frmAddEditVisit : Form
             dgvVisitPayments.Rows[i]
                 .Cells[nameof(col_Payments_ConvertablePaymentDateTime)]
                 .Value = paymentsResult.Value[i].PaymentDateTime.ToString("O");
+
+            dgvVisitPayments.Rows[i]
+                .Cells[nameof(col_Payments_OldPaymentDateTime)]
+                .Value = paymentsResult.Value[i].PaymentDateTime.ToString("O");
         }
 
         _loadedVisitPaymentsIds = paymentsResult.Value
-            .Select(p => p.VisitPaymentId)
+            .Select(p => p.Id)
             .ToHashSet();
 
         return true;
     }
 
-    private void DataGridViewCellValueChanged(
-        object sender, DataGridViewCellEventArgs e)
+    private void DataGridViewCellValueChanged(object sender, DataGridViewCellEventArgs e)
     {
         if (e.RowIndex < 0
             || e.RowIndex >= dgvVisitTreatments.Rows.Count)
@@ -514,13 +529,13 @@ public partial class frmAddEditVisit : Form
                 .Value;
 
             if (countCellValue == null)
-            { 
+            {
                 // Do Nothing
                 // Do not show error message when the user clears the count cell value, just set it to null and update the total price.
                 // The condition prevents the error message from showing twice when the user clears the count cell value, because the DataGridViewCellValueChanged event is triggered twice when the user clears the cell value.
             }
             else if (!int.TryParse(countCellValue?.ToString()?.Trim(), out var count)
-                || count <= 0)
+                     || count <= 0)
             {
                 MessageBoxExtensions.ShowError("الرجاء إدخال رقم صحيح أكبر من الصفر.");
                 dgvVisitTreatments.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = null;
@@ -548,13 +563,12 @@ public partial class frmAddEditVisit : Form
         return sum;
     }
 
-    private void AssignPriceToSelectedTreatment(
-        DataGridViewCellEventArgs e)
+    private void AssignPriceToSelectedTreatment(DataGridViewCellEventArgs e)
     {
         var selectedTreatmentName = dgvVisitTreatments.Rows[e.RowIndex]
-                .Cells[nameof(colTreatmentName)]
-                .Value?
-                .ToString() ?? null;
+            .Cells[nameof(colTreatmentName)]
+            .Value?
+            .ToString() ?? null;
 
         if (string.IsNullOrWhiteSpace(selectedTreatmentName))
             return;
@@ -566,35 +580,12 @@ public partial class frmAddEditVisit : Form
         if (!selectedTreatmentPrice.HasValue)
             return;
 
+        // Assign the treatment price
         dgvVisitTreatments.Rows[e.RowIndex].Cells[nameof(colTreatmentPrice)].Value =
             selectedTreatmentPrice.Value.ToString("F2");
-    }
 
-    private string? SelectedTreatmentName
-    {
-        get
-        {
-            if (_treatmentsSelectedRowIndex < 0 || _treatmentsSelectedRowIndex >= dgvVisitTreatments.Rows.Count)
-                return null;
-
-            return dgvVisitTreatments.Rows[_treatmentsSelectedRowIndex]
-                .Cells[nameof(colTreatmentName)]
-                .Value?.ToString();
-        }
-    }
-
-    private int? SelectedTreatmentId
-    {
-        get
-        {
-            var selectedTreatmentName = SelectedTreatmentName;
-
-            if (string.IsNullOrWhiteSpace(selectedTreatmentName))
-                return null;
-
-            return _treatments
-                .FirstOrDefault(t => t.Name == selectedTreatmentName)?.Id;
-        }
+        // Assign 1 to the count column
+        dgvVisitTreatments.Rows[e.RowIndex].Cells[nameof(colCount)].Value = "1";
     }
 
     private decimal? GetTreatmentPriceFromGrid(int rowIndex)
@@ -772,7 +763,7 @@ public partial class frmAddEditVisit : Form
         if (dtos is null)
             return false;
 
-        var addResult = await _visitPaymentService.CreateMenyAsync(dtos);
+        var addResult = await _visitPaymentService.CreateManyAsync(dtos);
         if (addResult.IsFailure)
         {
             HandleCreateAndUpdatePaymentResult(addResult.Error);
@@ -801,10 +792,19 @@ public partial class frmAddEditVisit : Form
                 return null;
             }
 
+            var convertableDateTime = GetConvertalbeDateTimeFromPaymentsGrid(i);
+            if (!convertableDateTime.HasValue)
+            {
+                MessageBoxExtensions.ShowWarning(
+                    $"يرجى إدخال تاريخ الدفع في الصف رقم {i + 1}.");
+                return null;
+            }
+
             dtos.Add(new CreateVisitPaymentDto
             {
                 VisitId = visitId,
-                PaidAmount = paidAmount.Value
+                PaidAmount = paidAmount.Value,
+                PaymentDateTime = convertableDateTime.Value
             });
         }
 
@@ -889,7 +889,7 @@ public partial class frmAddEditVisit : Form
         if (addDtos is null)
             return false;
 
-        var addResult = await _visitPaymentService.CreateMenyAsync(addDtos);
+        var addResult = await _visitPaymentService.CreateManyAsync(addDtos);
         if (addResult.IsFailure)
         {
             HandleCreateAndUpdatePaymentResult(addResult.Error);
@@ -962,15 +962,24 @@ public partial class frmAddEditVisit : Form
             var paidAmount = GetPaidAmountFromPaymentsGrid(i);
             if (!paidAmount.HasValue)
             {
-                MessageBoxExtensions.ShowQuestion(
+                MessageBoxExtensions.ShowError(
                     $"يرجى إدخال مبلغ أكبر من الصفر في الصف رقم {i + 1}");
+                return null;
+            }
+
+            var convertableDateTime = GetConvertalbeDateTimeFromPaymentsGrid(i);
+            if (!convertableDateTime.HasValue)
+            {
+                MessageBoxExtensions.ShowWarning(
+                    $"يرجى إدخال تاريخ الدفع في الصف رقم {i + 1}.");
                 return null;
             }
 
             dtos.Add(new CreateVisitPaymentDto
             {
                 VisitId = visitId,
-                PaidAmount = paidAmount.Value
+                PaidAmount = paidAmount.Value,
+                PaymentDateTime = convertableDateTime.Value
             });
         }
 
@@ -987,6 +996,10 @@ public partial class frmAddEditVisit : Form
 
             case "VisitPayment.NotFound":
                 MessageBoxExtensions.ShowError("المعامله غير موجوده.");
+                break;
+
+            case "PaymentDateTime.CanNotBeInTheFuture":
+                MessageBoxExtensions.ShowError("تاريخ الدفع  لا يمكن أن يكون في المستقبل.");
                 break;
 
             default:
@@ -1011,7 +1024,7 @@ public partial class frmAddEditVisit : Form
                 continue;
 
             // Old paid amount is null when the payment is newly added by the user
-            // and it's null when it's already exists in the DB
+            // and it's not null when it's already exists in the DB
             var oldPaidAmount = GetOldPaidAmountFromPaymentsGrid(i);
             if (oldPaidAmount is not > 0)
                 continue;
@@ -1023,24 +1036,74 @@ public partial class frmAddEditVisit : Form
             var paidAmount = GetPaidAmountFromPaymentsGrid(i);
             if (paidAmount is not > 0)
             {
-                MessageBoxExtensions.ShowWarning(
+                MessageBoxExtensions.ShowError(
                     $"يرجى إدخال مبلغ أكبر من الصفر في الصف رقم {i + 1} أو حذف الصف.");
                 return null;
             }
 
+            var convertableDateTime = GetConvertalbeDateTimeFromPaymentsGrid(i);
+            if (!convertableDateTime.HasValue)
+            {
+                MessageBoxExtensions.ShowError(
+                    $"يرجى إدخال تاريخ الدفع في الصف رقم {i + 1}.");
+                return null;
+            }
+
+            var oldDateTime = GetOldDateTimeFromPaymetnsGrid(i);
+            if (!oldDateTime.HasValue)
+                continue;
+
             // No need to udpate the payment when it's paid amount did not changed
-            if (paidAmount == oldPaidAmount.Value)
+            if (paidAmount.Value == oldPaidAmount.Value
+                && convertableDateTime.Value == oldDateTime.Value)
                 continue;
 
             dtos.Add(new UpdateVisitPaymentDto
             {
-                VisitPaymentId = visitPaymentId.Value,
+                Id = visitPaymentId.Value,
                 VisitId = _visitId.Value,
-                PaidAmount = paidAmount.Value
+                PaidAmount = paidAmount.Value,
+                PaymentDateTime = convertableDateTime.Value
             });
         }
 
         return dtos;
+    }
+
+    private DateTime? GetOldDateTimeFromPaymetnsGrid(int rowIndex)
+    {
+        int rowsCount = dgvVisitPayments.Rows.Count;
+        int newRowIndex = dgvVisitPayments.NewRowIndex;
+
+        if (rowIndex < 0
+            || rowIndex >= rowsCount
+            || rowIndex == newRowIndex)
+            return null;
+
+        var cellValue = dgvVisitPayments.Rows[rowIndex]
+            .Cells[nameof(col_Payments_OldPaymentDateTime)]
+            .Value;
+
+        if (DateTime.TryParse(cellValue?.ToString(), out var value))
+            return value;
+
+        return null;
+    }
+
+    private DateTime? GetConvertalbeDateTimeFromPaymentsGrid(int rowIndex)
+    {
+        int rowsCount = dgvVisitPayments.Rows.Count;
+        if (rowIndex < 0 || rowIndex >= rowsCount)
+            return null;
+
+        var cellValue = dgvVisitPayments.Rows[rowIndex]
+            .Cells[nameof(col_Payments_ConvertablePaymentDateTime)]
+            .Value;
+
+        if (DateTime.TryParse(cellValue?.ToString(), out var dateTime))
+            return dateTime;
+
+        return null;
     }
 
     private int? GetVisitPaymentIdFromPaymentsGrid(int rowIndex)
@@ -1260,7 +1323,7 @@ public partial class frmAddEditVisit : Form
         var stringCellValue = cellValue as string;
 
         int? treatmentId = _treatments
-                            .FirstOrDefault(t => t.Name == stringCellValue)?.Id;
+            .FirstOrDefault(t => t.Name == stringCellValue)?.Id;
 
         return treatmentId;
     }
@@ -1293,8 +1356,7 @@ public partial class frmAddEditVisit : Form
 
     private bool MakeSure()
     {
-        string message = _mode == Mode.Add ?
-            "هل انت متأكد من تسجيل الزيارة؟" : "هل انت متأكد من تعديل الزيارة؟";
+        string message = _mode == Mode.Add ? "هل انت متأكد من تسجيل الزيارة؟" : "هل انت متأكد من تعديل الزيارة؟";
 
         if (MessageBoxExtensions.ShowQuestion(
                 message, "تأكيد") == DialogResult.No)
@@ -1324,7 +1386,7 @@ public partial class frmAddEditVisit : Form
             return false;
 
         if (!ValidateColumnCellsValues(
-            nameof(colTreatmentName), "يرجي اختيار الخدمه المقدمه"))
+                nameof(colTreatmentName), "يرجي اختيار الخدمه المقدمه"))
             return false;
 
         if (!ValidateTreatmentsGridRowsValues())
@@ -1333,6 +1395,7 @@ public partial class frmAddEditVisit : Form
         return true;
     }
 
+    ///<summary> Validates the PaidAmount column in the dgvVisitPayments DataGridView.</summary>
     private bool ValidatePaymentsGrid()
     {
         int rowsCount = dgvVisitPayments.Rows.Count;
@@ -1494,18 +1557,14 @@ public partial class frmAddEditVisit : Form
         // ========================== Appointment Id ==========================
         if (string.IsNullOrWhiteSpace(txtId.Text))
         {
-            string message = _visitType == VisitType.WalkIn ?
-                "رقم المريض مطلوب." :
-                "رقم الحجز مطلوب.";
+            string message = _visitType == VisitType.WalkIn ? "رقم المريض مطلوب." : "رقم الحجز مطلوب.";
 
             MessageBoxExtensions.ShowError(message);
             return false;
         }
         else if (!int.TryParse(txtId.Text, out int appointmentId) || appointmentId <= 0)
         {
-            string msg = _visitType == VisitType.WalkIn ?
-                "قيمة رقم المريض غير صالحه." :
-                "قيمة رقم الحجز غير صالحه.";
+            string msg = _visitType == VisitType.WalkIn ? "قيمة رقم المريض غير صالحه." : "قيمة رقم الحجز غير صالحه.";
             MessageBoxExtensions.ShowError(msg);
             return false;
         }
@@ -1561,8 +1620,8 @@ public partial class frmAddEditVisit : Form
         return true;
     }
 
-    private DateTime SelectedVisitDateTime 
-        => dtpVisitDateTime_Date.Value.Date + 
+    private DateTime SelectedVisitDateTime
+        => dtpVisitDateTime_Date.Value.Date +
            dtpVisitDateTime_Time.Value.TimeOfDay;
 
     private void AssignVisitDateTime(DateTime visitDateTime)
@@ -1801,9 +1860,18 @@ public partial class frmAddEditVisit : Form
                 .Value;
 
             if (dateCellValue is null)
+            {
+                var dateCellValues = DateTime.Now;
+
                 dgvVisitPayments.Rows[e.RowIndex]
                     .Cells[nameof(col_Payments_PaymentDateTime)]
-                    .Value = DateTimeHelper.GetArabicDateTime(DateTime.Now);
+                    .Value = DateTimeHelper.GetArabicDateTime(dateCellValues);
+
+                dgvVisitPayments.Rows[e.RowIndex]
+                    .Cells[nameof(col_Payments_ConvertablePaymentDateTime)]
+                    .Value = dateCellValues;
+            }
+
         }
     }
 
@@ -1827,9 +1895,15 @@ public partial class frmAddEditVisit : Form
         }
 
         if (dgvVisitPayments.Rows[_paymentsSelectedRowIndex].IsNewRow)
+        {
             tsmiPaymentsDelete.Enabled = false;
+            tsmiChangePaymentDate.Enabled = false;
+        }
         else
+        {
             tsmiPaymentsDelete.Enabled = true;
+            tsmiChangePaymentDate.Enabled = true;
+        }
     }
 
     private void dgvVisitPayments_MouseDown(object sender, MouseEventArgs e)
@@ -1863,5 +1937,87 @@ public partial class frmAddEditVisit : Form
     {
         change_txtId_FillColorTimer.Stop();
         txtId.FillColor = Color.White;
+    }
+
+    private void txtId_EnabledChanged(object sender, EventArgs e)
+    {
+        if (sender is Guna.UI2.WinForms.Guna2TextBox { Enabled: false } textBox)
+            textBox.TextOffset = new Point(10, 0);
+    }
+
+    private void dgvVisitPayments_CellContentClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e is not { ColumnIndex: >= 0, RowIndex: >= 0 })
+            return;
+
+        var rowsCount = dgvVisitPayments.Rows.Count;
+        var newRowIndex = dgvVisitPayments.NewRowIndex;
+        if (e.RowIndex >= rowsCount || e.RowIndex == newRowIndex)
+            return;
+
+        var selectedDateTime = GetPaymentDateTimeFromPaymentsGrid(e.RowIndex);
+
+        if (dgvVisitPayments.Columns[e.ColumnIndex] == col_Payments_ChangePaymentDateTime
+            && selectedDateTime.HasValue)
+        {
+            var dtpDialog = _formFactory.Create_DateTimePickerDialog(
+                selectedDateTime.Value,
+                DateTime.Now);
+            dtpDialog.Result += (s, pickedDateTime) =>
+            {
+                dgvVisitPayments.Rows[e.RowIndex]
+                    .Cells[nameof(col_Payments_PaymentDateTime)]
+                    .Value = DateTimeHelper.GetArabicDateTime(pickedDateTime);
+
+                dgvVisitPayments.Rows[e.RowIndex]
+                    .Cells[nameof(col_Payments_ConvertablePaymentDateTime)]
+                    .Value = pickedDateTime;
+            };
+
+            dtpDialog.ShowDialog();
+        }
+    }
+
+    private void tsmiChangePaymentDate_Click(object sender, EventArgs e)
+    {
+        dgvVisitPayments_CellContentClick(
+            sender,
+            new DataGridViewCellEventArgs(
+                dgvVisitPayments.Columns[nameof(col_Payments_ChangePaymentDateTime)]!.Index,
+                _paymentsSelectedRowIndex));
+    }
+
+    private DateTime? GetPaymentDateTimeFromPaymentsGrid(int rowIndex)
+    {
+        int rowsCount = dgvVisitPayments.Rows.Count;
+        int newRowIndex = dgvVisitPayments.NewRowIndex;
+
+        if (rowIndex < 0
+            || rowIndex >= rowsCount
+            || rowIndex == newRowIndex)
+            return null;
+
+        var cellValue = dgvVisitPayments.Rows[rowIndex]
+            .Cells[nameof(col_Payments_ConvertablePaymentDateTime)]
+            .Value;
+
+        if (DateTime.TryParse(cellValue?.ToString(), out var dateTime))
+            return dateTime;
+
+        return null;
+    }
+
+    private void dgvVisitPayments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+    {
+        if (e.RowIndex < 0 
+            || e.RowIndex >= dgvVisitPayments.Rows.Count
+            || dgvVisitPayments.NewRowIndex == e.RowIndex)
+            return;
+
+        _paymentsSelectedRowIndex = e.RowIndex;
+        dgvVisitPayments_CellContentClick(sender,
+            new DataGridViewCellEventArgs(
+                dgvVisitPayments.Columns[nameof(col_Payments_ChangePaymentDateTime)]!.Index,
+                e.RowIndex));
     }
 }

@@ -13,5 +13,10 @@ public sealed record VisitView
     public decimal? DiscountAmount { get; set; } = null;
     public decimal? RemainedAmount { get; set; } = null;
 
+    /// <summary>
+    /// Used to filter the visits based on a specific date and time.
+    /// Used only if 'VisitDateTime' is null, otherwise ignore it's value and use 'VisitDateTime'
+    /// If this property is set, only visits that occurred after the specified date and time will be included in the view.
+    /// </summary>
     public DateTime? GetViewsAfterDateTime { get; set; } = null;
 }

@@ -48,7 +48,7 @@ public sealed class VisitPaymentService
 
         foreach (var dto in updateDtos)
         {
-            var paymentIdResult = Id.Create(dto.VisitPaymentId);
+            var paymentIdResult = Id.Create(dto.Id);
             if (paymentIdResult.IsFailure)
                 return Result.Failure(ServiceErrors.Common.InvalidId);
 
@@ -61,7 +61,8 @@ public sealed class VisitPaymentService
 
             var updateResult = visit.UpdateVisitPayment(
                 paymentIdResult.Value,
-                paidAmountResult.Value);
+                paidAmountResult.Value,
+                dto.PaymentDateTime);
 
             if (updateResult.IsFailure)
                 return Result.Failure(updateResult.Error);
@@ -71,7 +72,7 @@ public sealed class VisitPaymentService
         return Result.Success();
     }
 
-    public async Task<Result> CreateMenyAsync(
+    public async Task<Result> CreateManyAsync(
         List<CreateVisitPaymentDto> addDtos,
         CancellationToken cancellationToken = default)
     {
@@ -98,7 +99,9 @@ public sealed class VisitPaymentService
             if (paidAmountResult.IsFailure)
                 return Result.Failure(paidAmountResult.Error);
 
-            var createVisitResult = visit.AddVisitPayment(paidAmountResult.Value);
+            var createVisitResult = visit.AddVisitPayment(
+                paidAmountResult.Value,
+                dto.PaymentDateTime);
             if (createVisitResult.IsFailure)
                 return Result.Failure(createVisitResult.Error);
         }

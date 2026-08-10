@@ -232,9 +232,9 @@
             label3.ForeColor = Color.FromArgb(40, 90, 220);
             label3.Location = new Point(54, 12);
             label3.Name = "label3";
-            label3.Size = new Size(116, 23);
+            label3.Size = new Size(111, 23);
             label3.TabIndex = 0;
-            label3.Text = "الإصدار:  1.1.1";
+            label3.Text = "الإصدار: 1.2.0";
             // 
             // label4
             // 

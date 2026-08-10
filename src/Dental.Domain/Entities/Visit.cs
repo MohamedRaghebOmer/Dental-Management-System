@@ -290,9 +290,10 @@ public sealed class Visit : Entity
 
 
     public Result<VisitPayment> AddVisitPayment(
-        Money paidAmount)
+        Money paidAmount,
+        DateTime paymentDateTime)
     {
-        var createResult = VisitPayment.Create(Id, paidAmount);
+        var createResult = VisitPayment.Create(Id, paidAmount, paymentDateTime);
         if (createResult.IsFailure)
             return Result.Failure<VisitPayment>(createResult.Error);
 
@@ -303,13 +304,14 @@ public sealed class Visit : Entity
 
     public Result UpdateVisitPayment(
         Id visitPaymentId,
-        Money paidAmount)
+        Money paidAmount,
+        DateTime paymentDateTime)
     {
         var entity = _visitPayments.FirstOrDefault(vp => vp.Id == visitPaymentId);
         if (entity is null)
             return Result.Failure(DomainErrors.Entities.Visit.VisitPayment.NotFound);
 
-        var updateResult = entity.Udpate(paidAmount);
+        var updateResult = entity.Update(paidAmount, paymentDateTime);
         if (updateResult.IsFailure)
             return Result.Failure(updateResult.Error);
 

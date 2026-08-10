@@ -64,7 +64,7 @@ public partial class frmAddEditPatient : Form
 
     private bool IsValidId()
     {
-        if (_patientId.HasValue && _patientId.Value <= 0)
+        if (_patientId is <= 0)
         {
             MessageBoxExtensions.ShowError("رقم المريض يجب ان يكون اكبر من الصفر.");
             return false;
@@ -90,7 +90,7 @@ public partial class frmAddEditPatient : Form
 
         lblPatientIdValue.Text = patientResult.Value.Id.ToString();
         txtName.Text = patientResult.Value.Name;
-        txtAge.Text = patientResult.Value.Age.ToString();
+        txtAge.Text = patientResult.Value.Age?.ToString()?? string.Empty;
         if (patientResult.Value.Gender == Domain.Enums.Gender.Male)
         {
             rbMale.Checked = true;
@@ -129,7 +129,9 @@ public partial class frmAddEditPatient : Form
         if (!ValidateToSave())
             return;
 
-        string message = _mode == Mode.Add ? "هل انت متأكد من اضافة المريض؟" : "هل انت متأكد من تعديل بيانات المريض؟";
+        string message = _mode == Mode.Add ?
+            "هل انت متأكد من اضافة المريض؟" 
+            : "هل انت متأكد من تعديل بيانات المريض؟";
 
         if (MessageBoxExtensions.ShowQuestion(
             message, "تأكيد") == DialogResult.No)
@@ -160,15 +162,10 @@ public partial class frmAddEditPatient : Form
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(txtAge.Text))
+        if (!string.IsNullOrWhiteSpace(txtAge.Text)
+            && !int.TryParse(txtAge.Text, out _))
         {
-            MessageBoxExtensions.ShowError("السن مطلوب.");
-            return false;
-        }
-
-        if (!int.TryParse(txtAge.Text, out _))
-        {
-            MessageBoxExtensions.ShowError("سن غير صالح.");
+            MessageBoxExtensions.ShowError("السن غير صالح.");
             return false;
         }
 
@@ -291,13 +288,19 @@ public partial class frmAddEditPatient : Form
 
     private PatientRequestDto? GetPatientInfoFromUi()
     {
-        if (!int.TryParse(txtAge.Text, out var age))
-            return null;
+        var ageString = txtAge.Text.Trim();
+        int ageInt = -1;
+
+        if (!string.IsNullOrWhiteSpace(ageString))
+        {
+            if (!int.TryParse(ageString, out ageInt))
+                return null;
+        }
 
         return new PatientRequestDto
         {
             Name = txtName.Text,
-            Age = age,
+            Age = ageInt >= 0 ? ageInt : null,
             Gender = rbMale.Checked ? Domain.Enums.Gender.Male : Domain.Enums.Gender.Female,
             PhoneNumber = txtPhoneNumber.Text.Trim()
         };

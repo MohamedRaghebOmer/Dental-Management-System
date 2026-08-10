@@ -29,22 +29,22 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             pictureBox1 = new PictureBox();
             label3 = new Label();
             label4 = new Label();
@@ -83,9 +83,12 @@
             col_Payments_PaidAmount = new DataGridViewTextBoxColumn();
             col_Payments_OldPaidAmount = new DataGridViewTextBoxColumn();
             col_Payments_PaymentDateTime = new DataGridViewTextBoxColumn();
+            col_Payments_ChangePaymentDateTime = new DataGridViewButtonColumn();
             col_Payments_ConvertablePaymentDateTime = new DataGridViewTextBoxColumn();
+            col_Payments_OldPaymentDateTime = new DataGridViewTextBoxColumn();
             cmsPaymentsGrid = new ContextMenuStrip(components);
             tsmiPaymentsDelete = new ToolStripMenuItem();
+            tsmiChangePaymentDate = new ToolStripMenuItem();
             lblSumOfPaidAmounts = new Label();
             label5 = new Label();
             change_txtId_FillColorTimer = new System.Windows.Forms.Timer(components);
@@ -132,7 +135,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
-            label2.Location = new Point(1018, 688);
+            label2.Location = new Point(1017, 688);
             label2.Name = "label2";
             label2.Size = new Size(141, 31);
             label2.TabIndex = 6;
@@ -140,7 +143,7 @@
             // 
             // lblTotalPrice
             // 
-            lblTotalPrice.Location = new Point(748, 689);
+            lblTotalPrice.Location = new Point(811, 689);
             lblTotalPrice.Name = "lblTotalPrice";
             lblTotalPrice.Size = new Size(200, 28);
             lblTotalPrice.TabIndex = 7;
@@ -170,7 +173,7 @@
             // 
             txtId.Animated = true;
             txtId.BorderRadius = 10;
-            txtId.CustomizableEdges = customizableEdges9;
+            txtId.CustomizableEdges = customizableEdges1;
             txtId.DefaultText = "";
             txtId.DisabledState.BorderColor = Color.FromArgb(213, 218, 223);
             txtId.DisabledState.FillColor = SystemColors.Window;
@@ -187,16 +190,17 @@
             txtId.PlaceholderText = "";
             txtId.RightToLeft = RightToLeft.Yes;
             txtId.SelectedText = "";
-            txtId.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            txtId.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtId.Size = new Size(323, 40);
             txtId.TabIndex = 0;
+            txtId.EnabledChanged += txtId_EnabledChanged;
             txtId.KeyPress += txtId_KeyPress;
             // 
             // txtDiscountAmount
             // 
             txtDiscountAmount.Animated = true;
             txtDiscountAmount.BorderRadius = 10;
-            txtDiscountAmount.CustomizableEdges = customizableEdges11;
+            txtDiscountAmount.CustomizableEdges = customizableEdges3;
             txtDiscountAmount.DefaultText = "";
             txtDiscountAmount.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
             txtDiscountAmount.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
@@ -212,7 +216,7 @@
             txtDiscountAmount.Name = "txtDiscountAmount";
             txtDiscountAmount.PlaceholderText = "";
             txtDiscountAmount.SelectedText = "";
-            txtDiscountAmount.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            txtDiscountAmount.ShadowDecoration.CustomizableEdges = customizableEdges4;
             txtDiscountAmount.Size = new Size(323, 40);
             txtDiscountAmount.TabIndex = 2;
             txtDiscountAmount.TextChanged += txtMoney_TextChanged;
@@ -222,7 +226,7 @@
             // 
             lblTitile.Font = new Font("Segoe UI", 36F, FontStyle.Bold);
             lblTitile.ForeColor = Color.FromArgb(100, 88, 255);
-            lblTitile.Location = new Point(559, 9);
+            lblTitile.Location = new Point(591, 12);
             lblTitile.Name = "lblTitile";
             lblTitile.Size = new Size(479, 81);
             lblTitile.TabIndex = 17;
@@ -234,45 +238,45 @@
             dgvVisitTreatments.AllowUserToOrderColumns = true;
             dgvVisitTreatments.AllowUserToResizeColumns = false;
             dgvVisitTreatments.AllowUserToResizeRows = false;
-            dataGridViewCellStyle9.BackColor = Color.White;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle9.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = Color.White;
-            dataGridViewCellStyle9.SelectionForeColor = Color.Black;
-            dgvVisitTreatments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = Color.White;
+            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
+            dgvVisitTreatments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvVisitTreatments.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle10.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle10.ForeColor = Color.White;
-            dataGridViewCellStyle10.SelectionBackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle10.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = DataGridViewTriState.True;
-            dgvVisitTreatments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvVisitTreatments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvVisitTreatments.ColumnHeadersHeight = 35;
             dgvVisitTreatments.Columns.AddRange(new DataGridViewColumn[] { colToothNumber, colTreatmentName, colTreatmentPrice, colCount, colNotes });
             dgvVisitTreatments.ContextMenuStrip = cmsTreatmetnsGrid;
-            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = Color.White;
-            dataGridViewCellStyle11.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle11.ForeColor = Color.Black;
-            dataGridViewCellStyle11.SelectionBackColor = Color.DodgerBlue;
-            dataGridViewCellStyle11.SelectionForeColor = Color.White;
-            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
-            dgvVisitTreatments.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle3.ForeColor = Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgvVisitTreatments.DefaultCellStyle = dataGridViewCellStyle3;
             dgvVisitTreatments.GridColor = Color.LightGray;
             dgvVisitTreatments.Location = new Point(370, 753);
             dgvVisitTreatments.MultiSelect = false;
             dgvVisitTreatments.Name = "dgvVisitTreatments";
             dgvVisitTreatments.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = Color.White;
-            dataGridViewCellStyle12.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle12.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = Color.White;
-            dataGridViewCellStyle12.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.True;
-            dgvVisitTreatments.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = Color.White;
+            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
+            dgvVisitTreatments.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dgvVisitTreatments.RowHeadersVisible = false;
             dgvVisitTreatments.RowHeadersWidth = 51;
             dgvVisitTreatments.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
@@ -378,7 +382,7 @@
             btnSave.AnimatedGIF = true;
             btnSave.BackColor = SystemColors.Control;
             btnSave.BorderRadius = 15;
-            btnSave.CustomizableEdges = customizableEdges13;
+            btnSave.CustomizableEdges = customizableEdges5;
             btnSave.DisabledState.BorderColor = Color.DarkGray;
             btnSave.DisabledState.CustomBorderColor = Color.DarkGray;
             btnSave.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
@@ -387,10 +391,10 @@
             btnSave.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold);
             btnSave.ForeColor = Color.DimGray;
             btnSave.HoverState.FillColor = Color.DarkOrange;
-            btnSave.Location = new Point(966, 1003);
+            btnSave.Location = new Point(945, 1003);
             btnSave.Name = "btnSave";
             btnSave.PressedColor = Color.DarkOrange;
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnSave.Size = new Size(160, 56);
             btnSave.TabIndex = 11;
             btnSave.Text = "حفظ";
@@ -420,7 +424,7 @@
             // 
             txtRemainingAmount.Animated = true;
             txtRemainingAmount.BorderRadius = 10;
-            txtRemainingAmount.CustomizableEdges = customizableEdges15;
+            txtRemainingAmount.CustomizableEdges = customizableEdges7;
             txtRemainingAmount.DefaultText = "";
             txtRemainingAmount.DisabledState.BorderColor = Color.FromArgb(213, 218, 223);
             txtRemainingAmount.DisabledState.FillColor = Color.White;
@@ -437,9 +441,10 @@
             txtRemainingAmount.Name = "txtRemainingAmount";
             txtRemainingAmount.PlaceholderText = "";
             txtRemainingAmount.SelectedText = "";
-            txtRemainingAmount.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            txtRemainingAmount.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtRemainingAmount.Size = new Size(323, 40);
             txtRemainingAmount.TabIndex = 3;
+            txtRemainingAmount.TextOffset = new Point(10, 0);
             txtRemainingAmount.KeyPress += txtMoney_KeyPress;
             // 
             // label10
@@ -512,7 +517,7 @@
             ctrlSearchAppointment1.MinimumSize = new Size(607, 423);
             ctrlSearchAppointment1.Name = "ctrlSearchAppointment1";
             ctrlSearchAppointment1.RightToLeft = RightToLeft.Yes;
-            ctrlSearchAppointment1.Size = new Size(1009, 423);
+            ctrlSearchAppointment1.Size = new Size(992, 423);
             ctrlSearchAppointment1.TabIndex = 32;
             // 
             // ctrlSearchPatient1
@@ -525,7 +530,7 @@
             ctrlSearchPatient1.MinimumSize = new Size(511, 338);
             ctrlSearchPatient1.Name = "ctrlSearchPatient1";
             ctrlSearchPatient1.RightToLeft = RightToLeft.Yes;
-            ctrlSearchPatient1.Size = new Size(1009, 423);
+            ctrlSearchPatient1.Size = new Size(992, 423);
             ctrlSearchPatient1.TabIndex = 8;
             // 
             // btnClose
@@ -560,51 +565,51 @@
             dgvVisitPayments.AllowUserToOrderColumns = true;
             dgvVisitPayments.AllowUserToResizeColumns = false;
             dgvVisitPayments.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = Color.White;
-            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
-            dgvVisitPayments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.BackColor = Color.White;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle5.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = Color.White;
+            dataGridViewCellStyle5.SelectionForeColor = Color.Black;
+            dgvVisitPayments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             dgvVisitPayments.CellBorderStyle = DataGridViewCellBorderStyle.Single;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvVisitPayments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle6.ForeColor = Color.White;
+            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(100, 88, 255);
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.True;
+            dgvVisitPayments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             dgvVisitPayments.ColumnHeadersHeight = 35;
-            dgvVisitPayments.Columns.AddRange(new DataGridViewColumn[] { col_Payments_VisitPaymentId, col_Payments_VisitId, col_Payments_PaidAmount, col_Payments_OldPaidAmount, col_Payments_PaymentDateTime, col_Payments_ConvertablePaymentDateTime });
+            dgvVisitPayments.Columns.AddRange(new DataGridViewColumn[] { col_Payments_VisitPaymentId, col_Payments_VisitId, col_Payments_PaidAmount, col_Payments_OldPaidAmount, col_Payments_PaymentDateTime, col_Payments_ChangePaymentDateTime, col_Payments_ConvertablePaymentDateTime, col_Payments_OldPaymentDateTime });
             dgvVisitPayments.ContextMenuStrip = cmsPaymentsGrid;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle3.ForeColor = Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = Color.DodgerBlue;
-            dataGridViewCellStyle3.SelectionForeColor = Color.White;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvVisitPayments.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = Color.White;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle7.ForeColor = Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = Color.DodgerBlue;
+            dataGridViewCellStyle7.SelectionForeColor = Color.White;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.False;
+            dgvVisitPayments.DefaultCellStyle = dataGridViewCellStyle7;
             dgvVisitPayments.GridColor = Color.LightGray;
-            dgvVisitPayments.Location = new Point(1039, 499);
+            dgvVisitPayments.Location = new Point(1011, 499);
             dgvVisitPayments.MultiSelect = false;
             dgvVisitPayments.Name = "dgvVisitPayments";
             dgvVisitPayments.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 12F);
-            dataGridViewCellStyle4.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = Color.White;
-            dataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.True;
-            dgvVisitPayments.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.White;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 12F);
+            dataGridViewCellStyle8.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle8.SelectionBackColor = Color.White;
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.True;
+            dgvVisitPayments.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dgvVisitPayments.RowHeadersVisible = false;
             dgvVisitPayments.RowHeadersWidth = 51;
             dgvVisitPayments.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgvVisitPayments.RowTemplate.Height = 35;
             dgvVisitPayments.RowTemplate.Resizable = DataGridViewTriState.False;
-            dgvVisitPayments.Size = new Size(620, 178);
+            dgvVisitPayments.Size = new Size(648, 178);
             dgvVisitPayments.TabIndex = 9;
             dgvVisitPayments.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvVisitPayments.ThemeStyle.AlternatingRowsStyle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -621,6 +626,8 @@
             dgvVisitPayments.ThemeStyle.RowsStyle.Height = 35;
             dgvVisitPayments.ThemeStyle.RowsStyle.SelectionBackColor = Color.DodgerBlue;
             dgvVisitPayments.ThemeStyle.RowsStyle.SelectionForeColor = Color.White;
+            dgvVisitPayments.CellContentClick += dgvVisitPayments_CellContentClick;
+            dgvVisitPayments.CellDoubleClick += dgvVisitPayments_CellDoubleClick;
             dgvVisitPayments.CellValueChanged += dgvVisitPayments_CellValueChanged;
             dgvVisitPayments.RowsRemoved += dgvVisitPayments_RowsRemoved;
             dgvVisitPayments.MouseDown += dgvVisitPayments_MouseDown;
@@ -649,7 +656,7 @@
             // 
             // col_Payments_PaidAmount
             // 
-            col_Payments_PaidAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            col_Payments_PaidAmount.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             col_Payments_PaidAmount.DataPropertyName = "PaidAmount";
             col_Payments_PaidAmount.HeaderText = "المبلغ المدفوع";
             col_Payments_PaidAmount.MinimumWidth = 6;
@@ -669,12 +676,22 @@
             // 
             // col_Payments_PaymentDateTime
             // 
-            col_Payments_PaymentDateTime.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            col_Payments_PaymentDateTime.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             col_Payments_PaymentDateTime.DataPropertyName = "PaymentDateTime";
             col_Payments_PaymentDateTime.HeaderText = "تاريخ الدفع";
             col_Payments_PaymentDateTime.MinimumWidth = 6;
             col_Payments_PaymentDateTime.Name = "col_Payments_PaymentDateTime";
             col_Payments_PaymentDateTime.ReadOnly = true;
+            col_Payments_PaymentDateTime.Width = 129;
+            // 
+            // col_Payments_ChangePaymentDateTime
+            // 
+            col_Payments_ChangePaymentDateTime.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            col_Payments_ChangePaymentDateTime.HeaderText = "تغيير تاريخ الدفع";
+            col_Payments_ChangePaymentDateTime.MinimumWidth = 6;
+            col_Payments_ChangePaymentDateTime.Name = "col_Payments_ChangePaymentDateTime";
+            col_Payments_ChangePaymentDateTime.Text = "";
+            col_Payments_ChangePaymentDateTime.UseColumnTextForButtonValue = true;
             // 
             // col_Payments_ConvertablePaymentDateTime
             // 
@@ -687,22 +704,39 @@
             col_Payments_ConvertablePaymentDateTime.Visible = false;
             col_Payments_ConvertablePaymentDateTime.Width = 125;
             // 
+            // col_Payments_OldPaymentDateTime
+            // 
+            col_Payments_OldPaymentDateTime.DataPropertyName = "ConvertablePaymentDateTime";
+            col_Payments_OldPaymentDateTime.HeaderText = "تاريخ الدفع القديم";
+            col_Payments_OldPaymentDateTime.MinimumWidth = 6;
+            col_Payments_OldPaymentDateTime.Name = "col_Payments_OldPaymentDateTime";
+            col_Payments_OldPaymentDateTime.ReadOnly = true;
+            col_Payments_OldPaymentDateTime.Visible = false;
+            // 
             // cmsPaymentsGrid
             // 
             cmsPaymentsGrid.ImageScalingSize = new Size(20, 20);
-            cmsPaymentsGrid.Items.AddRange(new ToolStripItem[] { tsmiPaymentsDelete });
+            cmsPaymentsGrid.Items.AddRange(new ToolStripItem[] { tsmiPaymentsDelete, tsmiChangePaymentDate });
             cmsPaymentsGrid.Name = "cmsPaymentsGrid";
             cmsPaymentsGrid.RightToLeft = RightToLeft.Yes;
-            cmsPaymentsGrid.Size = new Size(115, 30);
+            cmsPaymentsGrid.Size = new Size(185, 56);
             cmsPaymentsGrid.Opening += cmsPaymentsGrid_Opening;
             // 
             // tsmiPaymentsDelete
             // 
             tsmiPaymentsDelete.Image = Properties.Resources.bin_512;
             tsmiPaymentsDelete.Name = "tsmiPaymentsDelete";
-            tsmiPaymentsDelete.Size = new Size(114, 26);
+            tsmiPaymentsDelete.Size = new Size(184, 26);
             tsmiPaymentsDelete.Text = "حذف";
             tsmiPaymentsDelete.Click += tsmiPaymentsDelete_Click;
+            // 
+            // tsmiChangePaymentDate
+            // 
+            tsmiChangePaymentDate.Image = Properties.Resources.pen_512;
+            tsmiChangePaymentDate.Name = "tsmiChangePaymentDate";
+            tsmiChangePaymentDate.Size = new Size(184, 26);
+            tsmiChangePaymentDate.Text = "تغيير تاريخ الدفع";
+            tsmiChangePaymentDate.Click += tsmiChangePaymentDate_Click;
             // 
             // lblSumOfPaidAmounts
             // 
@@ -833,12 +867,6 @@
         private ToolStripMenuItem tsmiPaymentsDelete;
         private Label lblSumOfPaidAmounts;
         private Label label5;
-        private DataGridViewTextBoxColumn col_Payments_VisitPaymentId;
-        private DataGridViewTextBoxColumn col_Payments_VisitId;
-        private DataGridViewTextBoxColumn col_Payments_PaidAmount;
-        private DataGridViewTextBoxColumn col_Payments_OldPaidAmount;
-        private DataGridViewTextBoxColumn col_Payments_PaymentDateTime;
-        private DataGridViewTextBoxColumn col_Payments_ConvertablePaymentDateTime;
         private System.Windows.Forms.Timer change_txtId_FillColorTimer;
         private DataGridViewComboBoxColumn colToothNumber;
         private DataGridViewComboBoxColumn colTreatmentName;
@@ -847,5 +875,14 @@
         private DataGridViewTextBoxColumn colNotes;
         private DateTimePicker dtpVisitDateTime_Date;
         private DateTimePicker dtpVisitDateTime_Time;
+        private ToolStripMenuItem tsmiChangePaymentDate;
+        private DataGridViewTextBoxColumn col_Payments_VisitPaymentId;
+        private DataGridViewTextBoxColumn col_Payments_VisitId;
+        private DataGridViewTextBoxColumn col_Payments_PaidAmount;
+        private DataGridViewTextBoxColumn col_Payments_OldPaidAmount;
+        private DataGridViewTextBoxColumn col_Payments_PaymentDateTime;
+        private DataGridViewButtonColumn col_Payments_ChangePaymentDateTime;
+        private DataGridViewTextBoxColumn col_Payments_ConvertablePaymentDateTime;
+        private DataGridViewTextBoxColumn col_Payments_OldPaymentDateTime;
     }
 }

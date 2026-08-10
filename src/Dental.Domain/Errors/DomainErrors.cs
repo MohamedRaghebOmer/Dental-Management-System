@@ -376,6 +376,13 @@ public static class DomainErrors
                     "PaidAmount.CanNotBeZero",
                     "Paid amount must be a positive value.");
             }
+
+            public static class PaymentDateTime
+            {
+                public static readonly Error CanNotBeInTheFuture = new(
+                    "PaymentDateTime.CanNotBeInTheFuture",
+                    "Payment date and time cannot be in the future.");
+            }
         }
 
         public static class VisitRadioghraph

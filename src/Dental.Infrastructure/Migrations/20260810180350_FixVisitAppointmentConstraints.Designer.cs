@@ -4,6 +4,7 @@ using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dental.Infrastructure.Migrations
 {
     [DbContext(typeof(DentalDbContext))]
-    partial class DentalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260810180350_FixVisitAppointmentConstraints")]
+    partial class FixVisitAppointmentConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.10");
@@ -214,7 +217,7 @@ namespace Dental.Infrastructure.Migrations
 
                     SqlitePropertyBuilderExtensions.UseAutoincrement(b.Property<int>("Id"));
 
-                    b.Property<int?>("Age")
+                    b.Property<int>("Age")
                         .HasColumnType("INTEGER")
                         .HasColumnName("Age");
 
@@ -242,7 +245,7 @@ namespace Dental.Infrastructure.Migrations
 
                     b.ToTable("Patients", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Patients_AgeRange", "[Age] IS NULL OR [Age] BETWEEN 0 AND 99");
+                            t.HasCheckConstraint("CK_Patients_AgeRange", "Age BETWEEN 0 AND 99");
 
                             t.HasCheckConstraint("CK_Patients_Gender", "Gender IN (0, 1)");
 

@@ -17,42 +17,50 @@ public sealed class VisitPayment : Entity
 
     private VisitPayment(
         Id visitId,
-        Money paidAmount)
+        Money paidAmount,
+        DateTime paymentDateTime)
     {
         VisitId = visitId;
         PaidAmount = paidAmount;
-        PaymentDateTime = DateTime.Now;
+        PaymentDateTime = paymentDateTime;
     }
 
 
     internal static Result<VisitPayment> Create(
         Id visitId,
-        Money paidAmount)
+        Money paidAmount,
+        DateTime paymentDateTime)
     {
-        var validatResult = Validate(paidAmount);
+        var validatResult = Validate(paidAmount, paymentDateTime);
         if (validatResult.IsFailure)
             return Result.Failure<VisitPayment>(validatResult.Error);
 
         return new VisitPayment(
             visitId,
-            paidAmount);
+            paidAmount,
+            paymentDateTime);
     }
 
-    internal Result Udpate(Money paidAmount)
+    internal Result Update(Money paidAmount, DateTime paymentDateTime)
     {
-        var validateResult = Validate(paidAmount);
+        var validateResult = Validate(paidAmount, paymentDateTime);
         if (validateResult.IsFailure)
             return Result.Failure(validateResult.Error);
 
         PaidAmount = paidAmount;
+        PaymentDateTime = paymentDateTime;
 
         return Result.Success();
     }
 
-    private static Result Validate(Money paidAmount)
+    private static Result Validate(Money paidAmount, DateTime paymentDateTime)
     {
         if (paidAmount.Value == 0)
             return Result.Failure(DomainErrors.Entities.VisitPayment.PaidAmount.CanNotBeZero);
+
+        if (paymentDateTime > DateTime.Now)
+            return Result.Failure(
+                DomainErrors.Entities.VisitPayment.PaymentDateTime.CanNotBeInTheFuture);
 
         return Result.Success();
     }

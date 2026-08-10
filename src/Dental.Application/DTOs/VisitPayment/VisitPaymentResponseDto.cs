@@ -3,7 +3,7 @@
 namespace Dental.Application.DTOs.VisitPayment;
 
 public sealed record VisitPaymentResponseDto(
-    int VisitPaymentId,
+    int Id,
     int VisitId,
     decimal PaidAmount,
     DateTime PaymentDateTime)

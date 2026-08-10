@@ -161,8 +161,8 @@ public sealed class PatientViewRepository : IPatientViewRepository
 
                 IsMale = p.Gender == Domain.Enums.Gender.Male ? 1 : 0,
                 IsFemale = p.Gender == Domain.Enums.Gender.Female ? 1 : 0,
-                IsChild = p.Age < 18 ? 1 : 0,
-                IsAdult = p.Age >= 18 ? 1 : 0
+                IsChild = p.Age.HasValue && p.Age.Value < 18 ? 1 : 0,
+                IsAdult = p.Age.HasValue && p.Age.Value >= 18 ? 1 : 0
             })
             .GroupBy(_ => 1)
             .Select(g => new PatientInfoCards

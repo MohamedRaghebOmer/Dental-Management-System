@@ -320,8 +320,8 @@ public partial class VisitsView : UserControl
          اسم المريض
         تاريخ الزياره
         الخدمات المقدمه
-        مجموع المبالغ المدفوعه
-        المبلغ المدفوع
+        المبلغ الكلي
+        إجمالي المبالغ المدفوعه
         مبلغ الخصم
         المبلغ المتبقي
 
@@ -334,8 +334,8 @@ public partial class VisitsView : UserControl
             "اسم المريض" => GridColumns.PatientName,
             "تاريخ الزياره" => GridColumns.VisitDateTime,
             "الخدمات المقدمه" => GridColumns.VisitTreatments,
-            "مجموع المبالغ المدفوعه" => GridColumns.TotalAmount,
-            "المبلغ المدفوع" => GridColumns.TotalPaidAmounts,
+            "المبلغ الكلي" => GridColumns.TotalAmount,
+            "إجمالي المبالغ المدفوعه" => GridColumns.TotalPaidAmounts,
             "مبلغ الخصم" => GridColumns.DiscountAmount,
             "المبلغ المتبقي" => GridColumns.RemainedAmount,
 
