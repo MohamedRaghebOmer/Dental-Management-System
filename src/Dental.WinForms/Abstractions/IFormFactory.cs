@@ -1,5 +1,6 @@
 ﻿using Dental.WinForms.Forms;
 using Dental.WinForms.Forms.AddEdit;
+using Dental.WinForms.Forms.Dialogs;
 
 namespace Dental.WinForms.Abstractions;
 
@@ -30,4 +31,7 @@ public interface IFormFactory
 
     frmAddEditVisitRadioghraph Create_frmAddEditVisitRadioghraph();
     frmAddEditVisitRadioghraph Create_frmAddEditVisitRadioghraph(int visitRadiographId);
+
+    DateTimePickerDialog Create_DateTimePickerDialog();
+    DateTimePickerDialog Create_DateTimePickerDialog(DateTime currentValue, DateTime maxValue);
 }

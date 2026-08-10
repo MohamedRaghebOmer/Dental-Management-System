@@ -34,7 +34,7 @@ public sealed class VisitTreatmentConfiguration
         {
             table.HasCheckConstraint(
                 "CK_VisitTreatments_ToothNumber_Range",
-                "[ToothNumber] = NULL OR [ToothNumber] BETWEEN 1 AND 32");
+                "[ToothNumber] IS NULL OR [ToothNumber] BETWEEN 1 AND 32");
 
             table.HasCheckConstraint(
                 "CK_VisitTreatments_Price_NonNegative",

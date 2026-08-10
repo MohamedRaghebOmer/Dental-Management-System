@@ -9,7 +9,7 @@ public sealed record PatientRequestDto()
     public required string Name { get; init; }
 
     [Required]
-    public required int Age { get; init; }
+    public int? Age { get; init; }
 
     [Required]
     public required Gender Gender { get; init; }

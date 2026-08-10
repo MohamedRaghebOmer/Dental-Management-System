@@ -12,4 +12,8 @@ public sealed record CreateVisitPaymentDto
     [DataType(DataType.Currency)]
     [Range(1, double.MaxValue)]
     public required decimal PaidAmount { get; init; }
+
+    [Required]
+    [DataType(DataType.DateTime)]
+    public required DateTime PaymentDateTime { get; init; }
 }

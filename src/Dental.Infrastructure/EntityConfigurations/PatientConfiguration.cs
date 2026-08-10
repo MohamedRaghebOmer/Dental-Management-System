@@ -47,7 +47,7 @@ public sealed class PatientConfiguration
 
             table.HasCheckConstraint(
                 "CK_Patients_AgeRange",
-                $"Age BETWEEN {Patient.Constants.MinimumAllowedAge} AND {Patient.Constants.MaximumAllowedAge}"
+                $"[Age] IS NULL OR [Age] BETWEEN {Patient.Constants.MinimumAllowedAge} AND {Patient.Constants.MaximumAllowedAge}"
             );
         });
     }
@@ -61,7 +61,8 @@ public sealed class PatientConfiguration
 
         builder.Property(p => p.Age)
             .HasColumnName(nameof(Patient.Age))
-            .IsRequired();
+            .HasDefaultValue(null)
+            .IsRequired(false);
 
         builder.Property(x => x.Gender)
             .HasConversion<byte>()

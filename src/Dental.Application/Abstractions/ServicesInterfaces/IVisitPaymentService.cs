@@ -9,7 +9,7 @@ public interface IVisitPaymentService
         List<UpdateVisitPaymentDto> updateDtos,
         CancellationToken cancellationToken = default);
 
-    Task<Result> CreateMenyAsync(
+    Task<Result> CreateManyAsync(
         List<CreateVisitPaymentDto> addDtos,
         CancellationToken cancellationToken = default);
 

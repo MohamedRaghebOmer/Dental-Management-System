@@ -20,7 +20,7 @@ public sealed class Patient : Entity
 
     private Patient(
         string name,
-        int age,
+        int? age,
         Gender gender,
         PhoneNumber? phoneNumber)
     {
@@ -32,7 +32,7 @@ public sealed class Patient : Entity
 
 
     public string Name { get; set; } = string.Empty;
-    public int Age { get; private set; }
+    public int? Age { get; private set; }
     public Gender Gender { get; private set; }
     public PhoneNumber? PhoneNumber { get; private set; } = default!;
 
@@ -43,7 +43,7 @@ public sealed class Patient : Entity
 
     public static Result<Patient> Create(
         string name,
-        int age,
+        int? age,
         Gender gender,
         PhoneNumber? phoneNumber)
     {
@@ -58,7 +58,7 @@ public sealed class Patient : Entity
 
     public Result Update(
         string name,
-        int age,
+        int? age,
         Gender gender,
         PhoneNumber? phoneNumber)
     {
@@ -75,16 +75,19 @@ public sealed class Patient : Entity
     }
 
 
-    private static Result Validate(int age, string name)
+    private static Result Validate(int? age, string name)
     {
-        if (age < Constants.MinimumAllowedAge)
+        if (age.HasValue)
         {
-            return Result.Failure(DomainErrors.Entities.Patient.Age.LessThanMinimumAllowedAge);
-        }
+            if (age.Value < Constants.MinimumAllowedAge)
+            {
+                return Result.Failure(DomainErrors.Entities.Patient.Age.LessThanMinimumAllowedAge);
+            }
 
-        if (age > Constants.MaximumAllowedAge)
-        {
-            return Result.Failure(DomainErrors.Entities.Patient.Age.GreaterThanMaximumAllowedAge);
+            if (age.Value > Constants.MaximumAllowedAge)
+            {
+                return Result.Failure(DomainErrors.Entities.Patient.Age.GreaterThanMaximumAllowedAge);
+            }
         }
 
         if (string.IsNullOrWhiteSpace(name))

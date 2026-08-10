@@ -6,7 +6,7 @@ namespace Dental.Application.DTOs.Patient;
 public sealed record PatientResponseDto(
     int Id,
     string Name,
-    int Age,
+    int? Age,
     Gender Gender,
     string? PhoneNumber)
     : IResponseDto<Domain.Entities.Patient, PatientResponseDto>

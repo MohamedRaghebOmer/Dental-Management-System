@@ -139,6 +139,13 @@ public static class DomainErrors
                     "VisitRadiograph.NotFound",
                     "Visit radiograph not found.");
             }
+
+            public static class VisitDateTime
+            {
+                public static readonly Error InTheFuture = new(
+                    "VisitDateTime.InTheFuture",
+                    "The visit date and time cannot be in the future.");
+            }
         }
 
         public static class VisitTreatment
@@ -368,6 +375,13 @@ public static class DomainErrors
                 public static readonly Error CanNotBeZero = new(
                     "PaidAmount.CanNotBeZero",
                     "Paid amount must be a positive value.");
+            }
+
+            public static class PaymentDateTime
+            {
+                public static readonly Error CanNotBeInTheFuture = new(
+                    "PaymentDateTime.CanNotBeInTheFuture",
+                    "Payment date and time cannot be in the future.");
             }
         }
 

@@ -16,8 +16,8 @@
 
 	  <Description>نظام متكامل لإدارة عيادات الأسنان</Description>
 
-	  <Version>1.1.1</Version>
-	  <FileVersion>1.1.1</FileVersion>
+	  <Version>1.2.0</Version>
+	  <FileVersion>1.2.0</FileVersion>
 	  <AssemblyVersion>1.0.0.0</AssemblyVersion>
 
 	  <Copyright>© 2026 Mohamed Ragheb</Copyright>
@@ -38,10 +38,6 @@
    <None Remove="images\**" />
    <None Remove="Resources\**" />
    <None Remove="UiSamples\**" />
- </ItemGroup>
-
- <ItemGroup>
-   <Content Include="images\ico\tooth-medicine.ico" />
  </ItemGroup>
 
   <ItemGroup>
