@@ -20,5 +20,6 @@ public sealed record VisitTreatmentsView
     public required string Name { get; init; }
     public required decimal Price { get; init; }
     public required int Count { get; init; }
+    public required decimal TotalPrice { get; init; }
     public string? Notes { get; init; } = null;
 }

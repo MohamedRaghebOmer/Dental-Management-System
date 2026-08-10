@@ -19,10 +19,11 @@ public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext)
             .Select(
                vtt => new VisitTreatmentsView
                {
-                   ToothNumber = vtt.ToothNumber == null ? null : vtt.ToothNumber.Value,
+                   ToothNumber = vtt.ToothNumber == null? null : vtt.ToothNumber.Value,
                    Name = vtt.Treatment.Name,
                    Price = vtt.Treatment.Price.Value,
                    Count = vtt.Count,
+                   TotalPrice = vtt.TreatmentPrice.Value * vtt.Count,
                    Notes = vtt.Notes
                });
 

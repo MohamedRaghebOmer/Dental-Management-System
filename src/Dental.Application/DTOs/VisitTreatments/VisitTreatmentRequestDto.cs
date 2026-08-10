@@ -15,10 +15,10 @@ public sealed record VisitTreatmentRequestDto
 
     [Range(1, 32)]
     [Required]
-    public required byte ToothNumber { get; init; }
+    public byte? ToothNumber { get; init; }
 
     [Range(1, int.MaxValue)]
-    public int Count { get; init; } = 1;
+    public required int Count { get; init; }
 
     [MaxLength(VisitTreatment.Constants.NotesMaxLength)]
     public string? Notes { get; init; } = null;
