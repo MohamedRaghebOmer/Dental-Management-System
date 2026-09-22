@@ -3,7 +3,7 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
-Dental.LicenseGenerator/
+src/Dental.LicenseGenerator/**
 *.mp4
 
 # User-specific files
