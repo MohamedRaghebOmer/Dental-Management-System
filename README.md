@@ -1,6 +1,6 @@
 # Dental Clinic Management System
 
-A custom Arabic application that helps a dental clinic manage patients, appointments, visits, treatments, radiographs, materials, laboratory transactions, and clinic information in one organized place.
+A custom application that helps a dental clinic manage patients, appointments, visits, treatments, radiographs, materials, laboratory transactions, and clinic information in one organized place.
 
 ## Overview
 
