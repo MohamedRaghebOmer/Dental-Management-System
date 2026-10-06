@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/license/">
-    <Project Path="src/Dental.LicenseGenerator/Dental.LicenseGenerator.csproj" Id="0bced25c-43ca-4430-80fc-cf41f4ed7e60" />
+    <Project Path="src/Dental.LicenseGenerator/Dental.LicenseGenerator.csproj" />
     <Project Path="src/Dental.Licensing.Core/Dental.Licensing.Core.csproj" Id="9aa4f5f4-fe4d-4034-95b3-8bba9e6162e5" />
   </Folder>
   <Folder Name="/src/">
