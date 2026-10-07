@@ -6,15 +6,16 @@ namespace Dental.Application.Abstractions.ServicesInterfaces;
 public interface IVisitTreatmentService
 {
     Task<Result<int>> CreateAsync(
-        VisitTreatmentRequestDto dto,
+        CreateVisitTreatmentDto dto,
         CancellationToken cancellationToken = default);
 
     Task<Result> CreateManyAsync(
-        VisitTreatmentRequestDto[] dtos,
+        CreateVisitTreatmentDto[] dtos,
         CancellationToken cancellationToken = default);
 
-    Task<Result> SetAllVisitTreatmentsAsync(
-        int visitId,
-        VisitTreatmentRequestDto[] dtos,
+    Task<Result> SyncVisitTreatmentsAsync(
+        CreateVisitTreatmentDto[] newVisitTreatments,
+        UpdateVisitTreatmentDto[] updatedVisitTreatments,
+        HashSet<int> deletedVisitTreatmens,
         CancellationToken cancellationToken = default);
 }

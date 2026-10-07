@@ -234,7 +234,7 @@
             label3.Name = "label3";
             label3.Size = new Size(111, 23);
             label3.TabIndex = 0;
-            label3.Text = "الإصدار: 1.2.0";
+            label3.Text = "الإصدار: 1.3.0";
             // 
             // label4
             // 

@@ -90,7 +90,7 @@ public partial class frmAddEditPatient : Form
 
         lblPatientIdValue.Text = patientResult.Value.Id.ToString();
         txtName.Text = patientResult.Value.Name;
-        txtAge.Text = patientResult.Value.Age?.ToString()?? string.Empty;
+        txtAge.Text = patientResult.Value.Age?.ToString() ?? string.Empty;
         if (patientResult.Value.Gender == Domain.Enums.Gender.Male)
         {
             rbMale.Checked = true;
@@ -130,7 +130,7 @@ public partial class frmAddEditPatient : Form
             return;
 
         string message = _mode == Mode.Add ?
-            "هل انت متأكد من اضافة المريض؟" 
+            "هل انت متأكد من اضافة المريض؟"
             : "هل انت متأكد من تعديل بيانات المريض؟";
 
         if (MessageBoxExtensions.ShowQuestion(

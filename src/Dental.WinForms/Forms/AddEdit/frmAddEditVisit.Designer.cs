@@ -56,11 +56,6 @@
             txtDiscountAmount = new Guna.UI2.WinForms.Guna2TextBox();
             lblTitile = new Label();
             dgvVisitTreatments = new Guna.UI2.WinForms.Guna2DataGridView();
-            colToothNumber = new DataGridViewComboBoxColumn();
-            colTreatmentName = new DataGridViewComboBoxColumn();
-            colTreatmentPrice = new DataGridViewTextBoxColumn();
-            colCount = new DataGridViewTextBoxColumn();
-            colNotes = new DataGridViewTextBoxColumn();
             cmsTreatmetnsGrid = new ContextMenuStrip(components);
             tsmiTreatmentsDelete = new ToolStripMenuItem();
             btnSave = new Guna.UI2.WinForms.Guna2Button();
@@ -94,6 +89,12 @@
             change_txtId_FillColorTimer = new System.Windows.Forms.Timer(components);
             dtpVisitDateTime_Date = new DateTimePicker();
             dtpVisitDateTime_Time = new DateTimePicker();
+            colVisitTreatmentId = new DataGridViewTextBoxColumn();
+            colToothNumber = new DataGridViewComboBoxColumn();
+            colTreatmentName = new DataGridViewComboBoxColumn();
+            colTreatmentPrice = new DataGridViewTextBoxColumn();
+            colCount = new DataGridViewTextBoxColumn();
+            colNotes = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvVisitTreatments).BeginInit();
             cmsTreatmetnsGrid.SuspendLayout();
@@ -254,7 +255,7 @@
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvVisitTreatments.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvVisitTreatments.ColumnHeadersHeight = 35;
-            dgvVisitTreatments.Columns.AddRange(new DataGridViewColumn[] { colToothNumber, colTreatmentName, colTreatmentPrice, colCount, colNotes });
+            dgvVisitTreatments.Columns.AddRange(new DataGridViewColumn[] { colVisitTreatmentId, colToothNumber, colTreatmentName, colTreatmentPrice, colCount, colNotes });
             dgvVisitTreatments.ContextMenuStrip = cmsTreatmetnsGrid;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
@@ -303,60 +304,6 @@
             dgvVisitTreatments.DataError += dataGridView_DataError;
             dgvVisitTreatments.RowsRemoved += dgvVisitTreatments_RowsRemoved;
             dgvVisitTreatments.MouseDown += dataGridView_MouseDown;
-            // 
-            // colToothNumber
-            // 
-            colToothNumber.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colToothNumber.DataPropertyName = "ToothNumber";
-            colToothNumber.HeaderText = "رقم السن";
-            colToothNumber.Items.AddRange(new object[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32" });
-            colToothNumber.MaxDropDownItems = 32;
-            colToothNumber.MinimumWidth = 6;
-            colToothNumber.Name = "colToothNumber";
-            colToothNumber.ToolTipText = "رقم السن/الدرس في الصوره الموضحه اعلاه";
-            colToothNumber.Width = 250;
-            // 
-            // colTreatmentName
-            // 
-            colTreatmentName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colTreatmentName.DataPropertyName = "Name";
-            colTreatmentName.HeaderText = "الخدمه المقدمه";
-            colTreatmentName.MaxDropDownItems = 100;
-            colTreatmentName.MinimumWidth = 6;
-            colTreatmentName.Name = "colTreatmentName";
-            colTreatmentName.ToolTipText = "الخدمه المقدمه للعميل";
-            // 
-            // colTreatmentPrice
-            // 
-            colTreatmentPrice.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colTreatmentPrice.DataPropertyName = "TreatmentPrice";
-            colTreatmentPrice.HeaderText = "سعر الخدمه";
-            colTreatmentPrice.MinimumWidth = 6;
-            colTreatmentPrice.Name = "colTreatmentPrice";
-            colTreatmentPrice.ReadOnly = true;
-            colTreatmentPrice.SortMode = DataGridViewColumnSortMode.NotSortable;
-            colTreatmentPrice.ToolTipText = "سعر الخدمه المقدمه للعميل";
-            colTreatmentPrice.Width = 200;
-            // 
-            // colCount
-            // 
-            colCount.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            colCount.DataPropertyName = "Count";
-            colCount.HeaderText = "العدد";
-            colCount.MinimumWidth = 6;
-            colCount.Name = "colCount";
-            colCount.SortMode = DataGridViewColumnSortMode.NotSortable;
-            colCount.Width = 150;
-            // 
-            // colNotes
-            // 
-            colNotes.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colNotes.DataPropertyName = "Notes";
-            colNotes.HeaderText = "ملاحظات عن الخدمه المقدمه";
-            colNotes.MinimumWidth = 6;
-            colNotes.Name = "colNotes";
-            colNotes.SortMode = DataGridViewColumnSortMode.NotSortable;
-            colNotes.ToolTipText = "ملحظات اضافيه عن العلاج المقدم";
             // 
             // cmsTreatmetnsGrid
             // 
@@ -780,6 +727,71 @@
             dtpVisitDateTime_Time.Size = new Size(138, 34);
             dtpVisitDateTime_Time.TabIndex = 5;
             // 
+            // colVisitTreatmentId
+            // 
+            colVisitTreatmentId.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            colVisitTreatmentId.DataPropertyName = "VisitTreatmentId";
+            colVisitTreatmentId.HeaderText = "VisitTreatmentId";
+            colVisitTreatmentId.MinimumWidth = 6;
+            colVisitTreatmentId.Name = "colVisitTreatmentId";
+            colVisitTreatmentId.ReadOnly = true;
+            colVisitTreatmentId.Visible = false;
+            colVisitTreatmentId.Width = 180;
+            // 
+            // colToothNumber
+            // 
+            colToothNumber.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colToothNumber.DataPropertyName = "ToothNumber";
+            colToothNumber.HeaderText = "رقم السن";
+            colToothNumber.Items.AddRange(new object[] { "", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32" });
+            colToothNumber.MaxDropDownItems = 32;
+            colToothNumber.MinimumWidth = 6;
+            colToothNumber.Name = "colToothNumber";
+            colToothNumber.ToolTipText = "رقم السن/الدرس في الصوره الموضحه اعلاه";
+            colToothNumber.Width = 250;
+            // 
+            // colTreatmentName
+            // 
+            colTreatmentName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colTreatmentName.DataPropertyName = "Name";
+            colTreatmentName.HeaderText = "الخدمه المقدمه";
+            colTreatmentName.MaxDropDownItems = 100;
+            colTreatmentName.MinimumWidth = 6;
+            colTreatmentName.Name = "colTreatmentName";
+            colTreatmentName.ToolTipText = "الخدمه المقدمه للعميل";
+            // 
+            // colTreatmentPrice
+            // 
+            colTreatmentPrice.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colTreatmentPrice.DataPropertyName = "TreatmentPrice";
+            colTreatmentPrice.HeaderText = "سعر الخدمه";
+            colTreatmentPrice.MinimumWidth = 6;
+            colTreatmentPrice.Name = "colTreatmentPrice";
+            colTreatmentPrice.ReadOnly = true;
+            colTreatmentPrice.SortMode = DataGridViewColumnSortMode.NotSortable;
+            colTreatmentPrice.ToolTipText = "سعر الخدمه المقدمه للعميل";
+            colTreatmentPrice.Width = 200;
+            // 
+            // colCount
+            // 
+            colCount.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            colCount.DataPropertyName = "Count";
+            colCount.HeaderText = "العدد";
+            colCount.MinimumWidth = 6;
+            colCount.Name = "colCount";
+            colCount.SortMode = DataGridViewColumnSortMode.NotSortable;
+            colCount.Width = 150;
+            // 
+            // colNotes
+            // 
+            colNotes.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            colNotes.DataPropertyName = "Notes";
+            colNotes.HeaderText = "ملاحظات عن الخدمه المقدمه";
+            colNotes.MinimumWidth = 6;
+            colNotes.Name = "colNotes";
+            colNotes.SortMode = DataGridViewColumnSortMode.NotSortable;
+            colNotes.ToolTipText = "ملحظات اضافيه عن العلاج المقدم";
+            // 
             // frmAddEditVisit
             // 
             AutoScaleDimensions = new SizeF(11F, 28F);
@@ -868,11 +880,6 @@
         private Label lblSumOfPaidAmounts;
         private Label label5;
         private System.Windows.Forms.Timer change_txtId_FillColorTimer;
-        private DataGridViewComboBoxColumn colToothNumber;
-        private DataGridViewComboBoxColumn colTreatmentName;
-        private DataGridViewTextBoxColumn colTreatmentPrice;
-        private DataGridViewTextBoxColumn colCount;
-        private DataGridViewTextBoxColumn colNotes;
         private DateTimePicker dtpVisitDateTime_Date;
         private DateTimePicker dtpVisitDateTime_Time;
         private ToolStripMenuItem tsmiChangePaymentDate;
@@ -884,5 +891,11 @@
         private DataGridViewButtonColumn col_Payments_ChangePaymentDateTime;
         private DataGridViewTextBoxColumn col_Payments_ConvertablePaymentDateTime;
         private DataGridViewTextBoxColumn col_Payments_OldPaymentDateTime;
+        private DataGridViewTextBoxColumn colVisitTreatmentId;
+        private DataGridViewComboBoxColumn colToothNumber;
+        private DataGridViewComboBoxColumn colTreatmentName;
+        private DataGridViewTextBoxColumn colTreatmentPrice;
+        private DataGridViewTextBoxColumn colCount;
+        private DataGridViewTextBoxColumn colNotes;
     }
 }

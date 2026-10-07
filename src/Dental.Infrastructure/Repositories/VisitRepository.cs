@@ -166,4 +166,39 @@ public sealed class VisitRepository
             .Include(v => v.VisitRadiographs)
             .FirstOrDefaultAsync(v => v.VisitRadiographs.Any(r => r.Id == idResultValue), cancellationToken);
     }
+
+    public Task<Dictionary<int, Money>> GetTreatmentsPricesAsync(
+        IEnumerable<Id> treatmentIds,
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Treatments
+            .AsNoTracking()
+            .Where(
+                t => treatmentIds.Contains(t.Id))
+            .ToDictionaryAsync(
+                t => t.Id.Value,
+                t => Money.FromDatabase(t.Price.Value),
+                cancellationToken);
+    }
+
+    public Task<Dictionary<int, Visit>> GetByTreatmentIdsAsync(
+        HashSet<Id> ids,
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.Visits
+            .Include(v => v.VisitTreatments)
+            .Where(v => v.VisitTreatments.Any(vt => ids.Contains(vt.Id)))
+            .ToDictionaryAsync(
+                v => v.Id.Value,
+                cancellationToken);
+    }
+
+    public Task DeleteManyVisitTreatments(
+        HashSet<Id> deletedVisitTreatmens,
+        CancellationToken cancellationToken = default)
+    {
+        return _dbContext.VisitTreatments
+            .Where(vt => deletedVisitTreatmens.Contains(vt.Id))
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }

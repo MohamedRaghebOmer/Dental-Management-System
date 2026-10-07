@@ -31,6 +31,7 @@ public partial class frmAddEditVisit : Form
     private int _treatmentsSelectedRowIndex = -1;
     private int _paymentsSelectedRowIndex = -1;
     private List<TreatmentResponseDto> _treatments = [];
+    private HashSet<int> _loadedVisitTreatmentsIds = [];
     private HashSet<int> _loadedVisitPaymentsIds = [];
 
     public enum Mode
@@ -213,28 +214,17 @@ public partial class frmAddEditVisit : Form
             MessageBoxExtensions.ShowError(
                 $"حدث خطأ أثناء تحميل البيانات، يرجى التواصل مع المطور.\n{ex}");
             _logger.LogCritical(ex, "Error occurred while loading visit data.");
+            Close();
         }
     }
 
     private async Task InitializeAsync()
     {
-        try
-        {
-            await LoadDataGrid();
+        await LoadDataGrid();
 
-            if (_mode == Mode.Add)
-            {
-                InitializeDataGridDefaultValues();
-            }
-        }
-        catch (Exception ex)
+        if (_mode == Mode.Add)
         {
-            _logger.LogError(
-                ex, "Error occurred while initializing visit data. Error Occurred in {ClassName}",
-                nameof(frmAddEditVisit));
-
-            MessageBoxExtensions.ShowError(
-                "حدث خطأ أثناء تهيئة بيانات الزياره برجاء التواصل مع المطور.");
+            InitializeDataGridDefaultValues();
         }
     }
 
@@ -334,6 +324,11 @@ public partial class frmAddEditVisit : Form
             totalPrice - (totalPaidAmount.Value + discountAmount.Value);
 
         txtRemainingAmount.Text = remainingAmount.ToString("F2");
+
+        _loadedVisitTreatmentsIds = viewResult.Value
+            .Select(v => v.VisitTreatmentId)
+            .ToHashSet();
+
         return true;
     }
 
@@ -361,6 +356,10 @@ public partial class frmAddEditVisit : Form
 
     private void AssignViewToRowCells(VisitTreatmentsView view, int currentRowIndex)
     {
+        // VisitTreatmentId
+        ((DataGridViewTextBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
+            .Cells[nameof(colVisitTreatmentId)]).Value = view.VisitTreatmentId.ToString();
+
         // ToothNumber
         ((DataGridViewComboBoxCell)dgvVisitTreatments.Rows[currentRowIndex]
             .Cells[nameof(colToothNumber)]).Value = (view.ToothNumber?.ToString() ?? null);
@@ -839,10 +838,6 @@ public partial class frmAddEditVisit : Form
         if (updateDto is null)
             return false;
 
-        var visitTreatments = GetVisitTreatmentsFromUi(_visitId.Value);
-        if (visitTreatments is null)
-            return false;
-
         var updateVisitResult = await _visitService.UpdateAsync(_visitId.Value, updateDto);
         if (updateVisitResult.IsFailure)
         {
@@ -850,13 +845,25 @@ public partial class frmAddEditVisit : Form
             return false;
         }
 
-        var updateVisitTreatmentsResult =
-            await _visitTreatmentService.SetAllVisitTreatmentsAsync(
-                _visitId.Value, visitTreatments.ToArray());
+        CreateVisitTreatmentDto[]? visitTreatmentsToAdd = GetNewTreatmentsToAdd();
+        if (visitTreatmentsToAdd is null)
+            return false;
 
-        if (updateVisitTreatmentsResult.IsFailure)
+        UpdateVisitTreatmentDto[]? visitTreatmetnsToUpdate = GetUpdatedTreatmentsToUpdate();
+        if (visitTreatmetnsToUpdate is null)
+            return false;
+
+        HashSet<int> visitTreatmentsToDelete = GetVisitTreatmentsIdsToDelete();
+
+        var syncResult =
+            await _visitTreatmentService.SyncVisitTreatmentsAsync(
+                visitTreatmentsToAdd,
+                visitTreatmetnsToUpdate,
+                visitTreatmentsToDelete);
+
+        if (syncResult.IsFailure)
         {
-            HandleCreateUpdateVisitTreatmentsResult(updateVisitTreatmentsResult.Error);
+            HandleCreateUpdateVisitTreatmentsResult(syncResult.Error);
             return false;
         }
 
@@ -867,6 +874,139 @@ public partial class frmAddEditVisit : Form
             "تم تعديل بيانات الزياره بنجاح.", "تم التعديل");
 
         return true;
+    }
+
+    private HashSet<int> GetVisitTreatmentsIdsToDelete()
+    {
+        HashSet<int> idsToDelete = [];
+
+        // VisitTreatmentsIds should be delete if they are not exist in the grid but exist in the loadedVisitTreatmentsIds
+        var gridIds = GetCurrentVisitTreatmentsIdsFromGrid();
+        foreach (var loadedId in _loadedVisitTreatmentsIds)
+        {
+            if (!gridIds.Contains(loadedId))
+            {
+                idsToDelete.Add(loadedId);
+            }
+        }
+
+        return idsToDelete;
+    }
+
+    private UpdateVisitTreatmentDto[]? GetUpdatedTreatmentsToUpdate()
+    {
+        if (_mode != Mode.Update || !_visitId.HasValue)
+            return null;
+
+        List<UpdateVisitTreatmentDto> updatedTreatments = [];
+        int rowsCount = dgvVisitTreatments.Rows.Count;
+
+        for (int i = 0; i < rowsCount; i++)
+        {
+            if (dgvVisitTreatments.Rows[i].IsNewRow)
+                continue;
+
+            var idCellValue = dgvVisitTreatments.Rows[i]
+                .Cells[nameof(colVisitTreatmentId)].Value;
+
+            // If the idCellValue is null, it means the treatment does not exist in the database
+            // and should be added, not updated. Therefore, we skip adding it to the updatedTreatments list.
+            if (!int.TryParse(idCellValue?.ToString(), out var id))
+                continue;
+
+            var treatmentId = GetTreatmentIdFromDataGrid(i);
+            if (!treatmentId.HasValue)
+            {
+                MessageBoxExtensions.ShowWarning("يجب اختيار الخدمة المقدمة في الصف رقم " + (i + 1));
+                return null;
+            }
+
+            var count = GetCountFromTreatmentsGrid(i);
+            if (count is not > 0)
+            {
+                MessageBoxExtensions.ShowWarning($"يجب أن يكون العدد اكبر من الصفر في الصف رقم {i + 1}");
+                return null;
+            }
+
+            updatedTreatments.Add(new UpdateVisitTreatmentDto
+            {
+                Id = id,
+                TreatmentId = treatmentId.Value,
+                ToothNumber = GetToothNumberFromDataGrid(i),
+                Count = count.Value,
+                Notes = GetTreatmentNotesFromDataGrid(i)
+            });
+        }
+
+        return updatedTreatments.ToArray();
+    }
+
+    private CreateVisitTreatmentDto[]? GetNewTreatmentsToAdd()
+    {
+        if (_mode != Mode.Update || !_visitId.HasValue)
+            return null;
+
+        List<CreateVisitTreatmentDto> newTreatments = [];
+        int rowsCount = dgvVisitTreatments.Rows.Count;
+
+        for (int i = 0; i < rowsCount; i++)
+        {
+            if (dgvVisitTreatments.Rows[i].IsNewRow)
+                continue;
+
+            var idCellValue = dgvVisitTreatments.Rows[i]
+                .Cells[nameof(colVisitTreatmentId)].Value;
+
+            // If the idCellValue is not null, it means the treatment already exists in the database
+            // and should be updated, not added. Therefore, we skip adding it to the newTreatments list.
+            if (idCellValue is not null)
+                continue;
+
+            var treatmentId = GetTreatmentIdFromDataGrid(i);
+            if (!treatmentId.HasValue)
+            {
+                MessageBoxExtensions.ShowWarning("يجب اختيار الخدمة المقدمة في الصف رقم " + (i + 1));
+                return null;
+            }
+
+            var count = GetCountFromTreatmentsGrid(i);
+            if (count is not > 0)
+            {
+                MessageBoxExtensions.ShowWarning($"يجب أن يكون العدد اكبر من الصفر في الصف رقم {i + 1}");
+                return null;
+            }
+
+            newTreatments.Add(new CreateVisitTreatmentDto
+            {
+                VisitId = _visitId.Value,
+                TreatmentId = treatmentId.Value,
+                ToothNumber = GetToothNumberFromDataGrid(i),
+                Count = count.Value,
+                Notes = GetTreatmentNotesFromDataGrid(i)
+            });
+        }
+
+        return newTreatments.ToArray();
+    }
+
+    private HashSet<int> GetCurrentVisitTreatmentsIdsFromGrid()
+    {
+        HashSet<int> currentIds = [];
+        int rowsCount = dgvVisitTreatments.Rows.Count;
+
+        for (int i = 0; i < rowsCount; i++)
+        {
+            if (dgvVisitTreatments.Rows[i].IsNewRow)
+                continue;
+
+            var cellValue = dgvVisitTreatments.Rows[i]
+                .Cells[nameof(colVisitTreatmentId)].Value;
+
+            if (int.TryParse(cellValue?.ToString(), out var cellId))
+                currentIds.Add(cellId);
+        }
+
+        return currentIds;
     }
 
     private async Task<bool> UpdatePaymentsAsync()
@@ -1174,6 +1314,22 @@ public partial class frmAddEditVisit : Form
                 MessageBoxExtensions.ShowError("ملاحظات الخدمه طويله جدا.");
                 break;
 
+            case "VisitTreatment.InvalidCount":
+                MessageBoxExtensions.ShowError("يجب أن يكون عدد الخدمات أكبر من صفر.");
+                break;
+
+            case "VisitTreatment.UpdateAndDeleteConflict":
+                MessageBoxExtensions.ShowError("لا يمكن تحديث وحذف نفس الخدمة في نفس الوقت.");
+                break;
+
+            case "VisitTreatment.VisitNotFound":
+                MessageBoxExtensions.ShowError("الزيارة غير موجودة.");
+                break;
+
+            case "VisitTreatment.TreatmentNotFound":
+                MessageBoxExtensions.ShowError("الخدمة غير موجودة.");
+                break;
+
             default:
                 MessageBoxExtensions.ShowError("بيانات غير صحيحه.");
                 break;
@@ -1231,9 +1387,9 @@ public partial class frmAddEditVisit : Form
         }
     }
 
-    private List<VisitTreatmentRequestDto>? GetVisitTreatmentsFromUi(int visitId)
+    private List<CreateVisitTreatmentDto>? GetVisitTreatmentsFromUi(int visitId)
     {
-        List<VisitTreatmentRequestDto> visitTreatments = [];
+        List<CreateVisitTreatmentDto> visitTreatments = [];
         int rowsCount = dgvVisitTreatments.Rows.Count;
         int newRowIndex = dgvVisitTreatments.NewRowIndex;
 
@@ -1252,7 +1408,7 @@ public partial class frmAddEditVisit : Form
         return visitTreatments;
     }
 
-    private VisitTreatmentRequestDto? GetVisitTreatmentFromUi(int rowIndex, int visitId)
+    private CreateVisitTreatmentDto? GetVisitTreatmentFromUi(int rowIndex, int visitId)
     {
         if (rowIndex < 0
             || rowIndex >= dgvVisitTreatments.Rows.Count
@@ -1283,7 +1439,7 @@ public partial class frmAddEditVisit : Form
             return null;
         }
 
-        return new VisitTreatmentRequestDto
+        return new CreateVisitTreatmentDto
         {
             ToothNumber = toothNumber,
             TreatmentId = treatmentId.Value,
@@ -2009,7 +2165,7 @@ public partial class frmAddEditVisit : Form
 
     private void dgvVisitPayments_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
     {
-        if (e.RowIndex < 0 
+        if (e.RowIndex < 0
             || e.RowIndex >= dgvVisitPayments.Rows.Count
             || dgvVisitPayments.NewRowIndex == e.RowIndex)
             return;

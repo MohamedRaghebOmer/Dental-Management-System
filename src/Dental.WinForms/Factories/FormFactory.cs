@@ -110,7 +110,7 @@ public class FormFactory : IFormFactory
     }
 
     public DateTimePickerDialog Create_DateTimePickerDialog(
-        DateTime currentValue, 
+        DateTime currentValue,
         DateTime maxValue)
     {
         return ActivatorUtilities.CreateInstance<DateTimePickerDialog>

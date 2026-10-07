@@ -3,18 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dental.Application.DTOs.VisitTreatments;
 
-public sealed record VisitTreatmentRequestDto
+public sealed record UpdateVisitTreatmentDto
 {
     [Range(1, int.MaxValue)]
-    [Required]
-    public required int VisitId { get; init; }
+    public required int Id { get; init; } // VisitTreatmentId
 
     [Range(1, int.MaxValue)]
-    [Required]
     public required int TreatmentId { get; init; }
 
     [Range(1, 32)]
-    [Required]
     public byte? ToothNumber { get; init; }
 
     [Range(1, int.MaxValue)]

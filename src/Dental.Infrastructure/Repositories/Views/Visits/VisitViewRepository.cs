@@ -1,12 +1,9 @@
 ﻿using Dental.Domain.Repositories.Views.Visits;
+using Dental.Domain.ValueObjects;
 using Dental.Domain.Views.Visit;
 using Dental.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Data.Common;
-using System.Text;
-using Dental.Domain.Errors;
-using Dental.Domain.ValueObjects;
 
 namespace Dental.Infrastructure.Repositories.Views.Visits;
 

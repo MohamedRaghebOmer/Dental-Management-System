@@ -15,7 +15,7 @@ public sealed record VisitTreatmentsView
 
      */
 
-
+    public required int VisitTreatmentId { get; init; }
     public byte? ToothNumber { get; init; } = null;
     public required string Name { get; init; }
     public required decimal Price { get; init; }
