@@ -9,11 +9,11 @@ namespace Dental.Application.ViewsStuff.Services.Visits;
 
 public sealed class VisitTreatmentsViewService : IVisitTreatmentsViewService
 {
-    private readonly IVisitToothTreatmentsViewRepository _repo;
+    private readonly IVisitTreatmentsViewRepository _repo;
     private readonly ILogger<VisitTreatmentsViewService> _logger;
 
     public VisitTreatmentsViewService(
-        IVisitToothTreatmentsViewRepository repo,
+        IVisitTreatmentsViewRepository repo,
         ILogger<VisitTreatmentsViewService> logger)
     {
         _repo = repo;

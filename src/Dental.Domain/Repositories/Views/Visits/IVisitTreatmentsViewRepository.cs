@@ -3,7 +3,7 @@ using Dental.Domain.Views.Visit;
 
 namespace Dental.Domain.Repositories.Views.Visits;
 
-public interface IVisitToothTreatmentsViewRepository
+public interface IVisitTreatmentsViewRepository
 {
     Task<List<VisitTreatmentsView>> GetAsync(
         Id visitId,

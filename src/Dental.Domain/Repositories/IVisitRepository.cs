@@ -100,4 +100,16 @@ public interface IVisitRepository
     Task<Visit?> GetByRadiographIdAsync(
         Id idResultValue,
         CancellationToken cancellationToken = default);
+
+    Task<Dictionary<int, Money>> GetTreatmentsPricesAsync(
+        IEnumerable<Id> treatmentIds,
+        CancellationToken cancellationToken = default);
+
+    Task<Dictionary<int, Visit>> GetByTreatmentIdsAsync(
+        HashSet<Id> ids,
+        CancellationToken cancellationToken = default);
+
+    Task DeleteManyVisitTreatments(
+        HashSet<Id> deletedVisitTreatmens,
+        CancellationToken cancellationToken = default);
 }

@@ -133,7 +133,7 @@ public partial class PatientsView : UserControl
         lblPatietnsCount.Text = count.ToString();
 
         lblTodayPatientCount.Text = data.Count(
-            p => p.NextAppointmentDateTime.HasValue 
+            p => p.NextAppointmentDateTime.HasValue
                  && p.NextAppointmentDateTime.Value.Date == DateTime.Today).ToString();
 
         if (count == 0)
@@ -171,7 +171,7 @@ public partial class PatientsView : UserControl
 
             case GridColumns.Name:
                 filterDto = new PatientDetailedInfoDto
-                    { Name = txtFilterValue.Text.Trim() };
+                { Name = txtFilterValue.Text.Trim() };
                 break;
 
             case GridColumns.Age:
@@ -182,22 +182,22 @@ public partial class PatientsView : UserControl
 
             case GridColumns.Gender:
                 filterDto = new PatientDetailedInfoDto
-                    { Gender = GenderHelper.GenderFromString(cbGender.Text) };
+                { Gender = GenderHelper.GenderFromString(cbGender.Text) };
                 break;
 
             case GridColumns.PhoneNumber:
                 filterDto = new PatientDetailedInfoDto
-                    { PhoneNumber = txtFilterValue.Text.Trim() };
+                { PhoneNumber = txtFilterValue.Text.Trim() };
                 break;
 
             case GridColumns.NextAppointmentDateTime:
                 filterDto = new PatientDetailedInfoDto
-                    { NextAppointmentDateTime = dateTimerPicker.Value.Date };
+                { NextAppointmentDateTime = dateTimerPicker.Value.Date };
                 break;
 
             case GridColumns.LastVisitDateTime:
                 filterDto = new PatientDetailedInfoDto
-                    { LastVisitDateTime = dateTimerPicker.Value.Date };
+                { LastVisitDateTime = dateTimerPicker.Value.Date };
                 break;
 
             case GridColumns.TotalNumberOfVisits:

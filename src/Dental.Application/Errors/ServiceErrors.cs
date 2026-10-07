@@ -73,6 +73,21 @@ public static class ServiceErrors
             "VisitTreatment.AlreadyExists",
             "Visit tooth treatment already exists for the given service and visit IDs."
         );
+
+        public static readonly Error InvalidCount = new(
+            "VisitTreatment.InvalidCount",
+            "Invalid count."
+        );
+
+        public static readonly Error UpdateAndDeleteConflict = new(
+            "VisitTreatment.UpdateAndDeleteConflict",
+            "Cannot update and delete the same visit treatment."
+        );
+
+        public static readonly Error NotFound = new(
+            "VisitTreatment.NotFound",
+            "Visit treatment not found."
+        );
     }
 
     public static class Appointment

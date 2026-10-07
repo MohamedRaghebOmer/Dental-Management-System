@@ -10,4 +10,22 @@ public sealed class UnitOfWork(DentalDbContext dbContext) : IUnitOfWork
     {
         return dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public Task BeginTransactionAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.Database.BeginTransactionAsync(cancellationToken);
+    }
+
+    public Task RollbackTransactionAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.Database.RollbackTransactionAsync(cancellationToken);
+    }
+
+    public Task CommitTransactionAsync(
+        CancellationToken cancellationToken = default)
+    {
+        return dbContext.Database.CommitTransactionAsync(cancellationToken);
+    }
 }

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Dental.Infrastructure.Repositories.Views.Visit;
 
 public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext)
-    : IVisitToothTreatmentsViewRepository
+    : IVisitTreatmentsViewRepository
 {
     public Task<List<VisitTreatmentsView>> GetAsync(
         Id visitId,
@@ -19,9 +19,10 @@ public sealed class VisitTreatmentsViewRepository(DentalDbContext dbContext)
             .Select(
                vtt => new VisitTreatmentsView
                {
-                   ToothNumber = vtt.ToothNumber == null? null : vtt.ToothNumber.Value,
+                   VisitTreatmentId = vtt.Id.Value,
+                   ToothNumber = vtt.ToothNumber == null ? null : vtt.ToothNumber.Value,
                    Name = vtt.Treatment.Name,
-                   Price = vtt.Treatment.Price.Value,
+                   Price = vtt.TreatmentPrice.Value,
                    Count = vtt.Count,
                    TotalPrice = vtt.TreatmentPrice.Value * vtt.Count,
                    Notes = vtt.Notes
